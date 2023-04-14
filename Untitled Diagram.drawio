@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-04-14T12:47:03.045Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="XUUCix5rynmXcce3aybt" version="21.1.7" type="github">
+<mxfile host="app.diagrams.net" modified="2023-04-14T12:48:45.681Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="Tzrzgx__7zhohat5sQQM" version="21.1.7" type="github">
   <diagram name="Page-1" id="c4acf3e9-155e-7222-9cf6-157b1a14988f">
-    <mxGraphModel dx="3542" dy="2452" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="2000" background="none" math="0" shadow="0">
+    <mxGraphModel dx="3672" dy="2510" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="2000" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -643,16 +643,16 @@
           <mxGeometry y="108" width="210" height="62" as="geometry" />
         </mxCell>
         <mxCell id="6Oe0lVGiAwLqXybTgKZt-9" value="Barracks" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="-310" y="1630" width="310" height="180" as="geometry" />
+          <mxGeometry x="-340" y="1630" width="340" height="180" as="geometry" />
         </mxCell>
         <mxCell id="6Oe0lVGiAwLqXybTgKZt-10" value="- soldiersCount : HashMap&amp;lt;SoldierType, count&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="6Oe0lVGiAwLqXybTgKZt-9">
-          <mxGeometry y="26" width="310" height="54" as="geometry" />
+          <mxGeometry y="26" width="340" height="54" as="geometry" />
         </mxCell>
         <mxCell id="6Oe0lVGiAwLqXybTgKZt-11" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="6Oe0lVGiAwLqXybTgKZt-9">
-          <mxGeometry y="80" width="310" height="8" as="geometry" />
+          <mxGeometry y="80" width="340" height="8" as="geometry" />
         </mxCell>
         <mxCell id="6Oe0lVGiAwLqXybTgKZt-12" value="+ createUnit(SoldierType soldierType, int count): void&lt;br&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="6Oe0lVGiAwLqXybTgKZt-9">
-          <mxGeometry y="88" width="310" height="92" as="geometry" />
+          <mxGeometry y="88" width="340" height="92" as="geometry" />
         </mxCell>
         <mxCell id="6Oe0lVGiAwLqXybTgKZt-13" value="Extends" style="endArrow=block;endSize=16;endFill=0;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="6Oe0lVGiAwLqXybTgKZt-9" target="gmJ3rV3wUZDdjDfrYmgu-26">
           <mxGeometry width="160" relative="1" as="geometry">
@@ -1006,6 +1006,17 @@
           <mxGeometry width="160" relative="1" as="geometry">
             <mxPoint x="370" y="1460" as="sourcePoint" />
             <mxPoint x="520" y="1449.23" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6Oe0lVGiAwLqXybTgKZt-108" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="6Oe0lVGiAwLqXybTgKZt-8" target="6Oe0lVGiAwLqXybTgKZt-71">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="506" y="1550" as="sourcePoint" />
+            <mxPoint x="-950" y="1574" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="370" y="1489" />
+              <mxPoint x="370" y="1590" />
+              <mxPoint x="-1520" y="1590" />
+            </Array>
           </mxGeometry>
         </mxCell>
       </root>
