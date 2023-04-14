@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-04-14T12:28:19.882Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="F0Svwdgalrsa7zz2YThN" version="21.1.7" type="github">
+<mxfile host="app.diagrams.net" modified="2023-04-14T12:33:22.824Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="3OkCw4HfORF6OmHTvQxy" version="21.1.7" type="github">
   <diagram name="Page-1" id="c4acf3e9-155e-7222-9cf6-157b1a14988f">
-    <mxGraphModel dx="4163" dy="2734" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="2000" background="none" math="0" shadow="0">
+    <mxGraphModel dx="4535" dy="2903" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="2000" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -19,7 +19,7 @@
           <mxGeometry y="218" width="420" height="302" as="geometry" />
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-5" value="SecurityQuestion" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="610" y="30" width="160" height="100" as="geometry" />
+          <mxGeometry x="620" y="30" width="160" height="100" as="geometry" />
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-6" value="+ question: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="QSP5BxizehYSm3C2jSbc-5" vertex="1">
           <mxGeometry y="26" width="160" height="26" as="geometry" />
@@ -30,37 +30,37 @@
         <mxCell id="QSP5BxizehYSm3C2jSbc-8" value="- SecurityQuestion(String)&lt;br&gt;+ getQuestion(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="QSP5BxizehYSm3C2jSbc-5" vertex="1">
           <mxGeometry y="60" width="160" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="QSP5BxizehYSm3C2jSbc-9" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;exitX=0.004;exitY=0.626;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1.003;entryY=0.159;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="QSP5BxizehYSm3C2jSbc-6" target="QSP5BxizehYSm3C2jSbc-2" edge="1">
+        <mxCell id="QSP5BxizehYSm3C2jSbc-9" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;exitX=0.004;exitY=0.626;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="QSP5BxizehYSm3C2jSbc-6" target="QSP5BxizehYSm3C2jSbc-2" edge="1">
           <mxGeometry width="160" relative="1" as="geometry">
             <mxPoint x="550" y="80" as="sourcePoint" />
             <mxPoint x="710" y="80" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-10" value="LoginController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="110" y="490" width="280" height="120" as="geometry" />
+          <mxGeometry x="110" y="490" width="340" height="120" as="geometry" />
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-12" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="QSP5BxizehYSm3C2jSbc-10" vertex="1">
-          <mxGeometry y="26" width="280" height="8" as="geometry" />
+          <mxGeometry y="26" width="340" height="8" as="geometry" />
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-13" value="+ login(Matcher matcher): String&lt;br&gt;- loginIsValid(Matcher matcher): String&lt;br&gt;+ forgotPassword(Scanner scanner): String&amp;nbsp;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="QSP5BxizehYSm3C2jSbc-10" vertex="1">
-          <mxGeometry y="34" width="280" height="86" as="geometry" />
+          <mxGeometry y="34" width="340" height="86" as="geometry" />
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-15" value="LoginMenu" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="430" y="490" width="280" height="110" as="geometry" />
+          <mxGeometry x="510" y="490" width="330" height="120" as="geometry" />
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-16" value="- LoginController: loginController" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="QSP5BxizehYSm3C2jSbc-15" vertex="1">
-          <mxGeometry y="26" width="280" height="26" as="geometry" />
+          <mxGeometry y="26" width="330" height="26" as="geometry" />
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-17" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="QSP5BxizehYSm3C2jSbc-15" vertex="1">
-          <mxGeometry y="52" width="280" height="8" as="geometry" />
+          <mxGeometry y="52" width="330" height="8" as="geometry" />
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-18" value="+ LoginMenu(LoginController loginController)&lt;br&gt;+ run(Scanner scanner, Matcher matcher): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="QSP5BxizehYSm3C2jSbc-15" vertex="1">
-          <mxGeometry y="60" width="280" height="50" as="geometry" />
+          <mxGeometry y="60" width="330" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="QSP5BxizehYSm3C2jSbc-19" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;exitX=1.005;exitY=0.064;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="QSP5BxizehYSm3C2jSbc-13" target="QSP5BxizehYSm3C2jSbc-16" edge="1">
+        <mxCell id="QSP5BxizehYSm3C2jSbc-19" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="QSP5BxizehYSm3C2jSbc-16" target="QSP5BxizehYSm3C2jSbc-13" edge="1">
           <mxGeometry width="160" relative="1" as="geometry">
-            <mxPoint x="300" y="530" as="sourcePoint" />
-            <mxPoint x="460" y="530" as="targetPoint" />
+            <mxPoint x="420" y="529" as="sourcePoint" />
+            <mxPoint x="420" y="580" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-20" value="SignupController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -73,20 +73,20 @@
           <mxGeometry y="34" width="340" height="116" as="geometry" />
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-24" value="SignupMenu" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="500" y="620" width="210" height="86" as="geometry" />
+          <mxGeometry x="510" y="620" width="330" height="150" as="geometry" />
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-25" value="- SignupController: signupController" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="QSP5BxizehYSm3C2jSbc-24" vertex="1">
-          <mxGeometry y="26" width="210" height="26" as="geometry" />
+          <mxGeometry y="26" width="330" height="26" as="geometry" />
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-26" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="QSP5BxizehYSm3C2jSbc-24" vertex="1">
-          <mxGeometry y="52" width="210" height="8" as="geometry" />
+          <mxGeometry y="52" width="330" height="8" as="geometry" />
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-27" value="+ run(Scanner scanner): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="QSP5BxizehYSm3C2jSbc-24" vertex="1">
-          <mxGeometry y="60" width="210" height="26" as="geometry" />
+          <mxGeometry y="60" width="330" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="QSP5BxizehYSm3C2jSbc-28" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;exitX=1.001;exitY=0.049;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="QSP5BxizehYSm3C2jSbc-22" edge="1">
+        <mxCell id="QSP5BxizehYSm3C2jSbc-28" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="QSP5BxizehYSm3C2jSbc-25" edge="1" target="QSP5BxizehYSm3C2jSbc-22">
           <mxGeometry width="160" relative="1" as="geometry">
-            <mxPoint x="460" y="630" as="sourcePoint" />
+            <mxPoint x="480" y="750" as="sourcePoint" />
             <mxPoint x="500" y="660" as="targetPoint" />
           </mxGeometry>
         </mxCell>
@@ -102,19 +102,19 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-30" value="ProfileController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="110" y="810" width="280" height="340" as="geometry" />
+          <mxGeometry x="110" y="810" width="340" height="340" as="geometry" />
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-31" value="- currentUser: User" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="QSP5BxizehYSm3C2jSbc-30" vertex="1">
-          <mxGeometry y="26" width="280" height="26" as="geometry" />
+          <mxGeometry y="26" width="340" height="26" as="geometry" />
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-32" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="QSP5BxizehYSm3C2jSbc-30" vertex="1">
-          <mxGeometry y="52" width="280" height="8" as="geometry" />
+          <mxGeometry y="52" width="340" height="8" as="geometry" />
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-33" value="+ ProfileController(User currentUser)&lt;br&gt;+ changeUsername(Matcher matcher): String&lt;br&gt;+ changePassword(Matcher matcher): String&lt;br&gt;+ changeEmail(Matcher matcher): String&lt;br&gt;+ changeSlogan(Matcher matcher): String&lt;br&gt;+ removeSlogan(): String&lt;br&gt;+ showHighscore(): String&lt;br&gt;+ showRank(): String&lt;br&gt;+ showSlogan(): String&lt;br&gt;+ showProfile(): String&lt;br&gt;- emailIsValid(String email): bool&lt;br&gt;- usernameIsValid(String username): bool&lt;br&gt;- passwordIsValid(String password): bool&lt;br&gt;+ showPopularityFactors(): String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ showPopularity(): String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ showFoodList(): String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ showFoodRate(): String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ showTaxRate(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="QSP5BxizehYSm3C2jSbc-30" vertex="1">
-          <mxGeometry y="60" width="280" height="280" as="geometry" />
+          <mxGeometry y="60" width="340" height="280" as="geometry" />
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-34" value="ProfileMenu" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="420" y="810" width="330" height="110" as="geometry" />
+          <mxGeometry x="510" y="810" width="330" height="110" as="geometry" />
         </mxCell>
         <mxCell id="QSP5BxizehYSm3C2jSbc-35" value="- profileController: ProfileController" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="QSP5BxizehYSm3C2jSbc-34" vertex="1">
           <mxGeometry y="26" width="330" height="26" as="geometry" />
@@ -126,7 +126,7 @@
           <mxGeometry y="60" width="330" height="50" as="geometry" />
         </mxCell>
         <mxCell id="gmJ3rV3wUZDdjDfrYmgu-1" value="Map" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="430" y="940" width="280" height="170" as="geometry" />
+          <mxGeometry x="520" y="940" width="280" height="170" as="geometry" />
         </mxCell>
         <mxCell id="gmJ3rV3wUZDdjDfrYmgu-2" value="- map: HashMap&amp;lt;int, HashSet&amp;lt;Unit&amp;gt;&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="gmJ3rV3wUZDdjDfrYmgu-1" vertex="1">
           <mxGeometry y="26" width="280" height="24" as="geometry" />
