@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-04-14T12:24:10.745Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="5vQ_UNdVdduxFQU156Ft" version="21.1.7" type="github">
+<mxfile host="app.diagrams.net" modified="2023-04-14T12:28:19.882Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="F0Svwdgalrsa7zz2YThN" version="21.1.7" type="github">
   <diagram name="Page-1" id="c4acf3e9-155e-7222-9cf6-157b1a14988f">
-    <mxGraphModel dx="3672" dy="2510" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="2000" background="none" math="0" shadow="0">
+    <mxGraphModel dx="4163" dy="2734" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="2000" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -615,16 +615,16 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="6Oe0lVGiAwLqXybTgKZt-1" value="Government" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="-360" y="893" width="360" height="690" as="geometry" />
+          <mxGeometry x="-360" y="893" width="360" height="670" as="geometry" />
         </mxCell>
         <mxCell id="6Oe0lVGiAwLqXybTgKZt-2" value="- popularity: int&lt;br&gt;- population: int&lt;br&gt;- foodCapacity: Hashmap&amp;lt;String, int&amp;gt;&lt;br&gt;- foodRate: int&lt;br&gt;- taxRate: int&lt;br&gt;- fearRate: int&lt;br&gt;- religion: int&lt;br&gt;- people: ArrayList&amp;lt;Person&amp;gt;&lt;br&gt;- currentGroup : GroupSoldier&lt;br&gt;- map : Map&lt;br&gt;- owner : User&lt;br&gt;- currentBuildinng : Building&lt;br&gt;- unDeployedForce: ArrayList&amp;lt;Person&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="6Oe0lVGiAwLqXybTgKZt-1">
-          <mxGeometry y="26" width="360" height="224" as="geometry" />
+          <mxGeometry y="26" width="360" height="204" as="geometry" />
         </mxCell>
         <mxCell id="6Oe0lVGiAwLqXybTgKZt-3" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="6Oe0lVGiAwLqXybTgKZt-1">
-          <mxGeometry y="250" width="360" height="8" as="geometry" />
+          <mxGeometry y="230" width="360" height="8" as="geometry" />
         </mxCell>
         <mxCell id="6Oe0lVGiAwLqXybTgKZt-4" value="+ Government(User owner, Map map)&lt;br&gt;+ getters &amp;amp; setters&lt;br&gt;+ addFood(String food): void&lt;br&gt;+ setFoodCapacity(String food, int capacity): void&amp;nbsp;&lt;br&gt;+ checkIncreasePeopleNonsoldier(): void&lt;br&gt;+ addSoldier() : void&lt;br&gt;+ checkActivity() : void&lt;br&gt;+ dropBuilding(int x, int y, BuildingType type): void&lt;br&gt;+ dropUnit(int x, int y, soldierName type, int count) :void&lt;br&gt;+ dropTree(int x, int y, String type) : void&lt;br&gt;+ dropRock(int x,int y,String direction) :void&lt;br&gt;+ creatUnitOfPeople(String type, int count) : void&lt;br&gt;+ repairBuilding(): void&lt;br&gt;+ buildGate(int x, int y, String direction) : void&lt;br&gt;+ buildWall(int x,int y,int high,int wide,String direction) : void&lt;br&gt;+ buildTower(int x,int y,String type) : void&lt;br&gt;+ buildStep(int x, int y, String direction) : void&lt;br&gt;+ deployTrap(int x,int y,String type) : void&lt;br&gt;+ digDitch(int x ,int y,GroupSoldier group) : void&lt;br&gt;+ stopDigDitch(int x ,int y) : void&lt;br&gt;+ removeDitch(int x,int y) : void&lt;br&gt;+ burningOil(int x ,int y,GroupSoldier group&amp;nbsp;) : void&lt;br&gt;+ captureGate(int x ,int y,GroupSoldier group) : void&lt;br&gt;+ makeHammer(int x,int y) : void&lt;br&gt;+ buildSiegeTower(int x,int y) : void&lt;br&gt;+ buildCatapult(int x, int y ,String type) : void&lt;br&gt;+ digTunnel(int x ,int y,GroupSoldier group) : void&lt;br&gt;+ fillDitch(int x ,int y,GroupSoldier group): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="6Oe0lVGiAwLqXybTgKZt-1">
-          <mxGeometry y="258" width="360" height="432" as="geometry" />
+          <mxGeometry y="238" width="360" height="432" as="geometry" />
         </mxCell>
         <mxCell id="6Oe0lVGiAwLqXybTgKZt-5" value="Unit" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="410" y="1160" width="210" height="170" as="geometry" />
@@ -900,16 +900,40 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="6Oe0lVGiAwLqXybTgKZt-85" value="GameMenuController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="-690" y="890" width="290" height="590" as="geometry" />
+          <mxGeometry x="-695" y="893" width="290" height="608" as="geometry" />
         </mxCell>
-        <mxCell id="6Oe0lVGiAwLqXybTgKZt-86" value="- currentUser: User" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="6Oe0lVGiAwLqXybTgKZt-85">
-          <mxGeometry y="26" width="290" height="26" as="geometry" />
+        <mxCell id="6Oe0lVGiAwLqXybTgKZt-86" value="- currentUser: User&lt;br&gt;- game: Game" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="6Oe0lVGiAwLqXybTgKZt-85">
+          <mxGeometry y="26" width="290" height="44" as="geometry" />
         </mxCell>
         <mxCell id="6Oe0lVGiAwLqXybTgKZt-87" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="6Oe0lVGiAwLqXybTgKZt-85">
-          <mxGeometry y="52" width="290" height="8" as="geometry" />
+          <mxGeometry y="70" width="290" height="8" as="geometry" />
         </mxCell>
         <mxCell id="6Oe0lVGiAwLqXybTgKZt-88" value="+ selectUnit(Matcher matcher): String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ moveUnit(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ patrolUnit(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ stopPatrolUnit(Matcher matcher): String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ setMode(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ attackEnemy(Matcher matcher): String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ archerAttack(Matcher matcher): Sting&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ pourOil(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ disbandUnit() :String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ buildObject(Matcher matcher) :String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ digTunnel(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ dropBuilding(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ dropUnit(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ dropTree(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ dropRock(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ clearUnit(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ setTextureUnit(Matcher matcher ) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ setTextureBlock(Matcher matcher ) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ selectBuilding(Matcher matcher ) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ creatUnit(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ repair() :String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ buildGate(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ buildWall(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ buildTower(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ buildStep(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ deployTrap(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ digDitch(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ stopDigDitch(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ removeDitch(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ burningOil(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ captureGate(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ makeHammer(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ buildSiegeTower(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ buildCatapult(Matcher matcher) :String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ digTunnel(Matcher matcher) : String&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;+ fillDitch(Matcher matcher ): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="6Oe0lVGiAwLqXybTgKZt-85">
-          <mxGeometry y="60" width="290" height="530" as="geometry" />
+          <mxGeometry y="78" width="290" height="530" as="geometry" />
+        </mxCell>
+        <mxCell id="6Oe0lVGiAwLqXybTgKZt-89" value="GameMenu&lt;br&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1030" y="893" width="310" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="6Oe0lVGiAwLqXybTgKZt-90" value="- gameMenuController: GameMenuController&lt;br&gt;- game: Game" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="6Oe0lVGiAwLqXybTgKZt-89">
+          <mxGeometry y="26" width="310" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="6Oe0lVGiAwLqXybTgKZt-91" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="6Oe0lVGiAwLqXybTgKZt-89">
+          <mxGeometry y="70" width="310" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="6Oe0lVGiAwLqXybTgKZt-92" value="+ run(Scanner scanner): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="6Oe0lVGiAwLqXybTgKZt-89">
+          <mxGeometry y="78" width="310" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="6Oe0lVGiAwLqXybTgKZt-94" value="Game" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1030" y="1042" width="310" height="98" as="geometry" />
+        </mxCell>
+        <mxCell id="6Oe0lVGiAwLqXybTgKZt-95" value="- Players: ArrayList&amp;lt;User&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="6Oe0lVGiAwLqXybTgKZt-94">
+          <mxGeometry y="26" width="310" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="6Oe0lVGiAwLqXybTgKZt-96" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="6Oe0lVGiAwLqXybTgKZt-94">
+          <mxGeometry y="60" width="310" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="6Oe0lVGiAwLqXybTgKZt-97" value="+ play(GameMenuController gmc, User player): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="6Oe0lVGiAwLqXybTgKZt-94">
+          <mxGeometry y="68" width="310" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
