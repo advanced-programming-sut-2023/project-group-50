@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-04-14T13:03:56.779Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="oDiUENjV_JJWGrW1Swp4" version="21.1.7" type="github">
+<mxfile host="app.diagrams.net" modified="2023-04-14T13:05:31.953Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="eoxLSyhGjWn_mHH3sHCl" version="21.1.7" type="github">
   <diagram name="Page-1" id="c4acf3e9-155e-7222-9cf6-157b1a14988f">
     <mxGraphModel dx="4393" dy="2839" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="2000" background="none" math="0" shadow="0">
       <root>
@@ -665,6 +665,14 @@
         </mxCell>
         <mxCell id="6Oe0lVGiAwLqXybTgKZt-17" value="+ GroupSoldier(ArrayList&amp;lt;Soldier&amp;gt; group,soldierName type)&lt;br&gt;+ addSoldier(Soldier soldier): void&lt;br&gt;+ moveGroup(int x, int y) : void&lt;br&gt;+ patrolGroup(int x1, int y1,int x2, int y2) : void&lt;br&gt;+ stopGroup(int x1, int y1,int x2, int y2): void&lt;br&gt;+ checkMode(): void&lt;br&gt;+ attackEnemy(Object enemy) : void&lt;br&gt;+ archerAttack(int x, int y) : void&lt;br&gt;+ checkRange() :void&lt;br&gt;+ disband() : void&lt;br&gt;+ digTunnel(int x,int y) : void&lt;br&gt;+ build(BuildingType type) : void&lt;br&gt;+ digDtch(int x, int y) : void&lt;br&gt;+ captureGate(int x,int y) : void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="6Oe0lVGiAwLqXybTgKZt-14">
           <mxGeometry y="128" width="340" height="222" as="geometry" />
+        </mxCell>
+        <mxCell id="6Oe0lVGiAwLqXybTgKZt-117" value="" style="endArrow=diamondThin;endFill=0;endSize=24;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="6Oe0lVGiAwLqXybTgKZt-18" target="6Oe0lVGiAwLqXybTgKZt-17">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="40" y="2220" />
+              <mxPoint x="40" y="2140" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="6Oe0lVGiAwLqXybTgKZt-18" value="GroupModeName ( enum)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="-340" y="2250" width="340" height="34" as="geometry" />
