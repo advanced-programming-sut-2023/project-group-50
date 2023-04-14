@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-04-14T12:57:18.083Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="j1AhuIpg8_RvjlaWswzQ" version="21.1.7" type="github">
+<mxfile host="app.diagrams.net" modified="2023-04-14T12:58:59.338Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="vbKiYrXZsi0z6KYbL1Rt" version="21.1.7" type="github">
   <diagram name="Page-1" id="c4acf3e9-155e-7222-9cf6-157b1a14988f">
     <mxGraphModel dx="4393" dy="2839" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="2000" background="none" math="0" shadow="0">
       <root>
@@ -431,7 +431,7 @@
         <mxCell id="ClD1jiwEqrb2ey9nbeyF-80" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="ClD1jiwEqrb2ey9nbeyF-78" vertex="1">
           <mxGeometry y="26" width="330" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="ClD1jiwEqrb2ey9nbeyF-81" value="+ Heal (Object soldier): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="ClD1jiwEqrb2ey9nbeyF-78" vertex="1">
+        <mxCell id="ClD1jiwEqrb2ey9nbeyF-81" value="+ Heal (Person person): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="ClD1jiwEqrb2ey9nbeyF-78" vertex="1">
           <mxGeometry y="34" width="330" height="26" as="geometry" />
         </mxCell>
         <mxCell id="ClD1jiwEqrb2ey9nbeyF-85" value="Trade" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -1035,10 +1035,21 @@
             <mxPoint x="-1570" y="2390" as="sourcePoint" />
             <mxPoint x="-1930" y="1994.29" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="270" y="1968" />
+              <mxPoint x="360" y="2020" />
+              <mxPoint x="270" y="2020" />
               <mxPoint x="270" y="2400" />
               <mxPoint x="-2020" y="2400" />
               <mxPoint x="-2020" y="1978" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6Oe0lVGiAwLqXybTgKZt-112" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="6Oe0lVGiAwLqXybTgKZt-23" target="ClD1jiwEqrb2ey9nbeyF-81">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="-1170" y="2370" as="sourcePoint" />
+            <mxPoint x="-1010" y="2370" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-1160" y="1950" />
+              <mxPoint x="-1160" y="2860" />
             </Array>
           </mxGeometry>
         </mxCell>
