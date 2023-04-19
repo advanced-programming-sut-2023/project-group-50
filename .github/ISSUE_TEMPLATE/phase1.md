@@ -25,7 +25,7 @@ assignees: Arman17Babaei
   <div dir="ltr" align='right'>
 
   1. [ ] شروع نشده
-  2. [ ] در حال انجام
+  2. [x] در حال انجام
   3. [ ] تمام شده
   </div>
 </details>
@@ -45,13 +45,35 @@ assignees: Arman17Babaei
 
 ## تسک‌های نفر اول
 
-  **نام و نام خانوادگی:**
+  **نام و نام خانوادگی: علیرضا اعلایی**
 <details>
-  <summary>تسک مربوطه</summary>
+  <summary>ساخت کلاس‌های منوهای signup و login</summary>
 
   <div dir="ltr" align='right'>
 
-  1. [ ] شروع نشده
+  1. [x] شروع نشده
+  2. [ ] در حال انجام
+  3. [ ] تمام شده
+  </div>
+</details>
+  
+  <details>
+  <summary>ساخت دیگر منوها</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [x] شروع نشده
+  2. [ ] در حال انجام
+  3. [ ] تمام شده
+  </div>
+</details>
+  
+  <details>
+  <summary>پیاده کردن Map و معماری</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [x] شروع نشده
   2. [ ] در حال انجام
   3. [ ] تمام شده
   </div>
@@ -59,13 +81,35 @@ assignees: Arman17Babaei
 
 ## تسک‌های نفر دوم
 
-  **نام و نام خانوادگی:**
+  **نام و نام خانوادگی: سهند اکرمی‌پور**
 <details>
-  <summary>تسک مربوطه</summary>
+  <summary>قابلیت ساخت اکانت (پیش‌نیاز: منوهای signup و login)</summary>
 
   <div dir="ltr" align='right'>
 
-  1. [ ] شروع نشده
+  1. [x] شروع نشده
+  2. [ ] در حال انجام
+  3. [ ] تمام شده
+  </div>
+</details>
+  
+  <details>
+  <summary>دیتابیس یوزرها</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [x] شروع نشده
+  2. [ ] در حال انجام
+  3. [ ] تمام شده
+  </div>
+</details>
+  
+  <details>
+  <summary>کلاس‌های لازم برای Object و کلاس‌های extend شده از آن</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [x] شروع نشده
   2. [ ] در حال انجام
   3. [ ] تمام شده
   </div>
