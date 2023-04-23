@@ -1,5 +1,7 @@
 package model.ObjectsPackage.Buildings;
 
+import model.User;
+
 public class Gate extends Building {
     private int capacity;
     private int currentPopulation;

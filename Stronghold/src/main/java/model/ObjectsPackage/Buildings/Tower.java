@@ -1,5 +1,7 @@
 package model.ObjectsPackage.Buildings;
 
+import model.User;
+
 public class Tower extends Building {
     private int fireRange;
     private int defendRange;

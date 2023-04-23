@@ -7,7 +7,7 @@ public class NonSoldier extends Person {
     private int productivity;
 
     protected NonSoldier(Job job) {
-        super(false, 0, maxLife, 0); //TODO: check life and speed
+        super(false, 0, 0); //TODO: check life and speed
         this.job = job;
         productivity = 100;
     }

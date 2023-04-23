@@ -8,7 +8,7 @@ public abstract class Soldier extends Person {
     private SoldierName type;
 
     public Soldier(Weapon weapon, SoldierName type) {
-        super(true, type.getLife(), maxLife, type.getSpeed());
+        super(true, type.getLife(), type.getSpeed());
     }
 
     public void patrol(int x1, int y1, int x2, int y2) {

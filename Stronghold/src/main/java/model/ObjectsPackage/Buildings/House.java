@@ -1,6 +1,7 @@
 package model.ObjectsPackage.Buildings;
 
 import model.ObjectsPackage.People.Soldier.SoldierName;
+import model.User;
 
 import java.util.HashMap;
 
