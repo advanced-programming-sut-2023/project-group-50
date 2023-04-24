@@ -68,8 +68,7 @@ assignees: Arman17Babaei
   </div>
 </details>
  
-  
-    <details>
+  <details>
   <summary>دیتابیس یوزرها</summary>
 
   <div dir="ltr" align='right'>
