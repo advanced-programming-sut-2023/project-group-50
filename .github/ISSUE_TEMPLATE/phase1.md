@@ -10,7 +10,7 @@ assignees: Arman17Babaei
 <div dir="rtl" align='right'>
 
 # فاز 1
-**نام و نام خانوادگی راهنما:**
+**نام و نام خانوادگی راهنما: پرهام رضایی**
 
 ## کارهایی که باید در فاز 1 انجام دهید
 
@@ -38,7 +38,7 @@ assignees: Arman17Babaei
   <div  dir="ltr" align='right'>
   
   1. [ ] شروع نشده
-  2. [ ] در حال انجام
+  2. [x] در حال انجام
   3. [ ] تمام شده
      </div>
 </details>
@@ -110,8 +110,8 @@ assignees: Arman17Babaei
   <div dir="ltr" align='right'>
 
   1. [ ] شروع نشده
-  2. [x] در حال انجام
-  3. [ ] تمام شده
+  2. [ ] در حال انجام
+  3. [x] تمام شده
   </div>
 </details>
 
