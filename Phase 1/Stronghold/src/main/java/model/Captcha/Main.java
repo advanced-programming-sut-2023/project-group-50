@@ -8,9 +8,9 @@ public class Main {
         Captcha captcha = new Captcha();
         System.out.println(captcha.getCaptcha());
         String ans;
-        do{
+        do {
             System.out.print("insert captcha answer: ");
             ans = scanner.nextLine();
-        }while (!captcha.answerIsCorrect(ans));
+        } while (!captcha.answerIsCorrect(ans));
     }
 }

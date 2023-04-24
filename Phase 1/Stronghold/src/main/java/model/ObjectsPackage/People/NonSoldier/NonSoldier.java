@@ -3,7 +3,7 @@ package model.ObjectsPackage.People.NonSoldier;
 import model.ObjectsPackage.People.Person;
 
 public class NonSoldier extends Person {
-    private Job job;
+    private final Job job;
     private int productivity;
 
     protected NonSoldier(Job job) {
@@ -11,6 +11,7 @@ public class NonSoldier extends Person {
         this.job = job;
         productivity = 100;
     }
+
     public int getProductivity() {
         return productivity;
     }

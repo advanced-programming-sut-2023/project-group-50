@@ -28,5 +28,4 @@ public enum Job {
     MARKER_TRADER,
     JUGGLER,
     FIRE_EATER
-    ;
 }

@@ -5,6 +5,7 @@ import model.ObjectsPackage.Weapons.Weapon;
 
 public class Engineer extends Soldier {
     private int range;
+
     public Engineer(SoldierName type, Weapon weapon) {
         super(weapon, type); //TODO: fill weapon and range based on type
     }

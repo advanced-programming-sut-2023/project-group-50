@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class Captcha {
 
-    private static HashMap<String, List<String>> map;
+    private static final HashMap<String, List<String>> map;
 
     static {
         map = new HashMap<>();
@@ -265,8 +265,8 @@ public class Captcha {
         ));
     }
 
-    private String answer;
-    private String captcha;
+    private final String answer;
+    private final String captcha;
 
     public Captcha() {
         int length = getRandomLength();
@@ -292,7 +292,7 @@ public class Captcha {
 
     private String getIthLine(int line) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (char c : answer.toCharArray())stringBuilder.append(getIthLineOfChar(c, line)).append(" ");
+        for (char c : answer.toCharArray()) stringBuilder.append(getIthLineOfChar(c, line)).append(" ");
         return stringBuilder.toString();
     }
 

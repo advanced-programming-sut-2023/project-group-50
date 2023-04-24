@@ -1,12 +1,13 @@
 package model.ObjectsPackage.Buildings;
 
-import model.User;
+import controller.UserDatabase.User;
 
 public class Tunnel extends Building {
-    private int xFrom;
-    private int yFrom;
-    private int xTo;
-    private int yTo;
+    private final int xFrom;
+    private final int yFrom;
+    private final int xTo;
+    private final int yTo;
+
     protected Tunnel(BuildingType type, User owner, int x, int y, int maxHp, int xFrom, int yFrom, int xTo, int yTo) {
         super(type, owner, x, y, maxHp);
         this.xFrom = xFrom;

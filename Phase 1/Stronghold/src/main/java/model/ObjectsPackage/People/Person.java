@@ -6,10 +6,11 @@ import model.ObjectsPackage.Objects;
 public abstract class Person extends Objects {
     private boolean isSoldier;
     private int life;
-    private int maxLife;
+    private final int maxLife;
     private int speed;
     private int starving;
     private int income;
+
     protected Person(boolean isSoldier, int life, int speed) {
         super(ObjectType.PERSON);
         this.isSoldier = isSoldier;

@@ -2,6 +2,7 @@ package model.ObjectsPackage;
 
 public class Rock extends Objects {
     private String direction;
+
     protected Rock(String direction) {
         super(ObjectType.ROCK);
         this.direction = direction;

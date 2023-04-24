@@ -1,19 +1,20 @@
 package model.ObjectsPackage.Buildings;
 
+import controller.UserDatabase.User;
 import model.ObjectsPackage.Weapons.WeaponName;
-import model.User;
 
 import java.util.HashMap;
 
 public class OffensiveStorage extends Building {
-    private HashMap<WeaponName, Integer> weaponCount;
-    private int defendRange;
-    private int capacity;
-    private int cost;
-    private int costOfLadderman;
-    private int costOfEngineer;
-    private int damage;
-    private int rate;
+    private final HashMap<WeaponName, Integer> weaponCount;
+    private final int defendRange;
+    private final int capacity;
+    private final int cost;
+    private final int costOfLadderman;
+    private final int costOfEngineer;
+    private final int damage;
+    private final int rate;
+
     protected OffensiveStorage(BuildingType type,
                                User owner,
                                int x,
@@ -61,8 +62,6 @@ public class OffensiveStorage extends Building {
         //TODO: fill here
         return null;
     }
-
-
 
 
 }

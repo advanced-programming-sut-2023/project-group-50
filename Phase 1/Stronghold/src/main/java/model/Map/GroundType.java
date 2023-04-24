@@ -10,7 +10,7 @@ public enum GroundType {
     LAWN(ConsoleColors.GREEN_BACKGROUND), // alafzaar
     MEADOW(ConsoleColors.BLACK_BACKGROUND_BRIGHT); // alafzaare portarakom
 
-    private String color;
+    private final String color;
 
     GroundType(String color) {
         this.color = color;

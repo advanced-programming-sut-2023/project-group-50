@@ -1,11 +1,11 @@
 package model.ObjectsPackage.Buildings;
 
-import model.User;
+import controller.UserDatabase.User;
 
 public class FoodProcessingBuildings extends Building {
-    private int popularityRate;
-    private int wineUsageRate;
-    private int rate;
+    private final int popularityRate;
+    private final int wineUsageRate;
+    private final int rate;
 
     protected FoodProcessingBuildings(BuildingType type, User owner, int x, int y, int maxHp, int popularityRate, int wineUsageRate, int rate) {
         super(type, owner, x, y, maxHp);

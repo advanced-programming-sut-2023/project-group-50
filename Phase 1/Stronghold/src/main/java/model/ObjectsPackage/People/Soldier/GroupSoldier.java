@@ -7,10 +7,10 @@ import model.ObjectsPackage.Objects;
 import java.util.ArrayList;
 
 public class GroupSoldier extends Objects {
-    private ArrayList<Soldier> group;
-    private GroupModeName groupMode;
-    private SoldierName type;
-    private boolean protection;
+    private final ArrayList<Soldier> group;
+    private final GroupModeName groupMode;
+    private final SoldierName type;
+    private final boolean protection;
 
     protected GroupSoldier(ArrayList<Soldier> group, GroupModeName groupMode, SoldierName type, boolean protection) {
         super(ObjectType.GROUP_SOLDIER);

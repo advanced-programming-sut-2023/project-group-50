@@ -1,10 +1,11 @@
 package model.ObjectsPackage.Buildings;
 
-import model.User;
+import controller.UserDatabase.User;
 
 public class Tower extends Building {
     private int fireRange;
     private int defendRange;
+
     protected Tower(BuildingType type, User owner, int x, int y, int maxHp, int fireRange, int defendRange) {
         super(type, owner, x, y, maxHp);
         this.fireRange = fireRange;

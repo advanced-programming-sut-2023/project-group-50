@@ -1,6 +1,6 @@
 package model.ObjectsPackage.Buildings;
 
-import model.User;
+import controller.UserDatabase.User;
 
 public class Wells extends Building {
     protected Wells(BuildingType type, User owner, int x, int y, int maxHp) {

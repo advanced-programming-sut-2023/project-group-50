@@ -1,13 +1,13 @@
 package model.ObjectsPackage.Buildings;
 
+import controller.UserDatabase.User;
 import model.ObjectsPackage.People.Soldier.SoldierName;
-import model.User;
 
 import java.util.HashMap;
 
 public class House extends Building {
-    private int capacity;
-    private HashMap<SoldierName, Integer> soldierCount;
+    private final int capacity;
+    private final HashMap<SoldierName, Integer> soldierCount;
 
     protected House(BuildingType type, User owner, int x, int y, int maxHp, int capacity) {
         super(type, owner, x, y, maxHp);

@@ -5,8 +5,8 @@ import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Soldier.Soldier;
 
 public class Weapon extends Objects {
-    private WeaponName weaponName;
-    private Soldier Owner;
+    private final WeaponName weaponName;
+    private final Soldier Owner;
 
 
     public Weapon(WeaponName weaponName, Soldier owner) {

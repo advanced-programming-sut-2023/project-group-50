@@ -9,9 +9,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 public class Unit {
-    private LinkedHashSet<Objects> objects;
-    private int x;
-    private int y;
+    private final LinkedHashSet<Objects> objects;
+    private final int x;
+    private final int y;
     private GroundType texture;
 
     public Unit(int x, int y, GroundType texture) {

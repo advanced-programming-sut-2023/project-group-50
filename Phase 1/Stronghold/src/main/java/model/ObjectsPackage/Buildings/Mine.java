@@ -1,6 +1,6 @@
 package model.ObjectsPackage.Buildings;
 
-import model.User;
+import controller.UserDatabase.User;
 
 public class Mine extends Building {
     private final int rate;

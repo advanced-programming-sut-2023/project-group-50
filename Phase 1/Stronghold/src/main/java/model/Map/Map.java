@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Map {
-    private HashMap<Integer, HashMap<Integer, Unit>> map;
-    private int xSize;
-    private int ySize;
+    private final HashMap<Integer, HashMap<Integer, Unit>> map;
+    private final int xSize;
+    private final int ySize;
 
     public Map(int xSize, int ySize) {
         this.xSize = xSize;
@@ -19,6 +19,35 @@ public class Map {
             map.put(i, new HashMap<>());
             for (int j = 0; j < ySize; j++) map.get(i).put(j, new Unit(i, j, GroundType.GROUND));
         }
+    }
+
+    private static boolean invalidBounds(int x1, int y1, int x2, int y2) {
+        return x2 < x1 || y2 < y1;
+    }
+
+    private static int maxOrZero(int num) {
+        num = Math.max(0, num);
+        return num;
+    }
+
+    private static String getMapString(ArrayList<ArrayList<ArrayList<String>>> arrayLists, String line) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (ArrayList<ArrayList<String>> row : arrayLists) {
+            stringBuilder.append(line).append("\n");
+            for (int i = 0; i < 2; i++) {
+                stringBuilder.append("|");
+                for (ArrayList<String> cell : row)
+                    stringBuilder.append("|").append(cell.get(i)).append("|");
+                stringBuilder.append("|\n");
+            }
+        }
+        stringBuilder.append(line);
+        return stringBuilder.toString();
+    }
+
+    private static String getLine(int x1, int x2) {
+        int cols = x2 - x1 + 1;
+        return "-".repeat(Math.max(0, 3 * cols + 1));
     }
 
     public void addObject(Objects object, int x, int y) {
@@ -47,15 +76,6 @@ public class Map {
         return getMapString(arrayLists, line);
     }
 
-    private static boolean invalidBounds(int x1, int y1, int x2, int y2) {
-        return x2 < x1 || y2 < y1;
-    }
-
-    private static int maxOrZero(int num) {
-        num = Math.max(0, num);
-        return num;
-    }
-
     private int getY2(int y1, int yLength) {
         int y2 = Math.min(y1 + yLength, ySize);
         return y2;
@@ -73,25 +93,5 @@ public class Map {
             for (int j = y1; j <= y2; j++) arrayLists.get(i - x1).add(map.get(i).get(j).toArrayListString());
         }
         return arrayLists;
-    }
-
-    private static String getMapString(ArrayList<ArrayList<ArrayList<String>>> arrayLists, String line) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (ArrayList<ArrayList<String>> row : arrayLists) {
-            stringBuilder.append(line).append("\n");
-            for (int i = 0; i < 2; i++) {
-                stringBuilder.append("|");
-                for (ArrayList<String> cell : row)
-                    stringBuilder.append("|").append(cell.get(i)).append("|");
-                stringBuilder.append("|\n");
-            }
-        }
-        stringBuilder.append(line);
-        return stringBuilder.toString();
-    }
-
-    private static String getLine(int x1, int x2) {
-        int cols = x2 - x1 + 1;
-        return "-".repeat(Math.max(0, 3 * cols + 1));
     }
 }

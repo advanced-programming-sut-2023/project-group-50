@@ -6,8 +6,8 @@ import model.ObjectsPackage.Resource;
 public enum WeaponName {
     //TODO: fill range and canMove and damage (add leather armor?)
     BOW(BuildingType.FLETCHER, Resource.WOOD, 2, 0, 0, true),
-    CROSSBOW(BuildingType.FLETCHER, Resource.WOOD, 3, 0,0,true),
-    SPEAR(BuildingType.POLETURNER, Resource.WOOD, 1, 0,0,true),
+    CROSSBOW(BuildingType.FLETCHER, Resource.WOOD, 3, 0, 0, true),
+    SPEAR(BuildingType.POLETURNER, Resource.WOOD, 1, 0, 0, true),
     PIKE(BuildingType.POLETURNER, Resource.WOOD, 2, 0, 0, true),
     MACE(BuildingType.BLACKSMITH, Resource.IRON, 1, 0, 0, true),
     SWORDS(BuildingType.BLACKSMITH, Resource.IRON, 1, 0, 0, true),

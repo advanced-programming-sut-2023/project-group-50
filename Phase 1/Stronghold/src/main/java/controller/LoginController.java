@@ -1,11 +1,11 @@
-package Controllers;
+package controller;
 
-import Controllers.control.Commands;
-import Controllers.control.Error;
-import Controllers.control.Users;
-import Moudel.Captcha;
-import Moudel.User;
-import View.LoginMenu;
+import controller.UserDatabase.User;
+import controller.UserDatabase.Users;
+import controller.control.Commands;
+import controller.control.Error;
+import model.Captcha.Captcha;
+import view.LoginMenu;
 
 import java.io.*;
 import java.util.Scanner;
@@ -15,13 +15,68 @@ import java.util.regex.Pattern;
 
 public class LoginController {
 
-    private LoginMenu loginMenu;
+    private final LoginMenu loginMenu;
     private User tryToLogin;
 
 
-    public LoginController(LoginMenu loginMenu){
-        this.loginMenu=loginMenu;
+    public LoginController(LoginMenu loginMenu) {
+        this.loginMenu = loginMenu;
 
+    }
+
+    static Error getError(Commands command, Matcher matcher, String string) {
+        if (matcher.find()) {
+            return new Error("Invalid command!\nYou should enter all field!\nEnter " + command.name() + " once", false);
+
+        }
+        string = string.trim();
+        if (string.equals("")) {
+            return new Error("You should fill " + command.name() + " field!", false);
+        }
+
+        return new Error(string, true);
+    }
+
+    private static String removeDoubleCoutString(String string) {
+
+        if (Commands.getMatcher(Commands.DOUBLEQOUT, string).find()) {
+            string = string.substring(1, string.length() - 1);
+        }
+        return string;
+    }
+
+    private static String timerForLogin(int attempt, Scanner scanner) throws InterruptedException {
+
+        int time = 5 * (attempt - 5);
+
+        System.out.println("You should wait " + time + " second an try again");
+
+        TimeUnit.SECONDS.sleep(time);
+        return "try again";
+    }
+
+    private static void showCaptcha(Scanner scanner) {
+        staticShowCaptcha(scanner);
+    }
+
+    static void staticShowCaptcha(Scanner scanner) {
+        System.out.println("Now fill this captcha :\n");
+
+
+        while (true) {
+            Captcha captcha = new Captcha();
+            System.out.println(captcha.getCaptcha());
+            String str = scanner.nextLine();
+            if (str.equals("change the current captcha")) {
+                continue;
+            }
+            if (captcha.answerIsCorrect(str)) {
+                System.out.println("Your answer is correct");
+                break;
+            }
+            System.out.println("Your answer is wrong\nPlease try new captcha :\n");
+
+        }
     }
 
     public User getTryToLogin() {
@@ -34,122 +89,95 @@ public class LoginController {
 
     public String login(Matcher matcher, Scanner scanner) throws InterruptedException, IOException {
         matcher.find();
-        String input=matcher.group();
+        String input = matcher.group();
 
-        Error error=checkHasField(input,Commands.USERNAME);
-        if(!error.truth){
+        Error error = checkHasField(input, Commands.USERNAME);
+        if (!error.truth) {
             return error.errorMassage;
         }
 
-        String username=checkHasField(input,Commands.USERNAME).errorMassage;
+        String username = checkHasField(input, Commands.USERNAME).errorMassage;
 
-        error=checkHasField(input,Commands.PASS);
-        if(!error.truth){
+        error = checkHasField(input, Commands.PASS);
+        if (!error.truth) {
             return error.errorMassage;
         }
-        String password=checkHasField(input,Commands.PASS).errorMassage;
+        String password = checkHasField(input, Commands.PASS).errorMassage;
 
-        if(Users.getUser(username)==null){
+        if (Users.getUser(username) == null) {
             return "Username didn't match!";
         }
 
-        User user=Users.getUser(username);
+        User user = Users.getUser(username);
 
-        if(!user.getPassword().equals(password)){
-            this.tryToLogin=user;
-            user.setAttemptToLogin(user.getAttemptToLogin()+1);
-            if(user.getAttemptToLogin()>5){
-               return timerForLogin(user.getAttemptToLogin(),scanner);
+        if (!user.getPassword().equals(password)) {
+            this.tryToLogin = user;
+            user.setAttemptToLogin(user.getAttemptToLogin() + 1);
+            if (user.getAttemptToLogin() > 5) {
+                return timerForLogin(user.getAttemptToLogin(), scanner);
             }
 
             return "Password didn't match!";
         }
-        if((matcher=Commands.getMatcher(Commands.STAY,input)).find()){
-            if (matcher.find()){
+        if ((matcher = Commands.getMatcher(Commands.STAY, input)).find()) {
+            if (matcher.find()) {
                 return "Invalid command!\nEnter a  once";
             }
 
-            FileWriter file=new FileWriter("D:\\aa\\CE FILE\\start again\\AP\\project\\User logged in.txt",true);
-            File obj=new File("D:\\aa\\CE FILE\\start again\\AP\\project\\User logged in.txt");
+            FileWriter file = new FileWriter("D:\\aa\\CE FILE\\start again\\AP\\project\\User logged in.txt", true);
+            File obj = new File("D:\\aa\\CE FILE\\start again\\AP\\project\\User logged in.txt");
             BufferedWriter bw = null;
             PrintWriter pw = null;
-             bw = new BufferedWriter(file);
-             pw = new PrintWriter(bw);
-            Scanner read=new Scanner(obj);
-            int f=0;
-            while (read.hasNextLine()){
-                 if(username.equals(read.nextLine())){
-                    f=1;
+            bw = new BufferedWriter(file);
+            pw = new PrintWriter(bw);
+            Scanner read = new Scanner(obj);
+            int f = 0;
+            while (read.hasNextLine()) {
+                if (username.equals(read.nextLine())) {
+                    f = 1;
                     break;
-                 }
+                }
             }
-            if(f==0) {
+            if (f == 0) {
                 pw.println(username);
             }
-             pw.close();
-             bw.close();
-             file.close();
-             read.close();
+            pw.close();
+            bw.close();
+            file.close();
+            read.close();
         }
 
         showCaptcha(scanner);
 
         user.setAttemptToLogin(0);
         this.loginMenu.setUserLoggedIn(user);
-        this.tryToLogin=null;
+        this.tryToLogin = null;
         return "user logged in successfully!";
 
     }
 
-    private Error checkHasField(String input, Commands command){
-        Matcher matcher = Commands.getMatcher(command,input);
+    private Error checkHasField(String input, Commands command) {
+        Matcher matcher = Commands.getMatcher(command, input);
 
-        if(!matcher.find()){
-            return new Error("You should enter all field!\nEnter a "+command.name(),false);
+        if (!matcher.find()) {
+            return new Error("You should enter all field!\nEnter a " + command.name(), false);
         }
 
         String string = matcher.group();
-        string=string.substring(3,string.length());
+        string = string.substring(3);
 
         string = removeDoubleCoutString(string);
-        if(matcher.find()){
-            return new Error("Invalid command!\nYou should enter all field!\nEnter "+command.name()+" once",false);
-
-        }
-        string=string.trim();
-        if(string.equals("")){
-            return new Error("You should fill "+command.name()+" field!",false);
-        }
-
-        return new Error(string,true);
+        return getError(command, matcher, string);
 
     }
-    private static String removeDoubleCoutString(String string){
 
-        if(Commands.getMatcher(Commands.DOUBLEQOUT,string).find()){
-            string=string.substring(1,string.length()-1);
-        }
-        return string;
-    }
-
-
-    private static String timerForLogin(int attempt, Scanner scanner) throws InterruptedException {
-
-        int time=5*(attempt-5);
-
-        System.out.println("You should wait "+time+" second an try again");
-
-        TimeUnit.SECONDS.sleep(time);
-        return "try again";
-    }
-
-    public String forgotPassword(Scanner scanner){
-        if(tryToLogin==null){
+    public String forgotPassword(Scanner scanner) {
+        if (tryToLogin == null) {
             return "First you should enter your username";
         }
-        System.out.print("Your security question is :\n"+tryToLogin.getSecurityQuestion().getQuestion()+"\nPlease answer this question : ");
-        String input=scanner.nextLine();
-        if(!tryToLogin.getSecurityQuestionAnswer().equals(input)){
+        System.out.print("Your security question is :\n" + tryToLogin.getSecurityQuestion().getQuestion() + "\nPlease answer this question : ");
+        String input = scanner.nextLine();
+        if (!tryToLogin.getSecurityQuestionAnswer().equals(input)) {
             return "Your answer is wrong";
         }
 
@@ -162,32 +190,27 @@ public class LoginController {
             if (input.equals("")) {
                 System.out.println("You should enter something!");
                 continue;
-            }
-            else if (input.length() < 6) {
+            } else if (input.length() < 6) {
                 System.out.println("Your password should have 6 character");
                 continue;
-            }
-            else if (!Commands.getMatcher(Commands.CAPITALLATTER, input).find()) {
+            } else if (!Commands.getMatcher(Commands.CAPITALLATTER, input).find()) {
                 System.out.println("Your password should have a capital letter");
                 continue;
-            }
-            else if (!Commands.getMatcher(Commands.SMALLLETTER, input).find()) {
+            } else if (!Commands.getMatcher(Commands.SMALLLETTER, input).find()) {
                 System.out.println("Your password should have a small letter");
                 continue;
-            }
-            else if (!Commands.getMatcher(Commands.DIGIT, input).find()) {
+            } else if (!Commands.getMatcher(Commands.DIGIT, input).find()) {
                 System.out.println("Your password should have a digit");
-                    continue;
-            }
-            else if (!Pattern.compile("[^a-zA-Z0-9 ]").matcher(input).find()) {
+                continue;
+            } else if (!Pattern.compile("[^a-zA-Z0-9 ]").matcher(input).find()) {
                 System.out.println("Your password should have a non-word character");
                 continue;
             }
 
-            System.out.print("Now confirm your password : " );
-            while (true){
-                String confirm=scanner.nextLine();
-                if(!input.equals(confirm)){
+            System.out.print("Now confirm your password : ");
+            while (true) {
+                String confirm = scanner.nextLine();
+                if (!input.equals(confirm)) {
                     System.out.print("Your confirm password doesn't match\nPlease try again : ");
                     continue;
                 }
@@ -201,29 +224,4 @@ public class LoginController {
         tryToLogin.setPassword(input);
         return "Your password successfully changed!";
     }
-
-
-    private static void showCaptcha(Scanner scanner) {
-        System.out.println("Now fill this captcha :\n");
-
-
-        while (true){
-            Captcha captcha=new Captcha();
-            System.out.println(captcha.getCaptcha());
-            String str= scanner.nextLine();
-            if (str.equals("change the current captcha")) {
-                continue;
-            }
-            if(captcha.answerIsCorrect(str)){
-                System.out.println("Your answer is correct");
-                break;
-            }
-            System.out.println("Your answer is wrong\nPlease try new captcha :\n");
-
-        }
-    }
-
-
-
-
 }

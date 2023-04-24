@@ -1,6 +1,8 @@
-package Controllers.control;
+package controller.control;
 
 public enum State {
-
-    EXIT,LOGIN,SIGN,PROFILE,
+    EXIT,
+    LOGIN,
+    SIGN,
+    PROFILE
 }

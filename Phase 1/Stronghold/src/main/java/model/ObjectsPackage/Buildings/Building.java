@@ -1,8 +1,8 @@
 package model.ObjectsPackage.Buildings;
 
+import controller.UserDatabase.User;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
-import model.User;
 
 import java.util.HashMap;
 
@@ -11,9 +11,9 @@ public abstract class Building extends Objects {
     private final User owner;
     private final int X;
     private final int Y;
-    private int hp;
     private final int maxHp;
     private final HashMap<String, Integer> residents;
+    private int hp;
 
     protected Building(BuildingType type, User owner, int x, int y, int maxHp) {
         super(ObjectType.BUILDING);

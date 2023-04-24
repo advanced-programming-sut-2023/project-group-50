@@ -1,9 +1,10 @@
 package model.ObjectsPackage.Buildings;
 
-import model.User;
+import controller.UserDatabase.User;
 
 public class ReligiousBuilding extends Building {
     private int popularity;
+
     protected ReligiousBuilding(BuildingType type, User owner, int x, int y, int maxHp, int popularity) {
         super(type, owner, x, y, maxHp);
         this.popularity = popularity;

@@ -3,7 +3,7 @@ package model.ObjectsPackage;
 public abstract class Objects {
     private int X;
     private int Y;
-    private ObjectType objectType;
+    private final ObjectType objectType;
 
     protected Objects(ObjectType objectType) {
         this.objectType = objectType;

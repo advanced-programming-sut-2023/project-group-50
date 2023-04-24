@@ -1,6 +1,6 @@
-package Moudel;
+package controller.UserDatabase;
 
-import Controllers.control.SecurityQuestion;
+import controller.control.SecurityQuestion;
 
 public class User {
     private String userName;
@@ -16,14 +16,14 @@ public class User {
 
     private int highScore;
 
-    public User(String userName,String password,String nickName,String email,String slogan){
-        this.userName=userName;
-        this.password=password;
-        this.nickName=nickName;
-        this.email=email;
-        this.slogan=slogan;
-        this.attemptToLogin=0;
-        this.highScore=0;
+    public User(String userName, String password, String nickName, String email, String slogan) {
+        this.userName = userName;
+        this.password = password;
+        this.nickName = nickName;
+        this.email = email;
+        this.slogan = slogan;
+        this.attemptToLogin = 0;
+        this.highScore = 0;
     }
 
     public int getAttemptToLogin() {
@@ -94,22 +94,22 @@ public class User {
         return highScore;
     }
 
-    public int getRank() {
-        return rank;
-    }
-
     public void setHighScore(int highScore) {
         this.highScore = highScore;
+    }
+
+    public int getRank() {
+        return rank;
     }
 
     public void setRank(int rank) {
         this.rank = rank;
     }
 
-    public String showAllInformation(){
-        return "Username : "+this.userName+"\nPassword : "+this.password+"\nEmail : "+this.email+"\nNickname : "+
-                this.nickName+"\nSlogan : "+this.slogan+"\nYour security question is : "+this.securityQuestion.getQuestion()+
-                "\nYour answer is : "+this.securityQuestionAnswer+"\nRank : "+this.rank+"\nHighscore : "+this.highScore;
+    public String showAllInformation() {
+        return "Username : " + this.userName + "\nPassword : " + this.password + "\nEmail : " + this.email + "\nNickname : " +
+                this.nickName + "\nSlogan : " + this.slogan + "\nYour security question is : " + this.securityQuestion.getQuestion() +
+                "\nYour answer is : " + this.securityQuestionAnswer + "\nRank : " + this.rank + "\nHighscore : " + this.highScore;
 
 
     }

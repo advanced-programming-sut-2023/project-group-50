@@ -7,5 +7,5 @@ public enum ObjectType {
     WEAPON,
     BARRACKS,
     BUILDING,
-    GROUP_SOLDIER;
+    GROUP_SOLDIER
 }

@@ -2,6 +2,7 @@ package model.ObjectsPackage;
 
 public class Tree extends Objects {
     private String type;
+
     protected Tree(String type) {
         super(ObjectType.TREE);
         this.type = type;

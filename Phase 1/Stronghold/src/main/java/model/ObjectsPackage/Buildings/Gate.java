@@ -1,10 +1,11 @@
 package model.ObjectsPackage.Buildings;
 
-import model.User;
+import controller.UserDatabase.User;
 
 public class Gate extends Building {
     private int capacity;
     private int currentPopulation;
+
     protected Gate(BuildingType type, User owner, int x, int y, int maxHp, int capacity) {
         super(type, owner, x, y, maxHp);
         this.capacity = capacity;

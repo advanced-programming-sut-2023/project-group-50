@@ -1,14 +1,14 @@
 package model.ObjectsPackage;
 
+import controller.UserDatabase.User;
 import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.Buildings.BuildingType;
-import model.User;
 
 import java.util.HashMap;
 
 public class Storage extends Building {
-    private HashMap<String, Integer> capacity;
-    private Storage nextStorage;
+    private final HashMap<String, Integer> capacity;
+    private final Storage nextStorage;
 
     protected Storage(BuildingType type, User owner, int x, int y, int maxHp, Storage nextStorage) {
         super(type, owner, x, y, maxHp);

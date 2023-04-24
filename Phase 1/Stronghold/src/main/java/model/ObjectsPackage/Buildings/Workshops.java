@@ -1,11 +1,12 @@
 package model.ObjectsPackage.Buildings;
 
-import model.User;
+import controller.UserDatabase.User;
 
 public class Workshops extends Building {
     private String resource;
     private String output;
-    private int rate;
+    private final int rate;
+
     protected Workshops(BuildingType type, User owner, int x, int y, int maxHp, int rate) {
         super(type, owner, x, y, maxHp);
         this.rate = rate;
