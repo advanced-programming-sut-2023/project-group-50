@@ -62,7 +62,7 @@ public class ProfileController {
        if(error.truth ){
            String slogan=error.errorMassage;
            this.profileMenu.getCurrentUser().setSlogan(slogan);
-           return "change nick name was successfully";
+           return "change slogan was successfully";
        }else {
            if(!error.errorMassage.equals("this command isn't match")){
                return error.errorMassage;
@@ -130,21 +130,22 @@ public class ProfileController {
         matcher.find();
         String input = matcher.group();
 
-
-        if(!checkHasField(input,Commands.OLDPASS).truth){
-            return checkHasField(input,Commands.OLDPASS).errorMassage;
+            Error error=checkHasField(input,Commands.OLDPASS);
+        if(!error.truth){
+            return error.errorMassage;
         }
 
-        String oldPass=checkHasField(input,Commands.USERNAME).errorMassage;
+        String oldPass=error.errorMassage;
 
         if(!this.profileMenu.getCurrentUser().getPassword().equals(oldPass)){
             return "Current password is incorrect!";
         }
-        if(!checkHasField(input,Commands.NEWPASS).truth){
-            return checkHasField(input,Commands.NEWPASS).errorMassage;
+        error=checkHasField(input,Commands.NEWPASS);
+        if(!error.truth){
+            return error.errorMassage;
         }
 
-        String newPass=checkHasField(input,Commands.NEWPASS).errorMassage;
+        String newPass=error.errorMassage;
 
         if(oldPass.equals(newPass)){
             return "Please enter a new password!";
@@ -232,30 +233,21 @@ public class ProfileController {
         String input = matcher.group();
 
         if(Pattern.compile("highscore").matcher(input).find()){
-            return "Your highscore is :"+this.profileMenu.getCurrentUser().getHighScore();
+            return "Your highscore is : "+this.profileMenu.getCurrentUser().getHighScore();
         }
 
         if(Pattern.compile("rank").matcher(input).find()){
-            return "Your rank is :"+this.profileMenu.getCurrentUser().getRank();
+            return "Your rank is : "+this.profileMenu.getCurrentUser().getRank();
         }
 
         if(Pattern.compile("slogan").matcher(input).find()){
             if(this.profileMenu.getCurrentUser().getSlogan().equals("")){
                 return "Slogan is empty!";
             }
-            return "Your slogan is :"+this.profileMenu.getCurrentUser().getSlogan();
+            return "Your slogan is : "+this.profileMenu.getCurrentUser().getSlogan();
         }
 
         return this.profileMenu.getCurrentUser().showAllInformation();
-
-
-
-
-
-
-
-
-
 
 
     }

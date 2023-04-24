@@ -42,6 +42,7 @@ public class Controller {
             }
             this.profileMenu.setCurrentUser(this.loginMenu.getUserLoggedIn());
             nextMenu=this.profileMenu.run(scanner);
+            this.signupMenu.setNextMatcher(null);
 
 
         }

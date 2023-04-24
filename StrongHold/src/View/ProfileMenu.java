@@ -31,6 +31,7 @@ public class ProfileMenu {
 
 
             if (Commands.getMatcher(Commands.LOGOUT,input).find()) {
+                System.out.println("user logged out successfully!");
                 return State.SIGN;
             } else if (Commands.getMatcher(Commands.PROFILECHANGE,input).find()) {
                 System.out.println(this.profileController.profileChange(Commands.getMatcher(Commands.PROFILECHANGE,input)));

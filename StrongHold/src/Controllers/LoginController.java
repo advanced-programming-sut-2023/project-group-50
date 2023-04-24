@@ -7,13 +7,8 @@ import Moudel.Captcha;
 import Moudel.User;
 import View.LoginMenu;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.sql.Time;
+import java.io.*;
 import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,14 +36,16 @@ public class LoginController {
         matcher.find();
         String input=matcher.group();
 
-        if(!checkHasField(input,Commands.USERNAME).truth){
-            return checkHasField(input,Commands.USERNAME).errorMassage;
+        Error error=checkHasField(input,Commands.USERNAME);
+        if(!error.truth){
+            return error.errorMassage;
         }
 
         String username=checkHasField(input,Commands.USERNAME).errorMassage;
 
-        if(!checkHasField(input,Commands.PASS).truth){
-            return checkHasField(input,Commands.PASS).errorMassage;
+        error=checkHasField(input,Commands.PASS);
+        if(!error.truth){
+            return error.errorMassage;
         }
         String password=checkHasField(input,Commands.PASS).errorMassage;
 
@@ -72,8 +69,27 @@ public class LoginController {
                 return "Invalid command!\nEnter a  once";
             }
 
-            FileWriter file=new FileWriter("D:\\aa\\CE FILE\\start again\\AP\\project\\User logged in.txt");
-            file.append(username+"\n");
+            FileWriter file=new FileWriter("D:\\aa\\CE FILE\\start again\\AP\\project\\User logged in.txt",true);
+            File obj=new File("D:\\aa\\CE FILE\\start again\\AP\\project\\User logged in.txt");
+            BufferedWriter bw = null;
+            PrintWriter pw = null;
+             bw = new BufferedWriter(file);
+             pw = new PrintWriter(bw);
+            Scanner read=new Scanner(obj);
+            int f=0;
+            while (read.hasNextLine()){
+                 if(username.equals(read.nextLine())){
+                    f=1;
+                    break;
+                 }
+            }
+            if(f==0) {
+                pw.println(username);
+            }
+             pw.close();
+             bw.close();
+             file.close();
+             read.close();
         }
 
         showCaptcha(scanner);
@@ -131,7 +147,7 @@ public class LoginController {
         if(tryToLogin==null){
             return "First you should enter your username";
         }
-        System.out.print("Your security question is :\n"+tryToLogin.getSecurityQuestion().getQuestion()+"\nPlease answer this question :");
+        System.out.print("Your security question is :\n"+tryToLogin.getSecurityQuestion().getQuestion()+"\nPlease answer this question : ");
         String input=scanner.nextLine();
         if(!tryToLogin.getSecurityQuestionAnswer().equals(input)){
             return "Your answer is wrong";
@@ -139,7 +155,7 @@ public class LoginController {
 
         System.out.println("Your answer is correct");
         while (true) {
-            System.out.print("Now set your new password :");
+            System.out.print("Now set your new password : ");
             input = scanner.nextLine();
             input = input.trim();
 
@@ -160,7 +176,7 @@ public class LoginController {
                 continue;
             }
             else if (!Commands.getMatcher(Commands.DIGIT, input).find()) {
-                System.out.println("Your password should have a digit ");
+                System.out.println("Your password should have a digit");
                     continue;
             }
             else if (!Pattern.compile("[^a-zA-Z0-9 ]").matcher(input).find()) {
@@ -168,11 +184,11 @@ public class LoginController {
                 continue;
             }
 
-            System.out.print("Now confirm your password :");
+            System.out.print("Now confirm your password : " );
             while (true){
                 String confirm=scanner.nextLine();
                 if(!input.equals(confirm)){
-                    System.out.print("Your confirm password doesn't match\nPlease try again :");
+                    System.out.print("Your confirm password doesn't match\nPlease try again : ");
                     continue;
                 }
                 break;
@@ -182,7 +198,7 @@ public class LoginController {
 
             break;
         }
-
+        tryToLogin.setPassword(input);
         return "Your password successfully changed!";
     }
 

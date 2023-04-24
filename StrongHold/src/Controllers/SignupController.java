@@ -27,32 +27,37 @@ public class SignupController {
         matcher.find();
         String input = matcher.group();
 
-        if(!userNameIsValid(input,scanner).truth){
-            return userNameIsValid(input,scanner).errorMassage;
+        Error error=userNameIsValid(input,scanner);
+        if(!error.truth){
+            return error.errorMassage;
         }
 
-        String username=userNameIsValid(input,scanner).errorMassage;
+        String username=error.errorMassage;
 
-        if(!passwordIsValid(input,scanner).truth){
-            return passwordIsValid(input,scanner).errorMassage;
+        error=passwordIsValid(input,scanner);
+        if(!error.truth){
+            return error.errorMassage;
         }
-        String password=passwordIsValid(input,scanner).errorMassage;
+        String password=error.errorMassage;
 
-        if(!emailIsValid(input).truth){
-            return emailIsValid(input).errorMassage;
+        error=emailIsValid(input);
+        if(!error.truth){
+            return error.errorMassage;
         }
 
-        String email=emailIsValid(input).errorMassage;
+        String email=error.errorMassage;
 
-        if(!checkHasField(input,Commands.NICKNAME).truth){
-            return checkHasField(input,Commands.NICKNAME).errorMassage;
+        error=checkHasField(input,Commands.NICKNAME);
+        if(!error.truth){
+            return error.errorMassage;
         }
         String nickname=checkHasField(input,Commands.NICKNAME).errorMassage;
 
-        if(!checkHasField(input,Commands.SLOGAN).truth){
-            return checkHasField(input,Commands.SLOGAN).errorMassage;
+        error=checkHasField(input,Commands.SLOGAN);
+        if(!error.truth){
+            return error.errorMassage;
         }
-        String slogan=checkHasField(input,Commands.SLOGAN).errorMassage;
+        String slogan=error.errorMassage;
         if (slogan.equals("random")){
             slogan=randomSlogan();
         }
@@ -127,7 +132,7 @@ public class SignupController {
         Matcher matcher=Pattern.compile("[^\\w ]").matcher(username);
 
         if(matcher.find()){
-            return new Error("Invalid Username format!\nyou can't use this character :"+matcher.group(),false);
+            return new Error("Invalid Username format!\nyou can't use this character : \""+matcher.group()+"\"",false);
         }
 
         if(Users.getUser(username)!=null) {
@@ -138,7 +143,7 @@ public class SignupController {
                 if(string.equals("no")){
                     return new Error("Please signup again",false);
                 }
-                else if(string.equals("yse")){
+                else if(string.equals("yes")){
                     break;
                 }
                 else {
@@ -172,6 +177,7 @@ public class SignupController {
         }
 
         return new Error(username,true);
+
 
     }
 
