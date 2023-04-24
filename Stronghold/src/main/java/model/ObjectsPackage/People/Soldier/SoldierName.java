@@ -1,6 +1,25 @@
 package model.ObjectsPackage.People.Soldier;
 
 public enum SoldierName {
+    //TODO: fill speed and range and...
+    ARCHER(),
+    CROSSBOWMAN(),
+    SPEARMAN(),
+    PIKEMAN(),
+    MACEMAN(),
+    SWORDSMAN(),
+    KNIGHT(),
+    TUNNELER(),
+    LADDERMAN(),
+    ENGINEER(),
+    BLACK_MONK(),
+    ARABIAN_BOWMAN(),
+    SLAVE(),
+    SLINGER(),
+    ASSASIN(),
+    HORSE_ARCHER(),
+    ARABIAN_SWORDSMAN(),
+    FIRE_THROWER()
     ;
     private int attackPower;
     private int defensePower;

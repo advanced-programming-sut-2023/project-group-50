@@ -2,9 +2,9 @@ package model.ObjectsPackage;
 
 public class Rock extends Objects {
     private String direction;
-    protected Rock(String type) {
+    protected Rock(String direction) {
         super(ObjectType.ROCK);
-        this.direction = type;
+        this.direction = direction;
     }
 
     public boolean canPlace(int x, int y) {
