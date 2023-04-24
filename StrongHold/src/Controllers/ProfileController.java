@@ -3,11 +3,9 @@ package Controllers;
 import Controllers.control.Commands;
 import Controllers.control.Error;
 import Controllers.control.Users;
-import Moudel.User;
+import Moudel.Captcha;
 import View.ProfileMenu;
 
-import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -128,51 +126,63 @@ public class ProfileController {
 
     }
 
-    private Error passwordIsValid(String input,Scanner scanner){
-        Matcher matcher=Commands.getMatcher(Commands.PASSWORD,input);
-        if (!matcher.find()){
-            return new Error("You should enter all field!\nEnter a PASSWORD",false);
-        }
-        String allPart=matcher.group();
-        allPart=allPart.substring(3,allPart.length());
+    public String changePassword(Matcher matcher, Scanner scanner){
+        matcher.find();
+        String input = matcher.group();
 
-        String pass="";
-        String confirmPass="";
 
-        if((matcher=Commands.getMatcher(Commands.DOUBLEQOUT,allPart)).find()) {
-            pass = matcher.group();
-            pass = removeDoubleCoutString(pass);
-            confirmPass=allPart.substring(matcher.end()+2,allPart.length()-1);
-        }else {
-            Matcher matcher1=Pattern.compile(" ").matcher(allPart);
-            matcher1.find();
-            pass=allPart.substring(0,matcher1.start());
-            confirmPass=allPart.substring(matcher1.end(),allPart.length());
+        if(!checkHasField(input,Commands.OLDPASS).truth){
+            return checkHasField(input,Commands.OLDPASS).errorMassage;
         }
-        pass= pass.trim();
-        confirmPass=confirmPass.trim();
-        if(pass.equals("")){
-            return new Error("You should fill password  field!",false);
+
+        String oldPass=checkHasField(input,Commands.USERNAME).errorMassage;
+
+        if(!this.profileMenu.getCurrentUser().getPassword().equals(oldPass)){
+            return "Current password is incorrect!";
         }
-        if (pass.length()<6){
-            return new Error("Your password should have 6 character",false);
+        if(!checkHasField(input,Commands.NEWPASS).truth){
+            return checkHasField(input,Commands.NEWPASS).errorMassage;
         }
-        if (!Commands.getMatcher(Commands.CAPITALLATTER,pass).find()){
-            return new Error("Your password should have a capital letter",false);
+
+        String newPass=checkHasField(input,Commands.NEWPASS).errorMassage;
+
+        if(oldPass.equals(newPass)){
+            return "Please enter a new password!";
         }
-        if (!Commands.getMatcher(Commands.SMALLLETTER,pass).find()){
-            return new Error("Your password should have a small letter",false);
+
+        if (newPass.length()<6){
+            return "Your new password should have 6 character";
         }
-        if (!Commands.getMatcher(Commands.DIGIT,pass).find()){
-            return new Error("Your password should have a digit ",false);
+        if (!Commands.getMatcher(Commands.CAPITALLATTER, newPass).find()){
+            return "Your new password should have a capital letter";
         }
-        if (!Pattern.compile("[^a-zA-Z0-9 ]").matcher(pass).find()){
-            return new Error("Your password should have a non-word character",false);
+        if (!Commands.getMatcher(Commands.SMALLLETTER, newPass).find()){
+            return "Your password should have a small letter";
         }
-        if (!pass.equals(confirmPass)){
-            return new Error("Your confirm password isn't match with password",false);
+        if (!Commands.getMatcher(Commands.DIGIT, newPass).find()){
+            return "Your new password should have a digit ";
         }
-        return new Error(pass,true);
+        if (!Pattern.compile("[^a-zA-Z0-9 ]").matcher(newPass).find()){
+            return "Your new password should have a non-word character";
+        }
+
+        System.out.print("Please enter your new password again :");
+
+        while (true){
+            String str=scanner.nextLine();
+            if(str.equals(newPass)){
+               break;
+            } else if (str.equals("quit")) {
+                return "Your change password failed";
+            }
+            System.out.print("Your confirm new password failed\nPlease try again :");
+        }
+
+
+        showCaptcha(scanner);
+        this.profileMenu.getCurrentUser().setPassword(newPass);
+        return "Your change password was successfully";
+
     }
 
 
@@ -196,5 +206,59 @@ public class ProfileController {
        return "Slogan remove successfully";
 
     }
+    private static void showCaptcha(Scanner scanner) {
+        System.out.println("Now fill this captcha :\n");
+
+
+        while (true){
+            Captcha captcha=new Captcha();
+            System.out.println(captcha.getCaptcha());
+            String str= scanner.nextLine();
+            if (str.equals("change the current captcha")) {
+                continue;
+            }
+            if(captcha.answerIsCorrect(str)){
+                System.out.println("Your answer is correct");
+                break;
+            }
+            System.out.println("Your answer is wrong\nPlease try new captcha :\n");
+
+        }
+    }
+
+
+    public String profileDisplay(Matcher matcher){
+        matcher.find();
+        String input = matcher.group();
+
+        if(Pattern.compile("highscore").matcher(input).find()){
+            return "Your highscore is :"+this.profileMenu.getCurrentUser().getHighScore();
+        }
+
+        if(Pattern.compile("rank").matcher(input).find()){
+            return "Your rank is :"+this.profileMenu.getCurrentUser().getRank();
+        }
+
+        if(Pattern.compile("slogan").matcher(input).find()){
+            if(this.profileMenu.getCurrentUser().getSlogan().equals("")){
+                return "Slogan is empty!";
+            }
+            return "Your slogan is :"+this.profileMenu.getCurrentUser().getSlogan();
+        }
+
+        return this.profileMenu.getCurrentUser().showAllInformation();
+
+
+
+
+
+
+
+
+
+
+
+    }
+
 
 }

@@ -3,6 +3,7 @@ package Controllers;
 import Controllers.control.Commands;
 import Controllers.control.Error;
 import Controllers.control.Users;
+import Moudel.Captcha;
 import Moudel.User;
 import View.LoginMenu;
 
@@ -74,6 +75,9 @@ public class LoginController {
             FileWriter file=new FileWriter("D:\\aa\\CE FILE\\start again\\AP\\project\\User logged in.txt");
             file.append(username+"\n");
         }
+
+        showCaptcha(scanner);
+
         user.setAttemptToLogin(0);
         this.loginMenu.setUserLoggedIn(user);
         this.tryToLogin=null;
@@ -180,6 +184,27 @@ public class LoginController {
         }
 
         return "Your password successfully changed!";
+    }
+
+
+    private static void showCaptcha(Scanner scanner) {
+        System.out.println("Now fill this captcha :\n");
+
+
+        while (true){
+            Captcha captcha=new Captcha();
+            System.out.println(captcha.getCaptcha());
+            String str= scanner.nextLine();
+            if (str.equals("change the current captcha")) {
+                continue;
+            }
+            if(captcha.answerIsCorrect(str)){
+                System.out.println("Your answer is correct");
+                break;
+            }
+            System.out.println("Your answer is wrong\nPlease try new captcha :\n");
+
+        }
     }
 
 

@@ -19,6 +19,8 @@ public enum Commands {
         EMAILFORMAT("[\\w\\.]+@[\\w\\.]+\\.[\\w\\.]+"),
         PASS("(?<username>-p ((\".*\")|(\\S*)))"),
         STAY("--stay-logged-in"),
+        OLDPASS("-o ((\".*\")|(\\S*))"),
+        NEWPASS("-n ((\".*\")|(\\S*))"),
 
 
 
@@ -33,9 +35,11 @@ public enum Commands {
         LOGIN("^user login(( --stay-logged-in)|(( -[up] ((\\\".*\\\")|(\\S*))))){2,3}$"),
         FORGOT("^forgot my password$"),
         LOGOUT("^user logout$"),
-        PROFILECHANG("^profile change -[une] ((\".*\")|(\\S*))$"),
+        PROFILECHANGE("^profile change -[une] ((\".*\")|(\\S*))$"),
         REMOVESLOGAN("^Profile remove slogan$"),
-        CHANGSLOGAN("^profile change slogan -s ((\".*\")|(\\S*))$")
+        CHANGESLOGAN("^profile change slogan -s ((\".*\")|(\\S*))$"),
+        CHANGEPASS("^profile change password( -[on] ((\".*\")|(\\S*))){2}$"),
+        PROFILEDISPlAY("^profile display(( highscore)|( rank)|( slogan)|())$")
 
 
     ;

@@ -2,6 +2,7 @@ package Controllers;
 
 import Controllers.control.*;
 import Controllers.control.Error;
+import Moudel.Captcha;
 import Moudel.User;
 import View.SignupMenu;
 
@@ -56,11 +57,31 @@ public class SignupController {
             slogan=randomSlogan();
         }
 
+
         User user=new User(username,password,nickname,email,slogan);
         pickSecurityQuestion(scanner,user);
+        showCaptcha(scanner);
         Users.addUser(user);
         return "Your signup successful!";
 
+    }
+
+    private static void showCaptcha(Scanner scanner) {
+        System.out.println("Now fill this captcha :\n");
+
+        while (true){
+            Captcha captcha=new Captcha();
+            System.out.println(captcha.getCaptcha());
+            String str= scanner.nextLine();
+            if (str.equals("change the current captcha")) {
+                continue;
+            }
+            if(captcha.answerIsCorrect(str)){
+                System.out.println("Your answer is correct");
+                break;
+            }
+            System.out.println("Your answer is wrong\nPlease try new captcha :\n");
+        }
     }
 
     private Error checkHasField(String input,Commands command){
@@ -341,14 +362,5 @@ public class SignupController {
         }
 
     }
-
-
-
-
-
-
-
-
-
 
 }

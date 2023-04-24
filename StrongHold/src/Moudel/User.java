@@ -12,6 +12,10 @@ public class User {
     private String securityQuestionAnswer;
     private int attemptToLogin;
 
+    private int rank;
+
+    private int highScore;
+
     public User(String userName,String password,String nickName,String email,String slogan){
         this.userName=userName;
         this.password=password;
@@ -19,6 +23,7 @@ public class User {
         this.email=email;
         this.slogan=slogan;
         this.attemptToLogin=0;
+        this.highScore=0;
     }
 
     public int getAttemptToLogin() {
@@ -83,5 +88,29 @@ public class User {
 
     public void setSecurityQuestionAnswer(String securityQuestionAnswer) {
         this.securityQuestionAnswer = securityQuestionAnswer;
+    }
+
+    public int getHighScore() {
+        return highScore;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setHighScore(int highScore) {
+        this.highScore = highScore;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
+    public String showAllInformation(){
+        return "Username : "+this.userName+"\nPassword : "+this.password+"\nEmail : "+this.email+"\nNickname : "+
+                this.nickName+"\nSlogan : "+this.slogan+"\nYour security question is :"+this.securityQuestion.getQuestion()+
+                "\nYour answer is : "+this.securityQuestionAnswer+"\nRank : "+this.rank+"\nHighscore : "+this.highScore;
+
+
     }
 }
