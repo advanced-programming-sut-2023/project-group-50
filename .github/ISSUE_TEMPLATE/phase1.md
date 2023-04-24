@@ -10,7 +10,7 @@ assignees: Arman17Babaei
 <div dir="rtl" align='right'>
 
 # فاز 1
-**نام و نام خانوادگی راهنما:**
+**نام و نام خانوادگی راهنما: پرهام رضایی**
 
 ## کارهایی که باید در فاز 1 انجام دهید
 
@@ -38,7 +38,7 @@ assignees: Arman17Babaei
   <div  dir="ltr" align='right'>
   
   1. [ ] شروع نشده
-  2. [ ] در حال انجام
+  2. [x] در حال انجام
   3. [ ] تمام شده
      </div>
 </details>
@@ -51,55 +51,57 @@ assignees: Arman17Babaei
 
   <div dir="ltr" align='right'>
 
-  1. [x] شروع نشده
+  1. [ ] شروع نشده
   2. [ ] در حال انجام
-  3. [ ] تمام شده
+  3. [x] تمام شده
   </div>
 </details>
   
   <details>
-  <summary>ساخت دیگر منوها</summary>
+  <summary>قابلیت ساخت اکانت (پیش‌نیاز: منوهای signup و login)</summary>
 
   <div dir="ltr" align='right'>
 
-  1. [x] شروع نشده
+  1. [ ] شروع نشده
   2. [ ] در حال انجام
-  3. [ ] تمام شده
+  3. [x] تمام شده
   </div>
 </details>
-  
+ 
   <details>
-  <summary>پیاده کردن Map و معماری</summary>
+  <summary>دیتابیس یوزرها</summary>
 
   <div dir="ltr" align='right'>
 
-  1. [x] شروع نشده
+  1. [ ] شروع نشده
   2. [ ] در حال انجام
-  3. [ ] تمام شده
+  3. [x] تمام شده
   </div>
 </details>
 
 ## تسک‌های نفر دوم
 
   **نام و نام خانوادگی: سهند اکرمی‌پور**
-<details>
-  <summary>قابلیت ساخت اکانت (پیش‌نیاز: منوهای signup و login)</summary>
+
+   <details>
+  <summary>پیاده کردن Map و معماری</summary>
 
   <div dir="ltr" align='right'>
 
-  1. [x] شروع نشده
+  1. [ ] شروع نشده
   2. [ ] در حال انجام
-  3. [ ] تمام شده
+  3. [x] تمام شده
   </div>
 </details>
+
   
   <details>
-  <summary>دیتابیس یوزرها</summary>
+  <summary>ساخت دیگر منوها</summary>
 
   <div dir="ltr" align='right'>
 
-  1. [x] شروع نشده
-  2. [ ] در حال انجام
+  1. [ ] شروع نشده
+  2. [x] در حال انجام
   3. [ ] تمام شده
   </div>
 </details>
@@ -110,8 +112,8 @@ assignees: Arman17Babaei
   <div dir="ltr" align='right'>
 
   1. [ ] شروع نشده
-  2. [x] در حال انجام
-  3. [ ] تمام شده
+  2. [ ] در حال انجام
+  3. [x] تمام شده
   </div>
 </details>
 
