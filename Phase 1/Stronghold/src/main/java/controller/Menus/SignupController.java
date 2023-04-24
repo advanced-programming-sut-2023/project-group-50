@@ -1,4 +1,4 @@
-package controller;
+package controller.Menus;
 
 import controller.UserDatabase.User;
 import controller.UserDatabase.Users;
@@ -14,7 +14,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static controller.LoginController.getError;
+import static controller.Menus.LoginController.getError;
 
 public class SignupController {
     private final SignupMenu signupMenu;

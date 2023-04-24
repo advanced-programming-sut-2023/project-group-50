@@ -4,9 +4,9 @@ import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 
 public abstract class Person extends Objects {
+    private final int maxLife;
     private boolean isSoldier;
     private int life;
-    private final int maxLife;
     private int speed;
     private int starving;
     private int income;

@@ -1,4 +1,4 @@
-package controller;
+package controller.Menus;
 
 import controller.UserDatabase.User;
 import controller.UserDatabase.Users;

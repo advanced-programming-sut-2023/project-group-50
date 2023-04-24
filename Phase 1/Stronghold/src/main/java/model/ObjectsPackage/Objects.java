@@ -1,9 +1,9 @@
 package model.ObjectsPackage;
 
 public abstract class Objects {
+    private final ObjectType objectType;
     private int X;
     private int Y;
-    private final ObjectType objectType;
 
     protected Objects(ObjectType objectType) {
         this.objectType = objectType;

@@ -1,5 +1,6 @@
 package model.Map;
 
+import model.ObjectsPackage.Buildings.Gate;
 import model.ObjectsPackage.Buildings.Tower;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
@@ -58,7 +59,8 @@ public class Unit {
 
     private String buildingChar() {
         for (Objects object : objects)
-            if (object.getObjectType().equals(ObjectType.BUILDING)) return object instanceof Tower ? "W" : "B";
+            if (object.getObjectType().equals(ObjectType.BUILDING))
+                return ((object instanceof Tower) || (object instanceof Gate)) ? "W" : "B";
         return "#";
     }
 

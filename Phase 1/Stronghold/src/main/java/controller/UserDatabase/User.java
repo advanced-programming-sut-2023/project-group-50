@@ -1,6 +1,11 @@
 package controller.UserDatabase;
 
 import controller.control.SecurityQuestion;
+import model.Item.Item;
+import model.Trade.Trade;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class User {
     private String userName;
@@ -11,8 +16,11 @@ public class User {
     private SecurityQuestion securityQuestion;
     private String securityQuestionAnswer;
     private int attemptToLogin;
-
     private int rank;
+    private int score;
+    private ArrayList<String> messages;
+    private LinkedHashMap<Integer, Trade> trades;
+    private ArrayList<Item> items;
 
     private int highScore;
 
@@ -24,6 +32,9 @@ public class User {
         this.slogan = slogan;
         this.attemptToLogin = 0;
         this.highScore = 0;
+        messages = new ArrayList<>();
+        trades = new LinkedHashMap<>();
+        items = new ArrayList<>();
     }
 
     public int getAttemptToLogin() {
@@ -110,7 +121,37 @@ public class User {
         return "Username : " + this.userName + "\nPassword : " + this.password + "\nEmail : " + this.email + "\nNickname : " +
                 this.nickName + "\nSlogan : " + this.slogan + "\nYour security question is : " + this.securityQuestion.getQuestion() +
                 "\nYour answer is : " + this.securityQuestionAnswer + "\nRank : " + this.rank + "\nHighscore : " + this.highScore;
+    }
 
+    public int getScore() {
+        return score;
+    }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public ArrayList<String> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(ArrayList<String> messages) {
+        this.messages = messages;
+    }
+
+    public LinkedHashMap<Integer, Trade> getTrades() {
+        return trades;
+    }
+
+    public void setTrades(LinkedHashMap<Integer, Trade> trades) {
+        this.trades = trades;
+    }
+
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(ArrayList<Item> items) {
+        this.items = items;
     }
 }

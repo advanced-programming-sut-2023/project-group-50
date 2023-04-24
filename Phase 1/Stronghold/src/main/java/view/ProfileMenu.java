@@ -1,6 +1,6 @@
 package view;
 
-import controller.ProfileController;
+import controller.Menus.ProfileController;
 import controller.UserDatabase.User;
 import controller.control.Commands;
 import controller.control.State;

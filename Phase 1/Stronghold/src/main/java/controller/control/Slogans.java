@@ -7,8 +7,7 @@ public enum Slogans {
     NUMBER4("If you wish for peace, prepare for war"),
     NUMBER5("As far as the world extends"),
     NUMBER6("On the Sea We Are Glorious"),
-    NUMBER7("Nothing Stands In Our Way")
-    ;
+    NUMBER7("Nothing Stands In Our Way");
     private final String slogan;
 
     Slogans(String slogan) {

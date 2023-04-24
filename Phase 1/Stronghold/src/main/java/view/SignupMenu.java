@@ -1,6 +1,6 @@
 package view;
 
-import controller.SignupController;
+import controller.Menus.SignupController;
 import controller.control.Commands;
 import controller.control.State;
 
