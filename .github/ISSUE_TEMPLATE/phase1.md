@@ -58,18 +58,19 @@ assignees: Arman17Babaei
 </details>
   
   <details>
-  <summary>ساخت دیگر منوها</summary>
+  <summary>قابلیت ساخت اکانت (پیش‌نیاز: منوهای signup و login)</summary>
 
   <div dir="ltr" align='right'>
 
   1. [ ] شروع نشده
-  2. [x] در حال انجام
-  3. [ ] تمام شده
+  2. [ ] در حال انجام
+  3. [x] تمام شده
   </div>
 </details>
+ 
   
-  <details>
-  <summary>پیاده کردن Map و معماری</summary>
+    <details>
+  <summary>دیتابیس یوزرها</summary>
 
   <div dir="ltr" align='right'>
 
@@ -82,8 +83,9 @@ assignees: Arman17Babaei
 ## تسک‌های نفر دوم
 
   **نام و نام خانوادگی: سهند اکرمی‌پور**
-<details>
-  <summary>قابلیت ساخت اکانت (پیش‌نیاز: منوهای signup و login)</summary>
+
+   <details>
+  <summary>پیاده کردن Map و معماری</summary>
 
   <div dir="ltr" align='right'>
 
@@ -92,15 +94,16 @@ assignees: Arman17Babaei
   3. [x] تمام شده
   </div>
 </details>
+
   
   <details>
-  <summary>دیتابیس یوزرها</summary>
+  <summary>ساخت دیگر منوها</summary>
 
   <div dir="ltr" align='right'>
 
   1. [ ] شروع نشده
-  2. [ ] در حال انجام
-  3. [x] تمام شده
+  2. [x] در حال انجام
+  3. [ ] تمام شده
   </div>
 </details>
   
