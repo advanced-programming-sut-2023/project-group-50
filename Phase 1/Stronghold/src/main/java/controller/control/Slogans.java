@@ -1,9 +1,13 @@
 package controller.control;
 
 public enum Slogans {
-    NUMBER1("What is my father’s name?"),
-    NUMBER2("What was my first pet’s name?"),
-    NUMBER3("What is my mother’s last name?"),
+    NUMBER1("Let’s hunt!"),
+    NUMBER2("Duty before death"),
+    NUMBER3("Always vigilant"),
+    NUMBER4("If you wish for peace, prepare for war"),
+    NUMBER5("As far as the world extends"),
+    NUMBER6("On the Sea We Are Glorious"),
+    NUMBER7("Nothing Stands In Our Way")
     ;
     private final String slogan;
 
