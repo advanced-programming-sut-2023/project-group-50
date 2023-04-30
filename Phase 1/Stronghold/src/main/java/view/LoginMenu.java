@@ -49,8 +49,8 @@ public class LoginMenu {
                 input = scanner.nextLine();
             }
 
-            if (Commands.getMatcher(Commands.CREATUSER, input).find()) {
-                this.setNextMatcher(Commands.getMatcher(Commands.CREATUSER, input));
+            if (Commands.getMatcher(Commands.CREATE_USER, input).find()) {
+                this.setNextMatcher(Commands.getMatcher(Commands.CREATE_USER, input));
                 this.loginController.setTryToLogin(null);
                 return State.SIGN;
             } else if (Commands.getMatcher(Commands.EXIT, input).find()) {

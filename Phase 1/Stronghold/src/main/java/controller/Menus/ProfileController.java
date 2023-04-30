@@ -18,7 +18,7 @@ public class ProfileController {
 
     private static String removeDoubleCoutString(String string) {
 
-        if (Commands.getMatcher(Commands.DOUBLEQOUT, string).find()) {
+        if (Commands.getMatcher(Commands.DOUBLE_QUOTE, string).find()) {
             string = string.substring(1, string.length() - 1);
         }
         return string;
@@ -132,7 +132,7 @@ public class ProfileController {
         matcher.find();
         String input = matcher.group();
 
-        Error error = checkHasField(input, Commands.OLDPASS);
+        Error error = checkHasField(input, Commands.OLD_PASS);
         if (!error.truth) {
             return error.errorMassage;
         }
@@ -142,7 +142,7 @@ public class ProfileController {
         if (!this.profileMenu.getCurrentUser().getPassword().equals(oldPass)) {
             return "Current password is incorrect!";
         }
-        error = checkHasField(input, Commands.NEWPASS);
+        error = checkHasField(input, Commands.NEW_PASS);
         if (!error.truth) {
             return error.errorMassage;
         }
@@ -156,10 +156,10 @@ public class ProfileController {
         if (newPass.length() < 6) {
             return "Your new password should have 6 character";
         }
-        if (!Commands.getMatcher(Commands.CAPITALLATTER, newPass).find()) {
+        if (!Commands.getMatcher(Commands.CAPITAL_LETTER, newPass).find()) {
             return "Your new password should have a capital letter";
         }
-        if (!Commands.getMatcher(Commands.SMALLLETTER, newPass).find()) {
+        if (!Commands.getMatcher(Commands.SMALL_LETTER, newPass).find()) {
             return "Your password should have a small letter";
         }
         if (!Commands.getMatcher(Commands.DIGIT, newPass).find()) {
@@ -194,7 +194,7 @@ public class ProfileController {
         }
         String email = checkHasField(input, Commands.EMAIL).errorMassage;
 
-        if (!Commands.getMatcher(Commands.EMAILFORMAT, email).find()) {
+        if (!Commands.getMatcher(Commands.EMAIL_FORMAT, email).find()) {
             return new Error("Your email format is invalid", false);
         }
         if (Users.checkRepetitiousEmail(email)) {

@@ -39,8 +39,8 @@ public class SignupMenu {
             }
 
 
-            if (Commands.getMatcher(Commands.CREATUSER, input).find()) {
-                System.out.println(this.signupController.createUser(Commands.getMatcher(Commands.CREATUSER, input), scanner));
+            if (Commands.getMatcher(Commands.CREATE_USER, input).find()) {
+                System.out.println(this.signupController.createUser(Commands.getMatcher(Commands.CREATE_USER, input), scanner));
             } else if (Commands.getMatcher(Commands.EXIT, input).find()) {
                 return State.EXIT;
 

@@ -39,7 +39,7 @@ public class LoginController {
 
     private static String removeDoubleCoutString(String string) {
 
-        if (Commands.getMatcher(Commands.DOUBLEQOUT, string).find()) {
+        if (Commands.getMatcher(Commands.DOUBLE_QUOTE, string).find()) {
             string = string.substring(1, string.length() - 1);
         }
         return string;
@@ -193,10 +193,10 @@ public class LoginController {
             } else if (input.length() < 6) {
                 System.out.println("Your password should have 6 character");
                 continue;
-            } else if (!Commands.getMatcher(Commands.CAPITALLATTER, input).find()) {
+            } else if (!Commands.getMatcher(Commands.CAPITAL_LETTER, input).find()) {
                 System.out.println("Your password should have a capital letter");
                 continue;
-            } else if (!Commands.getMatcher(Commands.SMALLLETTER, input).find()) {
+            } else if (!Commands.getMatcher(Commands.SMALL_LETTER, input).find()) {
                 System.out.println("Your password should have a small letter");
                 continue;
             } else if (!Commands.getMatcher(Commands.DIGIT, input).find()) {

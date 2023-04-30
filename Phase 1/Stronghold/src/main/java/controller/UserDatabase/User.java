@@ -1,6 +1,7 @@
 package controller.UserDatabase;
 
 import controller.control.SecurityQuestion;
+import model.Government.Government;
 import model.Item.Item;
 import model.Trade.Trade;
 
@@ -21,8 +22,8 @@ public class User {
     private ArrayList<String> messages;
     private LinkedHashMap<Integer, Trade> trades;
     private ArrayList<Item> items;
-
     private int highScore;
+    private final Government government;
 
     public User(String userName, String password, String nickName, String email, String slogan) {
         this.userName = userName;
@@ -35,6 +36,7 @@ public class User {
         messages = new ArrayList<>();
         trades = new LinkedHashMap<>();
         items = new ArrayList<>();
+        government = new Government(this);
     }
 
     public int getAttemptToLogin() {
@@ -153,5 +155,18 @@ public class User {
 
     public void setItems(ArrayList<Item> items) {
         this.items = items;
+    }
+
+    public Government getGovernment() {
+        return government;
+    }
+
+    public ArrayList<String> getTradesAsString() {
+        ArrayList<String> list = new ArrayList<>();
+
+        for (Trade trade : trades.values())
+            list.add(trade.toString());
+
+        return list;
     }
 }

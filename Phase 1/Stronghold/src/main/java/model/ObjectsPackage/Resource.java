@@ -8,5 +8,29 @@ public enum Resource {
     STONE,
     IRON,
     WOOD,
-    PITCH
+    PITCH;
+
+    public static boolean nameIsValid(String name) {
+        name = name.toUpperCase();
+
+        for (Resource enums : Resource.values())
+            if (name.equals(enums.name()))
+                return true;
+
+        return false;
+    }
+
+    public static Resource getResourceByString(String name) {
+        assert nameIsValid(name);
+
+        name = name.toUpperCase();
+
+        for (Resource enums : Resource.values())
+            if (name.equals(enums.name()))
+                return enums;
+
+        return null;
+    }
+
+
 }

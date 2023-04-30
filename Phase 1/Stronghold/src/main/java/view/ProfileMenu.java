@@ -33,16 +33,16 @@ public class ProfileMenu {
             if (Commands.getMatcher(Commands.LOGOUT, input).find()) {
                 System.out.println("user logged out successfully!");
                 return State.SIGN;
-            } else if (Commands.getMatcher(Commands.PROFILECHANGE, input).find()) {
-                System.out.println(this.profileController.profileChange(Commands.getMatcher(Commands.PROFILECHANGE, input)));
-            } else if (Commands.getMatcher(Commands.REMOVESLOGAN, input).find()) {
+            } else if (Commands.getMatcher(Commands.PROFILE_CHANGE, input).find()) {
+                System.out.println(this.profileController.profileChange(Commands.getMatcher(Commands.PROFILE_CHANGE, input)));
+            } else if (Commands.getMatcher(Commands.REMOVE_SLOGAN, input).find()) {
                 System.out.println(this.profileController.removeSlogan());
-            } else if (Commands.getMatcher(Commands.CHANGESLOGAN, input).find()) {
-                System.out.println(this.profileController.profileChange(Commands.getMatcher(Commands.CHANGESLOGAN, input)));
-            } else if (Commands.getMatcher(Commands.CHANGEPASS, input).find()) {
-                System.out.println(this.profileController.changePassword(Commands.getMatcher(Commands.CHANGEPASS, input), scanner));
-            } else if (Commands.getMatcher(Commands.PROFILEDISPlAY, input).find()) {
-                System.out.println(this.profileController.profileDisplay(Commands.getMatcher(Commands.PROFILEDISPlAY, input)));
+            } else if (Commands.getMatcher(Commands.CHANGE_SLOGAN, input).find()) {
+                System.out.println(this.profileController.profileChange(Commands.getMatcher(Commands.CHANGE_SLOGAN, input)));
+            } else if (Commands.getMatcher(Commands.CHANGE_PASS, input).find()) {
+                System.out.println(this.profileController.changePassword(Commands.getMatcher(Commands.CHANGE_PASS, input), scanner));
+            } else if (Commands.getMatcher(Commands.PROFILE_DISPlAY, input).find()) {
+                System.out.println(this.profileController.profileDisplay(Commands.getMatcher(Commands.PROFILE_DISPlAY, input)));
             } else {
                 System.out.println("Invalid Command!");
             }
