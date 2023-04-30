@@ -78,6 +78,50 @@ assignees: Arman17Babaei
   3. [x] تمام شده
   </div>
 </details>
+  
+  <details>
+  <summary>مپ‌منو و کامند‌هایش</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [x] شروع نشده
+  2. [ ] در حال انجام
+  3. [ ] تمام شده
+  </div>
+</details>
+  
+  <details>
+  <summary>کامندهای گاورمنت</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [x] شروع نشده
+  2. [ ] در حال انجام
+  3. [ ] تمام شده
+  </div>
+</details>
+  
+  <details>
+  <summary>استراتژی سربازها</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [x] شروع نشده
+  2. [ ] در حال انجام
+  3. [ ] تمام شده
+  </div>
+</details>
+  
+  <details>
+  <summary>تکمیل مپ‌منو</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [x] شروع نشده
+  2. [ ] در حال انجام
+  3. [ ] تمام شده
+  </div>
+</details>
 
 ## تسک‌های نفر دوم
 
@@ -117,6 +161,50 @@ assignees: Arman17Babaei
   </div>
 </details>
 
+  </details>
+  
+  <details>
+  <summary>نگه‌داری دیتابیس در فایل</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [x] شروع نشده
+  2. [ ] در حال انجام
+  3. [ ] تمام شده
+  </div>
+</details>
+
+<details>
+  <summary>تکمیل تریدمنو</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [x] شروع نشده
+  2. [ ] در حال انجام
+  3. [ ] تمام شده
+  </div>
+</details>
+
+<details>جزئیات تایپ‌های یگان‌ها</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [x] شروع نشده
+  2. [ ] در حال انجام
+  3. [ ] تمام شده
+  </div>
+</details>
+
+<details>
+  <summary>کامندهای یگان‌ها</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [x] شروع نشده
+  2. [ ] در حال انجام
+  3. [ ] تمام شده
+  </div>
+</details>
 ## تسک‌های نفر سوم
 
   **نام و نام خانوادگی:**
