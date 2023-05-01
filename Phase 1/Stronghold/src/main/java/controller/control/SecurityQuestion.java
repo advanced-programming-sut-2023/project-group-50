@@ -1,6 +1,8 @@
 package controller.control;
 
-public enum SecurityQuestion {
+import java.io.Serializable;
+
+public enum SecurityQuestion implements Serializable {
     NUMBER1("What is my father’s name?"),
     NUMBER2("What was my first pet’s name?"),
     NUMBER3("What is my mother’s last name?"),

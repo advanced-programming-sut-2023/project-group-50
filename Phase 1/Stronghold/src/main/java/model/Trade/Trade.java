@@ -3,7 +3,9 @@ package model.Trade;
 import controller.UserDatabase.User;
 import model.ObjectsPackage.Resource;
 
-public class Trade {
+import java.io.Serializable;
+
+public class Trade implements Serializable {
     private final User from;
     private final int id;
     private final int price;
@@ -70,4 +72,5 @@ public class Trade {
                 ", message='" + message + '\'' +
                 '}';
     }
+
 }

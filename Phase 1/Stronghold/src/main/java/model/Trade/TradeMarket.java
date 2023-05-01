@@ -8,7 +8,6 @@ public class TradeMarket {
     private static int nextId;
 
     public TradeMarket() {
-        //TODO: fill up by json
         trades = new LinkedHashMap<>();
         nextId = 0xABCDEF;
     }
@@ -34,11 +33,23 @@ public class TradeMarket {
         return nextId;
     }
 
+    public static void setNextId(int nextId) {
+        TradeMarket.nextId = nextId;
+    }
+
     public static boolean idIsValid(int id) {
         return trades.containsKey(id);
     }
 
     public static Trade getTrade(int id) {
         return trades.get(id);
+    }
+
+    public static LinkedHashMap<Integer, Trade> getTrades() {
+        return trades;
+    }
+
+    public static void setTrades(LinkedHashMap<Integer, Trade> trades) {
+        TradeMarket.trades = trades;
     }
 }

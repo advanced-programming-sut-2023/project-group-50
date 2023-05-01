@@ -2,10 +2,11 @@ package model.Map;
 
 import model.ObjectsPackage.Objects;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Map {
+public class Map implements Serializable {
     private final HashMap<Integer, HashMap<Integer, Unit>> map;
     private final int xSize;
     private final int ySize;

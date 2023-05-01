@@ -3,9 +3,10 @@ package model.Government;
 import controller.UserDatabase.User;
 import model.ObjectsPackage.Resource;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Government {
+public class Government implements Serializable {
     private final User user;
     private final HashMap<Resource, Integer> resources;
     private int coins;

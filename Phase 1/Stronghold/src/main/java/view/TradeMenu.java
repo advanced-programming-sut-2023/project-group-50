@@ -18,10 +18,10 @@ public class TradeMenu {
         String line;
         Matcher matcher;
 
-        while(true) {
+        while (true) {
             line = scanner.nextLine();
 
-            if((matcher = Commands.getMatcher(Commands.NEW_TRADE, line)).matches()) {
+            if ((matcher = Commands.getMatcher(Commands.NEW_TRADE, line)).matches()) {
                 System.out.println(newTrade(matcher));
             } else if ((matcher = Commands.getMatcher(Commands.TRADE_ACCEPT, line)).matches()) {
                 System.out.println(acceptTrade(matcher));

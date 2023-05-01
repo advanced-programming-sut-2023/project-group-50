@@ -5,11 +5,12 @@ import model.ObjectsPackage.Buildings.Tower;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-public class Unit {
+public class Unit implements Serializable {
     private final LinkedHashSet<Objects> objects;
     private final int x;
     private final int y;

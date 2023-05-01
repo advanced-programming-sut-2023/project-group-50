@@ -1,6 +1,8 @@
 package model.ObjectsPackage;
 
-public abstract class Objects {
+import java.io.Serializable;
+
+public abstract class Objects implements Serializable {
     private final ObjectType objectType;
     private int X;
     private int Y;

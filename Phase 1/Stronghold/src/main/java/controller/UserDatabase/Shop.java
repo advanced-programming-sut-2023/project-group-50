@@ -22,4 +22,12 @@ public class Shop {
     public static void show() {
         //TODO: fill here
     }
+
+    public static HashSet<Item> getItems() {
+        return items;
+    }
+
+    public static void setItems(HashSet<Item> items) {
+        Shop.items = items;
+    }
 }

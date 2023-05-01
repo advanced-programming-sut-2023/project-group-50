@@ -1,6 +1,8 @@
 package model.ObjectsPackage;
 
-public enum Resource {
+import java.io.Serializable;
+
+public enum Resource implements Serializable {
     WHEAT,
     FLOUR,
     HOPS,

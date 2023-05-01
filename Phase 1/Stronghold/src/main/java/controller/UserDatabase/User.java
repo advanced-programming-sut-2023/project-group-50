@@ -5,10 +5,11 @@ import model.Government.Government;
 import model.Item.Item;
 import model.Trade.Trade;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-public class User {
+public class User implements Serializable {
     private String userName;
     private String password;
     private String nickName;

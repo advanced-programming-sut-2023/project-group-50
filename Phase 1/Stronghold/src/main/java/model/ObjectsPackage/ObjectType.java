@@ -1,6 +1,8 @@
 package model.ObjectsPackage;
 
-public enum ObjectType {
+import java.io.Serializable;
+
+public enum ObjectType implements Serializable {
     PERSON,
     TREE,
     ROCK,
