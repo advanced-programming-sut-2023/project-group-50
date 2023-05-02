@@ -5,8 +5,8 @@ import model.ObjectsPackage.Weapons.Weapon;
 import model.ObjectsPackage.Weapons.WeaponName;
 
 public abstract class Soldier extends Person {
-    private Weapon weapon;
-    private SoldierName type;
+    private final Weapon weapon;
+    private final SoldierName type;
 
     public Soldier(SoldierName type) {
         super(true, type.getLife(), type.getSpeed());

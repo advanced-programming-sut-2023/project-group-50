@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class User implements Serializable {
+    private final Government government;
     private String userName;
     private String password;
     private String nickName;
@@ -24,7 +25,6 @@ public class User implements Serializable {
     private LinkedHashMap<Integer, Trade> trades;
     private ArrayList<Item> items;
     private int highScore;
-    private final Government government;
 
     public User(String userName, String password, String nickName, String email, String slogan) {
         this.userName = userName;
@@ -169,5 +169,13 @@ public class User implements Serializable {
             list.add(trade.toString());
 
         return list;
+    }
+
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
+    public void removeItem(Item item) {
+        items.remove(item);
     }
 }

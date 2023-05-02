@@ -12,4 +12,21 @@ public class Item implements Serializable {
         this.name = name;
         this.count = count;
     }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "price=" + price +
+                ", name='" + name + '\'' +
+                ", count=" + count +
+                '}';
+    }
 }

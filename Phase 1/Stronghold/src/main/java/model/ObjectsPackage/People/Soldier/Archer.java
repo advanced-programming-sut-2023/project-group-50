@@ -1,10 +1,10 @@
 package model.ObjectsPackage.People.Soldier;
 
 public class Archer extends Soldier {
-    private boolean isRider;
+    private final boolean isRider;
     private boolean isOnFire;
     private int range;
-    private ArmourType armourType;
+    private final ArmourType armourType;
 
     public Archer(SoldierName type) {
         super(type);

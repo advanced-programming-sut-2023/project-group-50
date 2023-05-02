@@ -1,7 +1,6 @@
 package model.ObjectsPackage.People.Soldier;
 
 import model.ObjectsPackage.Buildings.BuildingType;
-import model.ObjectsPackage.Weapons.Weapon;
 
 public class Engineer extends Soldier {
     private int range;
