@@ -38,7 +38,7 @@ public class Shop {
         Shop.items = items;
     }
 
-    private static boolean userCanAfford(User buyer, Item item) {
+    public static boolean userCanAfford(User buyer, Item item) {
         return buyer.getGovernment().getCoins() >= item.getPrice();
     }
 
@@ -48,4 +48,5 @@ public class Shop {
             list.add(item.toString());
         return list;
     }
+
 }

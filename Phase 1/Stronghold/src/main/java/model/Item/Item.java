@@ -29,4 +29,8 @@ public class Item implements Serializable {
                 ", count=" + count +
                 '}';
     }
+
+    public String getName() {
+        return name;
+    }
 }

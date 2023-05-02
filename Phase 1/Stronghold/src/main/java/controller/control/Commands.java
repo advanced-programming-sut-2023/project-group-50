@@ -38,7 +38,12 @@ public enum Commands {
     NEW_TRADE("^trade (?=.*(-t (?<resourceType>\\S+)))(?=.*(-a (?<resourceAmount>-?\\d+)))(?=.*(-p (?<price>-?\\d+)))(?=.*(-m (?<message>.*)))$"),
     TRADE_LIST("^trade list$"),
     TRADE_ACCEPT("^trade accept (?=.*(-i (?<id>-?\\d+)))(?=.*(-m (?<message>.*)))$"),
-    TRADE_HISTORY("^trade history$");
+    TRADE_HISTORY("^trade history$"),
+    BUY_ITEM("^buy item (?<name>.*)$"),
+    SELL_ITEM("^sell item (?<name>.*)$"),
+    ADD_NEW_ITEM("^add new item (?=.*(-c (?<count>-?\\d+)))(?=.*(-p (?<price>-?\\d+)))(?=.*(-n (?<name>.*)))$"),
+    SHOW_ALL_ITEMS("^show all items$"),
+    SHOW_MY_ITEMS("^show my items$");
 
 
     private final String regex;

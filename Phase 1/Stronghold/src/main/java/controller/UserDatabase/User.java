@@ -178,4 +178,11 @@ public class User implements Serializable {
     public void removeItem(Item item) {
         items.remove(item);
     }
+
+    public ArrayList<String> getItemsAsString() {
+        ArrayList<String> list = new ArrayList<>();
+        for (Item item : items)
+            list.add(item.toString());
+        return list;
+    }
 }
