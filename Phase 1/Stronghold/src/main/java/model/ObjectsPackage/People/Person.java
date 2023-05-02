@@ -12,7 +12,7 @@ public abstract class Person extends Objects {
     private int income;
 
     protected Person(boolean isSoldier, int life, int speed) {
-        super(ObjectType.PERSON);
+        super(ObjectType.PERSON, owner);
         this.isSoldier = isSoldier;
         this.life = life;
         this.maxLife = life;

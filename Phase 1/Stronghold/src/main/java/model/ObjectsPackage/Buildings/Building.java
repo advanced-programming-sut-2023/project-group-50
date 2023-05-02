@@ -16,7 +16,7 @@ public abstract class Building extends Objects {
     private int hp;
 
     protected Building(BuildingType type, User owner, int x, int y, int maxHp) {
-        super(ObjectType.BUILDING);
+        super(ObjectType.BUILDING, owner);
         this.type = type;
         this.owner = owner;
         X = x;

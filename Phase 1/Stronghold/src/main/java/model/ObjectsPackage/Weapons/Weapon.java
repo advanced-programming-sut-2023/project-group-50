@@ -1,5 +1,6 @@
 package model.ObjectsPackage.Weapons;
 
+import controller.UserDatabase.User;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Soldier.Soldier;
@@ -9,10 +10,10 @@ public class Weapon extends Objects {
     private final Soldier Owner;
 
 
-    public Weapon(WeaponName weaponName, Soldier owner) {
-        super(ObjectType.WEAPON);
+    public Weapon(WeaponName weaponName, Soldier soldier, User owner) {
+        super(ObjectType.WEAPON, owner);
         this.weaponName = weaponName;
-        Owner = owner;
+        Owner = soldier;
     }
 
     private void hit() {

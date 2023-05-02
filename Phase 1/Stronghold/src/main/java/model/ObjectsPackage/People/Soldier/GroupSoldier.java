@@ -13,7 +13,7 @@ public class GroupSoldier extends Objects {
     private final boolean protection;
 
     protected GroupSoldier(ArrayList<Soldier> group, GroupModeName groupMode, SoldierName type, boolean protection) {
-        super(ObjectType.GROUP_SOLDIER);
+        super(ObjectType.GROUP_SOLDIER, owner);
         this.group = group;
         this.groupMode = groupMode;
         this.type = type;

@@ -1,6 +1,7 @@
 package model.Government;
 
 import controller.UserDatabase.User;
+import model.Map.Map;
 import model.ObjectsPackage.Resource;
 
 import java.io.Serializable;
@@ -10,6 +11,7 @@ public class Government implements Serializable {
     private final User user;
     private final HashMap<Resource, Integer> resources;
     private int coins;
+    private Map map;
 
     public Government(User user) {
         this.user = user;
@@ -31,5 +33,9 @@ public class Government implements Serializable {
 
     public void setCoins(int coins) {
         this.coins = coins;
+    }
+
+    public Map getMap() {
+        return map;
     }
 }

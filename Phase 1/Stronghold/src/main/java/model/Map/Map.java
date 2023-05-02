@@ -95,4 +95,8 @@ public class Map implements Serializable {
         }
         return arrayLists;
     }
+
+    public Unit getXY(int x, int y) {
+        return map.get(x).get(y);
+    }
 }
