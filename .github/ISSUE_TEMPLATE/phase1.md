@@ -185,12 +185,13 @@ assignees: Arman17Babaei
   </div>
 </details>
 
-<details>جزئیات تایپ‌های یگان‌ها</summary>
+<details>
+  <summary>جزئیات تایپ‌های یگان‌ها</summary>
 
   <div dir="ltr" align='right'>
 
-  1. [x] شروع نشده
-  2. [ ] در حال انجام
+  1. [ ] شروع نشده
+  2. [x] در حال انجام
   3. [ ] تمام شده
   </div>
 </details>
