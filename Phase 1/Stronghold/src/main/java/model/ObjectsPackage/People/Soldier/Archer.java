@@ -1,13 +1,20 @@
 package model.ObjectsPackage.People.Soldier;
 
-import model.ObjectsPackage.Weapons.Weapon;
-
 public class Archer extends Soldier {
     private boolean isRider;
+    private boolean isOnFire;
     private int range;
+    private ArmourType armourType;
 
-    public Archer(SoldierName type, Weapon weapon) {
-        super(weapon, type); //TODO: fill weapon, isRider and range based on type
+    public Archer(SoldierName type) {
+        super(type);
+        isRider = type.equals(SoldierName.HORSE_ARCHER);
+        isOnFire = type.equals(SoldierName.FIRE_THROWER);
+        armourType = (type == SoldierName.CROSSBOWMAN) ? ArmourType.LEATHER : ArmourType.NONE;
+    }
+
+    public ArmourType getArmourType() {
+        return armourType;
     }
 
     public int getRange() {
@@ -20,5 +27,13 @@ public class Archer extends Soldier {
 
     public boolean isRider() {
         return isRider;
+    }
+
+    public boolean isOnFire() {
+        return isOnFire;
+    }
+
+    public void setOnFire(boolean onFire) {
+        isOnFire = onFire;
     }
 }

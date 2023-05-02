@@ -1,35 +1,35 @@
 package model.ObjectsPackage.People.Soldier;
 
 public enum SoldierName {
-    //TODO: fill speed and range and...
-    ARCHER(0, 0, 0, 0, 0),
-    CROSSBOWMAN(0, 0, 0, 0, 0),
-    SPEARMAN(0, 0, 0, 0, 0),
-    PIKEMAN(0, 0, 0, 0, 0),
-    MACEMAN(0, 0, 0, 0, 0),
-    SWORDSMAN(0, 0, 0, 0, 0),
-    KNIGHT(0, 0, 0, 0, 0),
+    THE_LORD(100, 100, 0, 100, 55),
+    ARCHER(40, 45, 12, 30, 90),
+    CROSSBOWMAN(70, 75, 20, 50, 55),
+    SPEARMAN(50, 50, 8, 40, 60),
+    PIKEMAN(76, 77, 20, 80, 60),
+    MACEMAN(75, 70, 20, 50, 85),
+    SWORDSMAN(94, 94, 40, 80, 40),
+    KNIGHT(94, 90, 40, 80, 95),
+    ARABIAN_BOWMAN(45, 45, 75, 40, 90),
+    SLAVE(10, 20, 5, 10, 90),
     TUNNELER(0, 0, 0, 0, 0),
-    LADDERMAN(0, 0, 0, 0, 0),
+    LADDERMAN(0, 0, 4, 10, 90),
     ENGINEER(0, 0, 0, 0, 0),
-    BLACK_MONK(0, 0, 0, 0, 0),
-    ARABIAN_BOWMAN(0, 0, 0, 0, 0),
-    SLAVE(0, 0, 0, 0, 0),
-    SLINGER(0, 0, 0, 0, 0),
-    ASSASIN(0, 0, 0, 0, 0),
-    HORSE_ARCHER(0, 0, 0, 0, 0),
-    ARABIAN_SWORDSMAN(0, 0, 0, 0, 0),
-    FIRE_THROWER(0, 0, 0, 0, 0);
+    BLACK_MONK(75, 75, 10, 30, 30),
+    SLINGER(36, 20, 12, 30, 90),
+    ASSASIN(76, 73, 60, 40, 67),
+    HORSE_ARCHER(50, 55, 80, 30, 95),
+    ARABIAN_SWORDSMAN(88, 88, 80, 80, 40),
+    FIRE_THROWER(84, 60, 100, 30, 60);
     private final int attackPower;
     private final int defensePower;
-    private final int cost;
+    private final int goldCost;
     private final int life;
     private final int speed;
 
-    SoldierName(int attackPower, int defensePower, int cost, int life, int speed) {
+    SoldierName(int attackPower, int defensePower, int goldCost, int life, int speed) {
         this.attackPower = attackPower;
         this.defensePower = defensePower;
-        this.cost = cost;
+        this.goldCost = goldCost;
         this.life = life;
         this.speed = speed;
     }
@@ -42,8 +42,8 @@ public enum SoldierName {
         return defensePower;
     }
 
-    public int getCost() {
-        return cost;
+    public int getGoldCost() {
+        return goldCost;
     }
 
     public int getLife() {

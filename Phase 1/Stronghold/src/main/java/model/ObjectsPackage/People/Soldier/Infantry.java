@@ -1,26 +1,33 @@
 package model.ObjectsPackage.People.Soldier;
 
-import model.ObjectsPackage.Weapons.Weapon;
-
 public class Infantry extends Soldier {
-    private boolean isArmoured;
-    private boolean isScaleWalls;
-    private boolean isRider;
+    private final ArmourType armourType;
+    private final boolean canScaleWalls;
+    private final boolean isRider;
 
-    public Infantry(Weapon weapon, SoldierName type) {
-        super(weapon, type); //TODO: fill weapon, isRider, isArmoured, isScaleWalls based on type
+    public Infantry(SoldierName type) {
+        super(type);
+
+        switch (type) {
+            case MACEMAN -> armourType = ArmourType.LEATHER;
+            case PIKEMAN, SWORDSMAN, KNIGHT, THE_LORD -> armourType = ArmourType.METAL;
+            default -> armourType = ArmourType.NONE;
+        }
+
+        isRider = type == SoldierName.KNIGHT;
+        canScaleWalls = (type == SoldierName.LADDERMAN) | (type == SoldierName.ASSASIN);
     }
 
     public void captureGate(int x, int y) {
         //TODO: fill strategy
     }
 
-    public boolean isArmoured() {
-        return isArmoured;
+    public ArmourType getArmourType() {
+        return armourType;
     }
 
-    public boolean isScaleWalls() {
-        return isScaleWalls;
+    public boolean canScaleWalls() {
+        return canScaleWalls;
     }
 
     public boolean isRider() {
