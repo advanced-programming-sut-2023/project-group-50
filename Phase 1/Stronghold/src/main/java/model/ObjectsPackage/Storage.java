@@ -10,7 +10,7 @@ public class Storage extends Building {
     private final HashMap<String, Integer> capacity;
     private final Storage nextStorage;
 
-    protected Storage(BuildingType type, User owner, int x, int y, int maxHp, Storage nextStorage) {
+    public Storage(BuildingType type, User owner, int x, int y, int maxHp, Storage nextStorage) {
         super(type, owner, x, y, maxHp);
         this.nextStorage = nextStorage;
         capacity = new HashMap<>();
