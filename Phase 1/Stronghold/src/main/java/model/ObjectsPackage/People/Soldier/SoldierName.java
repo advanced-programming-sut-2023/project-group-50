@@ -1,5 +1,7 @@
 package model.ObjectsPackage.People.Soldier;
 
+import java.util.ArrayList;
+
 public enum SoldierName {
     THE_LORD(100, 100, 0, 100, 55),
     ARCHER(40, 45, 12, 30, 90),
@@ -25,6 +27,7 @@ public enum SoldierName {
     private final int goldCost;
     private final int life;
     private final int speed;
+    private final String type;
 
     SoldierName(int attackPower, int defensePower, int goldCost, int life, int speed) {
         this.attackPower = attackPower;
@@ -32,6 +35,28 @@ public enum SoldierName {
         this.goldCost = goldCost;
         this.life = life;
         this.speed = speed;
+        this.type = getName(this.name());
+    }
+
+    public static SoldierName getSoldierNameByType(String type) {
+        for (SoldierName soldierName : SoldierName.values()) {
+            if (soldierName.type.equals(type)) {
+                return soldierName;
+            }
+        }
+
+        return null;
+    }
+
+    public static boolean isArab(SoldierName soldierName) {
+        return soldierName.ordinal() > 10;
+    }
+
+    private String getName(String name) {
+        ArrayList<String> Words = new ArrayList<>();
+        for (String word : name.replaceAll("_", " ").toLowerCase().split(" "))
+            Words.add(Character.toUpperCase(word.charAt(0)) + word.substring(1));
+        return String.join(" ", Words);
     }
 
     public int getAttackPower() {
@@ -52,5 +77,9 @@ public enum SoldierName {
 
     public int getSpeed() {
         return speed;
+    }
+
+    public String getType() {
+        return type;
     }
 }

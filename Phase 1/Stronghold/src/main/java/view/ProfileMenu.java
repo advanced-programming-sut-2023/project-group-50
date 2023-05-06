@@ -1,28 +1,34 @@
 package view;
 
 import controller.Menus.ProfileController;
-import controller.UserDatabase.User;
 import controller.control.Commands;
 import controller.control.State;
 
 import java.util.Scanner;
+import java.util.regex.Matcher;
 
 public class ProfileMenu {
 
     private final ProfileController profileController;
-    private User currentUser;
+
+    private Matcher nextMatcher;
 
     public ProfileMenu() {
         this.profileController = new ProfileController(this);
     }
 
-    public User getCurrentUser() {
-        return currentUser;
+    public ProfileController getProfileController() {
+        return profileController;
     }
 
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
+    public Matcher getNextMatcher() {
+        return nextMatcher;
     }
+
+    public void setNextMatcher(Matcher nextMatcher) {
+        this.nextMatcher = nextMatcher;
+    }
+
 
     public State run(Scanner scanner) {
 
@@ -33,6 +39,9 @@ public class ProfileMenu {
             if (Commands.getMatcher(Commands.LOGOUT, input).find()) {
                 System.out.println("user logged out successfully!");
                 return State.SIGN;
+            } else if (Commands.getMatcher(Commands.SHOW_MAP, input).find()) {
+                this.setNextMatcher(Commands.getMatcher(Commands.SHOW_MAP, input));
+                return State.MAP;
             } else if (Commands.getMatcher(Commands.PROFILE_CHANGE, input).find()) {
                 System.out.println(this.profileController.profileChange(Commands.getMatcher(Commands.PROFILE_CHANGE, input)));
             } else if (Commands.getMatcher(Commands.REMOVE_SLOGAN, input).find()) {

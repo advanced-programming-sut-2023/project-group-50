@@ -1,12 +1,14 @@
 package model.ObjectsPackage.People.Soldier;
 
+import controller.UserDatabase.User;
+
 public class Infantry extends Soldier {
     private final ArmourType armourType;
     private final boolean canScaleWalls;
     private final boolean isRider;
 
-    public Infantry(SoldierName type) {
-        super(type);
+    public Infantry(SoldierName type, User owner) {
+        super(type, owner);
 
         switch (type) {
             case MACEMAN -> armourType = ArmourType.LEATHER;

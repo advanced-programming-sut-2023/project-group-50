@@ -5,6 +5,7 @@ import controller.UserDatabase.Users;
 import controller.control.Commands;
 import controller.control.Error;
 import model.Captcha.Captcha;
+import model.Map.Map;
 import view.LoginMenu;
 
 import java.io.*;
@@ -15,9 +16,10 @@ import java.util.regex.Pattern;
 
 public class LoginController {
 
+    private static String userLoggedInPath = ".\\Phase 1\\User logged in.txt";
     private final LoginMenu loginMenu;
     private User tryToLogin;
-
+    private User loggedIn;
 
     public LoginController(LoginMenu loginMenu) {
         this.loginMenu = loginMenu;
@@ -37,7 +39,7 @@ public class LoginController {
         return new Error(string, true);
     }
 
-    private static String removeDoubleCoutString(String string) {
+    static String removeDoubleCoutString(String string) {
 
         if (Commands.getMatcher(Commands.DOUBLE_QUOTE, string).find()) {
             string = string.substring(1, string.length() - 1);
@@ -50,7 +52,6 @@ public class LoginController {
         int time = 5 * (attempt - 5);
 
         System.out.println("You should wait " + time + " second an try again");
-
         TimeUnit.SECONDS.sleep(time);
         return "try again";
     }
@@ -77,6 +78,47 @@ public class LoginController {
             System.out.println("Your answer is wrong\nPlease try new captcha :\n");
 
         }
+    }
+
+    private static void writInFile(String username) throws IOException {
+        FileWriter file = new FileWriter(userLoggedInPath, true);
+        File obj = new File(userLoggedInPath);
+        BufferedWriter bw = null;
+        PrintWriter pw = null;
+        bw = new BufferedWriter(file);
+        pw = new PrintWriter(bw);
+        Scanner read = new Scanner(obj);
+        int f = 0;
+        while (read.hasNextLine()) {
+            if (username.equals(read.nextLine())) {
+                f = 1;
+                break;
+            }
+        }
+        if (f == 0) {
+            pw.println(username);
+        }
+        pw.close();
+        bw.close();
+        file.close();
+        read.close();
+    }
+
+    static Error checkHasField(String input, Commands command) {
+        Matcher matcher = Commands.getMatcher(command, input);
+
+        if (!matcher.find()) {
+            return new Error("You should enter all field!\nEnter a " + command.name(), false);
+        }
+        String string = matcher.group();
+        string = string.substring(3);
+        string = removeDoubleCoutString(string);
+        return getError(command, matcher, string);
+
+    }
+
+    public User getLoggedIn() {
+        return loggedIn;
     }
 
     public User getTryToLogin() {
@@ -123,51 +165,15 @@ public class LoginController {
             if (matcher.find()) {
                 return "Invalid command!\nEnter a  once";
             }
-
-            FileWriter file = new FileWriter("D:\\aa\\CE FILE\\start again\\AP\\project\\User logged in.txt", true);
-            File obj = new File("D:\\aa\\CE FILE\\start again\\AP\\project\\User logged in.txt");
-            BufferedWriter bw = null;
-            PrintWriter pw = null;
-            bw = new BufferedWriter(file);
-            pw = new PrintWriter(bw);
-            Scanner read = new Scanner(obj);
-            int f = 0;
-            while (read.hasNextLine()) {
-                if (username.equals(read.nextLine())) {
-                    f = 1;
-                    break;
-                }
-            }
-            if (f == 0) {
-                pw.println(username);
-            }
-            pw.close();
-            bw.close();
-            file.close();
-            read.close();
+            writInFile(username);
         }
 
         showCaptcha(scanner);
-
+        setMapSize(user, scanner);
         user.setAttemptToLogin(0);
-        this.loginMenu.setUserLoggedIn(user);
+        this.loggedIn = (user);
         this.tryToLogin = null;
         return "user logged in successfully!";
-
-    }
-
-    private Error checkHasField(String input, Commands command) {
-        Matcher matcher = Commands.getMatcher(command, input);
-
-        if (!matcher.find()) {
-            return new Error("You should enter all field!\nEnter a " + command.name(), false);
-        }
-
-        String string = matcher.group();
-        string = string.substring(3);
-
-        string = removeDoubleCoutString(string);
-        return getError(command, matcher, string);
 
     }
 
@@ -223,5 +229,31 @@ public class LoginController {
         }
         tryToLogin.setPassword(input);
         return "Your password successfully changed!";
+    }
+
+    private void setMapSize(User user, Scanner scanner) {
+        if (user.getGovernment().getMap() != null) {
+            return;
+        }
+        System.out.println("Please enter the map size from the sizes below :");
+        System.out.print("Please enter (200*200) or (400*400) : ");
+        Map map = null;
+        while (true) {
+            String input = scanner.nextLine();
+
+            if (input.equals("200*200")) {
+                map = new Map(200, 200);
+                break;
+            } else if (input.equals("400*400")) {
+                map = new Map(400, 400);
+                break;
+            } else {
+                System.out.print("Please enter a valid size : ");
+            }
+
+
+        }
+        user.getGovernment().setMap(map);
+
     }
 }

@@ -6,9 +6,9 @@ import java.io.Serializable;
 
 public abstract class Objects implements Serializable {
     private final ObjectType objectType;
+    protected User owner;
     private int X;
     private int Y;
-    protected User owner;
 
     protected Objects(ObjectType objectType, User owner) {
         this.objectType = objectType;
@@ -33,5 +33,9 @@ public abstract class Objects implements Serializable {
 
     public ObjectType getObjectType() {
         return objectType;
+    }
+
+    public User getOwner() {
+        return owner;
     }
 }

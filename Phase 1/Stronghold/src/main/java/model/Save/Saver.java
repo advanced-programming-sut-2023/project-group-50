@@ -7,16 +7,13 @@ import model.Item.Item;
 import model.Trade.Trade;
 import model.Trade.TradeMarket;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 public class Saver implements Serializable {
-    static String path = "src\\main\\java\\model\\Save\\LastGame\\LastSave.txt";
+    static String path = "Phase 1\\stronghold\\src\\main\\java\\model\\Save\\LastGame\\LastSave.txt";
 
 
     /**
@@ -42,8 +39,15 @@ public class Saver implements Serializable {
         nextId = TradeMarket.getNextId();
     }
 
+    private static void makeLastGameTxtIfNotExists() {
+        File dir = new File(path);
+        if (!dir.exists()) dir.mkdirs();
+    }
+
     public void save() {
         try {
+            makeLastGameTxtIfNotExists();
+
             FileOutputStream fileOutputStream = new FileOutputStream(path);
             ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream);
 

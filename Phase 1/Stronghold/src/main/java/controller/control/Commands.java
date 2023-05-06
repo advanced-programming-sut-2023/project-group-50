@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 public enum Commands {
     DOUBLE_QUOTE("\".*\""),
+    WORD("\\S+"),
     CAPITAL_LETTER("[A-Z]"),
     SMALL_LETTER("[a-z]"),
     DIGIT("\\d"),
@@ -18,6 +19,11 @@ public enum Commands {
     STAY("--stay-logged-in"),
     OLD_PASS("-o ((\".*\")|(\\S*))"),
     NEW_PASS("-n ((\".*\")|(\\S*))"),
+    X("-x \\d*"),
+    Y("-y \\d*"),
+    DIRECTION("(up|left|down|right)( \\d+)?"),
+    TYPE("-type ((\".*\")|(\\S*))"),
+    COUNT("-c (\\d*)"),
 
 
     CREATE_USER("^user create(( -p(( random)|(( \".*\"){2})|(( \\S*){2})))|( -[sune] ((\".*\")|(\\S*)))){4,5}$"),
@@ -39,13 +45,18 @@ public enum Commands {
     TRADE_LIST("^trade list$"),
     TRADE_ACCEPT("^trade accept (?=.*(-i (?<id>-?\\d+)))(?=.*(-m (?<message>.*)))$"),
     TRADE_HISTORY("^trade history$"),
+
+    SHOW_MAP("^show map( -(x|y) \\d*){2}$"),
+    MOVE_MAP("^map( (up|left|down|right)( \\d+)?)+$"),
+    DROP_BUILDING("^dropbuilding(( -(x|y) (\\d*))|( -type ((\".*\")|(\\S*)))){3}$"),
+    SELECT_BUILDING("^select building( -(x|y) \\d*){2}$"),
+    REPAIR("^repair$"),
+    CREATE_UNIT("^createunit(( -(c) (\\d*))|( -type ((\".*\")|(\\S*)))){2}$"),
     BUY_ITEM("^buy item (?<name>.*)$"),
     SELL_ITEM("^sell item (?<name>.*)$"),
     ADD_NEW_ITEM("^add new item (?=.*(-c (?<count>-?\\d+)))(?=.*(-p (?<price>-?\\d+)))(?=.*(-n (?<name>.*)))$"),
     SHOW_ALL_ITEMS("^show all items$"),
     SHOW_MY_ITEMS("^show my items$");
-
-
     private final String regex;
 
     Commands(String regex) {

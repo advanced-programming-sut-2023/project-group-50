@@ -27,7 +27,6 @@ public abstract class Building extends Objects {
         residents = new HashMap<>();
     }
 
-
     public static Building getBuildingByType(BuildingType buildingType, User owner, int x, int y) {
         switch (buildingType) {
             case SMALL_STONE_GATEHOUSE -> {
@@ -245,12 +244,42 @@ public abstract class Building extends Objects {
         }
     }
 
+    public static boolean isCastles(Building building) {
+        BuildingType buildingType = building.type;
+        switch (buildingType) {
+            case SMALL_STONE_GATEHOUSE,
+                    BIG_STONE_GATEHOUSE,
+                    DRAW_BRIDGE,
+                    LOOKOUT_TOWER,
+                    PERIMETER_TOWER,
+                    TURRET,
+                    SQUARE_TOWER,
+                    ROUND_TOWER,
+                    ARMOURY,
+                    MERCENARY_POST,
+                    TUNNELER_GUILD,
+                    KILLING_PIT,
+                    BARRACKS,
+                    ENGINEER_GUILD,
+                    SIEGE_TENT,
+                    STABLE,
+                    PITCH_DITCH,
+                    CAGED_WAR_DOGS,
+                    OIL_SMELTER -> {
+                return true;
+            }
 
-    private void repair() {
+            default -> {
+                return false;
+            }
+        }
+    }
+
+    public void repair() {
         hp = maxHp;
     }
 
-    private boolean isDestroyed() {
+    public boolean isDestroyed() {
         return hp <= 0;
     }
 
@@ -270,6 +299,10 @@ public abstract class Building extends Objects {
         return hp;
     }
 
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
     public int getMaxHp() {
         return maxHp;
     }
@@ -277,4 +310,6 @@ public abstract class Building extends Objects {
     public HashMap<String, Integer> getResidents() {
         return residents;
     }
+
+
 }

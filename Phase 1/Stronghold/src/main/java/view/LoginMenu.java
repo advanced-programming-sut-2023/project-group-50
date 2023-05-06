@@ -1,7 +1,6 @@
 package view;
 
 import controller.Menus.LoginController;
-import controller.UserDatabase.User;
 import controller.control.Commands;
 import controller.control.State;
 
@@ -14,10 +13,12 @@ public class LoginMenu {
     private final LoginController loginController;
     private Matcher nextMatcher;
 
-    private User userLoggedIn;
-
     public LoginMenu() {
         this.loginController = new LoginController(this);
+    }
+
+    public LoginController getLoginController() {
+        return loginController;
     }
 
     public Matcher getNextMatcher() {
@@ -28,13 +29,6 @@ public class LoginMenu {
         this.nextMatcher = nextMatcher;
     }
 
-    public User getUserLoggedIn() {
-        return userLoggedIn;
-    }
-
-    public void setUserLoggedIn(User userLoggedIn) {
-        this.userLoggedIn = userLoggedIn;
-    }
 
     public State run(Scanner scanner) throws InterruptedException, IOException {
 

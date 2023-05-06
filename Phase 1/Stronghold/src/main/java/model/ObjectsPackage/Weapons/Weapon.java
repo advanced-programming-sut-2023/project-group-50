@@ -27,8 +27,4 @@ public class Weapon extends Objects {
     public WeaponName getWeaponName() {
         return weaponName;
     }
-
-    public Soldier getOwner() {
-        return Owner;
-    }
 }

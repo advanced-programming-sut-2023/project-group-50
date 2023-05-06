@@ -1,5 +1,6 @@
 package model.ObjectsPackage.People;
 
+import controller.UserDatabase.User;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 
@@ -11,7 +12,7 @@ public abstract class Person extends Objects {
     private int starving;
     private int income;
 
-    protected Person(boolean isSoldier, int life, int speed) {
+    protected Person(boolean isSoldier, int life, int speed, User owner) {
         super(ObjectType.PERSON, owner);
         this.isSoldier = isSoldier;
         this.life = life;

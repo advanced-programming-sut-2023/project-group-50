@@ -13,7 +13,7 @@ public abstract class Soldier extends Person {
     private int[][] patrolPath; //[x,y][0,1]
 
     public Soldier(SoldierName type, User owner) {
-        super(true, type.getLife(), type.getSpeed());
+        super(true, type.getLife(), type.getSpeed(), owner);
         weapon = new Weapon(getWeaponName(type), this, owner);
         this.type = type;
         soldierState = SoldierState.STANDING;

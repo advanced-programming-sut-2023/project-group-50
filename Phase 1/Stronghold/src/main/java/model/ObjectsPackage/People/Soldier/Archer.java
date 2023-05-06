@@ -1,13 +1,15 @@
 package model.ObjectsPackage.People.Soldier;
 
+import controller.UserDatabase.User;
+
 public class Archer extends Soldier {
     private final boolean isRider;
     private final ArmourType armourType;
     private boolean isOnFire;
     private int range;
 
-    public Archer(SoldierName type) {
-        super(type);
+    public Archer(SoldierName type, User owner) {
+        super(type, owner);
         isRider = type.equals(SoldierName.HORSE_ARCHER);
         isOnFire = type.equals(SoldierName.FIRE_THROWER);
         armourType = (type == SoldierName.CROSSBOWMAN) ? ArmourType.LEATHER : ArmourType.NONE;
