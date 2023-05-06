@@ -16,12 +16,8 @@ public class Weapon extends Objects {
         Owner = soldier;
     }
 
-    private void hit() {
-        //TODO: fill here
-    }
-
-    private void move(int x, int y) {
-        //TODO: fill here
+    private void hit(Objects object) {
+        object.applyDamage(weaponName.getDamage());
     }
 
     public WeaponName getWeaponName() {

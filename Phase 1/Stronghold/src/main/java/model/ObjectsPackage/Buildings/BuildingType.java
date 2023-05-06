@@ -47,7 +47,9 @@ public enum BuildingType {
     WHEAT_FARMER(0, 15, 0, "Wheat farmer"),
     BAKERY(0, 10, 0, "Bakery"),
     BREWER(0, 10, 0, "Brewer"),
-    GRANARY(0, 5, 0, "Granary");
+    GRANARY(0, 5, 0, "Granary"),
+    TUNNEL(0, 0, 0, "Tunnel"),
+    TANNERS_WORKSHOP(0, 50, 50, "Tanner's workshop");
     private final int stoneCost;
     private final int woodCost;
     private final int goldCost;

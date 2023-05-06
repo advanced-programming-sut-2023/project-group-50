@@ -10,7 +10,10 @@ public enum Resource implements Serializable {
     STONE,
     IRON,
     WOOD,
-    PITCH;
+    PITCH,
+    BREAD,
+    COW,
+    MEAT, CHEESE, APPLE, OIL;
 
     public static boolean nameIsValid(String name) {
         name = name.toUpperCase();

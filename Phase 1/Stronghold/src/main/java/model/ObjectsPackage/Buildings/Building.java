@@ -221,7 +221,7 @@ public abstract class Building extends Objects {
                         10);
             }
             case BLACKSMITH, FLETCHER, POLETURNER, OIL_SMELTER, APPLE_ORCHARD, DIARY_FARMER, HOPS_FARMER, HUNTER_POST,
-                    WHEAT_FARMER, BAKERY, BREWER -> {
+                    WHEAT_FARMER, BAKERY, BREWER, TANNERS_WORKSHOP -> {
                 return new Workshops(buildingType,
                         owner,
                         x,

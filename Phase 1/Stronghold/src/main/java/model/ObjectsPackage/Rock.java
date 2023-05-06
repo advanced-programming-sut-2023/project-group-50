@@ -1,6 +1,7 @@
 package model.ObjectsPackage;
 
 import controller.UserDatabase.User;
+import model.Map.GroundType;
 
 public class Rock extends Objects {
     private String direction;
@@ -11,8 +12,18 @@ public class Rock extends Objects {
     }
 
     public boolean canPlace(int x, int y) {
-        //TODO: complete this when map is done
-        return true;
+        GroundType groundType = this.getOwner().getGovernment().getMap().getXY(x, y).getTexture();
+
+        switch (groundType) {
+            case GROUND, BEACH, PLAIN, MEADOW, LAWN, GRASS, RIGGED_GROUND -> {
+                return true;
+            }
+
+            case CLIFF, SEA, BIG_POND, SMALL_POND, RIVER, SHALLOW_WATER, OIL, IRON, STONE -> {
+                return false;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + groundType);
+        }
     }
 
     public String getDirection() {

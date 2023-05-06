@@ -4,6 +4,7 @@ import controller.UserDatabase.User;
 import model.ObjectsPackage.People.Soldier.SoldierName;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class House extends Building {
     private final int capacity;
@@ -15,14 +16,11 @@ public class House extends Building {
         soldierCount = new HashMap<>();
     }
 
-    public boolean canDefendItself() {
-        //TODO: fill here
-        return false;
-    }
-
     public boolean canIncreasePopularity() {
-        //TODO: fill here
-        return false;
+        return
+                Objects.requireNonNull(getType()) == BuildingType.CHAPEL ||
+                        getType() == BuildingType.CATHEDRAL ||
+                        getType() == BuildingType.CHURCH;
     }
 
     public int getSoldierCount(SoldierName soldierName) {

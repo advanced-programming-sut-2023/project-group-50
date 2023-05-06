@@ -25,26 +25,30 @@ public class GroupSoldier extends Objects {
         this.protection = protection;
     }
 
+    public ArrayList<Soldier> getGroup() {
+        return group;
+    }
+
     public void addSoldier(Soldier soldier) {
         group.add(soldier);
     }
 
     public void moveGroup(int x, int y) {
-        //TODO: fill here after map is done
+        // TODO: fill here after map is done
     }
 
     public void patrolGroup(int x1, int y1, int x2, int y2) {
-        //TODO: fill here after map is done
+        // TODO: fill here after map is done
     }
 
     public void stopGroup(int x1, int y1, int x2, int y2) {
-        //TODO: fill here after map is done
+        // TODO: fill here after map is done
     }
 
-    //TODO: fill strategies
+    // TODO: fill strategies
 
     public void checkMode() {
-        //TODO: what?
+        // TODO: what?
     }
 
     public void attackEnemy(Object enemy) {

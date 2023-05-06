@@ -1,6 +1,10 @@
 package model.ObjectsPackage;
 
 import controller.UserDatabase.User;
+import model.ObjectsPackage.Buildings.Building;
+import model.ObjectsPackage.People.Person;
+import model.ObjectsPackage.People.Soldier.GroupSoldier;
+import model.ObjectsPackage.People.Soldier.Soldier;
 
 import java.io.Serializable;
 
@@ -37,5 +41,25 @@ public abstract class Objects implements Serializable {
 
     public User getOwner() {
         return owner;
+    }
+
+    public void applyDamage(int damage) {
+        switch (objectType) {
+            case PERSON -> {
+                Person person = (Person) this;
+                person.setLife(person.getLife() - damage);
+            }
+            case TREE, WEAPON, ROCK -> {
+            }
+            case BARRACKS, BUILDING -> {
+                Building building = (Building) this;
+                building.setHp(building.getHp() - damage);
+            }
+            case GROUP_SOLDIER -> {
+                GroupSoldier groupSoldier = (GroupSoldier) this;
+                for (Soldier soldier : groupSoldier.getGroup())
+                    soldier.setLife(soldier.getLife() - damage);
+            }
+        }
     }
 }

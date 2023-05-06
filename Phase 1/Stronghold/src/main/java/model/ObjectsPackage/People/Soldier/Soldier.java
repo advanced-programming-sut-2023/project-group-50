@@ -1,6 +1,7 @@
 package model.ObjectsPackage.People.Soldier;
 
 import controller.UserDatabase.User;
+import model.Map.GroundType;
 import model.ObjectsPackage.People.Person;
 import model.ObjectsPackage.Weapons.Weapon;
 import model.ObjectsPackage.Weapons.WeaponName;
@@ -48,6 +49,25 @@ public abstract class Soldier extends Person {
         }
     }
 
+    public static Soldier getSoldierByType(SoldierName soldierName, User owner) {
+        switch (soldierName) {
+            case THE_LORD, SPEARMAN, PIKEMAN, MACEMAN, SWORDSMAN, KNIGHT, SLAVE, ARABIAN_SWORDSMAN,
+                    LADDERMAN, ASSASIN, BLACK_MONK -> {
+                return new Infantry(soldierName, owner);
+            }
+            case ARCHER, CROSSBOWMAN, ARABIAN_BOWMAN, FIRE_THROWER, HORSE_ARCHER, SLINGER -> {
+                return new Archer(soldierName, owner);
+            }
+            case TUNNELER -> {
+                return new Tunneler(owner);
+            }
+            case ENGINEER -> {
+                return new Engineer(owner);
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + soldierName);
+        }
+    }
+
     public SoldierState getSoldierState() {
         return soldierState;
     }
@@ -67,8 +87,16 @@ public abstract class Soldier extends Person {
     }
 
     public boolean canPlace(int x, int y) {
-        //TODO: complete this when map is done
-        return true;
+        GroundType groundType = owner.getGovernment().getMap().getXY(x, y).getTexture();
+        switch (groundType) {
+            case GROUND, BEACH, RIVER, SHALLOW_WATER, PLAIN, MEADOW, LAWN, GRASS, RIGGED_GROUND -> {
+                return true;
+            }
+            case CLIFF, SEA, BIG_POND, SMALL_POND, OIL, IRON, STONE -> {
+                return false;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + groundType);
+        }
     }
 
     public Weapon getWeapon() {
@@ -85,24 +113,5 @@ public abstract class Soldier extends Person {
 
     public void setPatrolling(boolean patrolling) {
         isPatrolling = patrolling;
-    }
-
-    public static Soldier getSoldierByType(SoldierName soldierName, User owner) {
-        switch (soldierName) {
-            case THE_LORD, SPEARMAN, PIKEMAN, MACEMAN, SWORDSMAN, KNIGHT, SLAVE, ARABIAN_SWORDSMAN,
-                    LADDERMAN, ASSASIN, BLACK_MONK -> {
-                return new Infantry(soldierName, owner);
-            }
-            case ARCHER, CROSSBOWMAN, ARABIAN_BOWMAN, FIRE_THROWER, HORSE_ARCHER, SLINGER -> {
-                return new Archer(soldierName, owner);
-            }
-            case TUNNELER -> {
-                return new Tunneler(owner);
-            }
-            case ENGINEER -> {
-                return new Engineer(owner);
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + soldierName);
-        }
     }
 }
