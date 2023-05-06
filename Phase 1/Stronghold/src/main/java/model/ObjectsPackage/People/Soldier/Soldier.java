@@ -38,7 +38,7 @@ public abstract class Soldier extends Person {
             case MACEMAN -> {
                 return WeaponName.MACE;
             }
-            case SWORDSMAN, KNIGHT, ARABIAN_SWORDSMAN -> {
+            case SWORDSMAN, KNIGHT, ARABIAN_SWORDSMAN, THE_LORD -> {
                 return WeaponName.SWORDS;
             }
             case SLAVE, TUNNELER, LADDERMAN, ENGINEER, BLACK_MONK, ASSASIN -> {
@@ -85,5 +85,24 @@ public abstract class Soldier extends Person {
 
     public void setPatrolling(boolean patrolling) {
         isPatrolling = patrolling;
+    }
+
+    public static Soldier getSoldierByType(SoldierName soldierName, User owner) {
+        switch (soldierName) {
+            case THE_LORD, SPEARMAN, PIKEMAN, MACEMAN, SWORDSMAN, KNIGHT, SLAVE, ARABIAN_SWORDSMAN,
+                    LADDERMAN, ASSASIN, BLACK_MONK -> {
+                return new Infantry(soldierName, owner);
+            }
+            case ARCHER, CROSSBOWMAN, ARABIAN_BOWMAN, FIRE_THROWER, HORSE_ARCHER, SLINGER -> {
+                return new Archer(soldierName, owner);
+            }
+            case TUNNELER -> {
+                return new Tunneler(owner);
+            }
+            case ENGINEER -> {
+                return new Engineer(owner);
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + soldierName);
+        }
     }
 }
