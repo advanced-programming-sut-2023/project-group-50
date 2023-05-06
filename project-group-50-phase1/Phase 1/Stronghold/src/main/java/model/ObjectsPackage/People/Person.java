@@ -14,6 +14,7 @@ public abstract class Person extends Objects {
     private final User  owner;
 
 
+
     protected Person(boolean isSoldier, int life, int speed,User user) {
         super(ObjectType.PERSON);
         this.isSoldier = isSoldier;

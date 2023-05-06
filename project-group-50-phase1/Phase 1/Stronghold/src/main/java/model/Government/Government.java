@@ -5,8 +5,10 @@ import model.Map.Map;
 import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.Buildings.BuildingType;
 import model.ObjectsPackage.People.Person;
+import model.ObjectsPackage.People.PersonState;
 import model.ObjectsPackage.People.Soldier.Soldier;
 import model.ObjectsPackage.Resource;
+import model.ObjectsPackage.Weapons.WeaponName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,14 +19,20 @@ public class Government implements Serializable {
     private final HashMap<Resource, Integer> resources;
     private int coins;
     private Map map;
-    private ArrayList<Person> noneJob;
-    private ArrayList<Soldier> unDeployedSoldier;
+   private HashMap<PersonState, ArrayList<Person>> people;
+
+   private HashMap<WeaponName, Integer> weapons;
 
     public Government(User user) {
         this.user = user;
         resources = new HashMap<>();
         coins = 0;
-        this.noneJob=new ArrayList<> ();
+        this.people=new HashMap<> ();
+        this.people.put (PersonState.WORKER,new ArrayList<> ());
+        this.people.put (PersonState.JOBLESS,new ArrayList<> ());
+        this.people.put (PersonState.DEPLOYED_SOLDIER,new ArrayList<> ());
+        this.people.put (PersonState.UNDEPLOYED_SOLDIER,new ArrayList<> ());
+
     }
 
     public void setResourceAmount(Resource resource, int value) {
@@ -57,19 +65,23 @@ public class Government implements Serializable {
         this.setResourceAmount (Resource.IRON,this.resources.get (Resource.IRON) -(int)(buildingType.getIronCost ()*zarib));
     }
 
-    public ArrayList<Person> getNoneJob() {
-        return noneJob;
-    }
+   public ArrayList<Person> getPeopleByState(PersonState personState){
+        return this.people.get (personState);
+   }
+   public void addPeopleByState(Person person,PersonState personState){
+        this.people.get (personState).add (person);
+   }
 
-    public void addNoneJob(Person noneJob) {
-        this.noneJob.add ( noneJob);
+    public HashMap<WeaponName, Integer> getWeapons() {
+        return weapons;
     }
+    public void addWeaponByName(int count,WeaponName weaponName){
+        if(weapons.containsKey (weaponName)){
+            weapons.replace (weaponName,weapons.get (weaponName)+count);
+        }else {
+            weapons.put (weaponName,count);
+        }
 
-    public ArrayList<Soldier> getUnDeployedSoldier() {
-        return unDeployedSoldier;
-    }
 
-    public void addUnDeployedSoldier(ArrayList<Soldier unDeployedSoldier) {
-        this.unDeployedSoldier = unDeployedSoldier;
     }
 }

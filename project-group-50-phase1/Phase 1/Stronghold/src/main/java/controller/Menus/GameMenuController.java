@@ -9,8 +9,11 @@ import model.Map.Unit;
 import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.Buildings.BuildingType;
 import model.ObjectsPackage.ObjectType;
+import model.ObjectsPackage.People.PersonState;
+import model.ObjectsPackage.People.Soldier.Soldier;
 import model.ObjectsPackage.People.Soldier.SoldierName;
 import model.ObjectsPackage.Resource;
+import model.ObjectsPackage.Weapons.WeaponName;
 import view.GameMenu;
 
 import java.util.regex.Matcher;
@@ -282,9 +285,16 @@ public class GameMenuController {
         if (soldierName.getCost () * count > this.currentUser.getGovernment ().getCoins ()) {
             return "You haven't enough gold";
         }
-        ///
-        ///
-        if (this.currentUser.getGovernment ().getNoneJob ().size () < count) {
+
+        WeaponName weaponName=Soldier.getWeaponName (soldierName);
+        if(!this.currentUser.getGovernment ().getWeapons ().containsKey (weaponName)){
+            return "You haven't any this type weapon";
+        }
+        if(this.currentUser.getGovernment ().getWeapons ().get (weaponName)<count){
+            return "You haven't enough weapons";
+        }
+
+        if (this.currentUser.getGovernment ().getPeopleByState (PersonState.JOBLESS).size ()<count) {
             return "You haven't enough people";
         }
 
