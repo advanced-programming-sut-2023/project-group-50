@@ -1,11 +1,15 @@
 package model.Map;
 
+import controller.UserDatabase.User;
+import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
+import model.ObjectsPackage.People.Soldier.Soldier;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Map {
+public class Map implements Serializable {
     private final HashMap<Integer, HashMap<Integer, Unit>> map;
     private final int xSize;
     private final int ySize;
@@ -93,5 +97,61 @@ public class Map {
             for (int j = y1; j <= y2; j++) arrayLists.get(i - x1).add(map.get(i).get(j).toArrayListString());
         }
         return arrayLists;
+    }
+
+    public Objects getObjectByXY(int x, int y, ObjectType objectType) {
+        Unit unit = this.map.get(y).get(x);
+        if (unit.getObjects().isEmpty()) {
+            return null;
+        }
+        for (Objects objects : unit.getObjects()) {
+            if (objects.getObjectType().equals(objectType)) {
+                return objects;
+            }
+        }
+        return null;
+    }
+
+    public int getxSize() {
+        return xSize;
+    }
+
+    public int getySize() {
+        return ySize;
+    }
+
+    public Unit getUnitByXY(int x, int y) {
+        return this.map.get(y).get(x);
+    }
+
+    public boolean searchForEnemy(int x, int y, User ownerMap) {
+
+        int x1 = getX2(x, 5);
+        int y1 = getY2(y, 5);
+        int x0 = maxOrZero(x - 5);
+        int y0 = maxOrZero(y - 5);
+
+        for (int i = x0; i <= x1; i++) {
+            for (int j = y0; j <= y1; j++) {
+                Unit unit = map.get(i).get(j);
+                for (Objects objects : unit.getObjects()) {
+                    if (objects instanceof Soldier) {
+                        if (!ownerMap.equals(((Soldier) objects).getOwner())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+
+        return false;
+
+    }
+
+    public Unit getXY(int x, int y) {
+        return map.get(x).get(y);
     }
 }

@@ -1,13 +1,16 @@
 package controller.UserDatabase;
 
 import controller.control.SecurityQuestion;
+import model.Government.Government;
 import model.Item.Item;
 import model.Trade.Trade;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-public class User {
+public class User implements Serializable {
+    private final Government government;
     private String userName;
     private String password;
     private String nickName;
@@ -21,7 +24,6 @@ public class User {
     private ArrayList<String> messages;
     private LinkedHashMap<Integer, Trade> trades;
     private ArrayList<Item> items;
-
     private int highScore;
 
     public User(String userName, String password, String nickName, String email, String slogan) {
@@ -35,6 +37,7 @@ public class User {
         messages = new ArrayList<>();
         trades = new LinkedHashMap<>();
         items = new ArrayList<>();
+        government = new Government(this);
     }
 
     public int getAttemptToLogin() {
@@ -153,5 +156,33 @@ public class User {
 
     public void setItems(ArrayList<Item> items) {
         this.items = items;
+    }
+
+    public Government getGovernment() {
+        return government;
+    }
+
+    public ArrayList<String> getTradesAsString() {
+        ArrayList<String> list = new ArrayList<>();
+
+        for (Trade trade : trades.values())
+            list.add(trade.toString());
+
+        return list;
+    }
+
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
+    public void removeItem(Item item) {
+        items.remove(item);
+    }
+
+    public ArrayList<String> getItemsAsString() {
+        ArrayList<String> list = new ArrayList<>();
+        for (Item item : items)
+            list.add(item.toString());
+        return list;
     }
 }

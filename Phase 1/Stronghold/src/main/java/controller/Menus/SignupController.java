@@ -30,7 +30,7 @@ public class SignupController {
 
     private static String removeDoubleCoutString(String string) {
 
-        if (Commands.getMatcher(Commands.DOUBLEQOUT, string).find()) {
+        if (Commands.getMatcher(Commands.DOUBLE_QUOTE, string).find()) {
             string = string.substring(1, string.length() - 1);
         }
         return string;
@@ -182,7 +182,7 @@ public class SignupController {
         String pass = "";
         String confirmPass = "";
 
-        if ((matcher = Commands.getMatcher(Commands.DOUBLEQOUT, allPart)).find()) {
+        if ((matcher = Commands.getMatcher(Commands.DOUBLE_QUOTE, allPart)).find()) {
             pass = matcher.group();
             pass = removeDoubleCoutString(pass);
             confirmPass = allPart.substring(matcher.end() + 2, allPart.length() - 1);
@@ -200,10 +200,10 @@ public class SignupController {
         if (pass.length() < 6) {
             return new Error("Your password should have 6 character", false);
         }
-        if (!Commands.getMatcher(Commands.CAPITALLATTER, pass).find()) {
+        if (!Commands.getMatcher(Commands.CAPITAL_LETTER, pass).find()) {
             return new Error("Your password should have a capital letter", false);
         }
-        if (!Commands.getMatcher(Commands.SMALLLETTER, pass).find()) {
+        if (!Commands.getMatcher(Commands.SMALL_LETTER, pass).find()) {
             return new Error("Your password should have a small letter", false);
         }
         if (!Commands.getMatcher(Commands.DIGIT, pass).find()) {
@@ -273,7 +273,7 @@ public class SignupController {
         }
         String email = checkHasField(input, Commands.EMAIL).errorMassage;
 
-        if (!Commands.getMatcher(Commands.EMAILFORMAT, email).find()) {
+        if (!Commands.getMatcher(Commands.EMAIL_FORMAT, email).find()) {
             return new Error("Your email format is invalid", false);
         }
         if (Users.checkRepetitiousEmail(email)) {
@@ -296,7 +296,7 @@ public class SignupController {
 
         while (true) {
             String input = scanner.nextLine();
-            if (Commands.getMatcher(Commands.PICKQUESTION, input).find()) {
+            if (Commands.getMatcher(Commands.PICK_QUESTION, input).find()) {
                 if (!checkHasField(input, Commands.QUESTION).truth) {
                     System.out.println(checkHasField(input, Commands.QUESTION).errorMassage);
                 }
@@ -313,15 +313,15 @@ public class SignupController {
                     continue;
                 }
 
-                if (!checkHasField(input, Commands.ANSWERQUESTION).truth) {
-                    System.out.println(checkHasField(input, Commands.ANSWERQUESTION).errorMassage);
+                if (!checkHasField(input, Commands.ANSWER_QUESTION).truth) {
+                    System.out.println(checkHasField(input, Commands.ANSWER_QUESTION).errorMassage);
                 }
-                String answer = checkHasField(input, Commands.ANSWERQUESTION).errorMassage;
+                String answer = checkHasField(input, Commands.ANSWER_QUESTION).errorMassage;
 
-                if (!checkHasField(input, Commands.ANSWERCONFIRM).truth) {
-                    System.out.println(checkHasField(input, Commands.ANSWERCONFIRM).errorMassage);
+                if (!checkHasField(input, Commands.ANSWER_CONFIRM).truth) {
+                    System.out.println(checkHasField(input, Commands.ANSWER_CONFIRM).errorMassage);
                 }
-                String confirmAnswer = checkHasField(input, Commands.ANSWERCONFIRM).errorMassage;
+                String confirmAnswer = checkHasField(input, Commands.ANSWER_CONFIRM).errorMassage;
 
                 if (!answer.equals(confirmAnswer)) {
                     System.out.println("Your confirm answer isn't match with answer\nTry again");

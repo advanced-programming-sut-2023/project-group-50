@@ -1,8 +1,10 @@
 package controller;
 
+import controller.UserDatabase.User;
 import controller.UserDatabase.Users;
 import controller.control.State;
 import view.LoginMenu;
+import view.MapMenu;
 import view.ProfileMenu;
 import view.SignupMenu;
 
@@ -15,12 +17,19 @@ public class Controller {
     private final SignupMenu signupMenu;
     private final LoginMenu loginMenu;
     private final ProfileMenu profileMenu;
+    private final MapMenu mapMenu;
+    private User currentUser;
 
     public Controller() {
         this.signupMenu = new SignupMenu();
         this.loginMenu = new LoginMenu();
         this.users = new Users();
         this.profileMenu = new ProfileMenu();
+        this.mapMenu = new MapMenu();
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
     }
 
     public void run() throws InterruptedException, IOException {
@@ -38,9 +47,20 @@ public class Controller {
             } else if (nextMenu.equals(State.EXIT)) {
                 continue;
             }
-            this.profileMenu.setCurrentUser(this.loginMenu.getUserLoggedIn());
-            nextMenu = this.profileMenu.run(scanner);
-            this.signupMenu.setNextMatcher(null);
+            this.profileMenu.getProfileController().setCurrentUser(this.loginMenu.getLoginController().getLoggedIn());
+            while (true) {
+                nextMenu = this.profileMenu.run(scanner);
+                if (nextMenu.equals(State.SIGN)) {
+                    this.signupMenu.setNextMatcher(null);
+                    break;
+                } else if (nextMenu.equals(State.MAP)) {
+                    this.mapMenu.getMapMenuController().setCurrentUser(this.loginMenu.getLoginController().getLoggedIn());
+                    this.mapMenu.setNextMatcher(this.profileMenu.getNextMatcher());
+                    this.mapMenu.run(scanner);
+
+                }
+
+            }
         }
     }
 }

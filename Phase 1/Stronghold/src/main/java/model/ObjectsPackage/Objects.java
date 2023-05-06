@@ -1,12 +1,18 @@
 package model.ObjectsPackage;
 
-public abstract class Objects {
+import controller.UserDatabase.User;
+
+import java.io.Serializable;
+
+public abstract class Objects implements Serializable {
     private final ObjectType objectType;
+    protected User owner;
     private int X;
     private int Y;
 
-    protected Objects(ObjectType objectType) {
+    protected Objects(ObjectType objectType, User owner) {
         this.objectType = objectType;
+        this.owner = owner;
     }
 
     public int getX() {
@@ -27,5 +33,9 @@ public abstract class Objects {
 
     public ObjectType getObjectType() {
         return objectType;
+    }
+
+    public User getOwner() {
+        return owner;
     }
 }

@@ -1,5 +1,6 @@
 package controller.Menus;
 
+import controller.UserDatabase.User;
 import controller.UserDatabase.Users;
 import controller.control.Commands;
 import controller.control.Error;
@@ -11,6 +12,7 @@ import java.util.regex.Pattern;
 
 public class ProfileController {
     private final ProfileMenu profileMenu;
+    private User currentUser;
 
     public ProfileController(ProfileMenu profileMenu) {
         this.profileMenu = profileMenu;
@@ -18,7 +20,7 @@ public class ProfileController {
 
     private static String removeDoubleCoutString(String string) {
 
-        if (Commands.getMatcher(Commands.DOUBLEQOUT, string).find()) {
+        if (Commands.getMatcher(Commands.DOUBLE_QUOTE, string).find()) {
             string = string.substring(1, string.length() - 1);
         }
         return string;
@@ -28,6 +30,14 @@ public class ProfileController {
         LoginController.staticShowCaptcha(scanner);
     }
 
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+
     public String profileChange(Matcher matcher) {
         matcher.find();
         String input = matcher.group();
@@ -35,7 +45,7 @@ public class ProfileController {
         Error error = userNameIsValid(input);
         if (error.truth) {
             String username = error.errorMassage;
-            this.profileMenu.getCurrentUser().setUserName(username);
+            this.currentUser.setUserName(username);
             return "change username was successfully";
         } else {
             if (!error.errorMassage.equals("this command isn't match")) {
@@ -46,7 +56,7 @@ public class ProfileController {
         error = emailIsValid(input);
         if (error.truth) {
             String email = error.errorMassage;
-            this.profileMenu.getCurrentUser().setEmail(email);
+            this.currentUser.setEmail(email);
             return "change email was successfully";
         } else {
             if (!error.errorMassage.equals("this command isn't match")) {
@@ -59,7 +69,7 @@ public class ProfileController {
         error = checkHasField(input, Commands.NICKNAME);
         if (error.truth) {
             String nickName = error.errorMassage;
-            this.profileMenu.getCurrentUser().setNickName(nickName);
+            this.currentUser.setNickName(nickName);
             return "change nick name was successfully";
         } else {
             if (!error.errorMassage.equals("this command isn't match")) {
@@ -71,7 +81,7 @@ public class ProfileController {
         error = checkHasField(input, Commands.SLOGAN);
         if (error.truth) {
             String slogan = error.errorMassage;
-            this.profileMenu.getCurrentUser().setSlogan(slogan);
+            this.currentUser.setSlogan(slogan);
             return "change slogan was successfully";
         } else {
             if (!error.errorMassage.equals("this command isn't match")) {
@@ -132,17 +142,17 @@ public class ProfileController {
         matcher.find();
         String input = matcher.group();
 
-        Error error = checkHasField(input, Commands.OLDPASS);
+        Error error = checkHasField(input, Commands.OLD_PASS);
         if (!error.truth) {
             return error.errorMassage;
         }
 
         String oldPass = error.errorMassage;
 
-        if (!this.profileMenu.getCurrentUser().getPassword().equals(oldPass)) {
+        if (!this.currentUser.getPassword().equals(oldPass)) {
             return "Current password is incorrect!";
         }
-        error = checkHasField(input, Commands.NEWPASS);
+        error = checkHasField(input, Commands.NEW_PASS);
         if (!error.truth) {
             return error.errorMassage;
         }
@@ -156,10 +166,10 @@ public class ProfileController {
         if (newPass.length() < 6) {
             return "Your new password should have 6 character";
         }
-        if (!Commands.getMatcher(Commands.CAPITALLATTER, newPass).find()) {
+        if (!Commands.getMatcher(Commands.CAPITAL_LETTER, newPass).find()) {
             return "Your new password should have a capital letter";
         }
-        if (!Commands.getMatcher(Commands.SMALLLETTER, newPass).find()) {
+        if (!Commands.getMatcher(Commands.SMALL_LETTER, newPass).find()) {
             return "Your password should have a small letter";
         }
         if (!Commands.getMatcher(Commands.DIGIT, newPass).find()) {
@@ -183,7 +193,7 @@ public class ProfileController {
 
 
         showCaptcha(scanner);
-        this.profileMenu.getCurrentUser().setPassword(newPass);
+        this.currentUser.setPassword(newPass);
         return "Your change password was successfully";
 
     }
@@ -194,7 +204,7 @@ public class ProfileController {
         }
         String email = checkHasField(input, Commands.EMAIL).errorMassage;
 
-        if (!Commands.getMatcher(Commands.EMAILFORMAT, email).find()) {
+        if (!Commands.getMatcher(Commands.EMAIL_FORMAT, email).find()) {
             return new Error("Your email format is invalid", false);
         }
         if (Users.checkRepetitiousEmail(email)) {
@@ -204,7 +214,7 @@ public class ProfileController {
     }
 
     public String removeSlogan() {
-        this.profileMenu.getCurrentUser().setSlogan("");
+        this.currentUser.setSlogan("");
         return "Slogan remove successfully";
 
     }
@@ -214,21 +224,21 @@ public class ProfileController {
         String input = matcher.group();
 
         if (Pattern.compile("highscore").matcher(input).find()) {
-            return "Your highscore is : " + this.profileMenu.getCurrentUser().getHighScore();
+            return "Your highscore is : " + this.currentUser.getHighScore();
         }
 
         if (Pattern.compile("rank").matcher(input).find()) {
-            return "Your rank is : " + this.profileMenu.getCurrentUser().getRank();
+            return "Your rank is : " + this.currentUser.getRank();
         }
 
         if (Pattern.compile("slogan").matcher(input).find()) {
-            if (this.profileMenu.getCurrentUser().getSlogan().equals("")) {
+            if (this.currentUser.getSlogan().equals("")) {
                 return "Slogan is empty!";
             }
-            return "Your slogan is : " + this.profileMenu.getCurrentUser().getSlogan();
+            return "Your slogan is : " + this.currentUser.getSlogan();
         }
 
-        return this.profileMenu.getCurrentUser().showAllInformation();
+        return this.currentUser.showAllInformation();
 
 
     }

@@ -1,13 +1,14 @@
 package model.ObjectsPackage.People.NonSoldier;
 
+import controller.UserDatabase.User;
 import model.ObjectsPackage.People.Person;
 
 public class NonSoldier extends Person {
     private final Job job;
     private int productivity;
 
-    protected NonSoldier(Job job) {
-        super(false, 0, 0); //TODO: check life and speed
+    protected NonSoldier(Job job, User owner) {
+        super(false, 20, 30, owner);
         this.job = job;
         productivity = 100;
     }

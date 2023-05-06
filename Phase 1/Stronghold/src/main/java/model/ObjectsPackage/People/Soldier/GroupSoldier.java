@@ -1,5 +1,6 @@
 package model.ObjectsPackage.People.Soldier;
 
+import controller.UserDatabase.User;
 import model.ObjectsPackage.Buildings.BuildingType;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
@@ -12,8 +13,12 @@ public class GroupSoldier extends Objects {
     private final SoldierName type;
     private final boolean protection;
 
-    protected GroupSoldier(ArrayList<Soldier> group, GroupModeName groupMode, SoldierName type, boolean protection) {
-        super(ObjectType.GROUP_SOLDIER);
+    protected GroupSoldier(ArrayList<Soldier> group,
+                           GroupModeName groupMode,
+                           SoldierName type,
+                           boolean protection,
+                           User owner) {
+        super(ObjectType.GROUP_SOLDIER, owner);
         this.group = group;
         this.groupMode = groupMode;
         this.type = type;

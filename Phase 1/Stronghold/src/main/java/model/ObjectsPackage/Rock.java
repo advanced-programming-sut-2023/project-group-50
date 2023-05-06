@@ -1,10 +1,12 @@
 package model.ObjectsPackage;
 
+import controller.UserDatabase.User;
+
 public class Rock extends Objects {
     private String direction;
 
-    protected Rock(String direction) {
-        super(ObjectType.ROCK);
+    protected Rock(String direction, User owner) {
+        super(ObjectType.ROCK, owner);
         this.direction = direction;
     }
 

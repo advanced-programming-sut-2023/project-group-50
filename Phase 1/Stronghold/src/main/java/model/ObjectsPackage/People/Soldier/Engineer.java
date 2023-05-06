@@ -1,13 +1,13 @@
 package model.ObjectsPackage.People.Soldier;
 
+import controller.UserDatabase.User;
 import model.ObjectsPackage.Buildings.BuildingType;
-import model.ObjectsPackage.Weapons.Weapon;
 
 public class Engineer extends Soldier {
     private int range;
 
-    public Engineer(SoldierName type, Weapon weapon) {
-        super(weapon, type); //TODO: fill weapon and range based on type
+    public Engineer(User owner) {
+        super(SoldierName.ENGINEER, owner); //TODO: fill range based on type
     }
 
     //TODO: fill strategies

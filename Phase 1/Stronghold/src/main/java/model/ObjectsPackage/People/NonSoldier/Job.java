@@ -1,7 +1,6 @@
 package model.ObjectsPackage.People.NonSoldier;
 
 public enum Job {
-    LORD,
     LADY,
     JESTER,
     WOODCUTTER,

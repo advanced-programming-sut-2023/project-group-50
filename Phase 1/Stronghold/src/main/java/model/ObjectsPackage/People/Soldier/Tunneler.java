@@ -1,10 +1,10 @@
 package model.ObjectsPackage.People.Soldier;
 
-import model.ObjectsPackage.Weapons.Weapon;
+import controller.UserDatabase.User;
 
 public class Tunneler extends Soldier {
-    public Tunneler(SoldierName type, Weapon weapon) {
-        super(weapon, type); //TODO: fill weapon, isRider and range based on type
+    public Tunneler(User owner) {
+        super(SoldierName.TUNNELER, owner);
     }
 
     public void digTunnel(int x, int y) {
