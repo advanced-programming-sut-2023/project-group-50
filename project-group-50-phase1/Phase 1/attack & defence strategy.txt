@@ -1,0 +1,68 @@
+ دروازه:
+build gate -x [x] -y [y] -d [direction]
+ ساخت دیوار :
+build wall -x [x] -y [y] -h [high] -w [wide] -d [direction]
+ 
+برج ها و برجک ها :
+build tower -x [x] -y [y] -t [type]
+
+پله :
+
+build step -x [x] -y [y] -d [direction]
+  
+
+تله :
+ 
+deploy trap  -x [x] -y [y] -t [type]
+
+ حفر خندق :
+ 
+dig ditch with this unit -x1 [x1] -y1 [y1] in -x2 [x2] -y2 [y2]
+
+توقف حفر خندق 
+
+stop dig ditch -x [x] -y [y]
+
+حذف خندق :
+
+remove ditch -x [x] -y [y]
+
+سوزاندن نفت :
+ 
+burning oil in -x1 [x1] -y1 [y1] by -x2 [x2] -y2 [y2]
+
+تصرف دروازه :
+
+capture this gate -x1 [x1] -y1 [y1] by -x2 [x2] -y2 [y2]  
+
+
+حفاظ های قابل حمل :
+
+equip this unit -x [x] -y [y]  with protection
+
+
+
+دژ کوب :
+use hammer for this gate -x [x] -y [y]
+
+برج محاصره :
+
+deploy siege tower in -x [x] -y [y]
+
+منجنیق   :  منجنیق ثابت(وزنه تعادل) - منجنیق متحرک - سنگ انداز اتشین {سلاح} 
+
+deploy  catapult in -x [x] -y [y] -t [type]
+
+
+حفر تونل :
+
+dig tunnel in -x1 [x1] -y1 [y1] by -x2 [x2] -y2 [y2]
+
+ پرکردن خندق :
+
+filling the ditch in -x1 [x1] -y1 [y1] by -x2 [x2] -y2 [y2]
+
+
+
+
+
