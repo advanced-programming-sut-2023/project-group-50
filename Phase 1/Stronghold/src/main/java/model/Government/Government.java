@@ -17,9 +17,9 @@ import java.util.HashMap;
 
 public class Government implements Serializable {
     private final User user;
+    private final ArrayList<Person> noneJob;
     private HashMap<Resource, Integer> resources;
     private HashMap<WeaponName, Integer> weapons;
-    private final ArrayList<Person> noneJob;
     private int coins;
     private Map map;
     private ArrayList<Soldier> unDeployedSoldier;
@@ -112,7 +112,7 @@ public class Government implements Serializable {
 
     public int getArmourAmount(ArmourType armourType) {
         WeaponName armour = getArmourByArmourType(armourType);
-        if(armour == null) return 0;
+        if (armour == null) return 0;
 
         int sum = 0;
         for (int x = 0; x < map.getXSize(); x++)
@@ -130,7 +130,7 @@ public class Government implements Serializable {
                 return WeaponName.LEATHER_ARMOUR;
             }
             case METAL -> {
-                 return WeaponName.METAL_ARMOUR;
+                return WeaponName.METAL_ARMOUR;
             }
             case NONE -> {
                 return null;

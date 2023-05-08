@@ -54,6 +54,10 @@ public class Map implements Serializable {
         return "-".repeat(Math.max(0, 3 * cols + 1));
     }
 
+    public static int distance(int xFrom, int yFrom, int xTo, int yTo) {
+        return Math.max(Math.abs(xFrom - xTo), Math.abs(yFrom - yTo));
+    }
+
     public void addObject(Objects object, int x, int y) {
         map.get(x).get(y).addObject(object);
     }
@@ -150,9 +154,5 @@ public class Map implements Serializable {
 
     public Unit getXY(int x, int y) {
         return map.get(x).get(y);
-    }
-
-    public static int distance(int xFrom, int yFrom, int xTo, int yTo) {
-        return Math.max(Math.abs(xFrom - xTo), Math.abs(yFrom - yTo));
     }
 }

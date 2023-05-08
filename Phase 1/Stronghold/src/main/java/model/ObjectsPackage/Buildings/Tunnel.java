@@ -20,7 +20,7 @@ public class Tunnel extends Building {
     }
 
     public void attack() {
-        if(getType().equals(BuildingType.CAGED_WAR_DOGS)) {
+        if (getType().equals(BuildingType.CAGED_WAR_DOGS)) {
             Map map = getOwner().getGovernment().getMap();
             for (int i = 0; i < 5; i++) {
                 map.addObject(Soldier.getSoldierByType(SoldierName.LOOSE_WAR_DOG, getOwner()), xFrom, yFrom);

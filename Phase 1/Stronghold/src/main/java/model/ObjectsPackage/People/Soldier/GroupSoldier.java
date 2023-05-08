@@ -2,6 +2,7 @@ package model.ObjectsPackage.People.Soldier;
 
 import controller.UserDatabase.User;
 import model.ObjectsPackage.Buildings.BuildingType;
+import model.ObjectsPackage.Buildings.Gate;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 
@@ -12,7 +13,7 @@ public class GroupSoldier extends Objects {
     private final GroupModeName groupMode;
     private final SoldierName type;
     private final boolean protection;
-
+    private boolean isPatrolling;
     protected GroupSoldier(ArrayList<Soldier> group,
                            GroupModeName groupMode,
                            SoldierName type,
@@ -23,6 +24,23 @@ public class GroupSoldier extends Objects {
         this.groupMode = groupMode;
         this.type = type;
         this.protection = protection;
+        isPatrolling = false;
+    }
+
+    public GroupModeName getGroupMode() {
+        return groupMode;
+    }
+
+    public SoldierName getType() {
+        return type;
+    }
+
+    public boolean isPatrolling() {
+        return isPatrolling;
+    }
+
+    public void setPatrolling(boolean patrolling) {
+        isPatrolling = patrolling;
     }
 
     public ArrayList<Soldier> getGroup() {
@@ -34,52 +52,77 @@ public class GroupSoldier extends Objects {
     }
 
     public void moveGroup(int x, int y) {
-        // TODO: fill here after map is done
+        for (Soldier soldier : group) soldier.move(x, y);
+        setX(group.get(0).getX());
+        setY(group.get(0).getY());
     }
 
-    public void patrolGroup(int x1, int y1, int x2, int y2) {
-        // TODO: fill here after map is done
+    public void startPatrollingGroup(int x1, int y1, int x2, int y2) {
+        for (Soldier soldier : group) {
+            soldier.setPatrolling(true);
+            soldier.startPatrolling(x1, y1, x2, y2);
+        }
+        setPatrolling(true);
     }
 
-    public void stopGroup(int x1, int y1, int x2, int y2) {
-        // TODO: fill here after map is done
+    public void stopGroup() {
+        for (Soldier soldier : group) soldier.endPatrolling();
+        setPatrolling(false);
     }
 
-    // TODO: fill strategies
-
-    public void checkMode() {
-        // TODO: what?
+    public void attackEnemy(Objects enemy) {
+        for (Soldier soldier : group)
+            soldier.attack(enemy);
     }
 
-    public void attackEnemy(Object enemy) {
-
+    public void defend(Objects enemy) {
+        for (Soldier soldier : group)
+            soldier.defend(enemy);
     }
 
     public void archerAttack(int x, int y) {
-
+        for (Soldier soldier : group)
+            if (soldier instanceof Archer archer)
+                archer.attack(x, y);
     }
 
-    public void checkRange() {
+    public void archerDefense(int x, int y) {
+        for (Soldier soldier : group)
+            if (soldier instanceof Archer archer)
+                archer.defend(x, y);
+    }
 
+    public int getRange() {
+        return group.isEmpty() ? 0 : group.get(0).getWeapon().getWeaponName().getRange();
     }
 
     public void disband() {
-
+        getOwner().getGovernment().addUnDeployedSoldier(group);
+        group.clear();
     }
 
     public void digTunnel(int x, int y) {
-
+        if (group.isEmpty()) return;
+        if (group.get(0) instanceof Tunneler tunneler)
+            tunneler.digTunnel(x, y);
     }
 
     public void build(BuildingType buildingType) {
-
+        if (group.isEmpty()) return;
+        if (group.get(0) instanceof Engineer engineer)
+            engineer.build(buildingType);
     }
 
-    public void digDitch(int x, int y) {
-
+    public void placePitchDitch(int x, int y) {
+        if (group.isEmpty()) return;
+        if (group.get(0) instanceof Engineer engineer)
+            engineer.placePitchDitch(x, y);
     }
 
-    public void captureGate(int x, int y) {
-
+    public void captureGate(Gate gate) {
+        if (group.isEmpty()) return;
+        for(Soldier soldier : group)
+            if(soldier instanceof Infantry infantry)
+                infantry.captureGate(gate);
     }
 }

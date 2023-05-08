@@ -5,5 +5,4 @@ public enum GroupModeName {
     ENGINEER,
     INFANTRY,
     TUNNELER
-    //TODO: fill here
 }

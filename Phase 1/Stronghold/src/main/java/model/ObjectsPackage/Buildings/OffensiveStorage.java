@@ -2,10 +2,8 @@ package model.ObjectsPackage.Buildings;
 
 import controller.UserDatabase.User;
 import model.Government.Government;
-import model.ObjectsPackage.People.Person;
 import model.ObjectsPackage.People.Soldier.Soldier;
 import model.ObjectsPackage.People.Soldier.SoldierName;
-import model.ObjectsPackage.Resource;
 import model.ObjectsPackage.Weapons.WeaponName;
 
 import java.util.ArrayList;
@@ -77,7 +75,7 @@ public class OffensiveStorage extends Building {
     private boolean hasMoneyForLadderman(int count) {
         return getOwner().getGovernment().getGold() >= costOfLadderman * count;
     }
-    
+
     private boolean hasEnoughArmourForTroops(SoldierName soldierName, int count) {
         return getOwner().getGovernment().getArmourAmount(soldierName.getArmourType()) >= count;
     }

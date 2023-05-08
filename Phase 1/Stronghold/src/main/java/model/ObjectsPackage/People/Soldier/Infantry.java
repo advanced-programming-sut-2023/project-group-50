@@ -1,6 +1,7 @@
 package model.ObjectsPackage.People.Soldier;
 
 import controller.UserDatabase.User;
+import model.ObjectsPackage.Buildings.Gate;
 
 public class Infantry extends Soldier {
     private final ArmourType armourType;
@@ -20,8 +21,11 @@ public class Infantry extends Soldier {
         canScaleWalls = (type == SoldierName.LADDERMAN) | (type == SoldierName.ASSASIN);
     }
 
-    public void captureGate(int x, int y) {
-        //TODO: fill strategy
+    public void captureGate(Gate gate) {
+        int x = gate.getX(), y = gate.getY();
+        move(x, y);
+        if (getX() == x || getY() == y)
+            attack(gate);
     }
 
     public ArmourType getArmourType() {

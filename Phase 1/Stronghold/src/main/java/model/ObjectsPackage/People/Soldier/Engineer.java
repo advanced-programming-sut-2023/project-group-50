@@ -5,6 +5,7 @@ import model.Direction.Direction;
 import model.Government.Government;
 import model.Map.GroundType;
 import model.Map.Map;
+import model.Map.Unit;
 import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.Buildings.BuildingType;
 import model.ObjectsPackage.Resource;
@@ -74,5 +75,11 @@ public class Engineer extends Soldier {
 
     public void makeHammer(int x, int y) {
         // TODO: aa fill here
+    }
+
+    public void placePitchDitch(int x, int y) {
+        Unit xy = getOwner().getGovernment().getMap().getXY(x, y);
+        if (!xy.getObjects().isEmpty()) return;
+        xy.addObject(Building.getBuildingByType(BuildingType.PITCH_DITCH, getOwner(), x, y));
     }
 }

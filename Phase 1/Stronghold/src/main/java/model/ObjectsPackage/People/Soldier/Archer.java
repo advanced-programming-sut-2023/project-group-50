@@ -1,6 +1,8 @@
 package model.ObjectsPackage.People.Soldier;
 
 import controller.UserDatabase.User;
+import model.Map.Map;
+import model.ObjectsPackage.Objects;
 
 public class Archer extends Soldier {
     private final boolean isRider;
@@ -37,5 +39,19 @@ public class Archer extends Soldier {
 
     public void setOnFire(boolean onFire) {
         isOnFire = onFire;
+    }
+
+    public void attack(int x, int y) {
+        assert Map.distance(getX(), getY(), x, y) <= range;
+
+        for (Objects object : getOwner().getGovernment().getMap().getXY(x, y).getObjects())
+            object.applyDamage(getType().getAttackPower());
+    }
+
+    public void defend(int x, int y) {
+        assert Map.distance(getX(), getY(), x, y) <= range;
+
+        for (Objects object : getOwner().getGovernment().getMap().getXY(x, y).getObjects())
+            object.applyDamage(getType().getDefensePower());
     }
 }

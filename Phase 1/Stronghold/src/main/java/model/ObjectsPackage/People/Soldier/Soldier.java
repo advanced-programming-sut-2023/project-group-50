@@ -2,6 +2,7 @@ package model.ObjectsPackage.People.Soldier;
 
 import controller.UserDatabase.User;
 import model.Map.GroundType;
+import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Person;
 import model.ObjectsPackage.Weapons.Weapon;
 import model.ObjectsPackage.Weapons.WeaponName;
@@ -12,6 +13,7 @@ public abstract class Soldier extends Person {
     private SoldierState soldierState;
     private boolean isPatrolling;
     private int[][] patrolPath; //[x,y][0,1]
+    private boolean going;
 
     public Soldier(SoldierName type, User owner) {
         super(true, type.getLife(), type.getSpeed(), owner);
@@ -20,6 +22,7 @@ public abstract class Soldier extends Person {
         soldierState = SoldierState.STANDING;
         isPatrolling = false;
         patrolPath = new int[2][2];
+        going = false;
     }
 
     public static WeaponName getWeaponName(SoldierName soldierName) {
@@ -87,6 +90,25 @@ public abstract class Soldier extends Person {
         isPatrolling = true;
     }
 
+    public void patrol() {
+        int x = getX(), y = getY();
+
+        if (x == patrolPath[0][0] && y == patrolPath[1][0]) {
+            going = true;
+            move(patrolPath[0][1], patrolPath[1][1]);
+        } else if (x == patrolPath[0][1] && y == patrolPath[1][1]) {
+            going = false;
+            move(patrolPath[0][0], patrolPath[1][0]);
+        } else {
+            if (going) move(patrolPath[0][1], patrolPath[1][1]);
+            else move(patrolPath[0][0], patrolPath[1][0]);
+        }
+    }
+
+    public void move(int xFinal, int yFinal) {
+        //TODO: fill here
+    }
+
     public void endPatrolling() {
         patrolPath = null;
         isPatrolling = false;
@@ -119,5 +141,13 @@ public abstract class Soldier extends Person {
 
     public void setPatrolling(boolean patrolling) {
         isPatrolling = patrolling;
+    }
+
+    public void attack(Objects enemy) {
+        enemy.applyDamage(type.getAttackPower());
+    }
+
+    public void defend(Objects enemy) {
+        enemy.applyDamage(type.getDefensePower());
     }
 }
