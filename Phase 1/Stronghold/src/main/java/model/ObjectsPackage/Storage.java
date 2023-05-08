@@ -1,6 +1,7 @@
 package model.ObjectsPackage;
 
 import controller.UserDatabase.User;
+import model.Government.Government;
 import model.Map.Map;
 import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.Buildings.BuildingType;
@@ -107,21 +108,40 @@ public class Storage extends Building {
     }
 
     public boolean addOne(Object object) {
-        if (object instanceof WeaponName weapon) return addOneWeapon(weapon);
+        if (object instanceof WeaponName weapon) {
+            addOneToGovernmentHashmaps(weapon);
+            return addOneWeapon(weapon);
+        }
         if (object instanceof Resource resource) {
             switch (resource) {
                 case WHEAT, BREAD, FLOUR, HOPS, ALE, STONE, IRON, WOOD, PITCH -> {
-                    return getType().equals(BuildingType.STOCKPILE) && addOneResource(resource);
+                    return addIfCorrect(BuildingType.STOCKPILE, resource);
                 }
                 case COW -> {
-                    return getType().equals(BuildingType.OX_TETHER) && addOneResource(resource);
+                    return addIfCorrect(BuildingType.OX_TETHER, resource);
                 }
                 case MEAT, OIL, APPLE, CHEESE -> {
-                    return getType().equals(BuildingType.GRANARY) && addOneResource(resource);
+                    return addIfCorrect(BuildingType.GRANARY, resource);
                 }
             }
         }
         return false;
+    }
+
+    private boolean addIfCorrect(BuildingType type, Resource resource) {
+        if (!(getType().equals(type) && addOneResource(resource))) {
+            return false;
+        }
+        addOneToGovernmentHashmaps(resource);
+        return true;
+    }
+
+    private void addOneToGovernmentHashmaps(Object object) {
+        Government government = getOwner().getGovernment();
+        if (object instanceof WeaponName weapon)
+            government.setWeaponAmount(weapon, government.getWeaponAmount(weapon) + 1);
+        if (object instanceof Resource resource)
+            government.setResourceAmount(resource, government.getResourceAmount(resource) + 1);
     }
 
     public int getCurrentCapacity() {

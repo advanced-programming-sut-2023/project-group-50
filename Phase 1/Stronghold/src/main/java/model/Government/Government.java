@@ -5,6 +5,7 @@ import model.Map.Map;
 import model.ObjectsPackage.Buildings.BuildingType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Person;
+import model.ObjectsPackage.People.Soldier.ArmourType;
 import model.ObjectsPackage.People.Soldier.Soldier;
 import model.ObjectsPackage.Resource;
 import model.ObjectsPackage.Storage;
@@ -16,7 +17,8 @@ import java.util.HashMap;
 
 public class Government implements Serializable {
     private final User user;
-    private final HashMap<Resource, Integer> resources;
+    private HashMap<Resource, Integer> resources;
+    private HashMap<WeaponName, Integer> weapons;
     private final ArrayList<Person> noneJob;
     private int coins;
     private Map map;
@@ -25,6 +27,7 @@ public class Government implements Serializable {
     public Government(User user) {
         this.user = user;
         resources = new HashMap<>();
+        weapons = new HashMap<>();
         coins = 0;
         this.noneJob = new ArrayList<>();
     }
@@ -37,11 +40,11 @@ public class Government implements Serializable {
         return resources.getOrDefault(resource, 0);
     }
 
-    public int getCoins() {
+    public int getGold() {
         return coins;
     }
 
-    public void setCoins(int coins) {
+    public void setGold(int coins) {
         this.coins = coins;
     }
 
@@ -54,7 +57,7 @@ public class Government implements Serializable {
     }
 
     public void buyBuilding(BuildingType buildingType, float zarib) {
-        this.coins = getCoins() - (int) (buildingType.getGoldCost() * zarib);
+        this.coins = getGold() - (int) (buildingType.getGoldCost() * zarib);
         this.setResourceAmount(Resource.STONE,
                                this.resources.get(Resource.STONE) - (int) (buildingType.getStoneCost() * zarib));
         this.setResourceAmount(Resource.WOOD,
@@ -105,5 +108,43 @@ public class Government implements Serializable {
             }
         }
         return null;
+    }
+
+    public int getArmourAmount(ArmourType armourType) {
+        WeaponName armour = getArmourByArmourType(armourType);
+        if(armour == null) return 0;
+
+        int sum = 0;
+        for (int x = 0; x < map.getXSize(); x++)
+            for (int y = 0; y < map.getYSize(); y++)
+                for (Objects object : map.getXY(x, y).getObjects())
+                    if (object instanceof Storage storage)
+                        sum += storage.getCurrentCapacity(armour);
+
+        return sum;
+    }
+
+    private WeaponName getArmourByArmourType(ArmourType armourType) {
+        switch (armourType) {
+            case LEATHER -> {
+                return WeaponName.LEATHER_ARMOUR;
+            }
+            case METAL -> {
+                 return WeaponName.METAL_ARMOUR;
+            }
+            case NONE -> {
+                return null;
+            }
+
+            default -> throw new IllegalStateException("Unexpected value: " + armourType);
+        }
+    }
+
+    public int getWeaponAmount(WeaponName weaponName) {
+        return weapons.get(weaponName);
+    }
+
+    public void setWeaponAmount(WeaponName weaponName, int count) {
+        weapons.put(weaponName, count);
     }
 }

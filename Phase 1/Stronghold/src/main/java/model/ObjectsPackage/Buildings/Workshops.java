@@ -81,10 +81,22 @@ public class Workshops extends Building {
     }
 
     public boolean produce(Object object) {
+        if (!(object instanceof Resource || object instanceof WeaponName)) return false;
+
         Government government = getOwner().getGovernment();
         government.setResourceAmount(fromResource, government.getResourceAmount(fromResource) - 1);
         Storage storage = government.getFirstEmptyStorageForObject(object);
-        return storage != null && storage.addOne(object);
+
+        if (storage == null) return false;
+        if (!storage.addOne(object)) return false;
+
+        for (int i = 1; i < rate; i++) {
+            if (storage.isFull()) storage = government.getFirstEmptyStorageForObject(object);
+            if (storage == null) return false;
+            if (!storage.addOne(object)) return false;
+        }
+
+        return true;
     }
 
     public int getRate() {

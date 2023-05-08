@@ -83,4 +83,18 @@ public enum SoldierName {
     public String getType() {
         return type;
     }
+
+    public ArmourType getArmourType() {
+        switch (this) {
+            case MACEMAN -> {
+                return ArmourType.LEATHER;
+            }
+            case PIKEMAN, SWORDSMAN, KNIGHT, THE_LORD -> {
+                return ArmourType.METAL;
+            }
+            default -> {
+                return ArmourType.NONE;
+            }
+        }
+    }
 }

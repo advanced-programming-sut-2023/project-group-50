@@ -100,7 +100,7 @@ public class GameMenuController {
     }
 
     private String checkResource(BuildingType buildingType, float zarib) {
-        if ((int) Math.ceil(buildingType.getGoldCost() * zarib) > this.currentUser.getGovernment().getCoins()) {
+        if ((int) Math.ceil(buildingType.getGoldCost() * zarib) > this.currentUser.getGovernment().getGold()) {
             return "You haven't enough gold to build this " + buildingType.getType();
         }
         if ((int) Math.ceil(buildingType.getStoneCost() * zarib) >
@@ -283,7 +283,7 @@ public class GameMenuController {
         }
         int count = Integer.parseInt(error.errorMassage);
 
-        if (soldierName.getGoldCost() * count > this.currentUser.getGovernment().getCoins()) {
+        if (soldierName.getGoldCost() * count > this.currentUser.getGovernment().getGold()) {
             return "You haven't enough gold";
         }
         ///

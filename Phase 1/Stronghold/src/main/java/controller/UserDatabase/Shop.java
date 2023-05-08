@@ -14,14 +14,14 @@ public class Shop {
 
     public static void buy(User buyer, Item item) {
         if (userCanAfford(buyer, item)) {
-            buyer.getGovernment().setCoins(buyer.getGovernment().getCoins() - item.getPrice());
+            buyer.getGovernment().setGold(buyer.getGovernment().getGold() - item.getPrice());
             buyer.addItem(item);
             items.remove(item);
         }
     }
 
     public static void sell(User seller, Item item) {
-        seller.getGovernment().setCoins(seller.getGovernment().getCoins() + item.getPrice());
+        seller.getGovernment().setGold(seller.getGovernment().getGold() + item.getPrice());
         items.add(item);
         seller.removeItem(item);
     }
@@ -39,7 +39,7 @@ public class Shop {
     }
 
     public static boolean userCanAfford(User buyer, Item item) {
-        return buyer.getGovernment().getCoins() >= item.getPrice();
+        return buyer.getGovernment().getGold() >= item.getPrice();
     }
 
     private static ArrayList<String> getItemsAsString() {
