@@ -14,6 +14,7 @@ public class GroupSoldier extends Objects {
     private final SoldierName type;
     private final boolean protection;
     private boolean isPatrolling;
+
     protected GroupSoldier(ArrayList<Soldier> group,
                            GroupModeName groupMode,
                            SoldierName type,
@@ -121,8 +122,8 @@ public class GroupSoldier extends Objects {
 
     public void captureGate(Gate gate) {
         if (group.isEmpty()) return;
-        for(Soldier soldier : group)
-            if(soldier instanceof Infantry infantry)
+        for (Soldier soldier : group)
+            if (soldier instanceof Infantry infantry)
                 infantry.captureGate(gate);
     }
 }

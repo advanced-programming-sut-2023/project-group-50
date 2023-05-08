@@ -55,7 +55,7 @@ public class Map implements Serializable {
     }
 
     public static int distance(int xFrom, int yFrom, int xTo, int yTo) {
-        return Math.max(Math.abs(xFrom - xTo), Math.abs(yFrom - yTo));
+        return Math.abs(xFrom - xTo) + Math.abs(yFrom - yTo);
     }
 
     public void addObject(Objects object, int x, int y) {

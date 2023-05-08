@@ -2,6 +2,7 @@ package model.ObjectsPackage.People.Soldier;
 
 import controller.UserDatabase.User;
 import model.Map.GroundType;
+import model.Map.Map;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Person;
 import model.ObjectsPackage.Weapons.Weapon;
@@ -95,18 +96,38 @@ public abstract class Soldier extends Person {
 
         if (x == patrolPath[0][0] && y == patrolPath[1][0]) {
             going = true;
-            move(patrolPath[0][1], patrolPath[1][1]);
+            moveClosest(patrolPath[0][1], patrolPath[1][1]);
         } else if (x == patrolPath[0][1] && y == patrolPath[1][1]) {
             going = false;
-            move(patrolPath[0][0], patrolPath[1][0]);
+            moveClosest(patrolPath[0][0], patrolPath[1][0]);
         } else {
-            if (going) move(patrolPath[0][1], patrolPath[1][1]);
-            else move(patrolPath[0][0], patrolPath[1][0]);
+            if (going) moveClosest(patrolPath[0][1], patrolPath[1][1]);
+            else moveClosest(patrolPath[0][0], patrolPath[1][0]);
         }
     }
 
+    private void moveClosest(int xFinal, int yFinal) {
+        if (Map.distance(getX(), getY(), xFinal, yFinal) <= type.getSpeed()) {
+            move(xFinal, yFinal);
+            return;
+        }
+
+        int dx = type.getSpeed() / 2;
+        int dy = type.getSpeed() - dx;
+
+        if (xFinal < getX()) setX(getX() - dx);
+        else setX(getX() + dx);
+
+        if (yFinal < getY()) setY(getY() - dy);
+        else setY(getY() + dy);
+    }
+
     public void move(int xFinal, int yFinal) {
-        //TODO: fill here
+        GroundType texture = getOwner().getGovernment().getMap().getXY(xFinal, yFinal).getTexture();
+        if (texture == GroundType.RIVER || texture == GroundType.SEA || texture == GroundType.BIG_POND) return;
+        if (Map.distance(getX(), getY(), xFinal, yFinal) > type.getSpeed()) return;
+        setX(xFinal);
+        setY(yFinal);
     }
 
     public void endPatrolling() {
