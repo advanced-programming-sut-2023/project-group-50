@@ -18,6 +18,7 @@ public class Unit implements Serializable {
     private final int y;
     private GroundType texture;
     private boolean isOnFire;
+    private boolean isProtected;
 
     public Unit(int x, int y, GroundType texture) {
         this.x = x;
@@ -25,6 +26,15 @@ public class Unit implements Serializable {
         this.texture = texture;
         objects = new LinkedHashSet<>();
         isOnFire = false;
+        isProtected = false;
+    }
+
+    public boolean isProtected() {
+        return isProtected;
+    }
+
+    public void setProtected(boolean aProtected) {
+        isProtected = aProtected;
     }
 
     public boolean isOnFire() {
@@ -104,4 +114,6 @@ public class Unit implements Serializable {
                 return building;
         return null;
     }
+
+
 }
