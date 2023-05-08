@@ -121,9 +121,12 @@ public class User implements Serializable {
     }
 
     public String showAllInformation() {
-        return "Username : " + this.userName + "\nPassword : " + this.password + "\nEmail : " + this.email + "\nNickname : " +
-                this.nickName + "\nSlogan : " + this.slogan + "\nYour security question is : " + this.securityQuestion.getQuestion() +
-                "\nYour answer is : " + this.securityQuestionAnswer + "\nRank : " + this.rank + "\nHighscore : " + this.highScore;
+        return "Username : " + this.userName + "\nPassword : " + this.password + "\nEmail : " + this.email +
+                "\nNickname : " +
+                this.nickName + "\nSlogan : " + this.slogan + "\nYour security question is : " +
+                this.securityQuestion.getQuestion() +
+                "\nYour answer is : " + this.securityQuestionAnswer + "\nRank : " + this.rank + "\nHighscore : " +
+                this.highScore;
     }
 
     public int getScore() {

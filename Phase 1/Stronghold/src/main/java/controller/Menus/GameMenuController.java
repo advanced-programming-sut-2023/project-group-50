@@ -34,7 +34,7 @@ public class GameMenuController {
             return error;
         }
         int x = Integer.parseInt(error.errorMassage);
-        if (x > currentUser.getGovernment().getMap().getxSize() || x < 0) {
+        if (x > currentUser.getGovernment().getMap().getXSize() || x < 0) {
             return new Error("The " + commands.name() + " value is not within the map range", false);
         }
         return new Error(error.errorMassage, true);
@@ -103,13 +103,16 @@ public class GameMenuController {
         if ((int) Math.ceil(buildingType.getGoldCost() * zarib) > this.currentUser.getGovernment().getCoins()) {
             return "You haven't enough gold to build this " + buildingType.getType();
         }
-        if ((int) Math.ceil(buildingType.getStoneCost() * zarib) > this.currentUser.getGovernment().getResourceAmount(Resource.STONE)) {
+        if ((int) Math.ceil(buildingType.getStoneCost() * zarib) >
+                this.currentUser.getGovernment().getResourceAmount(Resource.STONE)) {
             return "You haven't enough stone to build this " + buildingType.getType();
         }
-        if ((int) Math.ceil(buildingType.getWoodCost() * zarib) > this.currentUser.getGovernment().getResourceAmount(Resource.WOOD)) {
+        if ((int) Math.ceil(buildingType.getWoodCost() * zarib) >
+                this.currentUser.getGovernment().getResourceAmount(Resource.WOOD)) {
             return "You haven't enough wood to build this " + buildingType.getType();
         }
-        if ((int) Math.ceil(buildingType.getIronCost() * zarib) > this.currentUser.getGovernment().getResourceAmount(Resource.IRON)) {
+        if ((int) Math.ceil(buildingType.getIronCost() * zarib) >
+                this.currentUser.getGovernment().getResourceAmount(Resource.IRON)) {
             return "You haven't enough iron to build this " + buildingType.getType();
         }
         return null;
@@ -125,7 +128,8 @@ public class GameMenuController {
         type = type.substring(6);
         type = removeDoubleCoutString(type);
         if (matcher.find()) {
-            return new Error("Invalid command!\nYou should enter all field!\nEnter " + Commands.TYPE.name() + " once", false);
+            return new Error(
+                    "Invalid command!\nYou should enter all field!\nEnter " + Commands.TYPE.name() + " once", false);
 
         }
         type = type.trim();
@@ -294,7 +298,8 @@ public class GameMenuController {
             }
 
         } else {
-            if (!(selectedBuilding.getType().equals(BuildingType.BARRACKS) || selectedBuilding.getType().equals(BuildingType.ENGINEER_GUILD))) {
+            if (!(selectedBuilding.getType().equals(BuildingType.BARRACKS) ||
+                    selectedBuilding.getType().equals(BuildingType.ENGINEER_GUILD))) {
                 return "You can't create european soldier in this building";
             }
             if ((soldierName.equals(SoldierName.ENGINEER))) {

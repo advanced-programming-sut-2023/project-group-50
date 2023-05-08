@@ -31,214 +31,230 @@ public abstract class Building extends Objects {
         switch (buildingType) {
             case SMALL_STONE_GATEHOUSE -> {
                 return new Gate(buildingType,
-                        owner,
-                        x,
-                        y,
-                        1000,
-                        8);
+                                owner,
+                                x,
+                                y,
+                                1000,
+                                8);
             }
             case BIG_STONE_GATEHOUSE -> {
                 return new Gate(buildingType,
-                        owner,
-                        x,
-                        y,
-                        2000,
-                        10);
+                                owner,
+                                x,
+                                y,
+                                2000,
+                                10);
             }
             case DRAW_BRIDGE -> {
                 return new Gate(buildingType,
-                        owner,
-                        x,
-                        y,
-                        0,
-                        0);
+                                owner,
+                                x,
+                                y,
+                                0,
+                                0);
             }
             case LOOKOUT_TOWER -> {
                 return new Tower(buildingType,
-                        owner,
-                        x,
-                        y,
-                        250,
-                        5,
-                        5);
+                                 owner,
+                                 x,
+                                 y,
+                                 250,
+                                 5,
+                                 5);
             }
             case PERIMETER_TOWER -> {
                 return new Tower(buildingType,
-                        owner,
-                        x,
-                        y,
-                        1000,
-                        10,
-                        10);
+                                 owner,
+                                 x,
+                                 y,
+                                 1000,
+                                 10,
+                                 10);
             }
             case TURRET -> {
                 return new Tower(buildingType,
-                        owner,
-                        x,
-                        y,
-                        1500,
-                        10,
-                        10);
+                                 owner,
+                                 x,
+                                 y,
+                                 1500,
+                                 10,
+                                 10);
             }
             case SQUARE_TOWER -> {
                 return new Tower(buildingType,
-                        owner,
-                        x,
-                        y,
-                        1600,
-                        15,
-                        15);
+                                 owner,
+                                 x,
+                                 y,
+                                 1600,
+                                 15,
+                                 15);
             }
             case ROUND_TOWER -> {
                 return new Tower(buildingType,
-                        owner,
-                        x,
-                        y,
-                        2000,
-                        20,
-                        20);
+                                 owner,
+                                 x,
+                                 y,
+                                 2000,
+                                 20,
+                                 20);
             }
-            case ARMOURY, MERCENARY_POST, TUNNELER_GUILD -> {
+            case MERCENARY_POST, TUNNELER_GUILD -> {
                 return new OffensiveStorage(buildingType,
-                        owner,
-                        x,
-                        y,
-                        500,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0);
+                                            owner,
+                                            x,
+                                            y,
+                                            500,
+                                            0,
+                                            0,
+                                            0,
+                                            0,
+                                            0,
+                                            0,
+                                            0);
+            }
+            case ARMOURY -> {
+                return new Storage(buildingType,
+                                   owner,
+                                   x,
+                                   y,
+                                   500,
+                                   50);
             }
             case KILLING_PIT -> {
                 return new OffensiveStorage(buildingType,
-                        owner,
-                        x,
-                        y,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0);
+                                            owner,
+                                            x,
+                                            y,
+                                            0,
+                                            0,
+                                            0,
+                                            0,
+                                            0,
+                                            0,
+                                            0,
+                                            0);
             }
             case BARRACKS -> {
                 return new Barracks(owner, x, y, 500);
             }
             case ENGINEER_GUILD -> {
                 return new OffensiveStorage(buildingType,
-                        owner,
-                        x,
-                        y,
-                        500,
-                        0,
-                        0,
-                        0,
-                        4,
-                        30,
-                        0,
-                        0);
+                                            owner,
+                                            x,
+                                            y,
+                                            500,
+                                            0,
+                                            0,
+                                            0,
+                                            4,
+                                            30,
+                                            0,
+                                            0);
             }
             case INN, MILL, HOVEL, WATER_POT, SIEGE_TENT, STABLE -> {
                 return new House(buildingType,
-                        owner,
-                        x,
-                        y,
-                        100,
-                        0);
+                                 owner,
+                                 x,
+                                 y,
+                                 100,
+                                 0);
             }
             case IRON_MINE, PITCH_RIG, QUARRY, WOODCUTTER -> {
                 return new Mine(buildingType,
-                        owner,
-                        x,
-                        y,
-                        100,
-                        2);
+                                owner,
+                                x,
+                                y,
+                                100,
+                                2);
             }
             case MARKET -> {
                 return new Market(buildingType,
-                        owner,
-                        x,
-                        y,
-                        100);
+                                  owner,
+                                  x,
+                                  y,
+                                  100);
             }
-            case OX_TETHER, STOCKPILE, GRANARY -> {
+            case OX_TETHER -> {
                 return new Storage(buildingType,
-                        owner,
-                        x,
-                        y,
-                        100,
-                        null);
+                                   owner,
+                                   x,
+                                   y,
+                                   100,
+                                   1);
+            }
+            case STOCKPILE, GRANARY -> {
+                return new Storage(buildingType,
+                                   owner,
+                                   x,
+                                   y,
+                                   100,
+                                   250);
             }
             case APOTHECARY -> {
                 return new Apothecary(buildingType,
-                        owner,
-                        x,
-                        y,
-                        100);
+                                      owner,
+                                      x,
+                                      y,
+                                      100);
             }
             case CHAPEL -> {
                 return new ReligiousBuilding(buildingType,
-                        owner,
-                        x,
-                        y,
-                        400,
-                        1);
+                                             owner,
+                                             x,
+                                             y,
+                                             400,
+                                             1);
             }
             case CHURCH -> {
                 return new ReligiousBuilding(buildingType,
-                        owner,
-                        x,
-                        y,
-                        800,
-                        1);
+                                             owner,
+                                             x,
+                                             y,
+                                             800,
+                                             1);
             }
             case CATHEDRAL -> {
                 return new ReligiousBuilding(buildingType,
-                        owner,
-                        x,
-                        y,
-                        1200,
-                        2);
+                                             owner,
+                                             x,
+                                             y,
+                                             1200,
+                                             2);
             }
             case WELL -> {
                 return new Wells(buildingType,
-                        owner,
-                        x,
-                        y,
-                        300);
+                                 owner,
+                                 x,
+                                 y,
+                                 300);
             }
             case ARMOURER -> {
                 return new Workshops(buildingType,
-                        owner,
-                        x,
-                        y,
-                        300,
-                        10);
+                                     owner,
+                                     x,
+                                     y,
+                                     300,
+                                     10);
             }
             case BLACKSMITH, FLETCHER, POLETURNER, OIL_SMELTER, APPLE_ORCHARD, DIARY_FARMER, HOPS_FARMER, HUNTER_POST,
                     WHEAT_FARMER, BAKERY, BREWER, TANNERS_WORKSHOP -> {
                 return new Workshops(buildingType,
-                        owner,
-                        x,
-                        y,
-                        300,
-                        2);
+                                     owner,
+                                     x,
+                                     y,
+                                     300,
+                                     2);
             }
             case PITCH_DITCH, CAGED_WAR_DOGS -> {
                 return new Tunnel(buildingType,
-                        owner,
-                        x,
-                        y,
-                        0,
-                        x,
-                        y,
-                        x,
-                        y);
+                                  owner,
+                                  x,
+                                  y,
+                                  0,
+                                  x,
+                                  y,
+                                  x,
+                                  y);
             }
             default -> throw new IllegalStateException("Unexpected value: " + buildingType);
         }

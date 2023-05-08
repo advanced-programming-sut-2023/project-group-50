@@ -181,7 +181,8 @@ public class LoginController {
         if (tryToLogin == null) {
             return "First you should enter your username";
         }
-        System.out.print("Your security question is :\n" + tryToLogin.getSecurityQuestion().getQuestion() + "\nPlease answer this question : ");
+        System.out.print("Your security question is :\n" + tryToLogin.getSecurityQuestion().getQuestion() +
+                                 "\nPlease answer this question : ");
         String input = scanner.nextLine();
         if (!tryToLogin.getSecurityQuestionAnswer().equals(input)) {
             return "Your answer is wrong";

@@ -43,7 +43,10 @@ public abstract class Soldier extends Person {
                 return WeaponName.SWORDS;
             }
             case SLAVE, TUNNELER, LADDERMAN, ENGINEER, BLACK_MONK, ASSASIN -> {
-                return null;
+                return WeaponName.HAND;
+            }
+            case LOOSE_WAR_DOG -> {
+                return WeaponName.TEETH;
             }
             default -> throw new IllegalStateException("Unexpected value: " + soldierName);
         }
@@ -63,6 +66,9 @@ public abstract class Soldier extends Person {
             }
             case ENGINEER -> {
                 return new Engineer(owner);
+            }
+            case LOOSE_WAR_DOG -> {
+                return new Infantry(SoldierName.LOOSE_WAR_DOG, owner);
             }
             default -> throw new IllegalStateException("Unexpected value: " + soldierName);
         }

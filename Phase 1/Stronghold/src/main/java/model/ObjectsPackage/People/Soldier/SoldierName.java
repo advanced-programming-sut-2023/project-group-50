@@ -21,7 +21,8 @@ public enum SoldierName {
     ASSASIN(76, 73, 60, 40, 67),
     HORSE_ARCHER(50, 55, 80, 30, 95),
     ARABIAN_SWORDSMAN(88, 88, 80, 80, 40),
-    FIRE_THROWER(84, 60, 100, 30, 60);
+    FIRE_THROWER(84, 60, 100, 30, 60),
+    LOOSE_WAR_DOG(70, 70, 0, 50, 70);
     private final int attackPower;
     private final int defensePower;
     private final int goldCost;

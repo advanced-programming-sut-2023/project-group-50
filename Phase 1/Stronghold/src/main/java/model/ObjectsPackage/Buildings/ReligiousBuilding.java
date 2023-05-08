@@ -1,6 +1,10 @@
 package model.ObjectsPackage.Buildings;
 
 import controller.UserDatabase.User;
+import model.ObjectsPackage.People.Soldier.Soldier;
+import model.ObjectsPackage.People.Soldier.SoldierName;
+
+import java.util.ArrayList;
 
 public class ReligiousBuilding extends Building {
     private int popularity;
@@ -11,13 +15,13 @@ public class ReligiousBuilding extends Building {
     }
 
     public boolean isCathedral() {
-        //TODO: fill here
-        return true;
+        return getType().equals(BuildingType.CATHEDRAL);
     }
 
-    public String trainMonks(int count) {
-        //TODO: fill here
-        return null;
+    public void trainMonks(int count) {
+        ArrayList<Soldier> newSoldiers = new ArrayList<>();
+        for (int i = 0; i < count; i++) newSoldiers.add(Soldier.getSoldierByType(SoldierName.BLACK_MONK, getOwner()));
+        getOwner().getGovernment().addUnDeployedSoldier(newSoldiers);
     }
 
     public int getPopularity() {

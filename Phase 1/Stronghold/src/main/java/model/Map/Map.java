@@ -112,11 +112,11 @@ public class Map implements Serializable {
         return null;
     }
 
-    public int getxSize() {
+    public int getXSize() {
         return xSize;
     }
 
-    public int getySize() {
+    public int getYSize() {
         return ySize;
     }
 
@@ -135,17 +135,14 @@ public class Map implements Serializable {
             for (int j = y0; j <= y1; j++) {
                 Unit unit = map.get(i).get(j);
                 for (Objects objects : unit.getObjects()) {
-                    if (objects instanceof Soldier) {
-                        if (!ownerMap.equals(((Soldier) objects).getOwner())) {
+                    if (objects instanceof Soldier soldier) {
+                        if (!ownerMap.equals(soldier.getOwner())) {
                             return true;
                         }
                     }
                 }
             }
-
-            return false;
         }
-
 
         return false;
 

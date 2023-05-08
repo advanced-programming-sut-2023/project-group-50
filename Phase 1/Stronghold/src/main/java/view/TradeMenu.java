@@ -45,9 +45,9 @@ public class TradeMenu {
         if (!priceError.truth) return typeError.errorMassage;
 
         tradeMenuController.newTrade(matcher.group("resourceType"),
-                Integer.parseInt(matcher.group("resourceAmount")),
-                Integer.parseInt(matcher.group("price")),
-                matcher.group("message")
+                                     Integer.parseInt(matcher.group("resourceAmount")),
+                                     Integer.parseInt(matcher.group("price")),
+                                     matcher.group("message")
         );
 
         return "Trade added successfully!";
@@ -59,7 +59,7 @@ public class TradeMenu {
         if (!idError.truth) return idError.errorMassage;
 
         tradeMenuController.acceptTrade(Integer.parseInt(matcher.group("id")),
-                matcher.group("message"));
+                                        matcher.group("message"));
 
         return "Trade accepted successfully!";
     }

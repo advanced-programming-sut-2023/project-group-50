@@ -1,5 +1,7 @@
 package model.Map;
 
+import model.ObjectsPackage.Buildings.Building;
+import model.ObjectsPackage.Buildings.BuildingType;
 import model.ObjectsPackage.Buildings.Gate;
 import model.ObjectsPackage.Buildings.Tower;
 import model.ObjectsPackage.ObjectType;
@@ -15,12 +17,22 @@ public class Unit implements Serializable {
     private final int x;
     private final int y;
     private GroundType texture;
+    private boolean isOnFire;
 
     public Unit(int x, int y, GroundType texture) {
         this.x = x;
         this.y = y;
         this.texture = texture;
         objects = new LinkedHashSet<>();
+        isOnFire = false;
+    }
+
+    public boolean isOnFire() {
+        return isOnFire;
+    }
+
+    public void setOnFire(boolean onFire) {
+        isOnFire = onFire;
     }
 
     public void addObject(Objects object) {
@@ -77,5 +89,19 @@ public class Unit implements Serializable {
             if (object.getObjectType().equals(ObjectType.TREE))
                 return "T";
         return "#";
+    }
+
+    public boolean hasObjectType(BuildingType type) {
+        for (Objects object : objects)
+            if (object instanceof Building building && building.getType().equals(type))
+                return true;
+        return false;
+    }
+
+    public Building getObjectType(BuildingType type) {
+        for (Objects object : objects)
+            if (object instanceof Building building && building.getType().equals(type))
+                return building;
+        return null;
     }
 }

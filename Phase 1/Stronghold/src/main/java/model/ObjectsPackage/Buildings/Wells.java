@@ -7,8 +7,7 @@ public class Wells extends Building {
         super(type, owner, x, y, maxHp);
     }
 
-    public String putOutFire(int x, int y) {
-        //TODO: fill here
-        return null;
+    public void putOutFire(int x, int y) {
+        getOwner().getGovernment().getMap().getXY(x, y).setOnFire(false);
     }
 }

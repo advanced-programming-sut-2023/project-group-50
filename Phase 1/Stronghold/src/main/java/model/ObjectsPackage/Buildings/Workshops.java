@@ -1,7 +1,9 @@
 package model.ObjectsPackage.Buildings;
 
 import controller.UserDatabase.User;
+import model.Government.Government;
 import model.ObjectsPackage.Resource;
+import model.ObjectsPackage.Storage;
 import model.ObjectsPackage.Weapons.WeaponName;
 
 public class Workshops extends Building {
@@ -13,7 +15,6 @@ public class Workshops extends Building {
     protected Workshops(BuildingType type, User owner, int x, int y, int maxHp, int rate) {
         super(type, owner, x, y, maxHp);
         this.rate = rate;
-
         getResources(type);
     }
 
@@ -79,9 +80,11 @@ public class Workshops extends Building {
         }
     }
 
-    public String makeWeapon() {
-        //TODO: fill here
-        return null;
+    public boolean produce(Object object) {
+        Government government = getOwner().getGovernment();
+        government.setResourceAmount(fromResource, government.getResourceAmount(fromResource) - 1);
+        Storage storage = government.getFirstEmptyStorageForObject(object);
+        return storage != null && storage.addOne(object);
     }
 
     public int getRate() {

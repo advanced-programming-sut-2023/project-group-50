@@ -44,7 +44,7 @@ public class FoodProcessingBuildings extends Building {
         if (initialAmount <= 0) return "Not enough " + from.name().toLowerCase() + "!";
         getOwner().getGovernment().setResourceAmount(from, finalAmount);
         getOwner().getGovernment().setResourceAmount(to,
-                getOwner().getGovernment().getResourceAmount(to) + 1);
+                                                     getOwner().getGovernment().getResourceAmount(to) + 1);
 
         return "Converted " + from.name().toLowerCase() + " to " + to.name().toLowerCase() + " successfully!";
     }

@@ -112,7 +112,8 @@ public class SignupController {
         Matcher matcher = Pattern.compile("[^\\w ]").matcher(username);
 
         if (matcher.find()) {
-            return new Error("Invalid Username format!\nyou can't use this character : \"" + matcher.group() + "\"", false);
+            return new Error(
+                    "Invalid Username format!\nyou can't use this character : \"" + matcher.group() + "\"", false);
         }
 
         if (Users.getUser(username) != null) {
@@ -133,7 +134,8 @@ public class SignupController {
             while (true) {
                 int digit = (new Random().nextInt(1000));
                 if (Users.getUser(username + digit) == null) {
-                    System.out.print("you wanna use this username : " + username + digit + "\nPleas just enter (yes or no or quit) : ");
+                    System.out.print("you wanna use this username : " + username + digit +
+                                             "\nPleas just enter (yes or no or quit) : ");
                     while (true) {
                         String string = scanner.nextLine();
                         if (string.equals("quit")) {
@@ -229,7 +231,8 @@ public class SignupController {
         char random;
         while (true) {
             random = (char) (new Random().nextInt(256) + 32);
-            if ((Character.isLowerCase(random)) || (Character.isUpperCase(random)) || (Character.isDigit(random)) || (Character.isWhitespace(random))) {
+            if ((Character.isLowerCase(random)) || (Character.isUpperCase(random)) || (Character.isDigit(random)) ||
+                    (Character.isWhitespace(random))) {
                 continue;
             }
             break;
@@ -309,7 +312,8 @@ public class SignupController {
                 int number = Integer.parseInt(question);
 
                 if (number > SecurityQuestion.getNumber()) {
-                    System.out.println("You should enter a number lower than " + SecurityQuestion.getNumber() + " in question field\nTry again");
+                    System.out.println("You should enter a number lower than " + SecurityQuestion.getNumber() +
+                                               " in question field\nTry again");
                     continue;
                 }
 

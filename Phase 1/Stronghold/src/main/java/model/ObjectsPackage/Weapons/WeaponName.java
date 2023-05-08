@@ -12,7 +12,9 @@ public enum WeaponName {
     MACE(BuildingType.BLACKSMITH, Resource.IRON, 1, 0, 0, true),
     SWORDS(BuildingType.BLACKSMITH, Resource.IRON, 1, 0, 0, true),
     METAL_ARMOUR(BuildingType.ARMOURER, Resource.IRON, 1, 0, 0, true),
-    LEATHER_ARMOUR(BuildingType.ARMOURER, Resource.COW, 1, 0, 0, true);
+    LEATHER_ARMOUR(BuildingType.ARMOURER, Resource.COW, 1, 0, 0, true),
+    HAND(null, null, 0, 0, 0, true),
+    TEETH(null, null, 0, 0, 0, true);
     private final BuildingType buildingType;
     private final Resource resource;
     private final int resourceCount;
