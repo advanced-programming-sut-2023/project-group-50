@@ -17,7 +17,7 @@ public class Weapon extends Objects {
     }
 
     private void hit(Objects object) {
-        object.applyDamage(weaponName.getDamage());
+        object.applyDamage(Owner.getType().getAttackPower());
     }
 
     public WeaponName getWeaponName() {

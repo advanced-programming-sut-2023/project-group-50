@@ -151,4 +151,8 @@ public class Map implements Serializable {
     public Unit getXY(int x, int y) {
         return map.get(x).get(y);
     }
+
+    public static int distance(int xFrom, int yFrom, int xTo, int yTo) {
+        return Math.max(Math.abs(xFrom - xTo), Math.abs(yFrom - yTo));
+    }
 }
