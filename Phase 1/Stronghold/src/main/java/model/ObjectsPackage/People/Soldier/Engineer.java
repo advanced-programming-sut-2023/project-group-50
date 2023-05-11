@@ -12,6 +12,7 @@ import model.ObjectsPackage.Resource;
 
 public class Engineer extends Soldier {
     private int range;
+    private boolean hasOil;
 
     public Engineer(User owner) {
         super(SoldierName.ENGINEER, owner);
@@ -55,9 +56,9 @@ public class Engineer extends Soldier {
     }
 
     public void pourOil(Direction direction) {
-        Government government = getOwner().getGovernment();
-        assert government.getResourceAmount(Resource.OIL) > 0;
+        assert hasOil;
 
+        Government government = getOwner().getGovernment();
         Map map = government.getMap();
         switch (direction) {
             case UP -> map.getXY(getX() - 1, getY()).setTexture(GroundType.OIL);
@@ -66,7 +67,7 @@ public class Engineer extends Soldier {
             case DOWN -> map.getXY(getX() + 1, getY()).setTexture(GroundType.OIL);
         }
 
-        government.setResourceAmount(Resource.OIL, government.getResourceAmount(Resource.OIL) - 1);
+        hasOil = false;
     }
 
     public void makeProtection(int x, int y) {
@@ -81,5 +82,9 @@ public class Engineer extends Soldier {
         Unit xy = getOwner().getGovernment().getMap().getXY(x, y);
         if (!xy.getObjects().isEmpty()) return;
         xy.addObject(Building.getBuildingByType(BuildingType.PITCH_DITCH, getOwner(), x, y));
+    }
+
+    public boolean hasOil() {
+        return hasOil;
     }
 }

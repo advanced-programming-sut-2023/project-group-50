@@ -54,4 +54,8 @@ public class Archer extends Soldier {
         for (Objects object : getOwner().getGovernment().getMap().getXY(x, y).getObjects())
             object.applyDamage(getType().getDefensePower());
     }
+
+    public boolean isInRange(int x, int y) {
+        return Map.distance(getX(), getY(), x, y) <= range;
+    }
 }

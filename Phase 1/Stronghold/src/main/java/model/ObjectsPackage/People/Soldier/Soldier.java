@@ -130,6 +130,13 @@ public abstract class Soldier extends Person {
         setY(yFinal);
     }
 
+    public boolean canMoveTo(int xFinal, int yFinal) {
+        GroundType texture = getOwner().getGovernment().getMap().getXY(xFinal, yFinal).getTexture();
+        if (texture == GroundType.RIVER || texture == GroundType.SEA || texture == GroundType.BIG_POND) return false;
+        if (Map.distance(getX(), getY(), xFinal, yFinal) > type.getSpeed()) return false;
+        return true;
+    }
+
     public void endPatrolling() {
         patrolPath = null;
         isPatrolling = false;
