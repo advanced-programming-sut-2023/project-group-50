@@ -95,7 +95,7 @@ public class Engineer extends Soldier {
     public void moveTowardsClosestOilStorage() {
         Storage closestOilStorage = getOwner().getGovernment().getClosestNonEmptyOilStorage(this);
 
-        if(closestOilStorage == null) return;
+        if (closestOilStorage == null) return;
         moveClosest(closestOilStorage.getX(), closestOilStorage.getY());
     }
 }
