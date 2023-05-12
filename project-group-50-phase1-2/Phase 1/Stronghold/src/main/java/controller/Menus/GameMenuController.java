@@ -185,13 +185,13 @@ public class GameMenuController {
 
     private Error canPlaceObject(int x, int y) {
         if(this.currentUser.getGovernment ().getMap ().getObjectByXY ( x, y, ObjectType.BUILDING)!=null){
-            return new java.lang.Error ( "There is a building at these coordinates", false );
+            return new Error ( "There is a building at these coordinates", false );
         }
         if(this.currentUser.getGovernment ().getMap ().getObjectByXY ( x, y, ObjectType.TREE)!=null){
-            return new java.lang.Error ( "There is a tree at these coordinates", false );
+            return new Error ( "There is a tree at these coordinates", false );
         }
         if(this.currentUser.getGovernment ().getMap ().getObjectByXY ( x, y, ObjectType.ROCK)!=null){
-            return new java.lang.Error ( "There is a rock at these coordinates", false );
+            return new Error ( "There is a rock at these coordinates", false );
         }
         return null;
     }
@@ -547,7 +547,7 @@ public class GameMenuController {
         if(!error.truth){
             return error.errorMassage;
         }
-        Unit unit= this.currentUser.getGovernment ().getMap ().getUnitByXY (i,j);
+        Unit unit= this.currentUser.getGovernment ().getMap ().getUnitByXY (x,y);
         Tree tree=new Tree (type,this.currentUser);
         if(!tree.canPlace ( unit.getTexture () )){
             return "You can't drop tree in this ground type";

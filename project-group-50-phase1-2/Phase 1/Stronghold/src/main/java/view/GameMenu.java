@@ -68,6 +68,9 @@ public class GameMenu {
             else if ( Commands.getMatcher ( Commands.DROP_ROCK , input).find () ) {
                 System.out.println (this.gameMenuController.dropRock ( Commands.getMatcher ( Commands.DROP_ROCK , input) ));
             }
+            else if ( Commands.getMatcher ( Commands.DROP_TREE , input).find () ) {
+                System.out.println (this.gameMenuController.dropTree ( Commands.getMatcher ( Commands.DROP_TREE , input) ));
+            }
             else {
                 System.out.println("invalid command");
             }
