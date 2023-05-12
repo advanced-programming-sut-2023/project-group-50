@@ -16,6 +16,7 @@ public class Controller {
     private final ProfileMenu profileMenu;
     private final MapMenu mapMenu;
     private final GameMenu gameMenu;
+    private final GovernmentMenu governmentMenu;
     private User currentUser;
 
     public Controller() {
@@ -25,6 +26,7 @@ public class Controller {
         this.profileMenu = new ProfileMenu();
         this.mapMenu = new MapMenu();
         this.gameMenu = new GameMenu();
+        this.governmentMenu = new GovernmentMenu();
     }
 
     public void setCurrentUser(User currentUser) {
@@ -34,7 +36,7 @@ public class Controller {
     public void run() throws InterruptedException, IOException {
 
         while (true) {
-            State nextMenu = this.signupMenu.run(scanner);
+            State nextMenu = this.signupMenu.run(scanner, gameMenu.getGameMenuController().getGame());
             if (nextMenu.equals(State.EXIT)) {
                 return;
             }
@@ -46,20 +48,27 @@ public class Controller {
             } else if (nextMenu.equals(State.EXIT)) {
                 continue;
             }
-            this.gameMenu.getGameMenuController().setCurrentUser(this.loginMenu.getLoginController().getLoggedIn());
+            this.currentUser = this.loginMenu.getLoginController().getLoggedIn();
+            this.gameMenu.getGameMenuController().setCurrentUser(this.currentUser);
             while (true) {
                 nextMenu = this.gameMenu.run(scanner);
                 if (nextMenu.equals(State.SIGN)) {
                     this.signupMenu.setNextMatcher(null);
+                    this.currentUser = null;
                     break;
                 } else if (nextMenu.equals(State.MAP)) {
-                    this.mapMenu.getMapMenuController().setCurrentUser(this.loginMenu.getLoginController().getLoggedIn());
+                    this.mapMenu.getMapMenuController().setCurrentUser(this.currentUser);
                     this.mapMenu.setNextMatcher(this.gameMenu.getNextMatcher());
                     this.mapMenu.run(scanner);
                 } else if (nextMenu.equals(State.PROFILE)) {
-                    this.profileMenu.getProfileController().setCurrentUser(this.loginMenu.getLoginController().getLoggedIn());
+                    this.profileMenu.getProfileController().setCurrentUser(this.currentUser);
                     this.profileMenu.run(scanner);
+                } else if (nextMenu.equals(State.GOVERNMENT)) {
+                    this.governmentMenu.getGovernmentMenuController().setCurrentUser(this.loginMenu.getLoginController().getLoggedIn());
+                    this.governmentMenu.run(scanner);
                 }
+
+
             }
         }
     }

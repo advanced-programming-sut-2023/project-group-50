@@ -22,25 +22,29 @@ public enum Commands {
     QUESTION("(?<question>-q ((\"[^\"]*\")|(\\S*)))"),
     ANSWER_QUESTION("(?<answer>-a ((\"[^\"]*\")|(\\S*)))"),
     ANSWER_CONFIRM("(?<confirm>-c ((\"[^\"]*\")|(\\S*)))"),
-    RATE("?<rate>-r \\d+"),
-
-
+    RATE("?<rate>-r (-)?\\d*"),
     X("-x \\d*"),
     Y("-y \\d*"),
     DIRECTION("(up|left|down|right)( \\d+)?"),
     TYPE("-type ((\"[^\"]*\")|(\\S*))"),
     COUNT("-c (\\d*)"),
+    X1("-x1 \\d*"),
+    Y1("-y1 \\d*"),
+    X2("-x2 \\d*"),
+    Y2("-y2 \\d*"),
+    DIRECT("-d \\S*"),
 
 
     PROFILE_MENU("^profile menu$"),
-    GOVERNMENT_MUNE("^government menu$"),
+    GOVERNMENT_MENU("^government menu$"),
     BACK("^back$"),
 
     CREATE_USER("^user create(( -p(( random)|(( \".*\"){2})|(( \\S*){2})))|( -[sune] ((\".*\")|(\\S*)))){4,5}$"),
     PICK_QUESTION("^question pick( -[a-z]+ ((\".*\")|(\\S*))){3}$"),
     EXIT("^exit$"),
     LOGIN("^user login(( --stay-logged-in)|(( -[up] ((\\\".*\\\")|(\\S*))))){2,3}$"),
-    FORGOT("^forgot my password$"),
+    FORGOT("^forgot my password -u ((\".*\")|(\\S*))$"),
+
     LOGOUT("^user logout$"),
     PROFILE_CHANGE("^profile change -[une] ((\".*\")|(\\S*))$"),
     REMOVE_SLOGAN("^Profile remove slogan$"),
@@ -55,8 +59,6 @@ public enum Commands {
 
     SHOW_MAP("^show map( -(x|y) \\d*){2}"),
     MOVE_MAP("^map( (up|left|down|right)( \\d+)?)+"),
-    DROP_BUILDING("^dropbuilding(( -(x|y) (\\d*))|( -type ((\".*\")|(\\S*)))){3}"),
-    SELECT_BUILDING("^select building( -(x|y) \\d*){2}"),
     REPAIR("^repair"),
     CREATE_UNIT("^createunit(( -(c) (\\d*))|( -type ((\".*\")|(\\S*)))){2}"),
     BUY_ITEM("^buy item (?<name>.*)"),
@@ -75,14 +77,18 @@ public enum Commands {
     BUILD("^build -q (?<equipment>.+)$"),
     DISBAND_UNIT("^disband unit$"),
 
+    DROP_BUILDING("^drop building(( -(x|y) (\\d*))|( -type ((\".*\")|(\\S*)))){3}$"),
+    SELECT_BUILDING("^select building( -(x|y) \\d*){2}$"),
     SHOW_POPULARITY_FACTOR("^show popularity factors$"),
     SHOW_POPULARITY("^show popularity$"),
     SHOW_FOOD_LIST("^show food list$"),
     SHOW_FOOD_RATE("^food rate show$"),
-    SET_FOOD_RATE("^food rate -r (\\d*)$"),
-    SET_TAX_RATE("^tax rate -r (\\d*)$"),
+    SET_FOOD_RATE("^food rate -r (-)?(\\d*)$"),
+    ADD_FOOD("^add food -f (?<f>\\S+)$"),
+    SET_TAX_RATE("^tax rate -r (-)?(\\d*)$"),
     SHOW_TAX_RATE("^tax rate show$"),
-    SET_FEAR_RATE("^fear rate -r (\\d*)$"),
+    SET_FEAR_RATE("^fear rate -r (-)?(\\d*)$"),
+    SET_TEXTURE_PLACE("^set texture(( -(x1|x2|y1|y2) \\d*)|( -type ((\".*\")|(\\S*)))){5}$"),
 
     SET_TEXTURE("^set texture (?=.*(-x (?<x>-?\\d+)))(?=.*(-y (?<y>-?\\d+)))(?=.*(-t (?<type>.+)))"),
     SET_TEXTURE_RECT("^set texture (?=.*(-x1 (?<x1>-?\\d+)))(?=.*(-y1 (?<y1>-?\\d+)))(?=.*(-y2 (?<y2>-?\\d+)))(?=.*(-x2 (?<x2>-?\\d+)))(?=.*(-t (?<type>.+)))"),
@@ -92,7 +98,17 @@ public enum Commands {
     DROP_UNIT("^drop unit (?=.*(-x (?<x>-?\\d+)))(?=.*(-y (?<y>-?\\d+)))(?=.*(-t (?<type>.+)))(?=.*(-c (?<count>-?\\d+)))"),
     DROP_BUILDING_MAP("^drop building (?=.*(-x (?<x>-?\\d+)))(?=.*(-y (?<y>-?\\d+)))(?=.*(-t (?<type>.+))"),
     END_TURN("^end turn$"),
-    SHOW_MY_DATA("^show my data$");
+    SHOW_MY_DATA("^show my data$"),
+    CAPTURE_GATE("^capture gate (?=.*(-x (?<x>-?\\d+)))(?=.*(-y (?<y>-?\\d+)))"),
+    MAKE_PROTECTION("^make protection"),
+    MAKE_BATTERING_RAM("^make battering ram"),
+    MAKE_CATAPULT("^make catapult"),
+    MAKE_FIRE_THROWER("^make fire thrower"),
+    START_GAME("^start game$"),
+    SHOW_DETAIL("^show details( -(x|y) \\d*){2}$"),
+
+    COORDINATE("^(?<x>\\d+) (?<y>\\d+)$");
+
     private final String regex;
 
     Commands(String regex) {

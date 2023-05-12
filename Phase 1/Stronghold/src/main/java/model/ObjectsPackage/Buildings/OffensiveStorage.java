@@ -52,7 +52,7 @@ public class OffensiveStorage extends Building {
         int cost = soldierName.getCoinCost() * count;
         Government government = getOwner().getGovernment();
 
-        government.setCoin(government.getCoin() - cost);
+        government.setCoins(government.getCoins() - cost);
         ArrayList<Soldier> soldiers = getNewSoldiers(soldierName, count);
         government.addUnDeployedSoldier(soldiers);
     }
@@ -65,15 +65,15 @@ public class OffensiveStorage extends Building {
     }
 
     private boolean hasMoneyForTroops(SoldierName soldierName, int count) {
-        return getOwner().getGovernment().getCoin() >= soldierName.getCoinCost() * count;
+        return getOwner().getGovernment().getCoins() >= soldierName.getCoinCost() * count;
     }
 
     private boolean hasMoneyForEngineer(int count) {
-        return getOwner().getGovernment().getCoin() >= costOfEngineer * count;
+        return getOwner().getGovernment().getCoins() >= costOfEngineer * count;
     }
 
     private boolean hasMoneyForLadderman(int count) {
-        return getOwner().getGovernment().getCoin() >= costOfLadderman * count;
+        return getOwner().getGovernment().getCoins() >= costOfLadderman * count;
     }
 
     private boolean hasEnoughArmourForTroops(SoldierName soldierName, int count) {
@@ -87,7 +87,7 @@ public class OffensiveStorage extends Building {
         int cost = costOfEngineer * count;
         Government government = getOwner().getGovernment();
 
-        government.setCoin(government.getCoin() - cost);
+        government.setCoins(government.getCoins() - cost);
         ArrayList<Soldier> soldiers = getNewSoldiers(SoldierName.ENGINEER, count);
         government.addUnDeployedSoldier(soldiers);
     }
@@ -99,7 +99,7 @@ public class OffensiveStorage extends Building {
         int cost = costOfLadderman * count;
         Government government = getOwner().getGovernment();
 
-        government.setCoin(government.getCoin() - cost);
+        government.setCoins(government.getCoins() - cost);
         ArrayList<Soldier> soldiers = getNewSoldiers(SoldierName.LADDERMAN, count);
         government.addUnDeployedSoldier(soldiers);
     }

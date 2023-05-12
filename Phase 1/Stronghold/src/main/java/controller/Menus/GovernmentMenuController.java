@@ -4,6 +4,7 @@ import controller.UserDatabase.User;
 import controller.control.Commands;
 import controller.control.Error;
 import model.Government.Government;
+import model.ObjectsPackage.Resource;
 import view.GovernmentMenu;
 
 import java.util.HashMap;
@@ -38,30 +39,19 @@ public class GovernmentMenuController {
     }
 
     public String showFoodList() {
-        HashMap<String, Double> hashMap = this.currentUser.getGovernment().getFoods();
-        String string = "";
-        if (hashMap.containsKey("bread")) {
-            string = string + "Number of bread : " + hashMap.get("bread") + "\n";
-        } else {
-            string = string + "Number of bread : " + 0 + "\n";
-        }
-        if (hashMap.containsKey("meat")) {
-            string = string + "Number of meat : " + hashMap.get("meat") + "\n";
-        } else {
-            string = string + "Number of meat : " + 0 + "\n";
-        }
-        if (hashMap.containsKey("apple")) {
-            string = string + "Number of apple : " + hashMap.get("apple") + "\n";
-        } else {
-            string = string + "Number of apple : " + 0 + "\n";
-        }
-        if (hashMap.containsKey("cheese")) {
-            string = string + "Number of cheese : " + hashMap.get("cheese") + "\n";
-        } else {
-            string = string + "Number of cheese : " + 0 + "\n";
+        HashMap<Resource, Double> hashMap = this.currentUser.getGovernment().getFoods();
+        StringBuilder string = new StringBuilder();
+
+        for (Resource resource : Resource.values()) {
+            if (resource.isFood()) {
+                if (hashMap.containsKey(resource))
+                    string.append("Number of ").append(resource.name().toLowerCase()).append(": ").append(hashMap.get(resource)).append("\n");
+                else
+                    string.append("Number of ").append(resource.name().toLowerCase()).append(": ").append(0).append("\n");
+            }
         }
 
-        return string;
+        return string.toString();
 
     }
 
@@ -113,7 +103,7 @@ public class GovernmentMenuController {
 
         if (value < 0) {
             if (-1 * value * this.currentUser.getGovernment().getPopulation() >
-                    this.currentUser.getGovernment().getCoin()) {
+                    this.currentUser.getGovernment().getCoins()) {
                 return "You can't give coin people with this rate because you haven't coin enough";
             }
         }
@@ -145,5 +135,15 @@ public class GovernmentMenuController {
         this.currentUser.getGovernment().setFearRate(rate);
         return "You set rate fear number successfully";
 
+    }
+
+    public String addFood(Matcher matcher) {
+        String food = matcher.group("f");
+
+        Resource resource = Resource.ALE.getFoodByName(food);
+
+        if (resource == null) return "Invalid food name.";
+        currentUser.getGovernment().addFood(resource);
+        return "Added successfully.";
     }
 }

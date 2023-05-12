@@ -3,13 +3,16 @@ package controller.UserDatabase;
 import controller.control.SecurityQuestion;
 import model.Government.Government;
 import model.Item.Item;
+import model.Map.Map;
+import model.ObjectsPackage.Objects;
 import model.Trade.Trade;
+import model.UserColor.UserColor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-public class User implements Serializable {
+public class User implements Serializable, Comparable<User> {
     private final Government government;
     private String userName;
     private String password;
@@ -25,8 +28,9 @@ public class User implements Serializable {
     private LinkedHashMap<Integer, Trade> trades;
     private ArrayList<Item> items;
     private int highScore;
+    private UserColor color;
 
-    public User(String userName, String password, String nickName, String email, String slogan) {
+    public User(String userName, String password, String nickName, String email, String slogan, int X0, int Y0, UserColor color) {
         this.userName = userName;
         this.password = password;
         this.nickName = nickName;
@@ -37,7 +41,11 @@ public class User implements Serializable {
         messages = new ArrayList<>();
         trades = new LinkedHashMap<>();
         items = new ArrayList<>();
-        government = new Government(this);
+        government = new Government(this, X0, Y0);
+    }
+
+    public UserColor getColor() {
+        return color;
     }
 
     public int getAttemptToLogin() {
@@ -187,5 +195,45 @@ public class User implements Serializable {
         for (Item item : items)
             list.add(item.toString());
         return list;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userName='" + userName + '\'' +
+                "\n password='" + password + '\'' +
+                "\n nickName='" + nickName + '\'' +
+                "\n email='" + email + '\'' +
+                "\n slogan='" + slogan + '\'' +
+                "\n securityQuestion=" + securityQuestion +
+                "\n securityQuestionAnswer='" + securityQuestionAnswer + '\'' +
+                "\n attemptToLogin=" + attemptToLogin +
+                "\n rank=" + rank +
+                "\n score=" + score +
+                "\n highScore=" + highScore +
+                "\n color=" + color.getName() +
+                '}';
+    }
+
+    public void updateScore() {
+        int newScore = 0;
+        Map map = getGovernment().getMap();
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object.getOwner().equals(this)) {
+                        newScore += object.getScore();
+                    }
+                }
+            }
+        }
+        newScore += government.getCoins();
+        if (newScore > highScore) highScore = newScore;
+        score = newScore;
+    }
+
+    @Override
+    public int compareTo(User that) {
+        return -Integer.compare(this.score, that.score);
     }
 }

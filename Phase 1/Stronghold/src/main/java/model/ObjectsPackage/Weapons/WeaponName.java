@@ -3,7 +3,7 @@ package model.ObjectsPackage.Weapons;
 import model.ObjectsPackage.Buildings.BuildingType;
 import model.ObjectsPackage.Resource;
 
-public enum WeaponName { //TODO: other shit
+public enum WeaponName {
     BOW(BuildingType.FLETCHER, Resource.WOOD, 2, 50, true),
     CROSSBOW(BuildingType.FLETCHER, Resource.WOOD, 3, 70, true),
     SPEAR(BuildingType.POLETURNER, Resource.WOOD, 1, 1, false),
@@ -14,7 +14,9 @@ public enum WeaponName { //TODO: other shit
     LEATHER_ARMOUR(BuildingType.ARMOURER, Resource.COW, 1, 1, false),
     HAND(null, null, 0, 0, false),
     TEETH(null, null, 0, 0, false),
-    ;
+    BATTERING_RAM(null, null, 0, 1, false),
+    CATAPULT(null, null, 0, 50, false),
+    FIRE_THROWER(null, null, 0, 10, true);
     private final BuildingType buildingType;
     private final Resource resource;
     private final int resourceCount;

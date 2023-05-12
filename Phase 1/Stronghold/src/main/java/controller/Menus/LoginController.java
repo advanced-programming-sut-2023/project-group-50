@@ -18,7 +18,7 @@ public class LoginController {
 
     private static final String userLoggedInPath = ".\\Phase 1\\User logged in.txt";
     private final LoginMenu loginMenu;
-    private User tryToLogin;
+
     private User loggedIn;
 
     public LoginController(LoginMenu loginMenu) {
@@ -121,13 +121,6 @@ public class LoginController {
         return loggedIn;
     }
 
-    public User getTryToLogin() {
-        return tryToLogin;
-    }
-
-    public void setTryToLogin(User tryToLogin) {
-        this.tryToLogin = tryToLogin;
-    }
 
     public String login(Matcher matcher, Scanner scanner) throws InterruptedException, IOException {
         matcher.find();
@@ -153,7 +146,6 @@ public class LoginController {
         User user = Users.getUser(username);
 
         if (!user.getPassword().equals(password)) {
-            this.tryToLogin = user;
             user.setAttemptToLogin(user.getAttemptToLogin() + 1);
             if (user.getAttemptToLogin() > 5) {
                 return timerForLogin(user.getAttemptToLogin(), scanner);
@@ -172,19 +164,33 @@ public class LoginController {
         setMapSize(user, scanner);
         user.setAttemptToLogin(0);
         this.loggedIn = (user);
-        this.tryToLogin = null;
+
         return "user logged in successfully!";
 
     }
 
-    public String forgotPassword(Scanner scanner) {
-        if (tryToLogin == null) {
-            return "First you should enter your username";
+    public String forgotPassword(Matcher matcher, Scanner scanner) {
+        matcher.find();
+        String in = matcher.group();
+
+        Error error = checkHasField(in, Commands.USERNAME);
+        if (!error.truth) {
+            return error.errorMassage;
         }
-        System.out.print("Your security question is :\n" + tryToLogin.getSecurityQuestion().getQuestion() +
+
+        String username = error.errorMassage;
+
+        if (Users.getUser(username) == null) {
+            return "Username didn't match!";
+        }
+
+        User user = Users.getUser(username);
+
+
+        System.out.print("Your security question is :\n" + user.getSecurityQuestion().getQuestion() +
                                  "\nPlease answer this question : ");
         String input = scanner.nextLine();
-        if (!tryToLogin.getSecurityQuestionAnswer().equals(input)) {
+        if (!user.getSecurityQuestionAnswer().equals(input)) {
             return "Your answer is wrong";
         }
 
@@ -228,7 +234,7 @@ public class LoginController {
 
             break;
         }
-        tryToLogin.setPassword(input);
+        user.setPassword(input);
         return "Your password successfully changed!";
     }
 

@@ -31,6 +31,17 @@ public class GameMenu {
     public State run(Scanner scanner) {
         Matcher matcher;
 
+        while (gameMenuController.canStart()) {
+            String line = scanner.nextLine();
+
+            if (Commands.getMatcher(Commands.EXIT, line).matches())
+                return State.PROFILE;
+            else if (Commands.getMatcher(Commands.GOVERNMENT_MENU, line).find())
+                return State.GOVERNMENT;
+            else
+                System.out.println(gameMenuController.cannotStartMessage());
+        }
+
         while (gameMenuController.gameIsFinished()) {
             boolean flag = false;
             String input = scanner.nextLine();
@@ -43,7 +54,7 @@ public class GameMenu {
             } else if (Commands.getMatcher(Commands.SHOW_MAP, input).find()) {
                 this.setNextMatcher(Commands.getMatcher(Commands.SHOW_MAP, input));
                 return State.MAP;
-            }else if ((matcher = Commands.getMatcher(Commands.PATROL_UNIT, input)).matches())
+            } else if ((matcher = Commands.getMatcher(Commands.PATROL_UNIT, input)).matches())
                 System.out.println(this.gameMenuController.patrolUnit(matcher));
             else if ((matcher = Commands.getMatcher(Commands.SET_UNIT, input)).matches())
                 System.out.println(this.gameMenuController.setUnit(matcher));
@@ -74,11 +85,20 @@ public class GameMenu {
                 System.out.println(this.gameMenuController.getUserData());
             else if (Commands.getMatcher(Commands.EXIT, input).matches())
                 return State.PROFILE;
-            else if (Commands.getMatcher(Commands.GOVERNMENT_MUNE, input).find()) {
+            else if (Commands.getMatcher(Commands.GOVERNMENT_MENU, input).find()) {
                 return State.GOVERNMENT;
-            } else {
+            } else if ((matcher = Commands.getMatcher(Commands.CAPTURE_GATE, input)).matches())
+                System.out.println(this.gameMenuController.captureGate(matcher));
+            else if (Commands.getMatcher(Commands.MAKE_BATTERING_RAM, input).find())
+                System.out.println(this.gameMenuController.makeBatteringRam());
+            else if (Commands.getMatcher(Commands.MAKE_CATAPULT, input).find())
+                System.out.println(this.gameMenuController.makeCatapult());
+            else if (Commands.getMatcher(Commands.MAKE_PROTECTION, input).find())
+                System.out.println(this.gameMenuController.makeProtection());
+            else if (Commands.getMatcher(Commands.MAKE_FIRE_THROWER, input).find())
+                System.out.println(this.gameMenuController.makeFireThrower());
+            else
                 System.out.println("invalid command");
-            }
 
 
             if (!flag) this.gameMenuController.setSelectedBuilding(null);

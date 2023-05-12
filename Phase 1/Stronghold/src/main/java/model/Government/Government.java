@@ -2,9 +2,7 @@ package model.Government;
 
 import controller.UserDatabase.User;
 import model.Map.Map;
-import model.ObjectsPackage.Buildings.Building;
-import model.ObjectsPackage.Buildings.BuildingType;
-import model.ObjectsPackage.Buildings.ReligiousBuilding;
+import model.ObjectsPackage.Buildings.*;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.NonSoldier.Job;
 import model.ObjectsPackage.People.NonSoldier.NonSoldier;
@@ -25,11 +23,11 @@ public class Government implements Serializable {
     private final User user;
     private final ArrayList<Person> noneJob;
     private final HashMap<Resource, Integer> resources;
-    private double coins;
-    private Map map;
     private final HashMap<PersonState, ArrayList<Person>> people;
     private final ArrayList<Building> buildings;
-    private HashMap<String, Double> foods;
+    private double coins;
+    private Map map;
+    private HashMap<Resource, Double> foods;
 
     private int popularity;
 
@@ -39,7 +37,7 @@ public class Government implements Serializable {
     private int previousRateTax;
     private int fearRate;
 
-    private HashMap<WeaponName, Integer> weapons;
+    private final HashMap<WeaponName, Integer> weapons;
     private ArrayList<Soldier> unDeployedSoldier;
     private Soldier lord;
     private Building lordsCastle;
@@ -65,8 +63,25 @@ public class Government implements Serializable {
         placeLord();
     }
 
-    public Building getLordsCastle() {
-        return lordsCastle;
+    public Government(User user, int X0, int Y0) {
+        this.user = user;
+        resources = new HashMap<>();
+        weapons = new HashMap<>();
+        coins = 0;
+        this.people = new HashMap<>();
+        this.people.put(PersonState.WORKER, new ArrayList<>());
+        this.people.put(PersonState.JOBLESS, new ArrayList<>());
+        this.people.put(PersonState.DEPLOYED_SOLDIER, new ArrayList<>());
+        this.people.put(PersonState.UNDEPLOYED_SOLDIER, new ArrayList<>());
+        this.buildings = new ArrayList<>();
+        this.rateFood = -2;
+        this.popularity = 0;
+        this.previousRateFood = -2;
+        this.taxRate = 0;
+        this.previousRateTax = 0;
+        this.fearRate = 0;
+        this.noneJob = new ArrayList<>();
+        placeLord(user, new Pair(X0, Y0));
     }
 
     public static double getTaxValueByRate(int rateTax) {
@@ -80,16 +95,24 @@ public class Government implements Serializable {
         }
     }
 
+    private void placeLord(User user, Pair X0) {
+        lord = Soldier.getSoldierByType(SoldierName.THE_LORD, user);
+        Pair xy = X0;
+        lordsCastle = Building.getBuildingByType(BuildingType.PALACE, user, xy.x, xy.y);
+        map.getXY(xy.x, xy.y).addObject(lord);
+        map.getXY(xy.x, xy.y).addObject(lordsCastle);
+    }
+
+    public Building getLordsCastle() {
+        return lordsCastle;
+    }
+
     public void setLordsCastle(Building lordsCastle) {
         this.lordsCastle = lordsCastle;
     }
 
     private void placeLord() {
-        lord = Soldier.getSoldierByType(SoldierName.THE_LORD, user);
-        Pair xy = getEmptyXY();
-        lordsCastle = Building.getBuildingByType(BuildingType.PALACE, user, xy.x, xy.y);
-        map.getXY(xy.x, xy.y).addObject(lord);
-        map.getXY(xy.x, xy.y).addObject(lordsCastle);
+        placeLord(user, getEmptyXY());
     }
 
     private Pair getEmptyXY() {
@@ -101,18 +124,20 @@ public class Government implements Serializable {
     }
 
     public void setResourceAmount(Resource resource, int value) {
+        if (resource.isFood()) foods.replace(resource, (double) value);
         resources.replace(resource, value);
     }
 
     public int getResourceAmount(Resource resource) {
+        if (resource.isFood()) return (int) Math.ceil(foods.get(resource));
         return resources.getOrDefault(resource, 0);
     }
 
-    public double getCoin() {
+    public double getCoins() {
         return coins;
     }
 
-    public void setCoin(double coins) {
+    public void setCoins(double coins) {
         this.coins = coins;
         double value = Government.getTaxValueByRate(this.previousRateTax);
         if (value < 0) {
@@ -148,7 +173,7 @@ public class Government implements Serializable {
         this.popularity = popularity;
     }
 
-    public HashMap<String, Double> getFoods() {
+    public HashMap<Resource, Double> getFoods() {
         return foods;
     }
 
@@ -193,14 +218,14 @@ public class Government implements Serializable {
         this.previousRateTax = previousRateTax;
     }
 
-    public void buyBuilding(BuildingType buildingType, float zarib) {
-        this.setCoin(getCoin() - (int) (buildingType.getCoinCost() * zarib));
+    public void buyBuilding(BuildingType buildingType, float coefficient) {
+        this.setCoins(getCoins() - (int) (buildingType.getCoinCost() * coefficient));
         this.setResourceAmount(Resource.STONE,
-                               this.resources.get(Resource.STONE) - (int) (buildingType.getStoneCost() * zarib));
+                               this.resources.get(Resource.STONE) - (int) (buildingType.getStoneCost() * coefficient));
         this.setResourceAmount(Resource.WOOD,
-                               this.resources.get(Resource.WOOD) - (int) (buildingType.getWoodCost() * zarib));
+                               this.resources.get(Resource.WOOD) - (int) (buildingType.getWoodCost() * coefficient));
         this.setResourceAmount(Resource.IRON,
-                               this.resources.get(Resource.IRON) - (int) (buildingType.getIronCost() * zarib));
+                               this.resources.get(Resource.IRON) - (int) (buildingType.getIronCost() * coefficient));
     }
 
     public ArrayList<Person> getNoneJob() {
@@ -291,10 +316,10 @@ public class Government implements Serializable {
         }
         this.weapons.replace(Soldier.getWeaponName(soldierName),
                              this.weapons.get(Soldier.getWeaponName(soldierName)) - count);
-        this.setCoin(this.coins - (double) soldierName.getCoinCost() * count);
+        this.setCoins(this.coins - (double) soldierName.getCoinCost() * count);
     }
 
-    public void addFoods(String food, Double count) {
+    public void addFoods(Resource food, Double count) {
         if (this.foods.containsKey(food)) {
             this.foods.replace(food, this.foods.get(food) + count);
         } else {
@@ -310,16 +335,16 @@ public class Government implements Serializable {
 
     public int checkPopularityFood() {
         int value = 0;
-        if (foods.containsKey("bread") && foods.get("bread") > 0) {
+        if (foods.containsKey(Resource.BREAD) && foods.get(Resource.BREAD) > 0) {
             value++;
         }
-        if (foods.containsKey("meat") && foods.get("meat") > 0) {
+        if (foods.containsKey(Resource.MEAT) && foods.get(Resource.MEAT) > 0) {
             value++;
         }
-        if (foods.containsKey("cheese") && foods.get("cheese") > 0) {
+        if (foods.containsKey(Resource.CHEESE) && foods.get(Resource.CHEESE) > 0) {
             value++;
         }
-        if (foods.containsKey("apple") && foods.get("apple") > 0) {
+        if (foods.containsKey(Resource.APPLE) && foods.get(Resource.APPLE) > 0) {
             value++;
         }
 
@@ -335,10 +360,10 @@ public class Government implements Serializable {
     }
 
     public double getFoodNumber() {
-        return this.foods.get("meat") +
-                this.foods.get("apple") +
-                this.foods.get("bread") +
-                this.foods.get("cheese");
+        return this.foods.get(Resource.MEAT) +
+                this.foods.get(Resource.APPLE) +
+                this.foods.get(Resource.BREAD) +
+                this.foods.get(Resource.CHEESE);
     }
 
     public void feedPeople() {
@@ -348,18 +373,15 @@ public class Government implements Serializable {
             this.rateFood = -2;
         }
 
-        double cheeseDecrease = this.getPopulation() * value * (this.foods.get("cheese") / this.getFoodNumber());
-        double meatDecrease = this.getPopulation() * value * (this.foods.get("meat") / this.getFoodNumber());
-        double appleDecrease = this.getPopulation() * value * (this.foods.get("apple") / this.getFoodNumber());
-        double breadDecrease = this.getPopulation() * value * (this.foods.get("bread") / this.getFoodNumber());
+        double cheeseDecrease = this.getPopulation() * value * (this.foods.get(Resource.CHEESE) / this.getFoodNumber());
+        double meatDecrease = this.getPopulation() * value * (this.foods.get(Resource.MEAT) / this.getFoodNumber());
+        double appleDecrease = this.getPopulation() * value * (this.foods.get(Resource.APPLE) / this.getFoodNumber());
+        double breadDecrease = this.getPopulation() * value * (this.foods.get(Resource.BREAD) / this.getFoodNumber());
 
-        this.foods.put("cheese", this.foods.get("cheese") - cheeseDecrease);
-        this.foods.put("meat", this.foods.get("meat") - meatDecrease);
-        this.foods.put("apple", this.foods.get("apple") - appleDecrease);
-        this.foods.put("bread", this.foods.get("bread") - breadDecrease);
-
-        //TODO starving?
-
+        this.foods.put(Resource.CHEESE, this.foods.get(Resource.CHEESE) - cheeseDecrease);
+        this.foods.put(Resource.MEAT, this.foods.get(Resource.MEAT) - meatDecrease);
+        this.foods.put(Resource.APPLE, this.foods.get(Resource.APPLE) - appleDecrease);
+        this.foods.put(Resource.BREAD, this.foods.get(Resource.BREAD) - breadDecrease);
 
         if (value * getPopulation() > getFoodNumber()) {
             this.rateFood = -2;
@@ -479,15 +501,27 @@ public class Government implements Serializable {
         weapons.put(weaponName, count);
     }
 
+
     @Override
     public String toString() {
-        return "Government:" +
-                "\nuser=" + user.getUserName() +
-                "\nnoneJob=" + noneJob +
+        return "Government{" +
+                "user=" + user.toString() +
+                "\nnoneJob=" + noneJob.size() +
                 "\nresources=" + resources.toString().replaceAll(", ", "\n") +
-                "\nweapons=" + weapons.toString().replaceAll(", ", "\n") +
+                "\npeople=" + people.size() +
                 "\ncoins=" + coins +
-                "\nunDeployedSoldier=" + unDeployedSoldier.size();
+                "\nfoods=" + foods.toString().replaceAll(", ", "\n") +
+                "\npopularity=" + popularity +
+                "\nrateFood=" + rateFood +
+                "\npreviousRateFood=" + previousRateFood +
+                "\ntaxRate=" + taxRate +
+                "\npreviousRateTax=" + previousRateTax +
+                "\nfearRate=" + fearRate +
+                "\nweapons=" + weapons.toString().replaceAll(", ", "\n") +
+                "\nunDeployedSoldier=" + unDeployedSoldier.size() +
+                "\nlord=" + lord.getHp() +
+                "\nlordsCastle=" + lordsCastle.getX() + ", " + lordsCastle.getY() +
+                '}';
     }
 
     public Soldier getLord() {
@@ -497,13 +531,13 @@ public class Government implements Serializable {
     public void moveLordToClosestPlace() {
         int X = lord.getX(), Y = lord.getY(), range = lord.getSpeed();
 
-        Building closestBuilding = getClosestBuilding(X, Y, range);
+        Building closestBuilding = getClosestAllyBuilding(X, Y, range);
         if (closestBuilding == null) return;
         lord.move(closestBuilding.getX(), closestBuilding.getY());
         lordsCastle = closestBuilding;
     }
 
-    private Building getClosestBuilding(int X, int Y, int range) {
+    private Building getClosestAllyBuilding(int X, int Y, int range) {
         Building closest = null;
         int dist = Integer.MAX_VALUE;
         for (int x = Math.max(0, X - range); x < Math.min(X + range, map.getXSize()); x++) {
@@ -516,6 +550,66 @@ public class Government implements Serializable {
                                 closest = building;
                                 dist = curDist;
                             }
+                        }
+                    }
+                }
+            }
+        }
+        return closest;
+    }
+
+    private Building getClosestEnemyBuilding(int X, int Y, int range) {
+        Building closest = null;
+        int dist = Integer.MAX_VALUE;
+        for (int x = Math.max(0, X - range); x < Math.min(X + range, map.getXSize()); x++) {
+            for (int y = Math.max(0, Y - range); y < Math.min(Y + range, map.getYSize()); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object instanceof Building building) {
+                        if (!building.isDestroyed() && !building.getOwner().equals(user)) {
+                            int curDist = Map.distance(X, Y, x, y);
+                            if (curDist < dist || (curDist == dist && building.getHp() > closest.getHp())) {
+                                closest = building;
+                                dist = curDist;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return closest;
+    }
+
+    private Objects getClosestEnemyObject(int X, int Y, int range, User enemy) {
+        Objects closest = null;
+        int dist = Integer.MAX_VALUE;
+        for (int x = Math.max(0, X - range); x < Math.min(X + range, map.getXSize()); x++) {
+            for (int y = Math.max(0, Y - range); y < Math.min(Y + range, map.getYSize()); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object.getOwner().equals(enemy)) {
+                        int curDist = Map.distance(X, Y, x, y);
+                        if (curDist < dist) {
+                            closest = object;
+                            dist = curDist;
+                        }
+                    }
+                }
+            }
+        }
+        return closest;
+    }
+
+    private Objects getClosestNotOnFireEnemy(int X, int Y, int range) {
+        Objects closest = null;
+        int dist = Integer.MAX_VALUE;
+        for (int x = Math.max(0, X - range); x < Math.min(X + range, map.getXSize()); x++) {
+            for (int y = Math.max(0, Y - range); y < Math.min(Y + range, map.getYSize()); y++) {
+                if (map.getXY(x, y).isOnFire()) continue;
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (!object.getOwner().equals(user)) {
+                        int curDist = Map.distance(X, Y, x, y);
+                        if (curDist < dist || (curDist == dist && object.getHp() > closest.getHp())) {
+                            closest = object;
+                            dist = curDist;
                         }
                     }
                 }
@@ -644,9 +738,88 @@ public class Government implements Serializable {
                     objects.applyDamage(50);
     }
 
-    private class Pair {
-        int x;
-        int y;
+    public void attackWeapons() {
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object instanceof GroupSoldier groupSoldier && groupSoldier.getWeapon() != null) {
+                        switch (groupSoldier.getWeapon().getWeaponName()) {
+                            case BATTERING_RAM -> {
+                                handleBatteringRam(groupSoldier);
+                            }
+                            case CATAPULT -> {
+                                handleCatapult(groupSoldier);
+                            }
+                            case FIRE_THROWER -> {
+                                handleFireThrower(groupSoldier);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void handleBatteringRam(GroupSoldier groupSoldier) {
+        Objects closestEnemy = getClosestEnemyBuilding(groupSoldier.getX(),
+                                                       groupSoldier.getY(),
+                                                       WeaponName.BATTERING_RAM.getRange());
+
+        if (closestEnemy != null)
+            closestEnemy.applyDamage(1000);
+    }
+
+    private void handleCatapult(GroupSoldier groupSoldier) {
+        Objects closestEnemy = getClosestEnemyBuilding(groupSoldier.getX(),
+                                                       groupSoldier.getY(),
+                                                       WeaponName.CATAPULT.getRange());
+        if (closestEnemy != null)
+            closestEnemy.applyDamage(100);
+    }
+
+    private void handleFireThrower(GroupSoldier groupSoldier) {
+        Objects closestEnemy = getClosestNotOnFireEnemy(groupSoldier.getX(),
+                                                        groupSoldier.getY(),
+                                                        WeaponName.FIRE_THROWER.getRange());
+        if (closestEnemy != null)
+            map.getXY(closestEnemy.getX(), closestEnemy.getY()).setOnFire(true);
+    }
+
+    public void produceFoodAndResources() {
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object instanceof Workshops workshop) workshop.produce();
+                    if (object instanceof Mine mine) mine.produce();
+                    if (object instanceof FoodProcessingBuildings foodProcessingBuilding)
+                        foodProcessingBuilding.produce();
+                }
+            }
+        }
+    }
+
+    public void addNoneJob(int capacity, Job job, Building building) {
+        for (int i = 0; i < capacity; i++) addNoneJob(new NonSoldier(job, user, building));
+    }
+
+    public void addFood(Resource resource) {
+        if (resource.isFood()) foods.put(resource, 0.0);
+    }
+
+    public void attackEnemy(User enemy) {
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object instanceof Soldier soldier)
+                        soldier.attack(getClosestEnemyObject(x, y, soldier.getSpeed(), enemy));
+                }
+            }
+        }
+    }
+
+    public static class Pair {
+        public int x;
+        public int y;
 
         public Pair(int x, int y) {
             this.x = x;

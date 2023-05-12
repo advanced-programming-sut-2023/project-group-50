@@ -1,11 +1,14 @@
 package model;
 
-import controller.Menus.GameMenuController;
 import controller.UserDatabase.User;
+import controller.UserDatabase.Users;
 import model.Government.Government;
+import model.Map.Map;
 import model.ObjectsPackage.People.Soldier.Soldier;
+import model.UserColor.UserColor;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
     private final ArrayList<User> players;
@@ -22,6 +25,7 @@ public class Game {
         updateGovernmentData();
         updateBuildings();
         updateSoldiers();
+        Users.updateUsers();
         boolean lordIsAlive = updateLord();
         if (!lordIsAlive) players.remove(0);
         return lordIsAlive;
@@ -67,11 +71,10 @@ public class Game {
 
     private void updateGovernmentData() {
         Government government = getGovernment();
-//        government.produceFoodAndResources();
-//        government.feedPeople();
-//        government.updateCoins();
-//        government.updateFearRate();
-//        government.updatePopularity();
+        government.produceFoodAndResources();
+        government.feedPeople();
+        government.checkFearPopularity();
+        government.getTaxPeople();
     }
 
     private Government getGovernment() {
@@ -84,6 +87,7 @@ public class Game {
         government.removeDeadSoldiers();
         government.patrolAll();
         government.fillUpEmptyEngineers();
+        government.attackWeapons();
     }
 
     private void updateBuildings() {
@@ -91,5 +95,33 @@ public class Game {
         government.spreadFire();
         government.applyFireDamage();
         government.removeDestroyedBuildings();
+    }
+
+    public boolean canStart() {
+        return !isOvercrowded() && !isUndercrowded();
+    }
+
+    public boolean isOvercrowded() {
+        return players.size() > 8;
+    }
+
+    public boolean isUndercrowded() {
+        return players.size() < 2;
+    }
+
+    public ArrayList<UserColor> getRemainingColors() {
+        ArrayList<UserColor> userColors = new ArrayList<>(List.of(UserColor.values()));
+        for (User user : players)
+            userColors.remove(user.getColor());
+        return userColors;
+    }
+
+    public Map getMap() {
+        if (players.size() == 0) return null;
+        return players.get(0).getGovernment().getMap();
+    }
+
+    public boolean playerExists(String username) {
+        return players.stream().anyMatch(user -> user.getUserName().equals(username));
     }
 }

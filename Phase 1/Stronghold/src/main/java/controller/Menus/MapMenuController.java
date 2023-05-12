@@ -129,6 +129,13 @@ public class MapMenuController {
 
         Unit unit = this.currentUser.getGovernment().getMap().getUnitByXY(x, y);
         String string = "Ground type : " + unit.getTexture() + "\n";
+        GroundType texture = unit.getTexture();
+        if (texture.equals(GroundType.IRON) || texture.equals(GroundType.CLIFF) || texture.equals(GroundType.OIL)) {
+            string = string + "Resource : " + texture.getType() + "*" + unit.getCapacity() + "\n";
+        } else {
+            string = string + "There is no resource here";
+        }
+
         if (unit.getObjects().isEmpty()) {
             return string;
         }
@@ -251,8 +258,7 @@ public class MapMenuController {
 
     private boolean XYisValid(int x, int y) {
         if (x < 0 || x > currentUser.getGovernment().getMap().getXSize()) return false;
-        if (y < 0 || y > currentUser.getGovernment().getMap().getYSize()) return false;
-        return true;
+        return y >= 0 && y <= currentUser.getGovernment().getMap().getYSize();
     }
 
     public String dropTree(Matcher matcher) {

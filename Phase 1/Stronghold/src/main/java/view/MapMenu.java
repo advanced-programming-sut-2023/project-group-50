@@ -55,6 +55,8 @@ public class MapMenu {
                 System.out.println(this.mapMenuController.moveMap(matcher));
             else if (Commands.getMatcher(Commands.EXIT, input).matches())
                 return State.PROFILE;
+            else if ((matcher = Commands.getMatcher(Commands.SHOW_DETAIL, input)).matches())
+                System.out.println(this.mapMenuController.showDetails(matcher));
             else
                 System.out.println("invalid command");
 

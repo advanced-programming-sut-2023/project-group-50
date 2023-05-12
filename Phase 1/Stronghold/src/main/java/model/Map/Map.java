@@ -104,7 +104,7 @@ public class Map implements Serializable {
     }
 
     public Objects getObjectByXY(int x, int y, ObjectType objectType) {
-        Unit unit = this.map.get(y).get(x);
+        Unit unit = this.map.get(x).get(y);
         if (unit.getObjects().isEmpty()) {
             return null;
         }

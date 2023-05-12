@@ -1,6 +1,7 @@
 package controller.UserDatabase;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,5 +41,19 @@ public class Users implements Serializable {
 
     public static void setUsers(HashMap<String, User> users) {
         Users.users = users;
+    }
+
+    public static void updateUsers() {
+        User[] table = (User[]) users.values().toArray();
+
+        updateAllUsers();
+        Arrays.sort(table);
+
+        int i = 1;
+        for (User user : table) user.setRank(i++);
+    }
+
+    private static void updateAllUsers() {
+        for (User user : users.values()) user.updateScore();
     }
 }

@@ -38,4 +38,15 @@ public enum Resource implements Serializable {
     }
 
 
+    public Resource getFoodByName(String name) {
+        if (name.equals("apple")) return APPLE;
+        if (name.equals("meat")) return MEAT;
+        if (name.equals("cheese")) return CHEESE;
+        if (name.equals("bread")) return BREAD;
+        return null;
+    }
+
+    public boolean isFood() {
+        return getFoodByName(this.name().toLowerCase()) != null;
+    }
 }

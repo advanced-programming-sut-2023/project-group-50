@@ -25,7 +25,7 @@ public class Infantry extends Soldier {
         int x = gate.getX(), y = gate.getY();
         move(x, y);
         if (getX() == x || getY() == y)
-            attack(gate);
+            gate.setOwner(owner);
     }
 
     public ArmourType getArmourType() {

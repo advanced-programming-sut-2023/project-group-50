@@ -14,6 +14,7 @@ public class House extends Building {
         super(type, owner, x, y, maxHp);
         this.capacity = capacity;
         soldierCount = new HashMap<>();
+        owner.getGovernment().addNoneJob(capacity, getJobByBuildingType(type), this);
     }
 
     public boolean canIncreasePopularity() {

@@ -10,19 +10,19 @@ public enum GroundType {
     IRON(ConsoleColors.WHITE_BACKGROUND), // ahan
     GRASS(ConsoleColors.CYAN_BACKGROUND), // chaman
     LAWN(ConsoleColors.GREEN_BACKGROUND), // alafzaar
-    MEADOW(ConsoleColors.BLACK_BACKGROUND_BRIGHT), // alafzaare portarakom
+    MEADOW(ConsoleColors.BLACK_BRIGHT), // alafzaare portarakom
 
-    OIL(ConsoleColors.BLACK_BOLD),//naft
-    PLAIN(ConsoleColors.BLACK_BOLD), //jolge
+    OIL(ConsoleColors.BLACK_BOLD_BRIGHT),//naft
+    PLAIN(ConsoleColors.GREEN_BOLD_BRIGHT), //jolge
 
     SHALLOW_WATER(ConsoleColors.BLUE), // ab kam omgh
 
-    RIVER(ConsoleColors.BLACK_BOLD), //rood
-    SMALL_POND(ConsoleColors.BLUE), //berke koochak
-    BIG_POND(ConsoleColors.BLACK_BRIGHT), // berke bozorg
+    RIVER(ConsoleColors.BLUE_BRIGHT), //rood
+    SMALL_POND(ConsoleColors.BLUE_BACKGROUND), //berke koochak
+    BIG_POND(ConsoleColors.BLACK_UNDERLINED), // berke bozorg
 
-    BEACH(ConsoleColors.BLUE), // sahel
-    SEA(ConsoleColors.BLUE); // darya
+    BEACH(ConsoleColors.YELLOW_BRIGHT), // sahel
+    SEA(ConsoleColors.BLUE_BOLD); // darya
 
     private final String color;
     private final String type;

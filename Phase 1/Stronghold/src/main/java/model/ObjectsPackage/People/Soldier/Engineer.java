@@ -43,7 +43,7 @@ public class Engineer extends Soldier {
                                      government.getResourceAmount(Resource.WOOD) - buildingType.getWoodCost());
         government.setResourceAmount(Resource.PITCH,
                                      government.getResourceAmount(Resource.PITCH) - buildingType.getPitchCost(1));
-        government.setCoin(government.getCoin() - buildingType.getCoinCost());
+        government.setCoins(government.getCoins() - buildingType.getCoinCost());
         if (buildingType.getNumberOfWorkers() > 0)
             government.getNoneJob().subList(0, buildingType.getNumberOfWorkers()).clear();
     }
@@ -51,12 +51,11 @@ public class Engineer extends Soldier {
     private boolean ownerHasEnoughResources(BuildingType buildingType) {
         Government government = getOwner().getGovernment();
         if (buildingType.getIronCost() > government.getResourceAmount(Resource.IRON)) return false;
-        if (buildingType.getCoinCost() > government.getCoin()) return false;
+        if (buildingType.getCoinCost() > government.getCoins()) return false;
         if (buildingType.getStoneCost() > government.getResourceAmount(Resource.STONE)) return false;
         if (buildingType.getWoodCost() > government.getResourceAmount(Resource.WOOD)) return false;
         if (buildingType.getPitchCost(1) > government.getResourceAmount(Resource.PITCH)) return false;
-        if (buildingType.getNumberOfWorkers() > government.getNoneJob().size()) return false;
-        return true;
+        return buildingType.getNumberOfWorkers() <= government.getNoneJob().size();
     }
 
     public void pourOil(Direction direction) {
@@ -78,7 +77,7 @@ public class Engineer extends Soldier {
         getOwner().getGovernment().getMap().getXY(x, y).setProtected(true);
     }
 
-    public void makeHammer(int x, int y) {
+    public void makeBatteringRam(int x, int y) {
         // TODO: aa fill here
     }
 

@@ -12,8 +12,8 @@ import java.util.Objects;
 
 public class Storage extends Building {
     private Storage nextStorage;
-    private HashMap<String, Integer> currentCapacity;
-    private int maximumCapacity;
+    private final HashMap<String, Integer> currentCapacity;
+    private final int maximumCapacity;
 
     public Storage(BuildingType type, User owner, int x, int y, int maxHp, Storage nextStorage, int maximumCapacity) {
         super(type, owner, x, y, maxHp);
@@ -37,7 +37,8 @@ public class Storage extends Building {
         if (checkForStorage(type, x - 1, y, map)) return;
         if (checkForStorage(type, x + 1, y, map)) return;
         if (checkForStorage(type, x, y - 1, map)) return;
-        if (checkForStorage(type, x, y + 1, map)) return;
+        if (checkForStorage(type, x, y + 1, map)) {
+        }
     }
 
     private boolean checkForStorage(BuildingType type, int x, int y, Map map) {

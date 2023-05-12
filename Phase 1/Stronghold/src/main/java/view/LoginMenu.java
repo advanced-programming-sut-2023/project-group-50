@@ -38,21 +38,21 @@ public class LoginMenu {
 
             if (Commands.getMatcher(Commands.CREATE_USER, input).find()) {
                 this.setNextMatcher(Commands.getMatcher(Commands.CREATE_USER, input));
-                this.loginController.setTryToLogin(null);
+
                 return State.SIGN;
             } else if (Commands.getMatcher(Commands.EXIT, input).find()) {
-                this.loginController.setTryToLogin(null);
+
                 return State.SIGN;
 
             } else if (Commands.getMatcher(Commands.LOGIN, input).find()) {
                 String str = this.loginController.login(Commands.getMatcher(Commands.LOGIN, input), scanner);
                 System.out.println(str);
                 if (str.equals("user logged in successfully!")) {
-                    this.loginController.setTryToLogin(null);
+
                     return State.PROFILE;
                 }
             } else if (Commands.getMatcher(Commands.FORGOT, input).find()) {
-                System.out.println(this.loginController.forgotPassword(scanner));
+                System.out.println(this.loginController.forgotPassword(Commands.getMatcher(Commands.FORGOT, input), scanner));
             } else {
                 System.out.println("Invalid Command!");
             }

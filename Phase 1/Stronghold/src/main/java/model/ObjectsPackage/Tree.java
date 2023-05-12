@@ -10,6 +10,11 @@ public class Tree extends Objects {
         this.type = type;
     }
 
+    public static boolean isValidType(String type) {
+        return TreeType.get(type) != null;
+
+    }
+
     public boolean canPlace(int x, int y) {
         switch (owner.getGovernment().getMap().getXY(x, y).getTexture()) {
             case GROUND, MEADOW, LAWN, GRASS, RIGGED_GROUND -> {

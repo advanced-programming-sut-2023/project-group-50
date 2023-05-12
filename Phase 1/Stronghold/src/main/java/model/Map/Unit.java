@@ -6,11 +6,14 @@ import model.ObjectsPackage.Buildings.Gate;
 import model.ObjectsPackage.Buildings.Tower;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
+import model.ObjectsPackage.People.Soldier.Engineer;
+import model.ObjectsPackage.People.Soldier.Soldier;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Random;
 
 public class Unit implements Serializable {
     private final LinkedHashSet<Objects> objects;
@@ -19,6 +22,7 @@ public class Unit implements Serializable {
     private GroundType texture;
     private boolean isOnFire;
     private boolean isProtected;
+    private int capacity;
 
     public Unit(int x, int y, GroundType texture) {
         this.x = x;
@@ -47,6 +51,8 @@ public class Unit implements Serializable {
 
     public void addObject(Objects object) {
         objects.add(object);
+        object.setX(this.x);
+        object.setY(this.y);
     }
 
     public void removeObject(Objects object) {
@@ -67,6 +73,9 @@ public class Unit implements Serializable {
 
     public void setTexture(GroundType texture) {
         this.texture = texture;
+        if (texture.equals(GroundType.IRON) || texture.equals(GroundType.CLIFF) || texture.equals(GroundType.OIL)) {
+            this.capacity = new Random().nextInt(1000);
+        }
     }
 
     public LinkedHashSet<Objects> getObjects() {
@@ -116,4 +125,47 @@ public class Unit implements Serializable {
     }
 
 
+    public Soldier getSoldier() {
+        for (Objects object : objects)
+            if (object instanceof Soldier soldier)
+                return soldier;
+        return null;
+    }
+
+    public int getEngineerCount() {
+        int cnt = 0;
+        for (Objects object : objects)
+            if (object instanceof Engineer engineer)
+                cnt++;
+        return cnt;
+    }
+
+    public ArrayList<Soldier> getEngineers(int c) {
+        ArrayList<Soldier> engineers = new ArrayList<>();
+        for (Objects object : objects) {
+            if (object instanceof Engineer engineer) {
+                engineers.add(engineer);
+                if (engineers.size() == c)
+                    break;
+            }
+        }
+
+        int i = 0;
+        for (Objects object : objects) {
+            if (object instanceof Soldier engineer) {
+                if (engineer.equals(engineers.get(i))) {
+                    objects.remove(engineer);
+                    i++;
+                    if (i == engineers.size())
+                        break;
+                }
+            }
+        }
+
+        return engineers;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
 }
