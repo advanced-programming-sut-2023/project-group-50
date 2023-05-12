@@ -6,8 +6,8 @@ public enum SoldierState {
     STANDING;
 
     public static SoldierState get(String s) {
-        for(SoldierState state : SoldierState.values())
-            if(state.name().toLowerCase().equals(s))
+        for (SoldierState state : SoldierState.values())
+            if (state.name().toLowerCase().equals(s))
                 return state;
 
         return null;

@@ -53,7 +53,7 @@ public enum SoldierName {
         return soldierName.ordinal() > 10;
     }
 
-    private String getName(String name) {
+    public static String getName(String name) {
         ArrayList<String> Words = new ArrayList<>();
         for (String word : name.replaceAll("_", " ").toLowerCase().split(" "))
             Words.add(Character.toUpperCase(word.charAt(0)) + word.substring(1));

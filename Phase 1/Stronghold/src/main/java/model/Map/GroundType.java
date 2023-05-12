@@ -1,5 +1,7 @@
 package model.Map;
 
+import model.ObjectsPackage.People.Soldier.SoldierName;
+
 public enum GroundType {
     GROUND(ConsoleColors.YELLOW_BACKGROUND_BRIGHT), // zamin
     RIGGED_GROUND(ConsoleColors.YELLOW_BACKGROUND), // zamin ba sangrize
@@ -23,9 +25,24 @@ public enum GroundType {
     SEA(ConsoleColors.BLUE); // darya
 
     private final String color;
+    private final String type;
 
     GroundType(String color) {
         this.color = color;
+        type = SoldierName.getName(this.name());
+    }
+
+    public static GroundType get(String type) {
+        for (GroundType groundType : GroundType.values()) {
+            if (groundType.type.equals(type)) {
+                return groundType;
+            }
+        }
+        return null;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public String getString(String content) {

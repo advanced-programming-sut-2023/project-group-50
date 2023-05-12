@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Government implements Serializable {
+public class Government implements Serializable { //TODO: Jobs
     private final User user;
     private final ArrayList<Person> noneJob;
     private HashMap<Resource, Integer> resources;

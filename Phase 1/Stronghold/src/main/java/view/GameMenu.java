@@ -2,6 +2,7 @@ package view;
 
 import controller.Menus.GameMenuController;
 import controller.control.Commands;
+import controller.control.State;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -17,7 +18,7 @@ public class GameMenu {
         return gameMenuController;
     }
 
-    public void run(Scanner scanner) {
+    public State run(Scanner scanner) {
         Matcher matcher;
 
         while (true) {
@@ -50,10 +51,11 @@ public class GameMenu {
                 System.out.println(this.gameMenuController.repair());
             else if (Commands.getMatcher(Commands.CREATE_UNIT, input).matches())
                 System.out.println(this.gameMenuController.createUnit(matcher));
+            else if (Commands.getMatcher(Commands.EXIT, input).matches())
+                return State.PROFILE;
             else System.out.println("invalid command");
-            if (!flag) {
-                this.gameMenuController.setSelectedBuilding(null);
-            }
+
+            if (!flag) this.gameMenuController.setSelectedBuilding(null);
         }
     }
 }

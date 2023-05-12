@@ -155,4 +155,8 @@ public class Map implements Serializable {
     public Unit getXY(int x, int y) {
         return map.get(x).get(y);
     }
+
+    public void clearXY(int x, int y) {
+        map.get(x).put(y, new Unit(x, y, GroundType.GROUND));
+    }
 }

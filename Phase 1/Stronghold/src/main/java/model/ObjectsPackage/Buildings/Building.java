@@ -1,6 +1,7 @@
 package model.ObjectsPackage.Buildings;
 
 import controller.UserDatabase.User;
+import model.Map.GroundType;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.Storage;
@@ -287,6 +288,38 @@ public abstract class Building extends Objects {
 
             default -> {
                 return false;
+            }
+        }
+    }
+
+    public static boolean canPlace(BuildingType buildingType, GroundType texture) {
+        switch (buildingType) {
+            case DRAW_BRIDGE -> {
+                return texture.equals(GroundType.RIVER);
+            }
+            case IRON_MINE -> {
+                return texture.equals(GroundType.IRON);
+            }
+            case PITCH_RIG -> {
+                return texture.equals(GroundType.OIL);
+            }
+            case QUARRY -> {
+                return texture.equals(GroundType.STONE) || texture.equals(GroundType.CLIFF);
+            }
+            case WELL -> {
+                return texture.equals(GroundType.SHALLOW_WATER) || texture.equals(GroundType.BIG_POND) ||
+                        texture.equals(GroundType.SMALL_POND) || texture.equals(GroundType.BEACH) ||
+                        texture.equals(GroundType.RIVER) || texture.equals(GroundType.SEA);
+            }
+            case APPLE_ORCHARD, DIARY_FARMER, HOPS_FARMER, HUNTER_POST, WHEAT_FARMER -> {
+                return texture.equals(GroundType.GRASS) ||
+                        texture.equals(GroundType.MEADOW) ||
+                        texture.equals(GroundType.LAWN);
+            }
+            default -> {
+                return texture.equals(GroundType.GROUND) || texture.equals(GroundType.GRASS) ||
+                        texture.equals(GroundType.MEADOW) || texture.equals(GroundType.PLAIN) ||
+                        texture.equals(GroundType.RIGGED_GROUND) || texture.equals(GroundType.LAWN);
             }
         }
     }

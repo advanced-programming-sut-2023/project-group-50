@@ -3,6 +3,7 @@ package view;
 import controller.Menus.ShopMenuController;
 import controller.control.Commands;
 import controller.control.Error;
+import controller.control.State;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -15,7 +16,7 @@ public class ShopMenu {
         this.shopMenuController = shopMenuController;
     }
 
-    public void run(Scanner scanner) {
+    public State run(Scanner scanner) {
         String line;
         Matcher matcher;
 
@@ -32,6 +33,8 @@ public class ShopMenu {
                 System.out.println(showMyItems());
             else if (Commands.getMatcher(Commands.SHOW_ALL_ITEMS, line).matches())
                 System.out.println(show());
+            else if (Commands.getMatcher(Commands.EXIT, line).matches())
+                return State.PROFILE;
             else
                 System.out.println("Invalid command!");
         }

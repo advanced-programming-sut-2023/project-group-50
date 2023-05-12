@@ -34,14 +34,7 @@ public class LoginMenu {
 
 
         while (true) {
-            String input;
-            if (this.nextMatcher != null) {
-                this.nextMatcher.find();
-                input = this.nextMatcher.group();
-                this.nextMatcher = null;
-            } else {
-                input = scanner.nextLine();
-            }
+            String input = getInput(scanner);
 
             if (Commands.getMatcher(Commands.CREATE_USER, input).find()) {
                 this.setNextMatcher(Commands.getMatcher(Commands.CREATE_USER, input));
@@ -64,5 +57,17 @@ public class LoginMenu {
                 System.out.println("Invalid Command!");
             }
         }
+    }
+
+    private String getInput(Scanner scanner) {
+        String input;
+        if (this.nextMatcher != null) {
+            this.nextMatcher.find();
+            input = this.nextMatcher.group();
+            this.nextMatcher = null;
+        } else {
+            input = scanner.nextLine();
+        }
+        return input;
     }
 }

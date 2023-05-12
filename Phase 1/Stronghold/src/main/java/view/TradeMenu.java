@@ -3,6 +3,7 @@ package view;
 import controller.Menus.TradeMenuController;
 import controller.control.Commands;
 import controller.control.Error;
+import controller.control.State;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -14,24 +15,24 @@ public class TradeMenu {
         this.tradeMenuController = tradeMenuController;
     }
 
-    public void run(Scanner scanner) {
+    public State run(Scanner scanner) {
         String line;
         Matcher matcher;
 
         while (true) {
             line = scanner.nextLine();
 
-            if ((matcher = Commands.getMatcher(Commands.NEW_TRADE, line)).matches()) {
+            if ((matcher = Commands.getMatcher(Commands.NEW_TRADE, line)).matches())
                 System.out.println(newTrade(matcher));
-            } else if ((matcher = Commands.getMatcher(Commands.TRADE_ACCEPT, line)).matches()) {
+            else if ((matcher = Commands.getMatcher(Commands.TRADE_ACCEPT, line)).matches())
                 System.out.println(acceptTrade(matcher));
-            } else if (Commands.getMatcher(Commands.TRADE_LIST, line).matches()) {
+            else if (Commands.getMatcher(Commands.TRADE_LIST, line).matches())
                 System.out.println(showAllTrades());
-            } else if (Commands.getMatcher(Commands.TRADE_HISTORY, line).matches()) {
+            else if (Commands.getMatcher(Commands.TRADE_HISTORY, line).matches())
                 System.out.println(showMyTradesHistory());
-            } else {
-                System.out.println("Invalid command!");
-            }
+            else if (Commands.getMatcher(Commands.EXIT, line).matches())
+                return State.PROFILE;
+            else System.out.println("Invalid command!");
         }
     }
 

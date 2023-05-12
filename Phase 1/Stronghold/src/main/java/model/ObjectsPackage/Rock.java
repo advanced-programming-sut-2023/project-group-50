@@ -1,12 +1,13 @@
 package model.ObjectsPackage;
 
 import controller.UserDatabase.User;
+import model.Direction.Direction;
 import model.Map.GroundType;
 
 public class Rock extends Objects {
-    private String direction;
+    private Direction direction;
 
-    protected Rock(String direction, User owner) {
+    public Rock(Direction direction, User owner) {
         super(ObjectType.ROCK, owner);
         this.direction = direction;
     }
@@ -26,11 +27,11 @@ public class Rock extends Objects {
         }
     }
 
-    public String getDirection() {
+    public Direction getDirection() {
         return direction;
     }
 
-    public void setDirection(String direction) {
+    public void setDirection(Direction direction) {
         this.direction = direction;
     }
 }

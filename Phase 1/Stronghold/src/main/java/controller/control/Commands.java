@@ -74,7 +74,8 @@ public enum Commands {
     CLEAR("^clear (?=.*(-x (?<x>-?\\d+)))(?=.*(-y (?<y>-?\\d+)))"),
     DROP_ROCK("^drop rock (?=.*(-x (?<x>-?\\d+)))(?=.*(-y (?<y>-?\\d+)))(?=.*(-d (?<direction>.+)))"),
     DROP_TREE("^drop tree (?=.*(-x (?<x>-?\\d+)))(?=.*(-y (?<y>-?\\d+)))(?=.*(-t (?<type>.+)))"),
-    DROP_UNIT("^drop unit (?=.*(-x (?<x>-?\\d+)))(?=.*(-y (?<y>-?\\d+)))(?=.*(-t (?<type>.+)))(?=.*(-c (?<count>-?\\d+)))");
+    DROP_UNIT("^drop unit (?=.*(-x (?<x>-?\\d+)))(?=.*(-y (?<y>-?\\d+)))(?=.*(-t (?<type>.+)))(?=.*(-c (?<count>-?\\d+)))"),
+    DROP_BUILDING_MAP("^drop building (?=.*(-x (?<x>-?\\d+)))(?=.*(-y (?<y>-?\\d+)))(?=.*(-t (?<type>.+))");
     private final String regex;
 
     Commands(String regex) {

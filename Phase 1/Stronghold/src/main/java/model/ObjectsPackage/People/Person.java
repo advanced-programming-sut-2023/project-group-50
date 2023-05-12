@@ -1,6 +1,7 @@
 package model.ObjectsPackage.People;
 
 import controller.UserDatabase.User;
+import model.Map.GroundType;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 
@@ -18,6 +19,18 @@ public abstract class Person extends Objects {
         this.life = life;
         this.maxLife = life;
         this.speed = speed;
+    }
+
+    public static boolean canPlace(GroundType texture) {
+        switch (texture) {
+            case GROUND, BEACH, SHALLOW_WATER, PLAIN, MEADOW, LAWN, GRASS, IRON, RIGGED_GROUND -> {
+                return true;
+            }
+            case CLIFF, SEA, BIG_POND, SMALL_POND, RIVER, OIL, STONE -> {
+                return false;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + texture);
+        }
     }
 
     public void heal() {

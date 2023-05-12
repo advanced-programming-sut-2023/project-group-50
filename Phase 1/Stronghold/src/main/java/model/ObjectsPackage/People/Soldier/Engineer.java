@@ -43,6 +43,8 @@ public class Engineer extends Soldier {
         government.setResourceAmount(Resource.PITCH,
                                      government.getResourceAmount(Resource.PITCH) - buildingType.getPitchCost(1));
         government.setGold(government.getGold() - buildingType.getGoldCost());
+        if (buildingType.getNumberOfWorkers() > 0)
+            government.getNoneJob().subList(0, buildingType.getNumberOfWorkers()).clear();
     }
 
     private boolean ownerHasEnoughResources(BuildingType buildingType) {
@@ -52,6 +54,7 @@ public class Engineer extends Soldier {
         if (buildingType.getStoneCost() > government.getResourceAmount(Resource.STONE)) return false;
         if (buildingType.getWoodCost() > government.getResourceAmount(Resource.WOOD)) return false;
         if (buildingType.getPitchCost(1) > government.getResourceAmount(Resource.PITCH)) return false;
+        if (buildingType.getNumberOfWorkers() > government.getNoneJob().size()) return false;
         return true;
     }
 

@@ -29,29 +29,49 @@ public class MapMenu {
 
 
     public State run(Scanner scanner) {
+        Matcher matcher;
+        String input;
+
         while (true) {
-            String input;
-            if (this.nextMatcher != null) {
-                this.nextMatcher.find();
-                input = this.nextMatcher.group();
-                this.nextMatcher = null;
-            } else {
-                input = scanner.nextLine();
-            }
+            input = getInput(scanner);
 
-            if (Commands.getMatcher(Commands.SHOW_MAP, input).find()) {
-                System.out.println(this.mapMenuController.showMap(Commands.getMatcher(Commands.SHOW_MAP, input)));
-            } else if (Commands.getMatcher(Commands.MOVE_MAP, input).find()) {
-                System.out.println(this.mapMenuController.moveMap(Commands.getMatcher(Commands.MOVE_MAP, input)));
-            } else if (Commands.getMatcher(Commands.EXIT, input).find()) {
+            if ((matcher = Commands.getMatcher(Commands.SET_TEXTURE, input)).matches())
+                System.out.println(mapMenuController.setTexture(matcher));
+            else if ((matcher = Commands.getMatcher(Commands.SET_TEXTURE_RECT, input)).matches())
+                System.out.println(mapMenuController.setTextureRect(matcher));
+            else if ((matcher = Commands.getMatcher(Commands.CLEAR, input)).matches())
+                System.out.println(mapMenuController.clear(matcher));
+            else if ((matcher = Commands.getMatcher(Commands.DROP_ROCK, input)).matches())
+                System.out.println(mapMenuController.dropRock(matcher));
+            else if ((matcher = Commands.getMatcher(Commands.DROP_TREE, input)).matches())
+                System.out.println(mapMenuController.dropTree(matcher));
+            else if ((matcher = Commands.getMatcher(Commands.DROP_BUILDING_MAP, input)).matches())
+                System.out.println(mapMenuController.dropBuilding(matcher));
+            else if ((matcher = Commands.getMatcher(Commands.DROP_UNIT, input)).matches())
+                System.out.println(mapMenuController.dropUnit(matcher));
+            else if ((matcher = Commands.getMatcher(Commands.SHOW_MAP, input)).matches())
+                System.out.println(this.mapMenuController.showMap(matcher));
+            else if ((matcher = Commands.getMatcher(Commands.MOVE_MAP, input)).matches())
+                System.out.println(this.mapMenuController.moveMap(matcher));
+            else if (Commands.getMatcher(Commands.EXIT, input).matches())
                 return State.PROFILE;
-
-            } else {
+            else
                 System.out.println("invalid command");
-            }
 
 
         }
+    }
+
+    private String getInput(Scanner scanner) {
+        String input;
+        if (this.nextMatcher != null) {
+            this.nextMatcher.find();
+            input = this.nextMatcher.group();
+            this.nextMatcher = null;
+        } else {
+            input = scanner.nextLine();
+        }
+        return input;
     }
 
 }

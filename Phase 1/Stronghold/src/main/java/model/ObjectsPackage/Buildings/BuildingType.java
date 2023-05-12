@@ -73,6 +73,10 @@ public enum BuildingType {
         return null;
     }
 
+    public int getNumberOfWorkers() {
+        return numberOfWorkers;
+    }
+
     public int getStoneCost() {
         return stoneCost;
     }

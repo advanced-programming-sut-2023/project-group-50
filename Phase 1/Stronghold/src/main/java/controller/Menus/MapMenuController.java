@@ -3,6 +3,16 @@ package controller.Menus;
 import controller.UserDatabase.User;
 import controller.control.Commands;
 import controller.control.Error;
+import model.Direction.Direction;
+import model.Map.GroundType;
+import model.ObjectsPackage.Buildings.Building;
+import model.ObjectsPackage.Buildings.BuildingType;
+import model.ObjectsPackage.People.Person;
+import model.ObjectsPackage.People.Soldier.Soldier;
+import model.ObjectsPackage.People.Soldier.SoldierName;
+import model.ObjectsPackage.Rock;
+import model.ObjectsPackage.Tree;
+import model.ObjectsPackage.TreeType;
 import view.MapMenu;
 
 import java.util.regex.Matcher;
@@ -101,5 +111,157 @@ public class MapMenuController {
     public String showDetails(Matcher matcher) {
 
         return null;
+    }
+
+    public String setTexture(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x")), y = Integer.parseInt(matcher.group("y"));
+        GroundType type = GroundType.get(matcher.group("type"));
+
+        if (x < 0 || x > currentUser.getGovernment().getMap().getXSize()) return "x is invalid!";
+        if (y < 0 || y > currentUser.getGovernment().getMap().getYSize()) return "y is invalid!";
+        if (type == null) return "Invalid type!";
+
+        changeTexture(x, y, type);
+        return "Texture set successfully.";
+    }
+
+    private void changeTexture(int x, int y, GroundType type) {
+        currentUser.getGovernment().getMap().getXY(x, y).setTexture(type);
+    }
+
+    public String setTextureRect(Matcher matcher) {
+        int x1 = Integer.parseInt(matcher.group("x1")), y1 = Integer.parseInt(matcher.group("y1")), x2 = Integer.parseInt(matcher.group("x2")), y2 = Integer.parseInt(matcher.group("y2"));
+        GroundType type = GroundType.get(matcher.group("type"));
+
+        if (boundIsInvalid(x1, y1, x2, y2)) return "Invalid bounds!";
+        if (type == null) return "Invalid type!";
+
+
+        for (int x = x1; x <= x2; x++)
+            for (int y = y1; y <= y2; y++)
+                changeTexture(x, y, type);
+
+        return "texture set successfully.";
+    }
+
+    private boolean boundIsInvalid(int x1, int y1, int x2, int y2) {
+        return (x1 < 0 || x1 > currentUser.getGovernment().getMap().getXSize()) ||
+                (x2 < 0 || x2 > currentUser.getGovernment().getMap().getXSize()) ||
+                (y1 < 0 || y1 > currentUser.getGovernment().getMap().getYSize()) ||
+                (y2 < 0 || y2 > currentUser.getGovernment().getMap().getYSize()) || (x1 >= x2) || (y1 >= y2);
+    }
+
+    public String clear(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x")), y = Integer.parseInt(matcher.group("y"));
+
+        if (x < 0 || x > currentUser.getGovernment().getMap().getXSize()) return "x is invalid!";
+        if (y < 0 || y > currentUser.getGovernment().getMap().getYSize()) return "y is invalid!";
+
+        currentUser.getGovernment().getMap().clearXY(x, y);
+        return "Cleared successfully.";
+    }
+
+    public String dropRock(Matcher matcher) {
+        String d = matcher.group("direction");
+        Direction direction = Direction.get(d);
+        int x = Integer.parseInt(matcher.group("x")), y = Integer.parseInt(matcher.group("y"));
+
+        if (x < 0 || x > currentUser.getGovernment().getMap().getXSize()) return "x is invalid!";
+        if (y < 0 || y > currentUser.getGovernment().getMap().getYSize()) return "y is invalid!";
+        if (direction == null) return "Invalid direction!";
+
+
+        currentUser.getGovernment().getMap().addObject(new Rock(direction, currentUser), x, y);
+        return "Rock dropped.";
+    }
+
+    private int getNeighbourX(int x, Direction direction) {
+        switch (direction) {
+            case UP -> {
+                return x - 1;
+            }
+            case LEFT, RIGHT -> {
+                return x;
+            }
+            case DOWN -> {
+                return x + 1;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + direction);
+        }
+    }
+
+    private int getNeighbourY(int y, Direction direction) {
+        switch (direction) {
+            case UP, DOWN -> {
+                return y;
+            }
+            case LEFT -> {
+                return y - 1;
+            }
+            case RIGHT -> {
+                return y + 1;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + direction);
+        }
+    }
+
+    private boolean XYisValid(int x, int y) {
+        if (x < 0 || x > currentUser.getGovernment().getMap().getXSize()) return false;
+        if (y < 0 || y > currentUser.getGovernment().getMap().getYSize()) return false;
+        return true;
+    }
+
+    public String dropTree(Matcher matcher) {
+        String type = matcher.group("type");
+        TreeType treeType = TreeType.get(type);
+        int x = Integer.parseInt(matcher.group("x")), y = Integer.parseInt(matcher.group("y"));
+
+        if (x < 0 || x > currentUser.getGovernment().getMap().getXSize()) return "x is invalid!";
+        if (y < 0 || y > currentUser.getGovernment().getMap().getYSize()) return "y is invalid!";
+        if (treeType == null) return "Invalid tree type!";
+
+        currentUser.getGovernment().getMap().addObject(new Tree(treeType, currentUser), x, y);
+        return "Tree dropped.";
+    }
+
+    public String dropBuilding(Matcher matcher) {
+        String type = matcher.group("type");
+        BuildingType buildingType = BuildingType.checkTypeByName(type);
+        int x = Integer.parseInt(matcher.group("x")), y = Integer.parseInt(matcher.group("y"));
+
+        if (x < 0 || x > currentUser.getGovernment().getMap().getXSize()) return "x is invalid!";
+        if (y < 0 || y > currentUser.getGovernment().getMap().getYSize()) return "y is invalid!";
+        if (buildingType == null) return "Invalid tree type!";
+        GroundType texture = currentUser.getGovernment().getMap().getXY(x, y).getTexture();
+        if (!Building.canPlace(buildingType, texture))
+            return "Cannot place " + buildingType.getType() + " on " + texture.getType() + ".";
+
+        currentUser.getGovernment().getMap().addObject(Building.getBuildingByType(buildingType,
+                                                                                  currentUser,
+                                                                                  x,
+                                                                                  y),
+                                                       x,
+                                                       y);
+        return "Building dropped.";
+    }
+
+    public String dropUnit(Matcher matcher) {
+        String type = matcher.group("type");
+        SoldierName name = SoldierName.getSoldierNameByType(type);
+        int x = Integer.parseInt(matcher.group("x")),
+                y = Integer.parseInt(matcher.group("y")),
+                c = Integer.parseInt(matcher.group("c"));
+
+        if (x < 0 || x > currentUser.getGovernment().getMap().getXSize()) return "x is invalid!";
+        if (y < 0 || y > currentUser.getGovernment().getMap().getYSize()) return "y is invalid!";
+        if (c < 0) return "Invalid count!";
+        if (name == null) return "Invalid tree type!";
+        if (!Person.canPlace(currentUser.getGovernment().getMap().getXY(x, y).getTexture()))
+            return "Cannot place here.";
+
+        currentUser.getGovernment().getMap().addObject(Soldier.getSoldierByType(name, currentUser),
+                                                       x,
+                                                       y);
+        return "Unit dropped.";
     }
 }

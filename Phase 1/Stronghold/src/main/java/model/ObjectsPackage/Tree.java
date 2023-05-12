@@ -3,9 +3,9 @@ package model.ObjectsPackage;
 import controller.UserDatabase.User;
 
 public class Tree extends Objects {
-    private String type;
+    private TreeType type;
 
-    protected Tree(String type, User owner) {
+    public Tree(TreeType type, User owner) {
         super(ObjectType.TREE, owner);
         this.type = type;
     }
@@ -21,11 +21,11 @@ public class Tree extends Objects {
         }
     }
 
-    public String getType() {
+    public TreeType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(TreeType type) {
         this.type = type;
     }
 }
