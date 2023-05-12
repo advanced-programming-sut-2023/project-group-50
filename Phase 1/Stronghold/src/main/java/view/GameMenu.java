@@ -21,7 +21,7 @@ public class GameMenu {
     public State run(Scanner scanner) {
         Matcher matcher;
 
-        while (true) {
+        while (gameMenuController.gameIsFinished()) {
             boolean flag = false;
             String input = scanner.nextLine();
             if ((matcher = Commands.getMatcher(Commands.MOVE_UNIT, input)).matches())
@@ -51,11 +51,17 @@ public class GameMenu {
                 System.out.println(this.gameMenuController.repair());
             else if (Commands.getMatcher(Commands.CREATE_UNIT, input).matches())
                 System.out.println(this.gameMenuController.createUnit(matcher));
+            else if (Commands.getMatcher(Commands.END_TURN, input).matches())
+                System.out.println(this.gameMenuController.nextTurn());
+            else if (Commands.getMatcher(Commands.SHOW_MY_DATA, input).matches())
+                System.out.println(this.gameMenuController.getUserData());
             else if (Commands.getMatcher(Commands.EXIT, input).matches())
                 return State.PROFILE;
             else System.out.println("invalid command");
 
             if (!flag) this.gameMenuController.setSelectedBuilding(null);
         }
+
+        return State.PROFILE;
     }
 }

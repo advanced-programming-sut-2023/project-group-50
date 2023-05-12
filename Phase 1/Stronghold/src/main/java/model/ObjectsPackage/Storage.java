@@ -163,4 +163,8 @@ public class Storage extends Building {
     public boolean isFull() {
         return getCurrentCapacity() < getMaximumCapacity();
     }
+
+    public boolean isEmpty() {
+        return getCurrentCapacity() == 0;
+    }
 }

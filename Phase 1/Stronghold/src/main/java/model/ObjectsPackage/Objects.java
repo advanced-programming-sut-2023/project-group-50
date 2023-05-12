@@ -1,6 +1,8 @@
 package model.ObjectsPackage;
 
 import controller.UserDatabase.User;
+import model.Map.GroundType;
+import model.Map.Map;
 import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.People.Person;
 import model.ObjectsPackage.People.Soldier.GroupSoldier;
@@ -61,5 +63,25 @@ public abstract class Objects implements Serializable {
                     soldier.setLife(soldier.getLife() - damage);
             }
         }
+    }
+
+    public void applyDamage(Soldier enemy) {
+        int damage = enemy.getType().getAttackPower();
+        applyDamage(damage);
+
+        if (this instanceof Soldier soldier)
+            if (distanceTo(enemy) <= soldier.getType().getSpeed())
+                soldier.setAttacker(enemy);
+    }
+
+    public int distanceTo(Objects objects) {
+        Map map = objects.getOwner().getGovernment().getMap();
+        Building building = (Building) map.getObjectByXY(objects.getX(), objects.getY(), ObjectType.BUILDING);
+        GroundType texture = map.getXY(objects.getX(), objects.getY()).getTexture();
+
+        if ((building != null) && !building.getOwner().equals(owner)) return Integer.MAX_VALUE;
+        else if ((building == null) && !Soldier.canPlace(texture)) return Integer.MAX_VALUE;
+
+        return Map.distance(objects.getX(), objects.getY(), getX(), getY());
     }
 }

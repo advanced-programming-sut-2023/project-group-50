@@ -9,6 +9,7 @@ import model.Map.Unit;
 import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.Buildings.BuildingType;
 import model.ObjectsPackage.Resource;
+import model.ObjectsPackage.Storage;
 
 public class Engineer extends Soldier {
     private int range;
@@ -89,5 +90,12 @@ public class Engineer extends Soldier {
 
     public boolean hasOil() {
         return hasOil;
+    }
+
+    public void moveTowardsClosestOilStorage() {
+        Storage closestOilStorage = getOwner().getGovernment().getClosestNonEmptyOilStorage(this);
+
+        if(closestOilStorage == null) return;
+        moveClosest(closestOilStorage.getX(), closestOilStorage.getY());
     }
 }

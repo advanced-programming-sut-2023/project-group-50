@@ -237,16 +237,15 @@ public abstract class Building extends Objects {
                                      300,
                                      10);
             }
-            case BLACKSMITH, FLETCHER, POLETURNER, OIL_SMELTER, APPLE_ORCHARD, DIARY_FARMER, HOPS_FARMER, HUNTER_POST,
-                    WHEAT_FARMER, BAKERY, BREWER, TANNERS_WORKSHOP -> {
-                return new Workshops(buildingType,
-                                     owner,
-                                     x,
-                                     y,
-                                     300,
-                                     2);
+            case OIL_SMELTER -> {
+                return new Storage(buildingType,
+                                   owner,
+                                   x,
+                                   y,
+                                   250,
+                                   10);
             }
-            case PITCH_DITCH, CAGED_WAR_DOGS -> {
+            case TUNNEL, PITCH_DITCH, CAGED_WAR_DOGS -> {
                 return new Tunnel(buildingType,
                                   owner,
                                   x,
@@ -256,6 +255,23 @@ public abstract class Building extends Objects {
                                   y,
                                   x,
                                   y);
+            }
+            case BLACKSMITH, FLETCHER, POLETURNER, APPLE_ORCHARD, DIARY_FARMER, HOPS_FARMER, HUNTER_POST,
+                    WHEAT_FARMER, BAKERY, BREWER, TANNERS_WORKSHOP -> {
+                return new Workshops(buildingType,
+                                     owner,
+                                     x,
+                                     y,
+                                     300,
+                                     2);
+            }
+            case PALACE -> {
+                return new House(BuildingType.PALACE,
+                                 owner,
+                                 x,
+                                 y,
+                                 3000,
+                                 10);
             }
             default -> throw new IllegalStateException("Unexpected value: " + buildingType);
         }

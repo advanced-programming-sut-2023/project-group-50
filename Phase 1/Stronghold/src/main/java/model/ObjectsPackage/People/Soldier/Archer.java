@@ -45,7 +45,7 @@ public class Archer extends Soldier {
         assert Map.distance(getX(), getY(), x, y) <= range;
 
         for (Objects object : getOwner().getGovernment().getMap().getXY(x, y).getObjects())
-            object.applyDamage(getType().getAttackPower());
+            object.applyDamage(this);
     }
 
     public void defend(int x, int y) {

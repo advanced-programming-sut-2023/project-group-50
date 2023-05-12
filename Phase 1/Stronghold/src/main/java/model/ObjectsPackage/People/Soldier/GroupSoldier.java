@@ -14,6 +14,7 @@ public class GroupSoldier extends Objects {
     private final SoldierName type;
     private final boolean protection;
     private boolean isPatrolling;
+    private Soldier attacker;
 
     protected GroupSoldier(ArrayList<Soldier> group,
                            GroupModeName groupMode,
@@ -76,9 +77,9 @@ public class GroupSoldier extends Objects {
             soldier.attack(enemy);
     }
 
-    public void defend(Objects enemy) {
+    public void defendAgainstAttacker() {
         for (Soldier soldier : group)
-            soldier.defend(enemy);
+            soldier.defendAgainstAttacker();
     }
 
     public void archerAttack(int x, int y) {
@@ -125,5 +126,9 @@ public class GroupSoldier extends Objects {
         for (Soldier soldier : group)
             if (soldier instanceof Infantry infantry)
                 infantry.captureGate(gate);
+    }
+
+    public boolean isAttacked() {
+        return attacker != null;
     }
 }

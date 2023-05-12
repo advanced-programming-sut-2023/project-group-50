@@ -402,7 +402,7 @@ public class GameMenuController {
             }
         }
 
-        return successful + " tunnelers digged tunnel successfully.";
+        return successful + " tunnelers dug tunnel successfully.";
     }
 
     public String build(Matcher matcher) {
@@ -427,6 +427,31 @@ public class GameMenuController {
     public String disband() {
         selectedUnit = null;
         return "Unit disbanded.";
+    }
+
+    public String nextTurn() {
+        String lastUser = game.getCurrentPlayer().getUserName();
+        boolean userLost = !game.nextTurn();
+        currentUser = game.getCurrentPlayer();
+        selectedBuilding = null;
+        selectedUnit = null;
+
+        StringBuilder stringBuilder = new StringBuilder();
+        if (userLost)
+            if (game.gameIsFinished())
+                stringBuilder.append("Game Finished! Winner: ").append(game.getWinner().getUserName()).append('\n');
+            else stringBuilder.append(lastUser).append(" lost!\n");
+
+        return stringBuilder
+                + game.getCurrentPlayer().getUserName() + " is now playing.\nTurn no. " + game.getCurrentTurnNumber();
+    }
+
+    public String getUserData() {
+        return currentUser.getGovernment().toString();
+    }
+
+    public boolean gameIsFinished() {
+        return game.gameIsFinished();
     }
 }
 

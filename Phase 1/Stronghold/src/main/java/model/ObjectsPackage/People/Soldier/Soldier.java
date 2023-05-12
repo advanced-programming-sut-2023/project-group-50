@@ -15,6 +15,7 @@ public abstract class Soldier extends Person {
     private boolean isPatrolling;
     private int[][] patrolPath; //[x,y][0,1]
     private boolean going;
+    private Soldier attacker;
 
     public Soldier(SoldierName type, User owner) {
         super(true, type.getLife(), type.getSpeed(), owner);
@@ -24,6 +25,7 @@ public abstract class Soldier extends Person {
         isPatrolling = false;
         patrolPath = new int[2][2];
         going = false;
+        attacker = null;
     }
 
     public static WeaponName getWeaponName(SoldierName soldierName) {
@@ -106,7 +108,7 @@ public abstract class Soldier extends Person {
         }
     }
 
-    private void moveClosest(int xFinal, int yFinal) {
+    protected void moveClosest(int xFinal, int yFinal) {
         if (Map.distance(getX(), getY(), xFinal, yFinal) <= type.getSpeed()) {
             move(xFinal, yFinal);
             return;
@@ -172,10 +174,30 @@ public abstract class Soldier extends Person {
     }
 
     public void attack(Objects enemy) {
-        enemy.applyDamage(type.getAttackPower());
+        enemy.applyDamage(this);
     }
 
     public void defend(Objects enemy) {
-        enemy.applyDamage(type.getDefensePower());
+        if (!canMoveTo(enemy.getX(), enemy.getY())) return;
+        move(enemy.getX(), enemy.getY());
+        enemy.applyDamage(this);
+    }
+
+    public void defendAgainstAttacker() {
+        if (!isAttacked()) return;
+        defend(attacker);
+        attacker = null;
+    }
+
+    public boolean isAttacked() {
+        return attacker != null;
+    }
+
+    public Soldier getAttacker() {
+        return attacker;
+    }
+
+    public void setAttacker(Soldier attacker) {
+        this.attacker = attacker;
     }
 }

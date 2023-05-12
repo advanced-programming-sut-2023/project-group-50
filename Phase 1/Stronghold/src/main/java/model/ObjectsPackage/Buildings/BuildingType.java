@@ -49,7 +49,8 @@ public enum BuildingType {
     BREWER(0, 10, 0, 1, "Brewer"),
     GRANARY(0, 5, 0, 0, "Granary"),
     TUNNEL(0, 0, 0, 0, "Tunnel"),
-    TANNERS_WORKSHOP(0, 50, 50, 0, "Tanner's workshop");
+    TANNERS_WORKSHOP(0, 50, 50, 0, "Tanner's workshop"),
+    PALACE(0, 0, 0, 0, "Palace");
     private final int stoneCost;
     private final int woodCost;
     private final int goldCost;
