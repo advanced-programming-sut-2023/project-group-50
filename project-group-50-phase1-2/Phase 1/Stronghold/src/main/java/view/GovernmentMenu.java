@@ -15,6 +15,10 @@ public class GovernmentMenu {
         this.governmentMenuController=new GovernmentMenuController (this);
     }
 
+    public GovernmentMenuController getGovernmentMenuController() {
+        return governmentMenuController;
+    }
+
     public State run(Scanner scanner){
 
         while (true){

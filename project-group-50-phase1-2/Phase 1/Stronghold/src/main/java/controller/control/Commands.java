@@ -22,15 +22,17 @@ public enum Commands {
     QUESTION("(?<question>-q ((\"[^\"]*\")|(\\S*)))"),
     ANSWER_QUESTION("(?<answer>-a ((\"[^\"]*\")|(\\S*)))"),
     ANSWER_CONFIRM("(?<confirm>-c ((\"[^\"]*\")|(\\S*)))"),
-    RATE("?<rate>-r \\d+"),
-
-
+    RATE("?<rate>-r (-)?\\d*"),
     X("-x \\d*"),
     Y("-y \\d*"),
     DIRECTION("(up|left|down|right)( \\d+)?"),
     TYPE("-type ((\"[^\"]*\")|(\\S*))"),
     COUNT("-c (\\d*)"),
-
+    X1("-x1 \\d*"),
+    Y1("-y1 \\d*"),
+    X2("-x2 \\d*"),
+    Y2("-y2 \\d*"),
+    DIRECT("-d \\S*"),
 
 
 
@@ -67,11 +69,16 @@ public enum Commands {
     SHOW_POPULARITY("^show popularity$"),
     SHOW_FOOD_LIST("^show food list$"),
     SHOW_FOOD_RATE("^food rate show$"),
-    SET_FOOD_RATE("^food rate -r (\\d*)$"),
-    SET_TAX_RATE("^tax rate -r (\\d*)$"),
+    SET_FOOD_RATE("^food rate -r (-)?(\\d*)$"),
+    SET_TAX_RATE("^tax rate -r (-)?(\\d*)$"),
     SHOW_TAX_RATE("^tax rate show$"),
-    SET_FEAR_RATE("^fear rate -r (\\d*)$"),
+    SET_FEAR_RATE("^fear rate -r (-)?(\\d*)$"),
+    SET_TEXTURE("^settexture(( -[xy] \\d*)|( -type ((\".*\")|(\\S*)))){3}$"),
+    SET_TEXTURE_PLACE("^settexture(( -(x1|x2|y1|y2) \\d*)|( -type ((\".*\")|(\\S*)))){5}$"),
+    CLEAR("^clear( -(x|y) \\d*){2}$"),
 
+    DROP_ROCK("^droprock(( -[xy] \\d*)|( -d \\S+)){3}"),
+    DROP_TREE("^droptree(( -[xy] \\d*)|( -type ((\".*\")|(\\S*)))){3}$"),
     BUY_ITEM("^buy item (?<name>.*)$"),
     SELL_ITEM("^sell item (?<name>.*)$"),
     ADD_NEW_ITEM("^add new item (?=.*(-c (?<count>-?\\d+)))(?=.*(-p (?<price>-?\\d+)))(?=.*(-n (?<name>.*)))$"),

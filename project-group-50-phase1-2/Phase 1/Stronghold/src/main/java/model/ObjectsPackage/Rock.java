@@ -1,19 +1,19 @@
 package model.ObjectsPackage;
 
 import controller.UserDatabase.User;
+import controller.control.Error;
+import model.Map.GroundType;
+import model.Map.Unit;
 
 public class Rock extends Objects {
     private String direction;
 
-    protected Rock(String direction, User owner) {
+    public Rock(String direction, User owner) {
         super(ObjectType.ROCK, owner);
         this.direction = direction;
     }
 
-    public boolean canPlace(int x, int y) {
-        //TODO: complete this when map is done
-        return true;
-    }
+
 
     public String getDirection() {
         return direction;

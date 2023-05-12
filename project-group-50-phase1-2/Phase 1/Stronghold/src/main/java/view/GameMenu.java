@@ -56,6 +56,18 @@ public class GameMenu {
             else if (Commands.getMatcher (Commands.GOVERNMENT_MUNE,input).find ()) {
                 return State.GOVERNMENT;
             }
+            else if ( Commands.getMatcher ( Commands.SET_TEXTURE,input ).find () ) {
+                System.out.println (this.gameMenuController.setTexture ( Commands.getMatcher ( Commands.SET_TEXTURE,input ) ));
+            }
+            else if ( Commands.getMatcher ( Commands.CLEAR ,input).find () ) {
+                System.out.println (this.gameMenuController.clearUnit ( Commands.getMatcher ( Commands.CLEAR ,input) ));
+            }
+            else if ( Commands.getMatcher ( Commands.SET_TEXTURE_PLACE ,input).find () ) {
+                System.out.println (this.gameMenuController.setTexturePlace ( Commands.getMatcher ( Commands.SET_TEXTURE_PLACE ,input) ));
+            }
+            else if ( Commands.getMatcher ( Commands.DROP_ROCK , input).find () ) {
+                System.out.println (this.gameMenuController.dropRock ( Commands.getMatcher ( Commands.DROP_ROCK , input) ));
+            }
             else {
                 System.out.println("invalid command");
             }
