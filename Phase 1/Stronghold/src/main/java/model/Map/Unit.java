@@ -49,6 +49,8 @@ public class Unit implements Serializable {
 
     public void addObject(Objects object) {
         objects.add(object);
+        object.setX(this.x);
+        object.setY(this.y);
     }
 
     public void removeObject(Objects object) {

@@ -174,4 +174,8 @@ public class GroupSoldier extends Soldier {
     public void setWeapon(Weapon weapon) {
         this.weapon = weapon;
     }
+
+    public int numberOfSoldiers() {
+        return group.size();
+    }
 }

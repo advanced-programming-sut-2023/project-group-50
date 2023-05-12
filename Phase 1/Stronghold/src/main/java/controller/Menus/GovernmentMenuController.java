@@ -70,7 +70,7 @@ public class GovernmentMenuController {
             return "Enter a valid rate food number";
         }
 
-        double value = (rate + 2) * 0.5;
+        double value = (double) ((rate + 2) * 0.5);
         if (value * this.currentUser.getGovernment().getPopulation() >
                 this.currentUser.getGovernment().getFoodNumber()) {
             return "You can't feed people with this rate because you haven't food enough";
@@ -103,7 +103,7 @@ public class GovernmentMenuController {
 
         if (value < 0) {
             if (-1 * value * this.currentUser.getGovernment().getPopulation() >
-                    this.currentUser.getGovernment().getCoin()) {
+                    this.currentUser.getGovernment().getCoins()) {
                 return "You can't give coin people with this rate because you haven't coin enough";
             }
         }

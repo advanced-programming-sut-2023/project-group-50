@@ -1,6 +1,7 @@
 package model;
 
 import controller.UserDatabase.User;
+import controller.UserDatabase.Users;
 import model.Government.Government;
 import model.Map.Map;
 import model.ObjectsPackage.People.Soldier.Soldier;
@@ -24,6 +25,7 @@ public class Game {
         updateGovernmentData();
         updateBuildings();
         updateSoldiers();
+        Users.updateUsers();
         boolean lordIsAlive = updateLord();
         if (!lordIsAlive) players.remove(0);
         return lordIsAlive;
@@ -117,5 +119,9 @@ public class Game {
     public Map getMap() {
         if (players.size() == 0) return null;
         return players.get(0).getGovernment().getMap();
+    }
+
+    public boolean playerExists(String username) {
+        return players.stream().anyMatch(user -> user.getUserName().equals(username));
     }
 }

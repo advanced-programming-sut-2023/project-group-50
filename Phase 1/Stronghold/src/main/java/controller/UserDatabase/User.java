@@ -3,6 +3,8 @@ package controller.UserDatabase;
 import controller.control.SecurityQuestion;
 import model.Government.Government;
 import model.Item.Item;
+import model.Map.Map;
+import model.ObjectsPackage.Objects;
 import model.Trade.Trade;
 import model.UserColor.UserColor;
 
@@ -10,7 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-public class User implements Serializable {
+public class User implements Serializable, Comparable<User> {
     private final Government government;
     private String userName;
     private String password;
@@ -211,5 +213,27 @@ public class User implements Serializable {
                 "\n highScore=" + highScore +
                 "\n color=" + color.getName() +
                 '}';
+    }
+
+    public void updateScore() {
+        int newScore = 0;
+        Map map = getGovernment().getMap();
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object.getOwner().equals(this)) {
+                        newScore += object.getScore();
+                    }
+                }
+            }
+        }
+        newScore += government.getCoins();
+        if (newScore > highScore) highScore = newScore;
+        score = newScore;
+    }
+
+    @Override
+    public int compareTo(User that) {
+        return -Integer.compare(this.score, that.score);
     }
 }

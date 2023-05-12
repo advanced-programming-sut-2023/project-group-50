@@ -1,6 +1,7 @@
 package controller.Menus;
 
 import controller.UserDatabase.User;
+import controller.UserDatabase.Users;
 import controller.control.Commands;
 import controller.control.Error;
 import model.Direction.Direction;
@@ -130,7 +131,7 @@ public class GameMenuController {
     }
 
     private String checkResource(BuildingType buildingType, float zarib) {
-        if (Math.ceil(buildingType.getCoinCost() * zarib) > this.currentUser.getGovernment().getCoin()) {
+        if (Math.ceil(buildingType.getCoinCost() * zarib) > this.currentUser.getGovernment().getCoins()) {
             return "You haven't enough coin to build this " + buildingType.getType();
         }
         if ((int) Math.ceil(buildingType.getStoneCost() * zarib) >
@@ -175,15 +176,8 @@ public class GameMenuController {
     private Error canPlaceBuilding(int x, int y, BuildingType buildingType) {
         Unit unit = this.currentUser.getGovernment().getMap().getUnitByXY(x, y);
 
-        if (this.currentUser.getGovernment().getMap().getObjectByXY(x, y, ObjectType.BUILDING) != null) {
-            return new Error("There is a building at these coordinates", false);
-        }
-        if (this.currentUser.getGovernment().getMap().getObjectByXY(x, y, ObjectType.TREE) != null) {
-            return new Error("There is a tree at these coordinates", false);
-        }
-        if (this.currentUser.getGovernment().getMap().getObjectByXY(x, y, ObjectType.ROCK) != null) {
-            return new Error("There is a rock at these coordinates", false);
-        }
+        Error x1 = canPlaceObject(x, y);
+        if (x1 != null) return x1;
 
         GroundType groundType = unit.getTexture();
         if (!(groundType.equals(GroundType.GROUND) ||
@@ -195,7 +189,7 @@ public class GameMenuController {
                 groundType.equals(GroundType.MEADOW) ||
                 groundType.equals(GroundType.PLAIN)
         )) {
-            return new Error("You can't drop building in this place", false);
+            return new Error("You can't drop building in this ground type", false);
         }
 
         if (buildingType.equals(BuildingType.APPLE_ORCHARD)
@@ -231,6 +225,19 @@ public class GameMenuController {
             }
             return new Error("", true);
         }
+    }
+
+    private Error canPlaceObject(int x, int y) {
+        if (this.currentUser.getGovernment().getMap().getObjectByXY(x, y, ObjectType.BUILDING) != null) {
+            return new Error("There is a building at these coordinates", false);
+        }
+        if (this.currentUser.getGovernment().getMap().getObjectByXY(x, y, ObjectType.TREE) != null) {
+            return new Error("There is a tree at these coordinates", false);
+        }
+        if (this.currentUser.getGovernment().getMap().getObjectByXY(x, y, ObjectType.ROCK) != null) {
+            return new Error("There is a rock at these coordinates", false);
+        }
+        return null;
     }
 
     public String selectBuilding(Matcher matcher) {
@@ -316,7 +323,7 @@ public class GameMenuController {
         }
         int count = Integer.parseInt(error.errorMassage);
 
-        if (soldierName.getCoinCost() * count > this.currentUser.getGovernment().getCoin()) {
+        if (soldierName.getCoinCost() * count > this.currentUser.getGovernment().getCoins()) {
             return "You haven't enough coin";
         }
 
@@ -346,11 +353,8 @@ public class GameMenuController {
                 if (!(selectedBuilding.getType().equals(BuildingType.ENGINEER_GUILD))) {
                     return "You just can create Engineer in Engineer guild";
                 }
-
-
             }
         }
-
         this.currentUser.getGovernment().addUndeployedSoldier(count, soldierName, this.currentUser);
         return "You create a unit";
     }
@@ -403,7 +407,12 @@ public class GameMenuController {
 
 
     public String attackEnemy(Matcher matcher) {
-        //TODO: what the fuck
+        String enemyName = matcher.group("e");
+
+        if (!game.playerExists(enemyName)) return "Invalid enemy.";
+        User enemy = Users.getUser(enemyName);
+        currentUser.getGovernment().attackEnemy(enemy);
+
         return null;
     }
 
@@ -597,7 +606,6 @@ public class GameMenuController {
         if (game.isUndercrowded()) return "Cannot start a game with one player!";
         return null;
     }
-
 }
 
 

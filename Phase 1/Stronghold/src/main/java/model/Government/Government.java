@@ -133,11 +133,11 @@ public class Government implements Serializable {
         return resources.getOrDefault(resource, 0);
     }
 
-    public double getCoin() {
+    public double getCoins() {
         return coins;
     }
 
-    public void setCoin(double coins) {
+    public void setCoins(double coins) {
         this.coins = coins;
         double value = Government.getTaxValueByRate(this.previousRateTax);
         if (value < 0) {
@@ -219,7 +219,7 @@ public class Government implements Serializable {
     }
 
     public void buyBuilding(BuildingType buildingType, float coefficient) {
-        this.setCoin(getCoin() - (int) (buildingType.getCoinCost() * coefficient));
+        this.setCoins(getCoins() - (int) (buildingType.getCoinCost() * coefficient));
         this.setResourceAmount(Resource.STONE,
                                this.resources.get(Resource.STONE) - (int) (buildingType.getStoneCost() * coefficient));
         this.setResourceAmount(Resource.WOOD,
@@ -316,7 +316,7 @@ public class Government implements Serializable {
         }
         this.weapons.replace(Soldier.getWeaponName(soldierName),
                              this.weapons.get(Soldier.getWeaponName(soldierName)) - count);
-        this.setCoin(this.coins - (double) soldierName.getCoinCost() * count);
+        this.setCoins(this.coins - (double) soldierName.getCoinCost() * count);
     }
 
     public void addFoods(Resource food, Double count) {
@@ -325,7 +325,7 @@ public class Government implements Serializable {
         } else {
             this.foods.put(food, count);
         }
-        double value = (this.previousRateFood + 2) * 0.5;
+        double value = (double) ((this.previousRateFood + 2) * 0.5);
         if (value * getPopulation() > getFoodNumber()) {
             this.rateFood = -2;
         } else {
@@ -368,7 +368,7 @@ public class Government implements Serializable {
 
     public void feedPeople() {
 
-        double value = (this.rateFood + 2) * 0.5;
+        double value = (double) ((this.rateFood + 2) * 0.5);
         if (value * getPopulation() > getFoodNumber()) {
             this.rateFood = -2;
         }
@@ -382,9 +382,6 @@ public class Government implements Serializable {
         this.foods.put(Resource.MEAT, this.foods.get(Resource.MEAT) - meatDecrease);
         this.foods.put(Resource.APPLE, this.foods.get(Resource.APPLE) - appleDecrease);
         this.foods.put(Resource.BREAD, this.foods.get(Resource.BREAD) - breadDecrease);
-
-        //TODO starving?
-
 
         if (value * getPopulation() > getFoodNumber()) {
             this.rateFood = -2;
@@ -574,6 +571,25 @@ public class Government implements Serializable {
                                 closest = building;
                                 dist = curDist;
                             }
+                        }
+                    }
+                }
+            }
+        }
+        return closest;
+    }
+
+    private Objects getClosestEnemyObject(int X, int Y, int range, User enemy) {
+        Objects closest = null;
+        int dist = Integer.MAX_VALUE;
+        for (int x = Math.max(0, X - range); x < Math.min(X + range, map.getXSize()); x++) {
+            for (int y = Math.max(0, Y - range); y < Math.min(Y + range, map.getYSize()); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object.getOwner().equals(enemy)) {
+                        int curDist = Map.distance(X, Y, x, y);
+                        if (curDist < dist) {
+                            closest = object;
+                            dist = curDist;
                         }
                     }
                 }
@@ -788,6 +804,17 @@ public class Government implements Serializable {
 
     public void addFood(Resource resource) {
         if (resource.isFood()) foods.put(resource, 0.0);
+    }
+
+    public void attackEnemy(User enemy) {
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object instanceof Soldier soldier)
+                        soldier.attack(getClosestEnemyObject(x, y, soldier.getSpeed(), enemy));
+                }
+            }
+        }
     }
 
     public static class Pair {

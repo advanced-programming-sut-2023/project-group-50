@@ -43,7 +43,7 @@ equip this unit -x [x] -y [y]  with protection
 
 
 دژ کوب :
-use hammer for this gate -x [x] -y [y]
+use battering ram for this gate -x [x] -y [y]
 
 برج محاصره :
 

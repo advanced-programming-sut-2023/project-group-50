@@ -98,4 +98,12 @@ public abstract class Objects implements Serializable {
         if (this instanceof Soldier soldier) return soldier.getLife();
         return 0;
     }
+
+    public int getScore() {
+        if (this instanceof Building building) return building.getType().getCoinCost();
+        else if (this instanceof GroupSoldier soldiers)
+            return soldiers.getType().getCoinCost() * soldiers.numberOfSoldiers();
+        else if (this instanceof Soldier soldier) return soldier.getType().getCoinCost();
+        else return 1;
+    }
 }

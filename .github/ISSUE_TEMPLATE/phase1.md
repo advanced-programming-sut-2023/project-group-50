@@ -10,7 +10,7 @@ assignees: Arman17Babaei
 <div dir="rtl" align='right'>
 
 # فاز 1
-**نام و نام خانوادگی راهنما:**
+**نام و نام خانوادگی راهنما: پرهام رضایی**
 
 ## کارهایی که باید در فاز 1 انجام دهید
 
@@ -25,8 +25,8 @@ assignees: Arman17Babaei
   <div dir="ltr" align='right'>
 
   1. [ ] شروع نشده
-  2. [x] در حال انجام
-  3. [ ] تمام شده
+  2. [ ] در حال انجام
+  3. [x] تمام شده
   </div>
 </details>
 
@@ -38,7 +38,7 @@ assignees: Arman17Babaei
   <div  dir="ltr" align='right'>
   
   1. [ ] شروع نشده
-  2. [ ] در حال انجام
+  2. [x] در حال انجام
   3. [ ] تمام شده
      </div>
 </details>
@@ -51,56 +51,102 @@ assignees: Arman17Babaei
 
   <div dir="ltr" align='right'>
 
-  1. [x] شروع نشده
+  1. [ ] شروع نشده
   2. [ ] در حال انجام
-  3. [ ] تمام شده
+  3. [x] تمام شده
   </div>
 </details>
   
   <details>
-  <summary>ساخت دیگر منوها</summary>
+  <summary>قابلیت ساخت اکانت (پیش‌نیاز: منوهای signup و login)</summary>
 
   <div dir="ltr" align='right'>
 
-  1. [x] شروع نشده
+  1. [ ] شروع نشده
   2. [ ] در حال انجام
-  3. [ ] تمام شده
+  3. [x] تمام شده
+  </div>
+</details>
+ 
+  <details>
+  <summary>دیتابیس یوزرها</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [ ] شروع نشده
+  2. [ ] در حال انجام
+  3. [x] تمام شده
   </div>
 </details>
   
   <details>
-  <summary>پیاده کردن Map و معماری</summary>
+  <summary>مپ‌منو و کامند‌هایش</summary>
 
   <div dir="ltr" align='right'>
 
-  1. [x] شروع نشده
+  1. [ ] شروع نشده
   2. [ ] در حال انجام
-  3. [ ] تمام شده
+  3. [x] تمام شده
+  </div>
+</details>
+  
+  <details>
+  <summary>کامندهای گاورمنت</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [ ] شروع نشده
+  2. [ ] در حال انجام
+  3. [x] تمام شده
+  </div>
+</details>
+  
+  <details>
+  <summary>استراتژی سربازها</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [ ] شروع نشده
+  2. [ ] در حال انجام
+  3. [x] تمام شده
+  </div>
+</details>
+  
+  <details>
+  <summary>تکمیل مپ‌منو</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [ ] شروع نشده
+  2. [ ] در حال انجام
+  3. [x] تمام شده
   </div>
 </details>
 
 ## تسک‌های نفر دوم
 
   **نام و نام خانوادگی: سهند اکرمی‌پور**
-<details>
-  <summary>قابلیت ساخت اکانت (پیش‌نیاز: منوهای signup و login)</summary>
+
+   <details>
+  <summary>پیاده کردن Map و معماری</summary>
 
   <div dir="ltr" align='right'>
 
-  1. [x] شروع نشده
+  1. [ ] شروع نشده
   2. [ ] در حال انجام
-  3. [ ] تمام شده
+  3. [x] تمام شده
   </div>
 </details>
+
   
   <details>
-  <summary>دیتابیس یوزرها</summary>
+  <summary>ساخت دیگر منوها</summary>
 
   <div dir="ltr" align='right'>
 
-  1. [x] شروع نشده
+  1. [ ] شروع نشده
   2. [ ] در حال انجام
-  3. [ ] تمام شده
+  3. [x] تمام شده
   </div>
 </details>
   
@@ -110,22 +156,64 @@ assignees: Arman17Babaei
   <div dir="ltr" align='right'>
 
   1. [ ] شروع نشده
-  2. [x] در حال انجام
-  3. [ ] تمام شده
+  2. [ ] در حال انجام
+  3. [x] تمام شده
   </div>
 </details>
 
-## تسک‌های نفر سوم
-
-  **نام و نام خانوادگی:**
-<details>
-  <summary>تسک مربوطه</summary>
+  </div>
+  
+  <details>
+  <summary>نگه‌داری دیتابیس در فایل</summary>
 
   <div dir="ltr" align='right'>
 
   1. [ ] شروع نشده
   2. [ ] در حال انجام
-  3. [ ] تمام شده
+  3. [x] تمام شده
   </div>
 </details>
-</div>
+
+<details>
+  <summary>تکمیل تریدمنو</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [ ] شروع نشده
+  2. [ ] در حال انجام
+  3. [x] تمام شده
+  </div>
+</details>
+
+<details>
+  <summary>جزئیات تایپ‌های یگان‌ها</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [ ] شروع نشده
+  2. [ ] در حال انجام
+  3. [x] تمام شده
+  </div>
+</details>
+
+<details>
+  <summary>کامندهای یگان‌ها</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [ ] شروع نشده
+  2. [ ] در حال انجام
+  3. [x] تمام شده
+  </div>
+</details>
+
+<details>
+  <summary>مرج کردن کدها</summary>
+
+  <div dir="ltr" align='right'>
+
+  1. [ ] شروع نشده
+  2. [ ] در حال انجام
+  3. [x] تمام شده
+  </div>
+</details>
