@@ -5,8 +5,10 @@ import controller.control.Commands;
 import controller.control.Error;
 import model.Direction.Direction;
 import model.Map.GroundType;
+import model.Map.Unit;
 import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.Buildings.BuildingType;
+import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Person;
 import model.ObjectsPackage.People.Soldier.Soldier;
 import model.ObjectsPackage.People.Soldier.SoldierName;
@@ -15,6 +17,7 @@ import model.ObjectsPackage.Tree;
 import model.ObjectsPackage.TreeType;
 import view.MapMenu;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 import static controller.Menus.GameMenuController.checkValue;
@@ -109,8 +112,49 @@ public class MapMenuController {
     }
 
     public String showDetails(Matcher matcher) {
+        matcher.find();
+        String input = matcher.group();
 
-        return null;
+        Error error = checkValue(input, Commands.X, currentUser);
+        if (!error.truth) {
+            return error.errorMassage;
+        }
+        int x = Integer.parseInt(error.errorMassage);
+
+        error = checkValue(input, Commands.Y, currentUser);
+        if (!error.truth) {
+            return error.errorMassage;
+        }
+        int y = Integer.parseInt(error.errorMassage);
+
+        Unit unit = this.currentUser.getGovernment().getMap().getUnitByXY(x, y);
+        String string = "Ground type : " + unit.getTexture() + "\n";
+        if (unit.getObjects().isEmpty()) {
+            return string;
+        }
+        ArrayList<Objects> objects = new ArrayList<>(unit.getObjects());
+        for (int i = 0; i < objects.size(); i++) {
+            Objects object = objects.get(i);
+            int number = 1;
+            if (object instanceof Soldier) {
+                for (int j = i + 1; j < objects.size(); j++) {
+                    Objects objectsSample = objects.get(j);
+                    if (objectsSample instanceof Soldier) {
+                        if (((Soldier) object).getType().equals(((Soldier) objectsSample).getType())) {
+                            number++;
+                            objects.remove(objectsSample);
+                        }
+                    }
+                }
+                string = string + "Soldier : " + ((Soldier) object).getType().getType() + "*" + number + "\n";
+            } else if (object instanceof Building) {
+                string = string + "Building : " + ((Building) object).getType().getType() + "*" + number + "\n";
+            }
+
+        }
+
+        return string;
+
     }
 
     public String setTexture(Matcher matcher) {

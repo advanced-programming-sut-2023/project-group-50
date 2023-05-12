@@ -1,5 +1,6 @@
 package model;
 
+import controller.Menus.GameMenuController;
 import controller.UserDatabase.User;
 import model.Government.Government;
 import model.ObjectsPackage.People.Soldier.Soldier;
@@ -83,6 +84,7 @@ public class Game {
         government.removeDeadSoldiers();
         government.patrolAll();
         government.fillUpEmptyEngineers();
+        government.attackWeapons();
     }
 
     private void updateBuildings() {

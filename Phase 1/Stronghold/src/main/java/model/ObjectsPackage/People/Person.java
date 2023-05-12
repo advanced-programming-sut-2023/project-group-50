@@ -11,7 +11,7 @@ public abstract class Person extends Objects {
     private int life;
     private int speed;
     private int starving;
-    private int income;
+    private double income;
 
     protected Person(boolean isSoldier, int life, int speed, User owner) {
         super(ObjectType.PERSON, owner);
@@ -73,11 +73,11 @@ public abstract class Person extends Objects {
         this.starving = starving;
     }
 
-    public int getIncome() {
+    public double getIncome() {
         return income;
     }
 
-    public void setIncome(int income) {
+    public void setIncome(double income) {
         this.income = income;
     }
 }

@@ -49,10 +49,10 @@ public class OffensiveStorage extends Building {
         assert hasMoneyForTroops(soldierName, count);
         assert hasEnoughArmourForTroops(soldierName, count);
 
-        int cost = soldierName.getGoldCost() * count;
+        int cost = soldierName.getCoinCost() * count;
         Government government = getOwner().getGovernment();
 
-        government.setGold(government.getGold() - cost);
+        government.setCoin(government.getCoin() - cost);
         ArrayList<Soldier> soldiers = getNewSoldiers(soldierName, count);
         government.addUnDeployedSoldier(soldiers);
     }
@@ -65,15 +65,15 @@ public class OffensiveStorage extends Building {
     }
 
     private boolean hasMoneyForTroops(SoldierName soldierName, int count) {
-        return getOwner().getGovernment().getGold() >= soldierName.getGoldCost() * count;
+        return getOwner().getGovernment().getCoin() >= soldierName.getCoinCost() * count;
     }
 
     private boolean hasMoneyForEngineer(int count) {
-        return getOwner().getGovernment().getGold() >= costOfEngineer * count;
+        return getOwner().getGovernment().getCoin() >= costOfEngineer * count;
     }
 
     private boolean hasMoneyForLadderman(int count) {
-        return getOwner().getGovernment().getGold() >= costOfLadderman * count;
+        return getOwner().getGovernment().getCoin() >= costOfLadderman * count;
     }
 
     private boolean hasEnoughArmourForTroops(SoldierName soldierName, int count) {
@@ -87,7 +87,7 @@ public class OffensiveStorage extends Building {
         int cost = costOfEngineer * count;
         Government government = getOwner().getGovernment();
 
-        government.setGold(government.getGold() - cost);
+        government.setCoin(government.getCoin() - cost);
         ArrayList<Soldier> soldiers = getNewSoldiers(SoldierName.ENGINEER, count);
         government.addUnDeployedSoldier(soldiers);
     }
@@ -99,7 +99,7 @@ public class OffensiveStorage extends Building {
         int cost = costOfLadderman * count;
         Government government = getOwner().getGovernment();
 
-        government.setGold(government.getGold() - cost);
+        government.setCoin(government.getCoin() - cost);
         ArrayList<Soldier> soldiers = getNewSoldiers(SoldierName.LADDERMAN, count);
         government.addUnDeployedSoldier(soldiers);
     }

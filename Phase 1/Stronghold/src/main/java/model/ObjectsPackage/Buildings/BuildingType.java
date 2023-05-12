@@ -53,14 +53,14 @@ public enum BuildingType {
     PALACE(0, 0, 0, 0, "Palace");
     private final int stoneCost;
     private final int woodCost;
-    private final int goldCost;
+    private final int coinCost;
     private final int numberOfWorkers;
     private final String type;
 
-    BuildingType(int stoneCost, int woodCost, int goldCost, int numberOfWorkers, String type) {
+    BuildingType(int stoneCost, int woodCost, int coinCost, int numberOfWorkers, String type) {
         this.stoneCost = stoneCost;
         this.woodCost = woodCost;
-        this.goldCost = goldCost;
+        this.coinCost = coinCost;
         this.numberOfWorkers = numberOfWorkers;
         this.type = type;
     }
@@ -86,8 +86,8 @@ public enum BuildingType {
         return woodCost;
     }
 
-    public int getGoldCost() {
-        return goldCost;
+    public int getCoinCost() {
+        return coinCost;
     }
 
     public int getPitchCost(int numberOfSquares) {

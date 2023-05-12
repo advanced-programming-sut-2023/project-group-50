@@ -25,15 +25,15 @@ public enum SoldierName {
     LOOSE_WAR_DOG(70, 70, 0, 50, 70);
     private final int attackPower;
     private final int defensePower;
-    private final int goldCost;
+    private final int coinCost;
     private final int life;
     private final int speed;
     private final String type;
 
-    SoldierName(int attackPower, int defensePower, int goldCost, int life, int speed) {
+    SoldierName(int attackPower, int defensePower, int coinCost, int life, int speed) {
         this.attackPower = attackPower;
         this.defensePower = defensePower;
-        this.goldCost = goldCost;
+        this.coinCost = coinCost;
         this.life = life;
         this.speed = speed;
         this.type = getName(this.name());
@@ -68,8 +68,8 @@ public enum SoldierName {
         return defensePower;
     }
 
-    public int getGoldCost() {
-        return goldCost;
+    public int getCoinCost() {
+        return coinCost;
     }
 
     public int getLife() {

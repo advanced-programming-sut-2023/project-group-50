@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 public class LoginController {
 
-    private static String userLoggedInPath = ".\\Phase 1\\User logged in.txt";
+    private static final String userLoggedInPath = ".\\Phase 1\\User logged in.txt";
     private final LoginMenu loginMenu;
     private User tryToLogin;
     private User loggedIn;
@@ -28,7 +28,7 @@ public class LoginController {
 
     static Error getError(Commands command, Matcher matcher, String string) {
         if (matcher.find()) {
-            return new Error("Invalid command!\nYou should enter all field!\nEnter " + command.name() + " once", false);
+            return new Error("Invalid command!\nEnter " + command.name() + " once", false);
 
         }
         string = string.trim();

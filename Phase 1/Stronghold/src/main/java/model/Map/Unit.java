@@ -6,6 +6,8 @@ import model.ObjectsPackage.Buildings.Gate;
 import model.ObjectsPackage.Buildings.Tower;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
+import model.ObjectsPackage.People.Soldier.Engineer;
+import model.ObjectsPackage.People.Soldier.Soldier;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -116,4 +118,43 @@ public class Unit implements Serializable {
     }
 
 
+    public Soldier getSoldier() {
+        for (Objects object : objects)
+            if (object instanceof Soldier soldier)
+                return soldier;
+        return null;
+    }
+
+    public int getEngineerCount() {
+        int cnt = 0;
+        for (Objects object : objects)
+            if (object instanceof Engineer engineer)
+                cnt++;
+        return cnt;
+    }
+
+    public ArrayList<Soldier> getEngineers(int c) {
+        ArrayList<Soldier> engineers = new ArrayList<>();
+        for (Objects object : objects) {
+            if (object instanceof Engineer engineer) {
+                engineers.add(engineer);
+                if (engineers.size() == c)
+                    break;
+            }
+        }
+
+        int i = 0;
+        for (Objects object : objects) {
+            if (object instanceof Soldier engineer) {
+                if (engineer.equals(engineers.get(i))) {
+                    objects.remove(engineer);
+                    i++;
+                    if(i == engineers.size())
+                        break;
+                }
+            }
+        }
+
+        return engineers;
+    }
 }

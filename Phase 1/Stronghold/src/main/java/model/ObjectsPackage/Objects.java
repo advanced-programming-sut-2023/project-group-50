@@ -45,7 +45,14 @@ public abstract class Objects implements Serializable {
         return owner;
     }
 
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
     public void applyDamage(int damage) {
+        if (getOwner().getGovernment().getMap().getXY(X, Y).isProtected())
+            damage = damage * 3 / 10;
+
         switch (objectType) {
             case PERSON -> {
                 Person person = (Person) this;
@@ -83,5 +90,12 @@ public abstract class Objects implements Serializable {
         else if ((building == null) && !Soldier.canPlace(texture)) return Integer.MAX_VALUE;
 
         return Map.distance(objects.getX(), objects.getY(), getX(), getY());
+    }
+
+
+    public int getHp() {
+        if (this instanceof Building building) return building.getHp();
+        if (this instanceof Soldier soldier) return soldier.getLife();
+        return 0;
     }
 }

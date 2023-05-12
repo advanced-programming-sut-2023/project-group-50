@@ -4,33 +4,40 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum Commands {
-    DOUBLE_QUOTE("\".*\""),
+    DOUBLE_QUOTE("\"[^\"]*\""),
     WORD("\\S+"),
     CAPITAL_LETTER("[A-Z]"),
     SMALL_LETTER("[a-z]"),
     DIGIT("\\d"),
-    USERNAME("(?<username>-u ((\".*\")|(\\S*)))"),
-    PASSWORD("(?<password>-p(( random)|(( \".*\"){2})|(( \\S*){2})))"),
-    NICKNAME("(?<nickname>-n ((\".*\")|(\\S*)))"),
-    SLOGAN("(?<slogan>-s ((\".*\")|(\\S*)))"),
-    EMAIL("(?<email>-e ((\".*\")|(\\S*)))"),
+    USERNAME("(?<username>-u ((\"[^\"]*\")|(\\S*)))"),
+    PASSWORD("(?<password>-p(( random)|(( \"[^\"]*\"){2})|(( \\S*){2})))"),
+    NICKNAME("(?<nickname>-n ((\"[^\"]*\")|(\\S*)))"),
+    SLOGAN("(?<slogan>-s ((\"[^\"]*\")|(\\S*)))"),
+    EMAIL("(?<email>-e ((\"[^\"]*\")|(\\S*)))"),
     EMAIL_FORMAT("[\\w\\.]+@[\\w\\.]+\\.[\\w\\.]+"),
-    PASS("(?<username>-p ((\".*\")|(\\S*)))"),
+    PASS("(?<username>-p ((\"[^\"]*\")|(\\S*)))"),
     STAY("--stay-logged-in"),
-    OLD_PASS("-o ((\".*\")|(\\S*))"),
-    NEW_PASS("-n ((\".*\")|(\\S*))"),
+    OLD_PASS("-o ((\"[^\"]*\")|(\\S*))"),
+    NEW_PASS("-n ((\"[^\"]*\")|(\\S*))"),
+    QUESTION("(?<question>-q ((\"[^\"]*\")|(\\S*)))"),
+    ANSWER_QUESTION("(?<answer>-a ((\"[^\"]*\")|(\\S*)))"),
+    ANSWER_CONFIRM("(?<confirm>-c ((\"[^\"]*\")|(\\S*)))"),
+    RATE("?<rate>-r \\d+"),
+
+
     X("-x \\d*"),
     Y("-y \\d*"),
     DIRECTION("(up|left|down|right)( \\d+)?"),
-    TYPE("-type ((\".*\")|(\\S*))"),
+    TYPE("-type ((\"[^\"]*\")|(\\S*))"),
     COUNT("-c (\\d*)"),
 
 
+    PROFILE_MENU("^profile menu$"),
+    GOVERNMENT_MENU("^government menu$"),
+    BACK("^back$"),
+
     CREATE_USER("^user create(( -p(( random)|(( \".*\"){2})|(( \\S*){2})))|( -[sune] ((\".*\")|(\\S*)))){4,5}$"),
     PICK_QUESTION("^question pick( -[a-z]+ ((\".*\")|(\\S*))){3}$"),
-    QUESTION("(?<username>-q ((\".*\")|(\\S*)))"),
-    ANSWER_QUESTION("(?<username>-a ((\".*\")|(\\S*)))"),
-    ANSWER_CONFIRM("(?<username>-c ((\".*\")|(\\S*)))"),
     EXIT("^exit$"),
     LOGIN("^user login(( --stay-logged-in)|(( -[up] ((\\\".*\\\")|(\\S*))))){2,3}$"),
     FORGOT("^forgot my password$"),
@@ -57,7 +64,6 @@ public enum Commands {
     ADD_NEW_ITEM("^add new item (?=.*(-c (?<count>-?\\d+)))(?=.*(-p (?<price>-?\\d+)))(?=.*(-n (?<name>.*)))"),
     SHOW_ALL_ITEMS("^show all items"),
     SHOW_MY_ITEMS("^show my items"),
-
     SELECT_UNIT("^select unit (?=.*(-x (?<x>-?\\d+)))(?=.*(-y (?<y>-?\\d+)))"),
     MOVE_UNIT("^move unit to (?=.*(-x (?<x>-?\\d+)))(?=.*(-y (?<y>-?\\d+)))"),
     PATROL_UNIT("^patrol unit (?=.*(-x1 (?<x1>-?\\d+)))(?=.*(-y1 (?<y1>-?\\d+)))(?=.*(-y2 (?<y2>-?\\d+)))(?=.*(-x2 (?<x2>-?\\d+)))"),
@@ -69,6 +75,15 @@ public enum Commands {
     BUILD("^build -q (?<equipment>.+)$"),
     DISBAND_UNIT("^disband unit$"),
 
+    SHOW_POPULARITY_FACTOR("^show popularity factors$"),
+    SHOW_POPULARITY("^show popularity$"),
+    SHOW_FOOD_LIST("^show food list$"),
+    SHOW_FOOD_RATE("^food rate show$"),
+    SET_FOOD_RATE("^food rate -r (\\d*)$"),
+    SET_TAX_RATE("^tax rate -r (\\d*)$"),
+    SHOW_TAX_RATE("^tax rate show$"),
+    SET_FEAR_RATE("^fear rate -r (\\d*)$"),
+
     SET_TEXTURE("^set texture (?=.*(-x (?<x>-?\\d+)))(?=.*(-y (?<y>-?\\d+)))(?=.*(-t (?<type>.+)))"),
     SET_TEXTURE_RECT("^set texture (?=.*(-x1 (?<x1>-?\\d+)))(?=.*(-y1 (?<y1>-?\\d+)))(?=.*(-y2 (?<y2>-?\\d+)))(?=.*(-x2 (?<x2>-?\\d+)))(?=.*(-t (?<type>.+)))"),
     CLEAR("^clear (?=.*(-x (?<x>-?\\d+)))(?=.*(-y (?<y>-?\\d+)))"),
@@ -77,7 +92,12 @@ public enum Commands {
     DROP_UNIT("^drop unit (?=.*(-x (?<x>-?\\d+)))(?=.*(-y (?<y>-?\\d+)))(?=.*(-t (?<type>.+)))(?=.*(-c (?<count>-?\\d+)))"),
     DROP_BUILDING_MAP("^drop building (?=.*(-x (?<x>-?\\d+)))(?=.*(-y (?<y>-?\\d+)))(?=.*(-t (?<type>.+))"),
     END_TURN("^end turn$"),
-    SHOW_MY_DATA("^show my data$");
+    SHOW_MY_DATA("^show my data$"),
+    CAPTURE_GATE("^capture gate (?=.*(-x (?<x>-?\\d+)))(?=.*(-y (?<y>-?\\d+)))"),
+    MAKE_PROTECTION("^make protection"),
+    MAKE_BATTERING_RAM("^make battering ram"),
+    MAKE_CATAPULT("^make catapult"),
+    MAKE_FIRE_THROWER("^make fire thrower");
     private final String regex;
 
     Commands(String regex) {

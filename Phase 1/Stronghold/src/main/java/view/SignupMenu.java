@@ -55,6 +55,4 @@ public class SignupMenu {
         }
         return input;
     }
-
-
 }

@@ -6,13 +6,18 @@ import controller.control.Error;
 import model.Direction.Direction;
 import model.Game;
 import model.Map.GroundType;
+import model.Map.Map;
 import model.Map.Unit;
 import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.Buildings.BuildingType;
+import model.ObjectsPackage.Buildings.Gate;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
+import model.ObjectsPackage.People.PersonState;
 import model.ObjectsPackage.People.Soldier.*;
 import model.ObjectsPackage.Resource;
+import model.ObjectsPackage.Weapons.Weapon;
+import model.ObjectsPackage.Weapons.WeaponName;
 import view.GameMenu;
 
 import java.util.regex.Matcher;
@@ -101,18 +106,28 @@ public class GameMenuController {
         if (!error.truth) {
             return error.errorMassage;
         }
-        String buildingType1 = checkResource(buildingType, 1);
-        if (buildingType1 != null) return buildingType1;
+        String errorString = checkResource(buildingType, 1);
+        if (errorString != null) return errorString;
 
         Building building = Building.getBuildingByType(buildingType, this.currentUser, x, y);
+        if (this.currentUser.getGovernment().getPeopleByState(PersonState.JOBLESS).size() <
+                Building.numberOfWorker(buildingType)) {
+            System.out.println("Your building doesn't have any worker");
+            this.currentUser.getGovernment().peopleGetJob(this.currentUser.getGovernment().getPeopleByState(PersonState.JOBLESS).size(), Building.getJobByBuildingType(buildingType), building);
+        } else {
+            this.currentUser.getGovernment().peopleGetJob(Building.numberOfWorker(buildingType), Building.getJobByBuildingType(buildingType), building);
+        }
+
+
         this.currentUser.getGovernment().getMap().addObject(building, x, y);
         this.currentUser.getGovernment().buyBuilding(buildingType, 1);
+        this.currentUser.getGovernment().addBuildings(building);
         return "You drop building successfully";
     }
 
     private String checkResource(BuildingType buildingType, float zarib) {
-        if ((int) Math.ceil(buildingType.getGoldCost() * zarib) > this.currentUser.getGovernment().getGold()) {
-            return "You haven't enough gold to build this " + buildingType.getType();
+        if (Math.ceil(buildingType.getCoinCost() * zarib) > this.currentUser.getGovernment().getCoin()) {
+            return "You haven't enough coin to build this " + buildingType.getType();
         }
         if ((int) Math.ceil(buildingType.getStoneCost() * zarib) >
                 this.currentUser.getGovernment().getResourceAmount(Resource.STONE)) {
@@ -163,20 +178,27 @@ public class GameMenuController {
             return new Error("There is a tree at these coordinates", false);
         }
         if (this.currentUser.getGovernment().getMap().getObjectByXY(x, y, ObjectType.ROCK) != null) {
-            return new Error("There is a building at these coordinates", false);
+            return new Error("There is a rock at these coordinates", false);
         }
 
         GroundType groundType = unit.getTexture();
-        if (!(groundType.equals(GroundType.GROUND) || groundType.equals(GroundType.GRASS) ||
-                groundType.equals(GroundType.RIGGED_GROUND) || groundType.equals(GroundType.CLIFF) ||
-                groundType.equals(GroundType.IRON) || groundType.equals(GroundType.LAWN) ||
-                groundType.equals(GroundType.MEADOW) || groundType.equals(GroundType.PLAIN))) {
+        if (!(groundType.equals(GroundType.GROUND) ||
+                groundType.equals(GroundType.GRASS) ||
+                groundType.equals(GroundType.RIGGED_GROUND) ||
+                groundType.equals(GroundType.CLIFF) ||
+                groundType.equals(GroundType.IRON) ||
+                groundType.equals(GroundType.LAWN) ||
+                groundType.equals(GroundType.MEADOW) ||
+                groundType.equals(GroundType.PLAIN)
+        )) {
             return new Error("You can't drop building in this place", false);
         }
 
-        if (buildingType.equals(BuildingType.APPLE_ORCHARD) || buildingType.equals(BuildingType.HOPS_FARMER) ||
-                buildingType.equals(BuildingType.WHEAT_FARMER)) {
-            if (!(groundType.equals(GroundType.GRASS) || groundType.equals(GroundType.MEADOW))) {
+        if (buildingType.equals(BuildingType.APPLE_ORCHARD)
+                || buildingType.equals(BuildingType.HOPS_FARMER)
+                || buildingType.equals(BuildingType.WHEAT_FARMER)) {
+            if (!(groundType.equals(GroundType.GRASS)
+                    || groundType.equals(GroundType.MEADOW))) {
                 return new Error("You only need to place the farm in the grass or meadow", false);
             }
             return new Error("", true);
@@ -197,8 +219,10 @@ public class GameMenuController {
             }
             return new Error("", true);
         } else {
-            if (groundType.equals(GroundType.CLIFF) || groundType.equals(GroundType.IRON) ||
-                    groundType.equals(GroundType.PLAIN)) {
+            if (groundType.equals(GroundType.CLIFF) ||
+                    groundType.equals(GroundType.IRON) ||
+                    groundType.equals(GroundType.PLAIN)
+            ) {
                 return new Error("You can't drop building in this place", false);
             }
             return new Error("", true);
@@ -244,14 +268,19 @@ public class GameMenuController {
             return "Please first select a building";
         }
         float cost = 0;
-        if (this.selectedBuilding.isDestroyed()) cost = selectedBuilding.getType().getStoneCost();
-        else cost = (float) selectedBuilding.getType().getStoneCost() * (float) selectedBuilding.getHp() /
-                (float) selectedBuilding.getMaxHp();
+        if (this.selectedBuilding.isDestroyed()) {
+            cost = 1;
+        } else {
+            cost = 1 - ((float) selectedBuilding.getHp() / (float) selectedBuilding.getMaxHp());
+        }
         String string = checkResource(selectedBuilding.getType(), cost);
-        if (string != null) return string;
+        if (string != null) {
+            return string;
+        }
 
-        if (this.currentUser.getGovernment().getMap().searchForEnemy(this.selectedBuilding.getX(), this.selectedBuilding.getY(), this.selectedBuilding.getOwner()))
+        if (this.currentUser.getGovernment().getMap().searchForEnemy(this.selectedBuilding.getX(), this.selectedBuilding.getY(), this.selectedBuilding.getOwner())) {
             return "The enemy soldier is close";
+        }
         this.currentUser.getGovernment().buyBuilding(selectedBuilding.getType(), cost);
         this.selectedBuilding.repair();
         return "You repair selected building successfully";
@@ -262,39 +291,64 @@ public class GameMenuController {
     public String createUnit(Matcher matcher) {
         matcher.find();
         String input = matcher.group();
+        if (this.selectedBuilding == null) {
+            return "Please first select a building";
+        }
 
         Error error = checkType(input);
-        if (!error.truth) return error.errorMassage;
+        if (!error.truth) {
+            return error.errorMassage;
+        }
         String type = error.errorMassage;
 
-        if (SoldierName.getSoldierNameByType(type) == null) return "You should enter valid type soldier";
+        if (SoldierName.getSoldierNameByType(type) == null) {
+            return "You should enter valid type soldier";
+        }
         SoldierName soldierName = SoldierName.getSoldierNameByType(type);
 
         error = checkHasField(input, Commands.COUNT);
-        if (!error.truth) return error.errorMassage;
+        if (!error.truth) {
+            return error.errorMassage;
+        }
         int count = Integer.parseInt(error.errorMassage);
 
-        if (soldierName.getGoldCost() * count > this.currentUser.getGovernment().getGold())
-            return "You haven't enough gold";
-        ///
-        ///
-        if (this.currentUser.getGovernment().getNoneJob().size() < count) return "You haven't enough people";
+        if (soldierName.getCoinCost() * count > this.currentUser.getGovernment().getCoin()) {
+            return "You haven't enough coin";
+        }
+
+        WeaponName weaponName = Soldier.getWeaponName(soldierName);
+        if (!this.currentUser.getGovernment().getWeapons().containsKey(weaponName)) {
+            return "You haven't any this type weapon";
+        }
+        if (this.currentUser.getGovernment().getWeapons().get(weaponName) < count) {
+            return "You haven't enough weapons";
+        }
+
+        if (this.currentUser.getGovernment().getPeopleByState(PersonState.JOBLESS).size() < count) {
+            return "You haven't enough people";
+        }
 
         if (SoldierName.isArab(soldierName)) {
-            if (!selectedBuilding.getType().equals(BuildingType.MERCENARY_POST))
+            if (!selectedBuilding.getType().equals(BuildingType.MERCENARY_POST)) {
                 return "You can't create arab soldier in this building";
+            }
 
         } else {
             if (!(selectedBuilding.getType().equals(BuildingType.BARRACKS) ||
-                    selectedBuilding.getType().equals(BuildingType.ENGINEER_GUILD)))
+                    selectedBuilding.getType().equals(BuildingType.ENGINEER_GUILD))) {
                 return "You can't create european soldier in this building";
-            if ((soldierName.equals(SoldierName.ENGINEER)))
-                if (!(selectedBuilding.getType().equals(BuildingType.ENGINEER_GUILD)))
+            }
+            if ((soldierName.equals(SoldierName.ENGINEER))) {
+                if (!(selectedBuilding.getType().equals(BuildingType.ENGINEER_GUILD))) {
                     return "You just can create Engineer in Engineer guild";
+                }
+
+
+            }
         }
 
-
-        return "";
+        this.currentUser.getGovernment().addUndeployedSoldier(count, soldierName, this.currentUser);
+        return "You create a unit";
     }
 
 
@@ -378,7 +432,7 @@ public class GameMenuController {
         int successful = 0, failed = 0;
         for (Objects object : selectedUnit.getObjects()) {
             if (object instanceof Engineer engineer) {
-                if (engineer.hasOil()) { // TODO: move empty engineers to oil
+                if (engineer.hasOil()) {
                     engineer.pourOil(direction);
                     successful++;
                 } else failed++;
@@ -452,6 +506,82 @@ public class GameMenuController {
 
     public boolean gameIsFinished() {
         return game.gameIsFinished();
+    }
+
+    public String captureGate(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x")), y = Integer.parseInt(matcher.group("y"));
+        if (x < 0 || x > currentUser.getGovernment().getMap().getXSize()) return "x is invalid!";
+        if (y < 0 || y > currentUser.getGovernment().getMap().getYSize()) return "y is invalid!";
+        if (selectedUnit == null) return "No unit is selected!";
+        if (selectedUnit.getSoldier() == null) return "No soldier in this unit!";
+        if (Map.distance(selectedBuilding.getX(), selectedBuilding.getY(), x, y) > selectedUnit.getSoldier().getSpeed())
+            return "The gate is too far away!";
+        if (selectedUnit.getSoldier() instanceof Infantry infantry)
+            return "There are no soldiers in this unit who can capture the gate!";
+
+        for (Objects objects : getCurrentUser().getGovernment().getMap().getXY(x, y).getObjects()) {
+            if (objects instanceof Gate gate) {
+                Infantry infantry = (Infantry) selectedUnit.getSoldier();
+                infantry.captureGate(gate);
+                return "Gate captured.";
+            }
+        }
+
+        return "No gate to be captured.";
+    }
+
+    public String makeBatteringRam() {
+        if (selectedUnit == null) return "No unit is selected!";
+        if (selectedUnit.getEngineerCount() < 4)
+            return "There are not enough engineers in this unit!";
+
+        if (!Soldier.canPlace(selectedUnit.getTexture())) return "Cannot place battering ram here!";
+        makeGroup(WeaponName.BATTERING_RAM, 4);
+
+        return "BatteringRam made.";
+    }
+
+    private void makeGroup(WeaponName weaponName, int c) {
+        GroupSoldier groupSoldier = new GroupSoldier(selectedUnit.getEngineers(c),
+                                                     SoldierName.ENGINEER,
+                                                     false,
+                                                     getCurrentUser());
+        Weapon weapon = new Weapon(weaponName, groupSoldier, currentUser);
+        groupSoldier.setWeapon(weapon);
+        selectedUnit.addObject(groupSoldier);
+    }
+
+    public String makeCatapult() {
+        if (selectedUnit == null) return "No unit is selected!";
+        if (selectedUnit.getEngineerCount() < 3)
+            return "There are not enough engineers in this unit!";
+
+        if (!Soldier.canPlace(selectedUnit.getTexture())) return "Cannot place catapult here!";
+        makeGroup(WeaponName.CATAPULT, 3);
+
+        return "Catapult made.";
+    }
+
+    public String makeProtection() {
+        if (selectedUnit == null) return "No unit is selected!";
+        if (selectedUnit.getEngineerCount() < 1)
+            return "There are not enough engineers in this unit!";
+
+        if (!Soldier.canPlace(selectedUnit.getTexture())) return "Cannot place protection here!";
+        selectedUnit.setProtected(true);
+
+        return "Protection made.";
+    }
+
+    public String makeFireThrower() {
+        if (selectedUnit == null) return "No unit is selected!";
+        if (selectedUnit.getEngineerCount() < 1)
+            return "There are not enough engineers in this unit!";
+
+        if (!Soldier.canPlace(selectedUnit.getTexture())) return "Cannot place fire thrower here!";
+        makeGroup(WeaponName.FIRE_THROWER, 1);
+
+        return "Fire thrower made.";
     }
 }
 

@@ -38,8 +38,8 @@ public class TradeMenuController {
         seller.setResourceAmount(resource, seller.getResourceAmount(resource) - trade.getResourceAmount());
         buyer.setResourceAmount(resource, buyer.getResourceAmount(resource) + trade.getResourceAmount());
 
-        seller.setGold(seller.getGold() + trade.getPrice());
-        buyer.setGold(buyer.getGold() - trade.getPrice());
+        seller.setCoin(seller.getCoin() + trade.getPrice());
+        buyer.setCoin(buyer.getCoin() - trade.getPrice());
 
         trade.setTo(currentUser);
         trade.setMessage(message);

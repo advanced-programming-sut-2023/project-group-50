@@ -113,7 +113,7 @@ public class SignupController {
 
         if (matcher.find()) {
             return new Error(
-                    "Invalid Username format!\nyou can't use this character : \"" + matcher.group() + "\"", false);
+                    "Invalid Username format!\nyou can't use this character : \" " + matcher.group() + " \"", false);
         }
 
         if (Users.getUser(username) != null) {
@@ -175,7 +175,7 @@ public class SignupController {
                 if (string.equals(pass)) {
                     System.out.print("your random password is not this " + string + "\nPlease try again : ");
                 } else {
-                    System.out.print("your password confirm is successful");
+                    System.out.println("your password confirm is successful");
                     break;
                 }
             }
@@ -230,7 +230,7 @@ public class SignupController {
         char digit = (char) (new Random().nextInt('9' - '0' + 1) + '0');
         char random;
         while (true) {
-            random = (char) (new Random().nextInt(256) + 32);
+            random = (char) (new Random().nextInt(128) + 32);
             if ((Character.isLowerCase(random)) || (Character.isUpperCase(random)) || (Character.isDigit(random)) ||
                     (Character.isWhitespace(random))) {
                 continue;
