@@ -53,6 +53,9 @@ public class GameMenu {
             else if (Commands.getMatcher (Commands.PROFILE_MENU,input).find ()) {
                 return State.PROFILE;
             }
+            else if (Commands.getMatcher (Commands.GOVERNMENT_MUNE,input).find ()) {
+                return State.GOVERNMENT;
+            }
             else {
                 System.out.println("invalid command");
             }

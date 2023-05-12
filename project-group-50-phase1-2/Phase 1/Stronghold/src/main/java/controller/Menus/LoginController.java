@@ -28,7 +28,7 @@ public class LoginController {
 
     static Error getError(Commands command, Matcher matcher, String string) {
         if (matcher.find()) {
-            return new Error("Invalid command!\nYou should enter all field!\nEnter " + command.name() + " once", false);
+            return new Error("Invalid command!\nEnter " + command.name() + " once", false);
 
         }
         string = string.trim();

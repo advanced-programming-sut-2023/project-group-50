@@ -94,11 +94,12 @@ public class GameMenuController {
 
         this.currentUser.getGovernment ().getMap ().addObject (building,x,y);
         this.currentUser.getGovernment ().buyBuilding (buildingType,1);
+        this.currentUser.getGovernment ().addBuildings (building);
         return "You drop building successfully";
     }
 
     private String checkResource(BuildingType buildingType,float zarib) {
-        if((int)Math.ceil (buildingType.getGoldCost ()*zarib)>this.currentUser.getGovernment ().getCoins ()){
+        if(Math.ceil (buildingType.getGoldCost ()*zarib)>this.currentUser.getGovernment ().getCoins ()){
             return "You haven't enough gold to build this " + buildingType.getType ();
         }
         if ((int)Math.ceil (buildingType.getStoneCost ()*zarib)>this.currentUser.getGovernment ().getResourceAmount (Resource.STONE)){
@@ -147,7 +148,7 @@ public class GameMenuController {
             return new Error ("There is a tree at these coordinates",false);
         }
         if(this.currentUser.getGovernment ().getMap ().getObjectByXY (x,y, ObjectType.ROCK)!=null){
-            return new Error ("There is a building at these coordinates",false);
+            return new Error ("There is a rock at these coordinates",false);
         }
 
         GroundType groundType=unit.getTexture ();

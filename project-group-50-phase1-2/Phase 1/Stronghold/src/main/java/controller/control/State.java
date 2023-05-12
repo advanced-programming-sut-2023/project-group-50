@@ -6,5 +6,6 @@ public enum State {
     SIGN,
     PROFILE,
     MAP,
-    GAME
+    GAME,
+    GOVERNMENT,
 }

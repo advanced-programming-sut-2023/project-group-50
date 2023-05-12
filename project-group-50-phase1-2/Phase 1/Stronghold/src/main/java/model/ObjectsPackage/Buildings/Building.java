@@ -356,4 +356,27 @@ public abstract class Building extends Objects {
         return null;
     }
 
+    public static int isGoodOrBad(Building building){
+        switch (building.type) {
+            case SMALL_STONE_GATEHOUSE, BIG_STONE_GATEHOUSE, DRAW_BRIDGE, LOOKOUT_TOWER, PERIMETER_TOWER, CATHEDRAL, CHURCH, CHAPEL, ARMOURY, MERCENARY_POST, TUNNELER_GUILD, BARRACKS, ENGINEER_GUILD, IRON_MINE, PITCH_RIG, QUARRY, WOODCUTTER -> {
+                return 0;
+            }
+            case KILLING_PIT -> {
+                return -2;
+            }
+            case INN, HOVEL, WATER_POT, SIEGE_TENT, STABLE, APOTHECARY -> {
+            return 2;
+            }
+            case MARKET, WELL, MILL, BLACKSMITH, FLETCHER, POLETURNER, OIL_SMELTER, APPLE_ORCHARD, DIARY_FARMER, HOPS_FARMER, HUNTER_POST, WHEAT_FARMER, BAKERY, BREWER -> {
+                return 1;
+            }
+            case OX_TETHER, STOCKPILE, GRANARY, ARMOURER, PITCH_DITCH, CAGED_WAR_DOGS -> {
+            return -1;
+            }
+            default -> {
+                return 0;
+            }
+        }
+
+    }
 }

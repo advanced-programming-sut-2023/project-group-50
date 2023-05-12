@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum Commands {
-    DOUBLE_QUOTE("\".*\""),
+    DOUBLE_QUOTE("\"[^\"]*\""),
     WORD("\\S+"),
     CAPITAL_LETTER("[A-Z]"),
     SMALL_LETTER("[a-z]"),
@@ -15,13 +15,15 @@ public enum Commands {
     SLOGAN("(?<slogan>-s ((\"[^\"]*\")|(\\S*)))"),
     EMAIL("(?<email>-e ((\"[^\"]*\")|(\\S*)))"),
     EMAIL_FORMAT("[\\w\\.]+@[\\w\\.]+\\.[\\w\\.]+"),
-    PASS("(?<username>-p ((\"[^\"]*\")|(\\S*))"),
+    PASS("(?<username>-p ((\"[^\"]*\")|(\\S*)))"),
     STAY("--stay-logged-in"),
     OLD_PASS("-o ((\"[^\"]*\")|(\\S*))"),
     NEW_PASS("-n ((\"[^\"]*\")|(\\S*))"),
     QUESTION("(?<question>-q ((\"[^\"]*\")|(\\S*)))"),
     ANSWER_QUESTION("(?<answer>-a ((\"[^\"]*\")|(\\S*)))"),
-    ANSWER_CONFIRM("?<confirm>-c ((\"[^\"]*\")|(\\S*)))"),
+    ANSWER_CONFIRM("(?<confirm>-c ((\"[^\"]*\")|(\\S*)))"),
+    RATE("?<rate>-r \\d+"),
+
 
     X("-x \\d*"),
     Y("-y \\d*"),
@@ -33,6 +35,7 @@ public enum Commands {
 
 
     PROFILE_MENU("^profile menu$"),
+    GOVERNMENT_MUNE("^government menu$"),
     BACK("^back$"),
 
     CREATE_USER("^user create(( -p(( random)|(( \".*\"){2})|(( \\S*){2})))|( -[sune] ((\".*\")|(\\S*)))){4,5}$"),
@@ -60,6 +63,15 @@ public enum Commands {
     SELECT_BUILDING("^select building( -(x|y) \\d*){2}$"),
     REPAIR("^repair$"),
     CREATE_UNIT("^createunit(( -(c) (\\d*))|( -type ((\".*\")|(\\S*)))){2}$"),
+    SHOW_POPULARITY_FACTOR("^show popularity factors$"),
+    SHOW_POPULARITY("^show popularity$"),
+    SHOW_FOOD_LIST("^show food list$"),
+    SHOW_FOOD_RATE("^food rate show$"),
+    SET_FOOD_RATE("^food rate -r (\\d*)$"),
+    SET_TAX_RATE("^tax rate -r (\\d*)$"),
+    SHOW_TAX_RATE("^tax rate show$"),
+    SET_FEAR_RATE("^fear rate -r (\\d*)$"),
+
     BUY_ITEM("^buy item (?<name>.*)$"),
     SELL_ITEM("^sell item (?<name>.*)$"),
     ADD_NEW_ITEM("^add new item (?=.*(-c (?<count>-?\\d+)))(?=.*(-p (?<price>-?\\d+)))(?=.*(-n (?<name>.*)))$"),
