@@ -305,6 +305,46 @@ public class Government implements Serializable { //TODO: Jobs
         return closestStorage;
     }
 
+    public void removeDestroyedBuildings() {
+        HashMap<Pair, Building> dead = new HashMap<>();
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object instanceof Building building && building.isDestroyed())
+                        dead.put(new Pair(x, y), building);
+                }
+            }
+        }
+
+        for (Pair xy : dead.keySet()) map.getXY(xy.x, xy.y).getObjects().remove(dead.get(xy));
+    }
+
+    public void spreadFire() {
+        HashSet<Pair> newFire = new HashSet<>();
+        for (int x = 0; x < map.getXSize(); x++)
+            for (int y = 0; y < map.getYSize(); y++)
+                if (map.getXY(x, y).isOnFire()) spreadFireRandomly(newFire, x, y);
+
+        for (Pair xy : newFire) map.getXY(xy.x, xy.y).setOnFire(true);
+    }
+
+    private void spreadFireRandomly(HashSet<Pair> newFire, int x, int y) {
+        int d = new Random().nextInt(4);
+        switch (d) {
+            case 0 -> newFire.add(new Pair(Math.min(map.getXSize(), x + 1), y));
+            case 1 -> newFire.add(new Pair(Math.max(0, x - 1), y));
+            case 2 -> newFire.add(new Pair(x, Math.min(map.getYSize(), y + 1)));
+            case 3 -> newFire.add(new Pair(x, Math.max(0, y - 1)));
+        }
+    }
+
+    public void applyFireDamage() {
+        for (int x = 0; x < map.getXSize(); x++)
+            for (int y = 0; y < map.getYSize(); y++)
+                if (map.getXY(x, y).isOnFire()) for (Objects objects : map.getXY(x, y).getObjects())
+                    objects.applyDamage(50);
+    }
+
     private class Pair {
         int x;
         int y;

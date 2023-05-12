@@ -87,7 +87,8 @@ public class Game {
 
     private void updateBuildings() {
         Government government = getGovernment();
-        government.removeDestroyedBuildings();
         government.spreadFire();
+        government.applyFireDamage();
+        government.removeDestroyedBuildings();
     }
 }
