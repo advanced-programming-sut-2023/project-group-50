@@ -26,36 +26,33 @@ public class SignupMenu {
     }
 
     public State run(Scanner scanner) {
-
+        Matcher matcher;
 
         while (true) {
-            String input;
-            if (this.nextMatcher != null) {
-                this.nextMatcher.find();
-                input = this.nextMatcher.group();
-                this.nextMatcher = null;
-            } else {
-                input = scanner.nextLine();
-            }
+            String input = getInput(scanner);
 
-
-            if (Commands.getMatcher(Commands.CREATUSER, input).find()) {
-                System.out.println(this.signupController.createUser(Commands.getMatcher(Commands.CREATUSER, input), scanner));
+            if ((matcher = Commands.getMatcher(Commands.CREATE_USER, input)).matches()) {
+                System.out.println(this.signupController.createUser(matcher, scanner));
             } else if (Commands.getMatcher(Commands.EXIT, input).find()) {
                 return State.EXIT;
-
-            } else if (Commands.getMatcher(Commands.LOGIN, input).find()) {
-                this.setNextMatcher(Commands.getMatcher(Commands.LOGIN, input));
+            } else if ((matcher = Commands.getMatcher(Commands.LOGIN, input)).matches()) {
+                this.setNextMatcher(matcher);
                 return State.LOGIN;
             } else {
                 System.out.println("Invalid Command!");
             }
-
-
         }
-
-
     }
 
-
+    private String getInput(Scanner scanner) {
+        String input;
+        if (this.nextMatcher != null) {
+            this.nextMatcher.find();
+            input = this.nextMatcher.group();
+            this.nextMatcher = null;
+        } else {
+            input = scanner.nextLine();
+        }
+        return input;
+    }
 }

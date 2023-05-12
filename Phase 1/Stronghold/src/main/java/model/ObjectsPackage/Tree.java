@@ -1,23 +1,31 @@
 package model.ObjectsPackage;
 
-public class Tree extends Objects {
-    private String type;
+import controller.UserDatabase.User;
 
-    protected Tree(String type) {
-        super(ObjectType.TREE);
+public class Tree extends Objects {
+    private TreeType type;
+
+    public Tree(TreeType type, User owner) {
+        super(ObjectType.TREE, owner);
         this.type = type;
     }
 
     public boolean canPlace(int x, int y) {
-        //TODO: complete this when map is done
-        return true;
+        switch (owner.getGovernment().getMap().getXY(x, y).getTexture()) {
+            case GROUND, MEADOW, LAWN, GRASS, RIGGED_GROUND -> {
+                return true;
+            }
+            default -> {
+                return false;
+            }
+        }
     }
 
-    public String getType() {
+    public TreeType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(TreeType type) {
         this.type = type;
     }
 }

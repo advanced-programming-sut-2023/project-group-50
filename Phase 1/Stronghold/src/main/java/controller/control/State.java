@@ -4,5 +4,8 @@ public enum State {
     EXIT,
     LOGIN,
     SIGN,
-    PROFILE
+    PROFILE,
+    MAP,
+    GAME,
+    GOVERNMENT,
 }

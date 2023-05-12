@@ -1,14 +1,19 @@
 package model.ObjectsPackage.Buildings;
 
 import controller.UserDatabase.User;
+import model.Government.Government;
+import model.ObjectsPackage.People.Soldier.Soldier;
+import model.ObjectsPackage.People.Soldier.SoldierName;
 import model.ObjectsPackage.Weapons.WeaponName;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class OffensiveStorage extends Building {
     private final HashMap<WeaponName, Integer> weaponCount;
     private final int defendRange;
     private final int capacity;
+    private final int currentCapacity;
     private final int cost;
     private final int costOfLadderman;
     private final int costOfEngineer;
@@ -35,33 +40,67 @@ public class OffensiveStorage extends Building {
         this.costOfEngineer = costOfEngineer;
         this.damage = damage;
         this.rate = rate;
+        currentCapacity = 0;
         weaponCount = new HashMap<>();
     }
 
-    public String trainTroops(int count, OffensiveStorage armoury) {
-        // TODO: fill here
-        return null;
+    public void trainTroops(SoldierName soldierName, int count) {
+        assert count + currentCapacity <= capacity;
+        assert hasMoneyForTroops(soldierName, count);
+        assert hasEnoughArmourForTroops(soldierName, count);
+
+        int cost = soldierName.getCoinCost() * count;
+        Government government = getOwner().getGovernment();
+
+        government.setCoin(government.getCoin() - cost);
+        ArrayList<Soldier> soldiers = getNewSoldiers(soldierName, count);
+        government.addUnDeployedSoldier(soldiers);
     }
 
-    public String buyTroop(int count, int gold) {
-        //TODO: fill here
-        return null;
+    private ArrayList<Soldier> getNewSoldiers(SoldierName soldierName, int count) {
+        ArrayList<Soldier> soldiers = new ArrayList<>();
+        for (int i = 0; i < count; i++)
+            soldiers.add(Soldier.getSoldierByType(soldierName, getOwner()));
+        return soldiers;
     }
 
-    public String hireEngineer() {
-        //TODO: fill here
-        return null;
+    private boolean hasMoneyForTroops(SoldierName soldierName, int count) {
+        return getOwner().getGovernment().getCoin() >= soldierName.getCoinCost() * count;
     }
 
-    public String hireLadderman() {
-        //TODO: fill here
-        return null;
+    private boolean hasMoneyForEngineer(int count) {
+        return getOwner().getGovernment().getCoin() >= costOfEngineer * count;
     }
 
-    public String kill(User opponent) {
-        //TODO: fill here
-        return null;
+    private boolean hasMoneyForLadderman(int count) {
+        return getOwner().getGovernment().getCoin() >= costOfLadderman * count;
     }
 
+    private boolean hasEnoughArmourForTroops(SoldierName soldierName, int count) {
+        return getOwner().getGovernment().getArmourAmount(soldierName.getArmourType()) >= count;
+    }
 
+    public void hireEngineer(int count) {
+        assert count + currentCapacity <= capacity;
+        assert hasMoneyForEngineer(count);
+
+        int cost = costOfEngineer * count;
+        Government government = getOwner().getGovernment();
+
+        government.setCoin(government.getCoin() - cost);
+        ArrayList<Soldier> soldiers = getNewSoldiers(SoldierName.ENGINEER, count);
+        government.addUnDeployedSoldier(soldiers);
+    }
+
+    public void hireLadderman(int count) {
+        assert count + currentCapacity <= capacity;
+        assert hasMoneyForLadderman(count);
+
+        int cost = costOfLadderman * count;
+        Government government = getOwner().getGovernment();
+
+        government.setCoin(government.getCoin() - cost);
+        ArrayList<Soldier> soldiers = getNewSoldiers(SoldierName.LADDERMAN, count);
+        government.addUnDeployedSoldier(soldiers);
+    }
 }

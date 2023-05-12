@@ -1,5 +1,7 @@
 package model.ObjectsPackage.People;
 
+import controller.UserDatabase.User;
+import model.Map.GroundType;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 
@@ -9,14 +11,26 @@ public abstract class Person extends Objects {
     private int life;
     private int speed;
     private int starving;
-    private int income;
+    private double income;
 
-    protected Person(boolean isSoldier, int life, int speed) {
-        super(ObjectType.PERSON);
+    protected Person(boolean isSoldier, int life, int speed, User owner) {
+        super(ObjectType.PERSON, owner);
         this.isSoldier = isSoldier;
         this.life = life;
         this.maxLife = life;
         this.speed = speed;
+    }
+
+    public static boolean canPlace(GroundType texture) {
+        switch (texture) {
+            case GROUND, BEACH, SHALLOW_WATER, PLAIN, MEADOW, LAWN, GRASS, IRON, RIGGED_GROUND -> {
+                return true;
+            }
+            case CLIFF, SEA, BIG_POND, SMALL_POND, RIVER, OIL, STONE -> {
+                return false;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + texture);
+        }
     }
 
     public void heal() {
@@ -59,11 +73,11 @@ public abstract class Person extends Objects {
         this.starving = starving;
     }
 
-    public int getIncome() {
+    public double getIncome() {
         return income;
     }
 
-    public void setIncome(int income) {
+    public void setIncome(double income) {
         this.income = income;
     }
 }

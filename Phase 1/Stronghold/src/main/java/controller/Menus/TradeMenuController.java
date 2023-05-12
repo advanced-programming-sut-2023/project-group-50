@@ -1,8 +1,10 @@
 package controller.Menus;
 
 import controller.UserDatabase.User;
-
-import java.util.regex.Matcher;
+import model.Government.Government;
+import model.ObjectsPackage.Resource;
+import model.Trade.Trade;
+import model.Trade.TradeMarket;
 
 public class TradeMenuController {
     private final User currentUser;
@@ -11,23 +13,44 @@ public class TradeMenuController {
         this.currentUser = currentUser;
     }
 
-    public String newTrade(Matcher matcher) {
+    public static boolean resourceNameIsValid(String name) {
+        return Resource.nameIsValid(name);
+    }
 
-        return null;
+    public void newTrade(String resourceType, int resourceAmount, int price, String message) {
+        Resource resource = Resource.getResourceByString(resourceType);
+        TradeMarket.addTrade(new Trade(currentUser, null, TradeMarket.getNextId(), price, resource, resourceAmount, message));
     }
 
     public String showTrades() {
-
-        return null;
+        return String.join("\n", TradeMarket.getTradesAsString());
     }
 
-    public String acceptTrade(Matcher matcher) {
+    public void acceptTrade(int id, String message) {
+        assert TradeMarket.idIsValid(id);
 
-        return null;
+        Trade trade = TradeMarket.getTrade(id);
+
+        Government seller = trade.getFrom().getGovernment();
+        Government buyer = currentUser.getGovernment();
+        Resource resource = trade.getResourceType();
+
+        seller.setResourceAmount(resource, seller.getResourceAmount(resource) - trade.getResourceAmount());
+        buyer.setResourceAmount(resource, buyer.getResourceAmount(resource) + trade.getResourceAmount());
+
+        seller.setCoin(seller.getCoin() + trade.getPrice());
+        buyer.setCoin(buyer.getCoin() - trade.getPrice());
+
+        trade.setTo(currentUser);
+        trade.setMessage(message);
+        TradeMarket.removeTrade(trade.getId());
     }
 
     public String showTradeHistory() {
+        return String.join("\n", currentUser.getTradesAsString());
+    }
 
-        return null;
+    public boolean idIsValid(int id) {
+        return TradeMarket.idIsValid(id);
     }
 }

@@ -1,13 +1,18 @@
 package model.ObjectsPackage.People.Soldier;
 
-import model.ObjectsPackage.Weapons.Weapon;
+import controller.UserDatabase.User;
+import model.ObjectsPackage.Buildings.BuildingType;
+import model.ObjectsPackage.Buildings.Tunnel;
 
 public class Tunneler extends Soldier {
-    public Tunneler(SoldierName type, Weapon weapon) {
-        super(weapon, type); //TODO: fill weapon, isRider and range based on type
+    public Tunneler(User owner) {
+        super(SoldierName.TUNNELER, owner);
     }
 
     public void digTunnel(int x, int y) {
-        //TODO: fill strategy
+        getOwner().getGovernment().getMap().addObject(
+                new Tunnel(BuildingType.TUNNEL, owner, getX(), getY(), 0, getX(), getY(), x, y),
+                getX(), getY()
+        );
     }
 }

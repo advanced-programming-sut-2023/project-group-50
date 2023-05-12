@@ -1,9 +1,10 @@
 package controller.UserDatabase;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Users {
+public class Users implements Serializable {
     private static HashMap<String, User> users;
 
     public Users() {
@@ -33,5 +34,11 @@ public class Users {
         return false;
     }
 
+    public static HashMap<String, User> getUsers() {
+        return users;
+    }
 
+    public static void setUsers(HashMap<String, User> users) {
+        Users.users = users;
+    }
 }

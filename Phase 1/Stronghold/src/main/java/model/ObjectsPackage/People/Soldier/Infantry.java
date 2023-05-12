@@ -1,26 +1,39 @@
 package model.ObjectsPackage.People.Soldier;
 
-import model.ObjectsPackage.Weapons.Weapon;
+import controller.UserDatabase.User;
+import model.ObjectsPackage.Buildings.Gate;
 
 public class Infantry extends Soldier {
-    private boolean isArmoured;
-    private boolean isScaleWalls;
-    private boolean isRider;
+    private final ArmourType armourType;
+    private final boolean canScaleWalls;
+    private final boolean isRider;
 
-    public Infantry(Weapon weapon, SoldierName type) {
-        super(weapon, type); //TODO: fill weapon, isRider, isArmoured, isScaleWalls based on type
+    public Infantry(SoldierName type, User owner) {
+        super(type, owner);
+
+        switch (type) {
+            case MACEMAN -> armourType = ArmourType.LEATHER;
+            case PIKEMAN, SWORDSMAN, KNIGHT, THE_LORD -> armourType = ArmourType.METAL;
+            default -> armourType = ArmourType.NONE;
+        }
+
+        isRider = type == SoldierName.KNIGHT;
+        canScaleWalls = (type == SoldierName.LADDERMAN) | (type == SoldierName.ASSASIN);
     }
 
-    public void captureGate(int x, int y) {
-        //TODO: fill strategy
+    public void captureGate(Gate gate) {
+        int x = gate.getX(), y = gate.getY();
+        move(x, y);
+        if (getX() == x || getY() == y)
+            attack(gate);
     }
 
-    public boolean isArmoured() {
-        return isArmoured;
+    public ArmourType getArmourType() {
+        return armourType;
     }
 
-    public boolean isScaleWalls() {
-        return isScaleWalls;
+    public boolean canScaleWalls() {
+        return canScaleWalls;
     }
 
     public boolean isRider() {

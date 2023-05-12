@@ -1,7 +1,6 @@
 package view;
 
 import controller.Menus.LoginController;
-import controller.UserDatabase.User;
 import controller.control.Commands;
 import controller.control.State;
 
@@ -14,10 +13,12 @@ public class LoginMenu {
     private final LoginController loginController;
     private Matcher nextMatcher;
 
-    private User userLoggedIn;
-
     public LoginMenu() {
         this.loginController = new LoginController(this);
+    }
+
+    public LoginController getLoginController() {
+        return loginController;
     }
 
     public Matcher getNextMatcher() {
@@ -28,29 +29,15 @@ public class LoginMenu {
         this.nextMatcher = nextMatcher;
     }
 
-    public User getUserLoggedIn() {
-        return userLoggedIn;
-    }
-
-    public void setUserLoggedIn(User userLoggedIn) {
-        this.userLoggedIn = userLoggedIn;
-    }
 
     public State run(Scanner scanner) throws InterruptedException, IOException {
 
 
         while (true) {
-            String input;
-            if (this.nextMatcher != null) {
-                this.nextMatcher.find();
-                input = this.nextMatcher.group();
-                this.nextMatcher = null;
-            } else {
-                input = scanner.nextLine();
-            }
+            String input = getInput(scanner);
 
-            if (Commands.getMatcher(Commands.CREATUSER, input).find()) {
-                this.setNextMatcher(Commands.getMatcher(Commands.CREATUSER, input));
+            if (Commands.getMatcher(Commands.CREATE_USER, input).find()) {
+                this.setNextMatcher(Commands.getMatcher(Commands.CREATE_USER, input));
                 this.loginController.setTryToLogin(null);
                 return State.SIGN;
             } else if (Commands.getMatcher(Commands.EXIT, input).find()) {
@@ -70,5 +57,17 @@ public class LoginMenu {
                 System.out.println("Invalid Command!");
             }
         }
+    }
+
+    private String getInput(Scanner scanner) {
+        String input;
+        if (this.nextMatcher != null) {
+            this.nextMatcher.find();
+            input = this.nextMatcher.group();
+            this.nextMatcher = null;
+        } else {
+            input = scanner.nextLine();
+        }
+        return input;
     }
 }

@@ -3,13 +3,15 @@ package model.Trade;
 import controller.UserDatabase.User;
 import model.ObjectsPackage.Resource;
 
-public class Trade {
+import java.io.Serializable;
+
+public class Trade implements Serializable {
     private final User from;
-    private User to;
     private final int id;
     private final int price;
     private final Resource resourceType;
     private final int resourceAmount;
+    private User to;
     private String message;
 
     public Trade(User from, User to, int id, int price, Resource resourceType, int resourceAmount, String message) {
@@ -57,4 +59,18 @@ public class Trade {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return "Trade{" +
+                "from=" + from.getUserName() +
+                ", to=" + (to == null ? "-" : to.getUserName()) +
+                ", id=" + id +
+                ", price=" + price +
+                ", resourceType=" + resourceType +
+                ", resourceAmount=" + resourceAmount +
+                ", message='" + message + '\'' +
+                '}';
+    }
+
 }
