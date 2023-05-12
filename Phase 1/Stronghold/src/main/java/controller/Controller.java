@@ -34,7 +34,7 @@ public class Controller {
     public void run() throws InterruptedException, IOException {
 
         while (true) {
-            State nextMenu = this.signupMenu.run(scanner);
+            State nextMenu = this.signupMenu.run(scanner, gameMenu.getGameMenuController().getGame());
             if (nextMenu.equals(State.EXIT)) {
                 return;
             }

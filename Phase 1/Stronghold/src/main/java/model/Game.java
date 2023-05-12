@@ -1,11 +1,13 @@
 package model;
 
-import controller.Menus.GameMenuController;
 import controller.UserDatabase.User;
 import model.Government.Government;
+import model.Map.Map;
 import model.ObjectsPackage.People.Soldier.Soldier;
+import model.UserColor.UserColor;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
     private final ArrayList<User> players;
@@ -69,9 +71,8 @@ public class Game {
         Government government = getGovernment();
         government.produceFoodAndResources();
         government.feedPeople();
-        government.updateCoins();
-        government.updateFearRate();
-        government.updatePopularity();
+        government.checkFearPopularity();
+        government.getTaxPeople();
     }
 
     private Government getGovernment() {
@@ -92,5 +93,29 @@ public class Game {
         government.spreadFire();
         government.applyFireDamage();
         government.removeDestroyedBuildings();
+    }
+
+    public boolean canStart() {
+        return !isOvercrowded() && !isUndercrowded();
+    }
+
+    public boolean isOvercrowded() {
+        return players.size() > 8;
+    }
+
+    public boolean isUndercrowded() {
+        return players.size() < 2;
+    }
+
+    public ArrayList<UserColor> getRemainingColors() {
+        ArrayList<UserColor> userColors = new ArrayList<>(List.of(UserColor.values()));
+        for (User user : players)
+            userColors.remove(user.getColor());
+        return userColors;
+    }
+
+    public Map getMap() {
+        if (players.size() == 0) return null;
+        return players.get(0).getGovernment().getMap();
     }
 }

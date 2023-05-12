@@ -149,7 +149,7 @@ public class Unit implements Serializable {
                 if (engineer.equals(engineers.get(i))) {
                     objects.remove(engineer);
                     i++;
-                    if(i == engineers.size())
+                    if (i == engineers.size())
                         break;
                 }
             }

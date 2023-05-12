@@ -48,4 +48,10 @@ public class FoodProcessingBuildings extends Building {
 
         return "Converted " + from.name().toLowerCase() + " to " + to.name().toLowerCase() + " successfully!";
     }
+
+    public void produce() {
+        convertWheatToFlour();
+        convertFlourToBread();
+        convertHopsToAle();
+    }
 }

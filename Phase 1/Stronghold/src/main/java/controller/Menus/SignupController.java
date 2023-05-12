@@ -6,6 +6,9 @@ import controller.control.Commands;
 import controller.control.Error;
 import controller.control.SecurityQuestion;
 import controller.control.Slogans;
+import model.Government.Government;
+import model.Map.Map;
+import model.UserColor.UserColor;
 import view.SignupMenu;
 
 import java.util.ArrayList;
@@ -36,7 +39,7 @@ public class SignupController {
         return string;
     }
 
-    public String createUser(Matcher matcher, Scanner scanner) {
+    public String createUser(Matcher matcher, Scanner scanner, Map map, ArrayList<UserColor> players) {
         matcher.find();
         String input = matcher.group();
 
@@ -75,13 +78,62 @@ public class SignupController {
             slogan = randomSlogan();
         }
 
+        Government.Pair xy = findAPlaceForLord(scanner, map);
+        UserColor color = pickAColor(scanner, players);
 
-        User user = new User(username, password, nickname, email, slogan);
+        User user = new User(username, password, nickname, email, slogan, xy.x, xy.y, color);
         pickSecurityQuestion(scanner, user);
         showCaptcha(scanner);
         Users.addUser(user);
         return "Your signup successful!";
 
+    }
+
+    private UserColor pickAColor(Scanner scanner, ArrayList<UserColor> remainingColors) {
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        for (UserColor userColor : remainingColors)
+            stringArrayList.add(userColor.getName());
+
+        System.out.println("Pick one color: " + String.join(", ", stringArrayList) + ":");
+
+        while (true) {
+            String line = scanner.nextLine();
+            Matcher matcher = Commands.getMatcher(Commands.WORD, line);
+            if (!matcher.matches()) {
+                System.out.println("Invalid command, try again:");
+                continue;
+            }
+            UserColor userColor = UserColor.getColorByName(line);
+
+            if (userColor == null) {
+                System.out.println("Invalid color, try again:");
+            } else if (!remainingColors.contains(userColor) && !remainingColors.isEmpty()) {
+                System.out.println("This color is not available, try again:");
+            } else {
+                System.out.println("Chosen successfully!");
+                return userColor;
+            }
+        }
+    }
+
+    private Government.Pair findAPlaceForLord(Scanner scanner, Map map) {
+        Government.Pair xy = new Government.Pair(0, 0);
+        System.out.println("Enter a coordinate (x y) for your palace:");
+
+        while (true) {
+            String line = scanner.nextLine();
+            if (!line.matches("^(?<x>\\d+) (?<y>\\d+)$")) {
+                System.out.println("Invalid command, try again:");
+                continue;
+            }
+            Matcher matcher = Commands.getMatcher(Commands.COORDINATE, line);
+            xy = new Government.Pair(Integer.parseInt(matcher.group("x")), Integer.parseInt("y"));
+            if (map.getXY(xy.x, xy.y).getObjects().isEmpty()) {
+                System.out.println("Picked successfully!");
+                return xy;
+            } else
+                System.out.println("This place is not empty, choose another one:");
+        }
     }
 
     private Error checkHasField(String input, Commands command) {

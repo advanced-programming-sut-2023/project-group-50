@@ -48,6 +48,10 @@ public class GameMenuController {
         return new Error(error.errorMassage, true);
     }
 
+    public Game getGame() {
+        return game;
+    }
+
     private void setSelectedUnit(Unit selectedUnit) {
         this.selectedUnit = selectedUnit;
     }
@@ -583,6 +587,17 @@ public class GameMenuController {
 
         return "Fire thrower made.";
     }
+
+    public boolean canStart() {
+        return game.canStart();
+    }
+
+    public String cannotStartMessage() {
+        if (game.isOvercrowded()) return "Cannot start a game with this many people!";
+        if (game.isUndercrowded()) return "Cannot start a game with one player!";
+        return null;
+    }
+
 }
 
 

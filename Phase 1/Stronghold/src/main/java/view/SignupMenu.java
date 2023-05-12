@@ -3,6 +3,7 @@ package view;
 import controller.Menus.SignupController;
 import controller.control.Commands;
 import controller.control.State;
+import model.Game;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -25,14 +26,14 @@ public class SignupMenu {
         this.nextMatcher = nextMatcher;
     }
 
-    public State run(Scanner scanner) {
+    public State run(Scanner scanner, Game game) {
         Matcher matcher;
 
         while (true) {
             String input = getInput(scanner);
 
             if ((matcher = Commands.getMatcher(Commands.CREATE_USER, input)).matches()) {
-                System.out.println(this.signupController.createUser(matcher, scanner));
+                System.out.println(this.signupController.createUser(matcher, scanner, game.getMap(), game.getRemainingColors()));
             } else if (Commands.getMatcher(Commands.EXIT, input).find()) {
                 return State.EXIT;
             } else if ((matcher = Commands.getMatcher(Commands.LOGIN, input)).matches()) {

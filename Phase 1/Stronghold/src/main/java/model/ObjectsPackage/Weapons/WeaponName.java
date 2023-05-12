@@ -3,7 +3,7 @@ package model.ObjectsPackage.Weapons;
 import model.ObjectsPackage.Buildings.BuildingType;
 import model.ObjectsPackage.Resource;
 
-public enum WeaponName { //TODO: other shit
+public enum WeaponName {
     BOW(BuildingType.FLETCHER, Resource.WOOD, 2, 50, true),
     CROSSBOW(BuildingType.FLETCHER, Resource.WOOD, 3, 70, true),
     SPEAR(BuildingType.POLETURNER, Resource.WOOD, 1, 1, false),

@@ -31,6 +31,17 @@ public class GameMenu {
     public State run(Scanner scanner) {
         Matcher matcher;
 
+        while (gameMenuController.canStart()) {
+            String line = scanner.nextLine();
+
+            if (Commands.getMatcher(Commands.EXIT, line).matches())
+                return State.PROFILE;
+            else if (Commands.getMatcher(Commands.GOVERNMENT_MENU, line).find())
+                return State.GOVERNMENT;
+            else
+                System.out.println(gameMenuController.cannotStartMessage());
+        }
+
         while (gameMenuController.gameIsFinished()) {
             boolean flag = false;
             String input = scanner.nextLine();

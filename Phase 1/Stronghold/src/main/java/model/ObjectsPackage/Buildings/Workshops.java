@@ -114,4 +114,11 @@ public class Workshops extends Building {
     public Resource[] getToResource() {
         return toResource;
     }
+
+    public void produce() {
+        for (Resource resource : Resource.values())
+            produce(resource);
+        for (WeaponName weaponName : WeaponName.values())
+            produce(weaponName);
+    }
 }

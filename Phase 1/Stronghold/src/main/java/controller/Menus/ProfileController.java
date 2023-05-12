@@ -238,9 +238,7 @@ public class ProfileController {
             return "Your slogan is : " + this.currentUser.getSlogan();
         }
 
-        return this.currentUser.showAllInformation();
-
-
+        return this.currentUser.toString();
     }
 
 

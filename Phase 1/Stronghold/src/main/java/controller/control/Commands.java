@@ -80,6 +80,7 @@ public enum Commands {
     SHOW_FOOD_LIST("^show food list$"),
     SHOW_FOOD_RATE("^food rate show$"),
     SET_FOOD_RATE("^food rate -r (\\d*)$"),
+    ADD_FOOD("^add food -f (?<f>\\S+)$"),
     SET_TAX_RATE("^tax rate -r (\\d*)$"),
     SHOW_TAX_RATE("^tax rate show$"),
     SET_FEAR_RATE("^fear rate -r (\\d*)$"),
@@ -97,7 +98,10 @@ public enum Commands {
     MAKE_PROTECTION("^make protection"),
     MAKE_BATTERING_RAM("^make battering ram"),
     MAKE_CATAPULT("^make catapult"),
-    MAKE_FIRE_THROWER("^make fire thrower");
+    MAKE_FIRE_THROWER("^make fire thrower"),
+    START_GAME("^start game$"),
+
+    COORDINATE("^(?<x>\\d+) (?<y>\\d+)$");
     private final String regex;
 
     Commands(String regex) {
