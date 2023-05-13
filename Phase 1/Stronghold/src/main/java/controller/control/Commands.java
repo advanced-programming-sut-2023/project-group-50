@@ -107,7 +107,9 @@ public enum Commands {
     START_GAME("^start game$"),
     SHOW_DETAIL("^show details( -(x|y) \\d*){2}$"),
 
-    COORDINATE("^(?<x>\\d+) (?<y>\\d+)$");
+    COORDINATE("^(?<x>\\d+) (?<y>\\d+)$"),
+    TRADE_MENU("^trade menu$"),
+    SHOP_MENU("^shop menu$");
 
     private final String regex;
 

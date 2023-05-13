@@ -6,11 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Users implements Serializable {
-    private static HashMap<String, User> users;
-
-    public Users() {
-        Users.users = new HashMap<>();
-    }
+    private static HashMap<String, User> users = new HashMap<>();
 
     public static User getUser(String username) {
         if (Users.users.isEmpty()) {

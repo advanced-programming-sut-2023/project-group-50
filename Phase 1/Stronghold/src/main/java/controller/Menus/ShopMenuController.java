@@ -57,4 +57,8 @@ public class ShopMenuController {
     public void addItem(String name, int price, int count) {
         currentUser.addItem(new Item(price, name, count));
     }
+
+    public boolean hasMarket() {
+        return currentUser.getGovernment().hasMarket();
+    }
 }

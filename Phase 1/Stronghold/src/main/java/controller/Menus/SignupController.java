@@ -84,7 +84,6 @@ public class SignupController {
         User user = new User(username, password, nickname, email, slogan, xy.x, xy.y, color);
         pickSecurityQuestion(scanner, user);
         showCaptcha(scanner);
-        Users.addUser(user);
         return "Your signup successful!";
 
     }

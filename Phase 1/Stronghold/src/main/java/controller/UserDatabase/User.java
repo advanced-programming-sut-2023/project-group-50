@@ -30,7 +30,14 @@ public class User implements Serializable, Comparable<User> {
     private int highScore;
     private UserColor color;
 
-    public User(String userName, String password, String nickName, String email, String slogan, int X0, int Y0, UserColor color) {
+    public User(String userName,
+                String password,
+                String nickName,
+                String email,
+                String slogan,
+                int X0,
+                int Y0,
+                UserColor color) {
         this.userName = userName;
         this.password = password;
         this.nickName = nickName;
@@ -42,6 +49,30 @@ public class User implements Serializable, Comparable<User> {
         trades = new LinkedHashMap<>();
         items = new ArrayList<>();
         government = new Government(this, X0, Y0);
+        Users.addUser(this);
+    }
+
+    public User(String userName,
+                String password,
+                String nickName,
+                String email,
+                String slogan,
+                int X0,
+                int Y0,
+                UserColor color,
+                Map map) {
+        this.userName = userName;
+        this.password = password;
+        this.nickName = nickName;
+        this.email = email;
+        this.slogan = slogan;
+        this.attemptToLogin = 0;
+        this.highScore = 0;
+        messages = new ArrayList<>();
+        trades = new LinkedHashMap<>();
+        items = new ArrayList<>();
+        government = new Government(this, X0, Y0, map);
+        Users.addUser(this);
     }
 
     public UserColor getColor() {
@@ -235,5 +266,9 @@ public class User implements Serializable, Comparable<User> {
     @Override
     public int compareTo(User that) {
         return -Integer.compare(this.score, that.score);
+    }
+
+    public void addTrade(Trade trade) {
+        trades.put(trade.getId(), trade);
     }
 }

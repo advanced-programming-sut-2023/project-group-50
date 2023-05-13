@@ -48,6 +48,8 @@ public class ProfileMenu {
                 System.out.println(this.profileController.profileDisplay(matcher));
             else if (Commands.getMatcher(Commands.BACK, input).matches())
                 return State.GAME;
+            else if (Commands.getMatcher(Commands.TRADE_MENU, input).matches())
+                return State.TRADE;
             else
                 System.out.println("Invalid Command!");
         }

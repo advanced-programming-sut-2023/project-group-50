@@ -4,16 +4,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class TradeMarket {
-    private static LinkedHashMap<Integer, Trade> trades;
-    private static int nextId;
-
-    public TradeMarket() {
-        trades = new LinkedHashMap<>();
-        nextId = 0xABCDEF;
-    }
+    private static LinkedHashMap<Integer, Trade> trades = new LinkedHashMap<>();
+    private static int nextId = 0xABCDEF;
 
     public static void addTrade(Trade trade) {
         trades.put(nextId++, trade);
+        trade.getFrom().addTrade(trade);
     }
 
     public static void removeTrade(int id) {
@@ -51,5 +47,10 @@ public class TradeMarket {
 
     public static void setTrades(LinkedHashMap<Integer, Trade> trades) {
         TradeMarket.trades = trades;
+    }
+
+    public static void clear() {
+        trades = new LinkedHashMap<>();
+        nextId = 0xABCDEF;
     }
 }

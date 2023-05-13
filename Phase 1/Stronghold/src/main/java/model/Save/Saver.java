@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 public class Saver implements Serializable {
-    static String path = "Phase 1\\stronghold\\src\\main\\java\\model\\Save\\LastGame\\LastSave.txt";
+    static String path = "stronghold\\src\\main\\java\\model\\Save\\LastGame\\LastSave.txt";
 
 
     /**

@@ -25,6 +25,7 @@ public class Government implements Serializable {
     private final HashMap<Resource, Integer> resources;
     private final HashMap<PersonState, ArrayList<Person>> people;
     private final ArrayList<Building> buildings;
+    private final HashMap<WeaponName, Integer> weapons;
     private double coins;
     private Map map;
     private HashMap<Resource, Double> foods;
@@ -36,12 +37,9 @@ public class Government implements Serializable {
     private int taxRate;
     private int previousRateTax;
     private int fearRate;
-
-    private final HashMap<WeaponName, Integer> weapons;
     private ArrayList<Soldier> unDeployedSoldier;
     private Soldier lord;
     private Building lordsCastle;
-
     public Government(User user) {
         this.user = user;
         resources = new HashMap<>();
@@ -81,6 +79,28 @@ public class Government implements Serializable {
         this.previousRateTax = 0;
         this.fearRate = 0;
         this.noneJob = new ArrayList<>();
+        placeLord(user, new Pair(X0, Y0));
+    }
+
+    public Government(User user, int X0, int Y0, Map map) {
+        this.user = user;
+        resources = new HashMap<>();
+        weapons = new HashMap<>();
+        coins = 0;
+        this.people = new HashMap<>();
+        this.people.put(PersonState.WORKER, new ArrayList<>());
+        this.people.put(PersonState.JOBLESS, new ArrayList<>());
+        this.people.put(PersonState.DEPLOYED_SOLDIER, new ArrayList<>());
+        this.people.put(PersonState.UNDEPLOYED_SOLDIER, new ArrayList<>());
+        this.buildings = new ArrayList<>();
+        this.rateFood = -2;
+        this.popularity = 0;
+        this.previousRateFood = -2;
+        this.taxRate = 0;
+        this.previousRateTax = 0;
+        this.fearRate = 0;
+        this.noneJob = new ArrayList<>();
+        this.map = map;
         placeLord(user, new Pair(X0, Y0));
     }
 
@@ -815,6 +835,18 @@ public class Government implements Serializable {
                 }
             }
         }
+    }
+
+    public boolean hasMarket() {
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object.getOwner().equals(user) && object instanceof Market market)
+                        return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static class Pair {

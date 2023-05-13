@@ -35,6 +35,8 @@ public class TradeMenuController {
         Government buyer = currentUser.getGovernment();
         Resource resource = trade.getResourceType();
 
+        assert buyer.getCoins() >= trade.getPrice();
+
         seller.setResourceAmount(resource, seller.getResourceAmount(resource) - trade.getResourceAmount());
         buyer.setResourceAmount(resource, buyer.getResourceAmount(resource) + trade.getResourceAmount());
 
@@ -43,6 +45,7 @@ public class TradeMenuController {
 
         trade.setTo(currentUser);
         trade.setMessage(message);
+        currentUser.addTrade(trade);
         TradeMarket.removeTrade(trade.getId());
     }
 

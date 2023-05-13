@@ -38,6 +38,10 @@ public class GameMenu {
                 return State.PROFILE;
             else if (Commands.getMatcher(Commands.GOVERNMENT_MENU, line).find())
                 return State.GOVERNMENT;
+            else if (Commands.getMatcher(Commands.SHOP_MENU, line).find())
+                return State.SHOP;
+            else if (Commands.getMatcher(Commands.TRADE_MENU, line).find())
+                return State.TRADE;
             else
                 System.out.println(gameMenuController.cannotStartMessage());
         }

@@ -7,5 +7,5 @@ public enum State {
     PROFILE,
     MAP,
     GAME,
-    GOVERNMENT,
+    GOVERNMENT, TRADE, SHOP,
 }

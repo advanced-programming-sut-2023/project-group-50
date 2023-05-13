@@ -1,5 +1,7 @@
 package controller;
 
+import controller.Menus.ShopMenuController;
+import controller.Menus.TradeMenuController;
 import controller.UserDatabase.User;
 import controller.UserDatabase.Users;
 import controller.control.State;
@@ -59,16 +61,17 @@ public class Controller {
                 } else if (nextMenu.equals(State.MAP)) {
                     this.mapMenu.getMapMenuController().setCurrentUser(this.currentUser);
                     this.mapMenu.setNextMatcher(this.gameMenu.getNextMatcher());
-                    this.mapMenu.run(scanner);
                 } else if (nextMenu.equals(State.PROFILE)) {
                     this.profileMenu.getProfileController().setCurrentUser(this.currentUser);
-                    this.profileMenu.run(scanner);
                 } else if (nextMenu.equals(State.GOVERNMENT)) {
                     this.governmentMenu.getGovernmentMenuController().setCurrentUser(this.loginMenu.getLoginController().getLoggedIn());
-                    this.governmentMenu.run(scanner);
+                } else if (nextMenu.equals(State.TRADE)) {
+                    TradeMenuController tradeMenuController = new TradeMenuController(currentUser);
+                    new TradeMenu(tradeMenuController).run(scanner);
+                } else if (nextMenu.equals(State.SHOP)) {
+                    ShopMenuController shopMenuController = new ShopMenuController(currentUser);
+                    new ShopMenu(shopMenuController).run(scanner);
                 }
-
-
             }
         }
     }
