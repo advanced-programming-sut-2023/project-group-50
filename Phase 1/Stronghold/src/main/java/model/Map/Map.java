@@ -110,7 +110,12 @@ public class Map implements Serializable {
         }
         for (Objects objects : unit.getObjects()) {
             if (objects.getObjectType().equals(objectType)) {
-                return objects;
+                if (objectType.equals(ObjectType.PERSON)) {
+                    if (objects instanceof Soldier soldier)
+                        return objects;
+                } else {
+                    return objects;
+                }
             }
         }
         return null;
@@ -125,7 +130,7 @@ public class Map implements Serializable {
     }
 
     public Unit getUnitByXY(int x, int y) {
-        return this.map.get(y).get(x);
+        return this.map.get(x).get(y);
     }
 
     public boolean searchForEnemy(int x, int y, User ownerMap) {

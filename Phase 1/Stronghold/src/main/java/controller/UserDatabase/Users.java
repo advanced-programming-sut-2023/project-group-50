@@ -40,7 +40,7 @@ public class Users implements Serializable {
     }
 
     public static void updateUsers() {
-        User[] table = (User[]) users.values().toArray();
+        User[] table = users.values().toArray(new User[0]);
 
         updateAllUsers();
         Arrays.sort(table);

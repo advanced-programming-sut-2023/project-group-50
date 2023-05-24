@@ -52,6 +52,9 @@ public class Controller {
             }
             this.currentUser = this.loginMenu.getLoginController().getLoggedIn();
             this.gameMenu.getGameMenuController().setCurrentUser(this.currentUser);
+
+            gameMenu.addCurrentUserToGame();
+
             while (true) {
                 nextMenu = this.gameMenu.run(scanner);
                 if (nextMenu.equals(State.SIGN)) {
@@ -61,16 +64,21 @@ public class Controller {
                 } else if (nextMenu.equals(State.MAP)) {
                     this.mapMenu.getMapMenuController().setCurrentUser(this.currentUser);
                     this.mapMenu.setNextMatcher(this.gameMenu.getNextMatcher());
+                    this.mapMenu.run(this.scanner);
                 } else if (nextMenu.equals(State.PROFILE)) {
                     this.profileMenu.getProfileController().setCurrentUser(this.currentUser);
+                    this.profileMenu.run(this.scanner);
                 } else if (nextMenu.equals(State.GOVERNMENT)) {
                     this.governmentMenu.getGovernmentMenuController().setCurrentUser(this.loginMenu.getLoginController().getLoggedIn());
+                    this.governmentMenu.run(this.scanner);
                 } else if (nextMenu.equals(State.TRADE)) {
                     TradeMenuController tradeMenuController = new TradeMenuController(currentUser);
                     new TradeMenu(tradeMenuController).run(scanner);
                 } else if (nextMenu.equals(State.SHOP)) {
                     ShopMenuController shopMenuController = new ShopMenuController(currentUser);
                     new ShopMenu(shopMenuController).run(scanner);
+                } else if (nextMenu.equals(State.EXIT)) {
+                    return;
                 }
             }
         }

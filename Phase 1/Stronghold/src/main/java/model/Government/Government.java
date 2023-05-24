@@ -40,10 +40,13 @@ public class Government implements Serializable {
     private ArrayList<Soldier> unDeployedSoldier;
     private Soldier lord;
     private Building lordsCastle;
+
     public Government(User user) {
         this.user = user;
         resources = new HashMap<>();
         weapons = new HashMap<>();
+        weapons.put(WeaponName.HAND, 10000);
+        weapons.put(WeaponName.TEETH, 10000);
         coins = 0;
         this.people = new HashMap<>();
         this.people.put(PersonState.WORKER, new ArrayList<>());
@@ -58,6 +61,7 @@ public class Government implements Serializable {
         this.previousRateTax = 0;
         this.fearRate = 0;
         this.noneJob = new ArrayList<>();
+        this.foods = new HashMap<>();
         placeLord();
     }
 
@@ -65,6 +69,8 @@ public class Government implements Serializable {
         this.user = user;
         resources = new HashMap<>();
         weapons = new HashMap<>();
+        weapons.put(WeaponName.HAND, 10000);
+        weapons.put(WeaponName.TEETH, 10000);
         coins = 0;
         this.people = new HashMap<>();
         this.people.put(PersonState.WORKER, new ArrayList<>());
@@ -79,6 +85,8 @@ public class Government implements Serializable {
         this.previousRateTax = 0;
         this.fearRate = 0;
         this.noneJob = new ArrayList<>();
+        this.foods = new HashMap<>();
+        map = new Map(400, 400);
         placeLord(user, new Pair(X0, Y0));
     }
 
@@ -86,6 +94,8 @@ public class Government implements Serializable {
         this.user = user;
         resources = new HashMap<>();
         weapons = new HashMap<>();
+        weapons.put(WeaponName.HAND, 10000);
+        weapons.put(WeaponName.TEETH, 10000);
         coins = 0;
         this.people = new HashMap<>();
         this.people.put(PersonState.WORKER, new ArrayList<>());
@@ -145,7 +155,8 @@ public class Government implements Serializable {
 
     public void setResourceAmount(Resource resource, int value) {
         if (resource.isFood()) foods.replace(resource, (double) value);
-        resources.replace(resource, value);
+        if (resources.get(resource) != null) resources.replace(resource, value);
+        else resources.put(resource, value);
     }
 
     public int getResourceAmount(Resource resource) {
@@ -202,6 +213,7 @@ public class Government implements Serializable {
     }
 
     public void addBuildings(Building building) {
+        System.out.println("added" + building.getType());
         this.buildings.add(building);
 
     }
@@ -239,13 +251,24 @@ public class Government implements Serializable {
     }
 
     public void buyBuilding(BuildingType buildingType, float coefficient) {
+        if ((this.getCoins() < (int) (buildingType.getCoinCost() * coefficient)) ||
+                (this.resources.getOrDefault(Resource.STONE, 0) < (int) (buildingType.getStoneCost() * coefficient)) ||
+                (this.resources.getOrDefault(Resource.WOOD, 0) < (int) (buildingType.getWoodCost() * coefficient)) ||
+                (this.resources.getOrDefault(Resource.IRON, 0) < (int) (buildingType.getIronCost() * coefficient))
+        ) {
+            System.out.println("You don't hava enough resources to repair this building!");
+            return;
+        }
         this.setCoins(getCoins() - (int) (buildingType.getCoinCost() * coefficient));
         this.setResourceAmount(Resource.STONE,
-                               this.resources.get(Resource.STONE) - (int) (buildingType.getStoneCost() * coefficient));
+                               this.resources.getOrDefault(Resource.STONE, 0) -
+                                       (int) (buildingType.getStoneCost() * coefficient));
         this.setResourceAmount(Resource.WOOD,
-                               this.resources.get(Resource.WOOD) - (int) (buildingType.getWoodCost() * coefficient));
+                               this.resources.getOrDefault(Resource.WOOD, 0) -
+                                       (int) (buildingType.getWoodCost() * coefficient));
         this.setResourceAmount(Resource.IRON,
-                               this.resources.get(Resource.IRON) - (int) (buildingType.getIronCost() * coefficient));
+                               this.resources.getOrDefault(Resource.IRON, 0) -
+                                       (int) (buildingType.getIronCost() * coefficient));
     }
 
     public ArrayList<Person> getNoneJob() {
@@ -261,7 +284,9 @@ public class Government implements Serializable {
     }
 
     public void addUnDeployedSoldier(ArrayList<Soldier> unDeployedSoldier) {
-        this.unDeployedSoldier.addAll(unDeployedSoldier);
+        for (Soldier soldier : unDeployedSoldier)
+            addPeopleByState(soldier, PersonState.UNDEPLOYED_SOLDIER);
+//        this.unDeployedSoldier.addAll(unDeployedSoldier);
     }
 
     public ArrayList<Person> getPeopleByState(PersonState personState) {
@@ -303,6 +328,8 @@ public class Government implements Serializable {
             jobLess.remove(0);
             worker.add(nonSoldier);
         }
+        if (!residents.containsKey("worker"))
+            residents.put("worker", 0);
         residents.replace("worker", residents.get("worker") + number);
         building.setActive(residents.get("worker") >= Building.numberOfWorker(building.getType()));
     }
@@ -311,8 +338,8 @@ public class Government implements Serializable {
         for (int x = 0; x < map.getXSize(); x++)
             for (int y = 0; y < map.getYSize(); y++)
                 for (Objects object : map.getXY(x, y).getObjects())
-                    if (object instanceof Storage storage && storage.getType().equals(storageType) && !storage.isFull())
-                        return storage;
+                    if (object instanceof Storage storage && storage.getType().equals(storageType) &&
+                            !storage.isFull()) return storage;
 
         return null;
     }
@@ -373,24 +400,30 @@ public class Government implements Serializable {
     }
 
     public int getPopulation() {
-        return this.people.get(PersonState.JOBLESS).size() +
-                this.people.get(PersonState.DEPLOYED_SOLDIER).size() +
-                this.people.get(PersonState.UNDEPLOYED_SOLDIER).size() +
-                this.people.get(PersonState.WORKER).size();
+        int size = this.people.get(PersonState.JOBLESS).size();
+        int size1 = this.people.get(PersonState.DEPLOYED_SOLDIER).size();
+        int size2 = this.people.get(PersonState.UNDEPLOYED_SOLDIER).size();
+        int size3 = this.people.get(PersonState.WORKER).size();
+        int i = size +
+                size1 +
+                size2 +
+                size3;
+        return i;
     }
 
     public double getFoodNumber() {
-        return this.foods.get(Resource.MEAT) +
-                this.foods.get(Resource.APPLE) +
-                this.foods.get(Resource.BREAD) +
-                this.foods.get(Resource.CHEESE);
+        return this.foods.getOrDefault(Resource.MEAT, 0.0) +
+                this.foods.getOrDefault(Resource.APPLE, 0.0) +
+                this.foods.getOrDefault(Resource.BREAD, 0.0) +
+                this.foods.getOrDefault(Resource.CHEESE, 0.0);
     }
 
     public void feedPeople() {
 
         double value = (this.rateFood + 2) * 0.5;
-        if (value * getPopulation() > getFoodNumber()) {
+        if (getFoodNumber() == 0 || value * getPopulation() > getFoodNumber()) {
             this.rateFood = -2;
+            return;
         }
 
         double cheeseDecrease = this.getPopulation() * value * (this.foods.get(Resource.CHEESE) / this.getFoodNumber());
@@ -448,8 +481,9 @@ public class Government implements Serializable {
 
         int value = 0;
         for (Building building : buildings) {
-            if (building instanceof ReligiousBuilding)
+            if (building instanceof ReligiousBuilding) {
                 value = value + ((ReligiousBuilding) building).getPopularity();
+            }
         }
         return value;
     }
@@ -463,7 +497,7 @@ public class Government implements Serializable {
     }
 
     public Storage getFirstEmptyStorageForObject(Object object) {
-        if (object instanceof WeaponName weapon) return getFirstEmptyStorage(BuildingType.ARMOURY);
+        if (object instanceof WeaponName weaponName) return getFirstEmptyStorage(BuildingType.ARMOURY);
         if (object instanceof Resource resource) {
             switch (resource) {
                 case WHEAT, BREAD, FLOUR, HOPS, ALE, STONE, IRON, WOOD, PITCH -> {
@@ -514,7 +548,7 @@ public class Government implements Serializable {
     }
 
     public int getWeaponAmount(WeaponName weaponName) {
-        return weapons.get(weaponName);
+        return weapons.getOrDefault(weaponName, 0);
     }
 
     public void setWeaponAmount(WeaponName weaponName, int count) {
@@ -528,7 +562,7 @@ public class Government implements Serializable {
                 "user=" + user.toString() +
                 "\nnoneJob=" + noneJob.size() +
                 "\nresources=" + resources.toString().replaceAll(", ", "\n") +
-                "\npeople=" + people.size() +
+                "\npeople=" + getPopulation() +
                 "\ncoins=" + coins +
                 "\nfoods=" + foods.toString().replaceAll(", ", "\n") +
                 "\npopularity=" + popularity +
@@ -538,7 +572,6 @@ public class Government implements Serializable {
                 "\npreviousRateTax=" + previousRateTax +
                 "\nfearRate=" + fearRate +
                 "\nweapons=" + weapons.toString().replaceAll(", ", "\n") +
-                "\nunDeployedSoldier=" + unDeployedSoldier.size() +
                 "\nlord=" + lord.getHp() +
                 "\nlordsCastle=" + lordsCastle.getX() + ", " + lordsCastle.getY() +
                 '}';
@@ -809,8 +842,15 @@ public class Government implements Serializable {
         for (int x = 0; x < map.getXSize(); x++) {
             for (int y = 0; y < map.getYSize(); y++) {
                 for (Objects object : map.getXY(x, y).getObjects()) {
-                    if (object instanceof Workshops workshop) workshop.produce();
                     if (object instanceof Mine mine) mine.produce();
+                }
+            }
+        }
+
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object instanceof Workshops workshop) workshop.produce();
                     if (object instanceof FoodProcessingBuildings foodProcessingBuilding)
                         foodProcessingBuilding.produce();
                 }

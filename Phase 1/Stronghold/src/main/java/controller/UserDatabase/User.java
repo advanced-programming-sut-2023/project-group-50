@@ -28,7 +28,7 @@ public class User implements Serializable, Comparable<User> {
     private LinkedHashMap<Integer, Trade> trades;
     private ArrayList<Item> items;
     private int highScore;
-    private UserColor color;
+    private final UserColor color;
 
     public User(String userName,
                 String password,
@@ -45,6 +45,7 @@ public class User implements Serializable, Comparable<User> {
         this.slogan = slogan;
         this.attemptToLogin = 0;
         this.highScore = 0;
+        this.color = color;
         messages = new ArrayList<>();
         trades = new LinkedHashMap<>();
         items = new ArrayList<>();
@@ -68,10 +69,11 @@ public class User implements Serializable, Comparable<User> {
         this.slogan = slogan;
         this.attemptToLogin = 0;
         this.highScore = 0;
+        this.color = color;
         messages = new ArrayList<>();
         trades = new LinkedHashMap<>();
         items = new ArrayList<>();
-        government = new Government(this, X0, Y0, map);
+        government = new Government(this, X0, Y0);
         Users.addUser(this);
     }
 

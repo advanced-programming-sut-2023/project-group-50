@@ -32,32 +32,30 @@ public class GameMenu {
         Matcher matcher;
 
         while (gameMenuController.canStart()) {
-            String line = scanner.nextLine();
-
-            if (Commands.getMatcher(Commands.EXIT, line).matches())
-                return State.PROFILE;
-            else if (Commands.getMatcher(Commands.GOVERNMENT_MENU, line).find())
-                return State.GOVERNMENT;
-            else if (Commands.getMatcher(Commands.SHOP_MENU, line).find())
-                return State.SHOP;
-            else if (Commands.getMatcher(Commands.TRADE_MENU, line).find())
-                return State.TRADE;
-            else
-                System.out.println(gameMenuController.cannotStartMessage());
-        }
-
-        while (gameMenuController.gameIsFinished()) {
             boolean flag = false;
             String input = scanner.nextLine();
-
-            if ((matcher = Commands.getMatcher(Commands.MOVE_UNIT, input)).matches())
-                System.out.println(this.gameMenuController.moveUnit(matcher));
-            if (Commands.getMatcher(Commands.LOGOUT, input).find()) {
-                System.out.println("user logged out successfully!");
-                return State.SIGN;
-            } else if (Commands.getMatcher(Commands.SHOW_MAP, input).find()) {
+            if (Commands.getMatcher(Commands.EXIT, input).matches())
+                return State.EXIT;
+            else if (Commands.getMatcher(Commands.GOVERNMENT_MENU, input).find())
+                return State.GOVERNMENT;
+            else if (Commands.getMatcher(Commands.SHOP_MENU, input).find())
+                return State.SHOP;
+            else if (Commands.getMatcher(Commands.PROFILE_MENU, input).find())
+                return State.PROFILE;
+            else if (Commands.getMatcher(Commands.TRADE_MENU, input).find())
+                return State.TRADE;
+            else if (Commands.getMatcher(Commands.SHOW_MAP, input).find()) {
                 this.setNextMatcher(Commands.getMatcher(Commands.SHOW_MAP, input));
                 return State.MAP;
+//            }else
+//                System.out.println(gameMenuController.cannotStartMessage());
+            } else if ((matcher = Commands.getMatcher(Commands.SELECT_UNIT, input)).matches())
+                System.out.println(this.gameMenuController.setSelectedUnit(matcher));
+            else if ((matcher = Commands.getMatcher(Commands.MOVE_UNIT, input)).matches())
+                System.out.println(this.gameMenuController.moveUnit(matcher));
+            else if (Commands.getMatcher(Commands.LOGOUT, input).find()) {
+                System.out.println("user logged out successfully!");
+                return State.SIGN;
             } else if ((matcher = Commands.getMatcher(Commands.PATROL_UNIT, input)).matches())
                 System.out.println(this.gameMenuController.patrolUnit(matcher));
             else if ((matcher = Commands.getMatcher(Commands.SET_UNIT, input)).matches())
@@ -76,12 +74,12 @@ public class GameMenu {
                 System.out.println(this.gameMenuController.disband());
             else if ((matcher = Commands.getMatcher(Commands.DROP_BUILDING, input)).matches())
                 System.out.println(this.gameMenuController.dropBuilding(matcher));
-            else if (Commands.getMatcher(Commands.SELECT_BUILDING, input).matches()) {
+            else if ((matcher = Commands.getMatcher(Commands.SELECT_BUILDING, input)).matches()) {
                 System.out.println(this.gameMenuController.selectBuilding(matcher));
                 flag = true;
             } else if (Commands.getMatcher(Commands.REPAIR, input).matches())
                 System.out.println(this.gameMenuController.repair());
-            else if (Commands.getMatcher(Commands.CREATE_UNIT, input).matches())
+            else if ((matcher = Commands.getMatcher(Commands.CREATE_UNIT, input)).matches())
                 System.out.println(this.gameMenuController.createUnit(matcher));
             else if (Commands.getMatcher(Commands.END_TURN, input).matches())
                 System.out.println(this.gameMenuController.nextTurn());
@@ -109,5 +107,9 @@ public class GameMenu {
         }
 
         return State.PROFILE;
+    }
+
+    public void addCurrentUserToGame() {
+        gameMenuController.getGame().addPlayer(gameMenuController.getCurrentUser());
     }
 }

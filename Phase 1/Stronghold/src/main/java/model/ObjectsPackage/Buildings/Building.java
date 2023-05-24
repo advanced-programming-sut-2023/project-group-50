@@ -28,6 +28,7 @@ public abstract class Building extends Objects {
         this.maxHp = maxHp;
         hp = maxHp;
         residents = new HashMap<>();
+
     }
 
     public static Building getBuildingByType(BuildingType buildingType, User owner, int x, int y) {
@@ -160,7 +161,7 @@ public abstract class Building extends Objects {
                                  x,
                                  y,
                                  100,
-                                 0);
+                                 4);
             }
             case IRON_MINE, PITCH_RIG, QUARRY, WOODCUTTER -> {
                 return new Mine(buildingType,

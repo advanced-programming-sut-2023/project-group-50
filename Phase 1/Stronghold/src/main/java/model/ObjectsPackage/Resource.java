@@ -18,9 +18,11 @@ public enum Resource implements Serializable {
     public static boolean nameIsValid(String name) {
         name = name.toUpperCase();
 
-        for (Resource enums : Resource.values())
-            if (name.equals(enums.name()))
+        for (Resource enums : Resource.values()) {
+            if (name.equals(enums.name())) {
                 return true;
+            }
+        }
 
         return false;
     }
@@ -29,6 +31,7 @@ public enum Resource implements Serializable {
         assert nameIsValid(name);
 
         name = name.toUpperCase();
+        System.out.println(name);
 
         for (Resource enums : Resource.values())
             if (name.equals(enums.name()))

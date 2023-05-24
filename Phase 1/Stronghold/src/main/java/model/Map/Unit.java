@@ -168,4 +168,12 @@ public class Unit implements Serializable {
     public int getCapacity() {
         return capacity;
     }
+
+    public boolean cannotMoveUnitTo() {
+        for (Objects objects1 : objects) {
+            if (objects1.getObjectType().equals(ObjectType.ROCK)) return true;
+            if (objects1.getObjectType().equals(ObjectType.TREE)) return true;
+        }
+        return false;
+    }
 }

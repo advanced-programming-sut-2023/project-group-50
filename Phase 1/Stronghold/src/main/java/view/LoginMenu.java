@@ -36,6 +36,7 @@ public class LoginMenu {
         while (true) {
             String input = getInput(scanner);
 
+            Matcher matcher;
             if (Commands.getMatcher(Commands.CREATE_USER, input).find()) {
                 this.setNextMatcher(Commands.getMatcher(Commands.CREATE_USER, input));
 
@@ -44,25 +45,25 @@ public class LoginMenu {
 
                 return State.SIGN;
 
-            } else if (Commands.getMatcher(Commands.LOGIN, input).find()) {
+            } else if (Commands.getMatcher(Commands.LOGIN, input).matches()) {
                 String str = this.loginController.login(Commands.getMatcher(Commands.LOGIN, input), scanner);
                 System.out.println(str);
                 if (str.equals("user logged in successfully!")) {
-
-                    return State.PROFILE;
+                    return State.GAME;
                 }
-            } else if (Commands.getMatcher(Commands.FORGOT, input).find()) {
-                System.out.println(this.loginController.forgotPassword(Commands.getMatcher(Commands.FORGOT, input), scanner));
+            } else if ((matcher = Commands.getMatcher(Commands.FORGOT, input)).matches()) {
+                System.out.println(this.loginController.forgotPassword(matcher, scanner));
             } else {
                 System.out.println("Invalid Command!");
             }
+            nextMatcher = null;
         }
     }
 
     private String getInput(Scanner scanner) {
         String input;
         if (this.nextMatcher != null) {
-            this.nextMatcher.find();
+            // this.nextMatcher.find();
             input = this.nextMatcher.group();
             this.nextMatcher = null;
         } else {

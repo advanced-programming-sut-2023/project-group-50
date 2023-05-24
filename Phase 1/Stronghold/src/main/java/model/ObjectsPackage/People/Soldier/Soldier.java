@@ -130,9 +130,13 @@ public abstract class Soldier extends Person {
         if (Map.distance(getX(), getY(), xFinal, yFinal) > type.getSpeed()) return;
         setX(xFinal);
         setY(yFinal);
+        owner.getGovernment().getMap().getUnitByXY(getX(), getY()).removeObject(this);
+        owner.getGovernment().getMap().getUnitByXY(xFinal, yFinal).addObject(this);
     }
 
     public boolean canMoveTo(int xFinal, int yFinal) {
+        if (owner.getGovernment().getMap().getXY(xFinal, yFinal).cannotMoveUnitTo())
+            return false;
         GroundType texture = getOwner().getGovernment().getMap().getXY(xFinal, yFinal).getTexture();
         if (texture == GroundType.RIVER || texture == GroundType.SEA || texture == GroundType.BIG_POND) return false;
         return Map.distance(getX(), getY(), xFinal, yFinal) <= type.getSpeed();

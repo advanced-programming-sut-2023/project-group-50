@@ -6,8 +6,8 @@ import model.ObjectsPackage.People.Person;
 
 public class NonSoldier extends Person {
     private final Job job;
-    private int productivity;
     private final Building placeOfWork;
+    private int productivity;
 
     public NonSoldier(Job job, User owner, Building placeOfWork) {
         super(false, 20, 30, owner);

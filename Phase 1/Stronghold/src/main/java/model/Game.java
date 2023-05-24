@@ -72,8 +72,11 @@ public class Game {
     private void updateGovernmentData() {
         Government government = getGovernment();
         government.produceFoodAndResources();
+        government.setPopularity(government.getPopularity() + government.checkFearPopularity() +
+                                         government.checkReligionPopularity() +
+                                         government.checkPopularityFood() +
+                                         government.checkPopularityTax());
         government.feedPeople();
-        government.checkFearPopularity();
         government.getTaxPeople();
     }
 
@@ -98,7 +101,8 @@ public class Game {
     }
 
     public boolean canStart() {
-        return !isOvercrowded() && !isUndercrowded();
+        return true;
+//        return !isOvercrowded() && !isUndercrowded();
     }
 
     public boolean isOvercrowded() {
@@ -123,5 +127,9 @@ public class Game {
 
     public boolean playerExists(String username) {
         return players.stream().anyMatch(user -> user.getUserName().equals(username));
+    }
+
+    public void addPlayer(User currentUser) {
+        players.add(currentUser);
     }
 }

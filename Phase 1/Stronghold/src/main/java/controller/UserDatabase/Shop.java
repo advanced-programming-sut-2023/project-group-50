@@ -31,6 +31,7 @@ public class Shop {
     }
 
     public static HashSet<Item> getItems() {
+        if (items == null) items = new HashSet<>();
         return items;
     }
 

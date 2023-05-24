@@ -50,7 +50,7 @@ public enum SoldierName {
     }
 
     public static boolean isArab(SoldierName soldierName) {
-        return soldierName.ordinal() > 10;
+        return soldierName.ordinal() > 13;
     }
 
     public static String getName(String name) {

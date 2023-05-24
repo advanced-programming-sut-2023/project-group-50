@@ -84,6 +84,10 @@ public class Workshops extends Building {
         if (!(object instanceof Resource || object instanceof WeaponName)) return false;
 
         Government government = getOwner().getGovernment();
+
+        if (government.getResourceAmount(fromResource) <= 0)
+            return false;
+
         government.setResourceAmount(fromResource, government.getResourceAmount(fromResource) - 1);
         Storage storage = government.getFirstEmptyStorageForObject(object);
 
@@ -116,9 +120,12 @@ public class Workshops extends Building {
     }
 
     public void produce() {
-        for (Resource resource : Resource.values())
-            produce(resource);
-        for (WeaponName weaponName : WeaponName.values())
-            produce(weaponName);
+        if (toResource != null)
+            for (Resource resource : toResource)
+                produce(resource);
+
+        if (toWeapon != null)
+            for (WeaponName weaponName : toWeapon)
+                produce(weaponName);
     }
 }

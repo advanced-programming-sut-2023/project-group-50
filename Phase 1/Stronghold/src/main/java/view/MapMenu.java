@@ -35,6 +35,8 @@ public class MapMenu {
         while (true) {
             input = getInput(scanner);
 
+            System.out.println(input);
+
             if ((matcher = Commands.getMatcher(Commands.SET_TEXTURE, input)).matches())
                 System.out.println(mapMenuController.setTexture(matcher));
             else if ((matcher = Commands.getMatcher(Commands.SET_TEXTURE_RECT, input)).matches())

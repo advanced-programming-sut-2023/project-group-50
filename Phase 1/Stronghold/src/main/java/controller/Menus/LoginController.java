@@ -160,7 +160,7 @@ public class LoginController {
             writInFile(username);
         }
 
-        showCaptcha(scanner);
+        //showCaptcha(scanner);
         setMapSize(user, scanner);
         user.setAttemptToLogin(0);
         this.loggedIn = (user);
@@ -170,7 +170,7 @@ public class LoginController {
     }
 
     public String forgotPassword(Matcher matcher, Scanner scanner) {
-        matcher.find();
+        //matcher.find();
         String in = matcher.group();
 
         Error error = checkHasField(in, Commands.USERNAME);

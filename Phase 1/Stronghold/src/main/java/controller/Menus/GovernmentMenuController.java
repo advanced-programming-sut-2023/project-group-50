@@ -28,10 +28,10 @@ public class GovernmentMenuController {
     }
 
     public String showPopularityFactor() {
-        return "Food" + this.currentUser.getGovernment().checkPopularityFood() +
-                "\nTax" + this.currentUser.getGovernment().checkPopularityTax() +
-                "\nReligion" + this.currentUser.getGovernment().checkReligionPopularity() +
-                "\nFear" + this.currentUser.getGovernment().checkFearPopularity();
+        return "Food " + this.currentUser.getGovernment().checkPopularityFood() +
+                "\nTax " + this.currentUser.getGovernment().checkPopularityTax() +
+                "\nReligion " + this.currentUser.getGovernment().checkReligionPopularity() +
+                "\nFear " + this.currentUser.getGovernment().checkFearPopularity();
     }
 
     public String showPopularity() {
@@ -56,7 +56,7 @@ public class GovernmentMenuController {
     }
 
     public String setRateFood(Matcher matcher) {
-        matcher.find();
+        // matcher.find();
         String input = matcher.group();
 
         Error error = LoginController.checkHasField(input, Commands.RATE);
@@ -85,7 +85,7 @@ public class GovernmentMenuController {
     }
 
     public String setTaxRate(Matcher matcher) {
-        matcher.find();
+//        matcher.find();
         String input = matcher.group();
 
         Error error = LoginController.checkHasField(input, Commands.RATE);
@@ -119,7 +119,7 @@ public class GovernmentMenuController {
     }
 
     public String setFearRate(Matcher matcher) {
-        matcher.find();
+        //matcher.find();
         String input = matcher.group();
 
         Error error = LoginController.checkHasField(input, Commands.RATE);

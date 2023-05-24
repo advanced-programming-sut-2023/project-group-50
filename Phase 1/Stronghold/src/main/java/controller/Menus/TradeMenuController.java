@@ -56,4 +56,13 @@ public class TradeMenuController {
     public boolean idIsValid(int id) {
         return TradeMarket.idIsValid(id);
     }
+
+    public boolean canAcceptTrade(String id) {
+        Trade trade = TradeMarket.getTrade(Integer.parseInt(id));
+
+        Government seller = trade.getFrom().getGovernment();
+        Resource resource = trade.getResourceType();
+
+        return seller.getResourceAmount(resource) >= trade.getResourceAmount();
+    }
 }

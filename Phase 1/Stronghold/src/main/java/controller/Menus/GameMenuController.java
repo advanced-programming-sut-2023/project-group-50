@@ -21,6 +21,7 @@ import model.ObjectsPackage.Weapons.Weapon;
 import model.ObjectsPackage.Weapons.WeaponName;
 import view.GameMenu;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 import static controller.Menus.LoginController.checkHasField;
@@ -29,12 +30,13 @@ import static controller.Menus.LoginController.removeDoubleCoutString;
 public class GameMenuController {
     private final GameMenu gameMenu;
     private User currentUser;
-    private Game game;
+    private final Game game;
     private Building selectedBuilding;
     private Unit selectedUnit;
 
     public GameMenuController(GameMenu gameMenu) {
         this.gameMenu = gameMenu;
+        game = new Game(new ArrayList<>(), 500);
     }
 
     public static Error checkValue(String input, Commands commands, User currentUser) {
@@ -53,8 +55,37 @@ public class GameMenuController {
         return game;
     }
 
-    private void setSelectedUnit(Unit selectedUnit) {
-        this.selectedUnit = selectedUnit;
+    public String setSelectedUnit(Matcher matcher) {
+        String input = matcher.group();
+
+        Error error = checkValue(input, Commands.X, currentUser);
+        if (!error.truth) {
+            return error.errorMassage;
+        }
+        int x = Integer.parseInt(error.errorMassage);
+
+        error = checkValue(input, Commands.Y, currentUser);
+        if (!error.truth) {
+            return error.errorMassage;
+        }
+        int y = Integer.parseInt(error.errorMassage);
+        if (this.currentUser.getGovernment().getMap().getObjectByXY(x, y, ObjectType.PERSON) == null) {
+            return "There isn't a person at these coordinates";
+        }
+        Soldier soldier = (Soldier) this.currentUser.getGovernment().getMap().getObjectByXY(x, y, ObjectType.PERSON);
+
+        if (!soldier.getOwner().equals(this.currentUser)) {
+            return "This building isn't yours";
+        }
+        this.setSelectedUnit(x, y);
+        if (!soldier.isAlive()) {
+            System.out.println("This soldier is dead");
+        }
+        System.out.println("Hp of this soldier is : " + soldier.getHp());
+
+        this.selectedUnit = currentUser.getGovernment().getMap().getUnitByXY(x, y);
+
+        return "Your unit is selected";
     }
 
     public void setSelectedUnit(int x, int y) {
@@ -82,7 +113,7 @@ public class GameMenuController {
     }
 
     public String dropBuilding(Matcher matcher) {
-        matcher.find();
+        //matcher.find();
         String input = matcher.group();
 
         Error error = checkValue(input, Commands.X, currentUser);
@@ -227,7 +258,7 @@ public class GameMenuController {
         }
     }
 
-    private Error canPlaceObject(int x, int y) {
+    public Error canPlaceObject(int x, int y) {
         if (this.currentUser.getGovernment().getMap().getObjectByXY(x, y, ObjectType.BUILDING) != null) {
             return new Error("There is a building at these coordinates", false);
         }
@@ -241,7 +272,7 @@ public class GameMenuController {
     }
 
     public String selectBuilding(Matcher matcher) {
-        matcher.find();
+        //matcher.find();
         String input = matcher.group();
 
         Error error = checkValue(input, Commands.X, currentUser);
@@ -300,7 +331,7 @@ public class GameMenuController {
 
 
     public String createUnit(Matcher matcher) {
-        matcher.find();
+        //matcher.find();
         String input = matcher.group();
         if (this.selectedBuilding == null) {
             return "Please first select a building";
@@ -477,7 +508,10 @@ public class GameMenuController {
         if (type == null) return "Invalid building name.";
         if (selectedUnit == null) return "No unit is selected.";
 
+        System.out.println(selectedUnit.getX() + " " + selectedUnit.getY());
+
         for (Objects object : selectedUnit.getObjects()) {
+            System.out.println(object.getObjectType());
             if (object instanceof Engineer engineer) {
                 try {
                     engineer.build(type);

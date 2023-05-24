@@ -1,7 +1,6 @@
 package view;
 
 import controller.Menus.ShopMenuController;
-import controller.UserDatabase.User;
 import controller.control.Commands;
 import controller.control.Error;
 import controller.control.State;
@@ -20,6 +19,7 @@ public class ShopMenu {
     public State run(Scanner scanner) {
         String line;
         Matcher matcher;
+        System.out.println("in shop menu");
 
         if (!shopMenuController.hasMarket()) {
             System.out.println("You don't have a market!");
@@ -28,7 +28,6 @@ public class ShopMenu {
 
         while (true) {
             line = scanner.nextLine();
-
             if ((matcher = Commands.getMatcher(Commands.BUY_ITEM, line)).matches())
                 System.out.println(buy(matcher));
             else if ((matcher = Commands.getMatcher(Commands.SELL_ITEM, line)).matches())

@@ -32,15 +32,15 @@ public class SignupMenu {
         while (true) {
             String input = getInput(scanner);
 
-            if ((matcher = Commands.getMatcher(Commands.CREATE_USER, input)).matches()) {
-                System.out.println(this.signupController.createUser(matcher, scanner, game.getMap(), game.getRemainingColors()));
+            if ((matcher = Commands.getMatcher(Commands.CREATE_USER, input)).find()) {
+                System.out.println(this.signupController.createUser(matcher, scanner, game.getRemainingColors()));
             } else if (Commands.getMatcher(Commands.EXIT, input).find()) {
                 return State.EXIT;
             } else if ((matcher = Commands.getMatcher(Commands.LOGIN, input)).matches()) {
                 this.setNextMatcher(matcher);
                 return State.LOGIN;
-            } else if (Commands.getMatcher(Commands.FORGOT, input).find()) {
-                this.setNextMatcher(Commands.getMatcher(Commands.FORGOT, input));
+            } else if ((matcher = Commands.getMatcher(Commands.FORGOT, input)).matches()) {
+                this.setNextMatcher(matcher);
                 return State.LOGIN;
 
             } else {

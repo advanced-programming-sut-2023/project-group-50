@@ -8,6 +8,7 @@ public class TradeMarket {
     private static int nextId = 0xABCDEF;
 
     public static void addTrade(Trade trade) {
+        if (trades == null) trades = new LinkedHashMap<>();
         trades.put(nextId++, trade);
         trade.getFrom().addTrade(trade);
     }

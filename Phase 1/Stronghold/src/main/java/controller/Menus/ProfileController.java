@@ -39,7 +39,7 @@ public class ProfileController {
     }
 
     public String profileChange(Matcher matcher) {
-        matcher.find();
+//        matcher.find();
         String input = matcher.group();
 
         Error error = userNameIsValid(input);
@@ -139,7 +139,7 @@ public class ProfileController {
     }
 
     public String changePassword(Matcher matcher, Scanner scanner) {
-        matcher.find();
+//        matcher.find();
         String input = matcher.group();
 
         Error error = checkHasField(input, Commands.OLD_PASS);
@@ -192,7 +192,7 @@ public class ProfileController {
         }
 
 
-        showCaptcha(scanner);
+//        showCaptcha(scanner);
         this.currentUser.setPassword(newPass);
         return "Your change password was successfully";
 
@@ -220,7 +220,7 @@ public class ProfileController {
     }
 
     public String profileDisplay(Matcher matcher) {
-        matcher.find();
+//        matcher.find();
         String input = matcher.group();
 
         if (Pattern.compile("highscore").matcher(input).find()) {

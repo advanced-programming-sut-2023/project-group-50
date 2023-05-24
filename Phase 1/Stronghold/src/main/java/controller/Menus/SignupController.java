@@ -7,7 +7,6 @@ import controller.control.Error;
 import controller.control.SecurityQuestion;
 import controller.control.Slogans;
 import model.Government.Government;
-import model.Map.Map;
 import model.UserColor.UserColor;
 import view.SignupMenu;
 
@@ -39,8 +38,8 @@ public class SignupController {
         return string;
     }
 
-    public String createUser(Matcher matcher, Scanner scanner, Map map, ArrayList<UserColor> players) {
-        matcher.find();
+    public String createUser(Matcher matcher, Scanner scanner, ArrayList<UserColor> players) {
+//        matcher.find();
         String input = matcher.group();
 
         Error error = userNameIsValid(input, scanner);
@@ -78,12 +77,12 @@ public class SignupController {
             slogan = randomSlogan();
         }
 
-        Government.Pair xy = findAPlaceForLord(scanner, map);
+        Government.Pair xy = findAPlaceForLord(scanner);
         UserColor color = pickAColor(scanner, players);
 
         User user = new User(username, password, nickname, email, slogan, xy.x, xy.y, color);
         pickSecurityQuestion(scanner, user);
-        showCaptcha(scanner);
+        //showCaptcha(scanner);
         return "Your signup successful!";
 
     }
@@ -115,24 +114,26 @@ public class SignupController {
         }
     }
 
-    private Government.Pair findAPlaceForLord(Scanner scanner, Map map) {
+    private Government.Pair findAPlaceForLord(Scanner scanner) {
         Government.Pair xy = new Government.Pair(0, 0);
-        System.out.println("Enter a coordinate (x y) for your palace:");
+//        System.out.println("Enter a coordinate (x y) for your palace:");
 
-        while (true) {
-            String line = scanner.nextLine();
-            if (!line.matches("^(?<x>\\d+) (?<y>\\d+)$")) {
-                System.out.println("Invalid command, try again:");
-                continue;
-            }
-            Matcher matcher = Commands.getMatcher(Commands.COORDINATE, line);
-            xy = new Government.Pair(Integer.parseInt(matcher.group("x")), Integer.parseInt("y"));
-            if (map.getXY(xy.x, xy.y).getObjects().isEmpty()) {
-                System.out.println("Picked successfully!");
-                return xy;
-            } else
-                System.out.println("This place is not empty, choose another one:");
-        }
+//        while (true) {
+//            String line = scanner.nextLine();
+//            if (!line.matches("^(?<x>\\d+) (?<y>\\d+)$")) {
+//                System.out.println("Invalid command, try again:");
+//                continue;
+//            }
+//            Matcher matcher = Commands.getMatcher(Commands.COORDINATE, line);
+//            matcher.find();
+//            xy = new Government.Pair(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+//            if (map.getXY(xy.x, xy.y).getObjects().isEmpty()) {
+//                System.out.println("Picked successfully!");
+//                return xy;
+//            } else
+//                System.out.println("This place is not empty, choose another one:");
+//        }
+        return xy;
     }
 
     private Error checkHasField(String input, Commands command) {

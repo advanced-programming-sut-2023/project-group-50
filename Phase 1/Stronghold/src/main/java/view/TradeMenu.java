@@ -42,8 +42,8 @@ public class TradeMenu {
         Error priceError = priceError(matcher.group("price"));
 
         if (!typeError.truth) return typeError.errorMassage;
-        if (!amountError.truth) return typeError.errorMassage;
-        if (!priceError.truth) return typeError.errorMassage;
+        if (!amountError.truth) return amountError.errorMassage;
+        if (!priceError.truth) return priceError.errorMassage;
 
         tradeMenuController.newTrade(matcher.group("resourceType"),
                                      Integer.parseInt(matcher.group("resourceAmount")),
@@ -58,6 +58,9 @@ public class TradeMenu {
         Error idError = idError(matcher.group("id"));
 
         if (!idError.truth) return idError.errorMassage;
+
+        if (!tradeMenuController.canAcceptTrade(matcher.group("id")))
+            return "Not enough resources!";
 
         tradeMenuController.acceptTrade(Integer.parseInt(matcher.group("id")),
                                         matcher.group("message"));

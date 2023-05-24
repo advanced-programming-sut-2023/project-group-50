@@ -1,7 +1,6 @@
 package controller.Menus;
 
 import controller.UserDatabase.User;
-import controller.UserDatabase.Users;
 import model.Map.Map;
 import model.ObjectsPackage.Resource;
 import model.Trade.Trade;
@@ -10,8 +9,6 @@ import model.UserColor.UserColor;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -84,13 +81,13 @@ class TradeMenuControllerTest {
                                UserColor.PURPLE, new Map(400, 400));
 
         User alireza = new User("alirezaA",
-                               "haha123456",
-                               "AA",
-                               "aa@gmail.com",
-                               "Die in silence!",
-                               30,
-                               30,
-                               UserColor.BLACK, new Map(400, 400));
+                                "haha123456",
+                                "AA",
+                                "aa@gmail.com",
+                                "Die in silence!",
+                                30,
+                                30,
+                                UserColor.BLACK, new Map(400, 400));
 
         TradeMenuController SahandsController = new TradeMenuController(sahand);
         TradeMenuController AAsController = new TradeMenuController(alireza);
@@ -102,21 +99,21 @@ class TradeMenuControllerTest {
         AAsController.newTrade("Stone", 5, 12000, "Hey! I'm selling stone.");
 
         ArrayList<String> trades = new ArrayList<>();
-        for(Trade trade : sahand.getTrades().values()) trades.add(trade.toString());
-        for(Trade trade : alireza.getTrades().values()) trades.add(trade.toString());
+        for (Trade trade : sahand.getTrades().values()) trades.add(trade.toString());
+        for (Trade trade : alireza.getTrades().values()) trades.add(trade.toString());
         String join = String.join("\n", trades);
 
         assertEquals(join, AAsController.showTrades());
         assertEquals(join, SahandsController.showTrades());
 
         User behroozeMadarKharab = new User("bhrz",
-                               "mdrkhrb",
-                               "bhrzzzzz",
-                               "b@gmail.com",
-                               "WTF!",
-                               223,
-                               212,
-                               UserColor.WHITE, new Map(400, 400));
+                                            "mdrkhrb",
+                                            "bhrzzzzz",
+                                            "b@gmail.com",
+                                            "WTF!",
+                                            223,
+                                            212,
+                                            UserColor.WHITE, new Map(400, 400));
 
         assertEquals(new TradeMenuController(behroozeMadarKharab).showTrades(), join);
 

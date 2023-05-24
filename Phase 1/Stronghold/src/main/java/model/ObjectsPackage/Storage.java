@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class Storage extends Building {
-    private Storage nextStorage;
     private final HashMap<String, Integer> currentCapacity;
     private final int maximumCapacity;
+    private Storage nextStorage;
 
     public Storage(BuildingType type, User owner, int x, int y, int maxHp, Storage nextStorage, int maximumCapacity) {
         super(type, owner, x, y, maxHp);
@@ -91,7 +91,7 @@ public class Storage extends Building {
     private boolean addOneWeapon(WeaponName weaponName) {
         if (Objects.requireNonNull(getType()) == BuildingType.ARMOURY) {
             if (getCurrentCapacity() >= maximumCapacity) return false;
-            currentCapacity.put(weaponName.name(), currentCapacity.get(weaponName.name()) + 1);
+            currentCapacity.put(weaponName.name(), currentCapacity.getOrDefault(weaponName.name(), 0) + 1);
             return true;
         }
         throw new IllegalStateException("Unexpected value: " + getType());
@@ -162,7 +162,7 @@ public class Storage extends Building {
     }
 
     public boolean isFull() {
-        return getCurrentCapacity() < getMaximumCapacity();
+        return getCurrentCapacity() >= getMaximumCapacity();
     }
 
     public boolean isEmpty() {

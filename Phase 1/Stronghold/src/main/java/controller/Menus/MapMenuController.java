@@ -8,13 +8,10 @@ import model.Map.GroundType;
 import model.Map.Unit;
 import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.Buildings.BuildingType;
-import model.ObjectsPackage.Objects;
+import model.ObjectsPackage.*;
 import model.ObjectsPackage.People.Person;
 import model.ObjectsPackage.People.Soldier.Soldier;
 import model.ObjectsPackage.People.Soldier.SoldierName;
-import model.ObjectsPackage.Rock;
-import model.ObjectsPackage.Tree;
-import model.ObjectsPackage.TreeType;
 import view.MapMenu;
 
 import java.util.ArrayList;
@@ -48,7 +45,7 @@ public class MapMenuController {
     }
 
     public String showMap(Matcher matcher) {
-        matcher.find();
+        //matcher.find();
         String input = matcher.group();
 
 
@@ -74,7 +71,7 @@ public class MapMenuController {
     }
 
     public String moveMap(Matcher matcher) {
-        matcher.find();
+        //matcher.find();
         String input = matcher.group();
 
         input = input.substring(4);
@@ -112,7 +109,7 @@ public class MapMenuController {
     }
 
     public String showDetails(Matcher matcher) {
-        matcher.find();
+        //matcher.find();
         String input = matcher.group();
 
         Error error = checkValue(input, Commands.X, currentUser);
@@ -133,7 +130,7 @@ public class MapMenuController {
         if (texture.equals(GroundType.IRON) || texture.equals(GroundType.CLIFF) || texture.equals(GroundType.OIL)) {
             string = string + "Resource : " + texture.getType() + "*" + unit.getCapacity() + "\n";
         } else {
-            string = string + "There is no resource here";
+            string = string + "There is no resource here\n";
         }
 
         if (unit.getObjects().isEmpty()) {
@@ -221,6 +218,8 @@ public class MapMenuController {
         if (y < 0 || y > currentUser.getGovernment().getMap().getYSize()) return "y is invalid!";
         if (direction == null) return "Invalid direction!";
 
+        if (!canPlaceRock(x, y).truth)
+            return "Cannot place rock here.";
 
         currentUser.getGovernment().getMap().addObject(new Rock(direction, currentUser), x, y);
         return "Rock dropped.";
@@ -270,8 +269,50 @@ public class MapMenuController {
         if (y < 0 || y > currentUser.getGovernment().getMap().getYSize()) return "y is invalid!";
         if (treeType == null) return "Invalid tree type!";
 
+        if (!Tree.canPlace(x, y, currentUser))
+            return "Ground type is not valid for tree.";
+
+        if (!canPlaceObject(x, y).truth)
+            return "This cell is occupied";
+
         currentUser.getGovernment().getMap().addObject(new Tree(treeType, currentUser), x, y);
         return "Tree dropped.";
+    }
+
+    public Error canPlaceObject(int x, int y) {
+        if (this.currentUser.getGovernment().getMap().getObjectByXY(x, y, ObjectType.BUILDING) != null) {
+            return new Error("There is a building at these coordinates", false);
+        }
+        if (this.currentUser.getGovernment().getMap().getObjectByXY(x, y, ObjectType.TREE) != null) {
+            return new Error("There is a tree at these coordinates", false);
+        }
+        if (this.currentUser.getGovernment().getMap().getObjectByXY(x, y, ObjectType.ROCK) != null) {
+            return new Error("There is a rock at these coordinates", false);
+        }
+        return new Error("", true);
+    }
+
+    public Error canPlaceRock(int x, int y) {
+        Unit unit = this.currentUser.getGovernment().getMap().getUnitByXY(x, y);
+
+        Error x1 = canPlaceObject(x, y);
+        if (x1 != null) return x1;
+
+        GroundType groundType = unit.getTexture();
+        if (!(groundType.equals(GroundType.GROUND) ||
+                groundType.equals(GroundType.GRASS) ||
+                groundType.equals(GroundType.RIGGED_GROUND) ||
+                groundType.equals(GroundType.CLIFF) ||
+                groundType.equals(GroundType.IRON) ||
+                groundType.equals(GroundType.LAWN) ||
+                groundType.equals(GroundType.MEADOW) ||
+                groundType.equals(GroundType.PLAIN) ||
+                groundType.equals(GroundType.STONE)
+        )) {
+            return new Error("You can't drop building in this ground type", false);
+        }
+
+        return new Error("", true);
     }
 
     public String dropBuilding(Matcher matcher) {
@@ -281,17 +322,21 @@ public class MapMenuController {
 
         if (x < 0 || x > currentUser.getGovernment().getMap().getXSize()) return "x is invalid!";
         if (y < 0 || y > currentUser.getGovernment().getMap().getYSize()) return "y is invalid!";
-        if (buildingType == null) return "Invalid tree type!";
+        if (buildingType == null) return "Invalid building type!";
         GroundType texture = currentUser.getGovernment().getMap().getXY(x, y).getTexture();
         if (!Building.canPlace(buildingType, texture))
             return "Cannot place " + buildingType.getType() + " on " + texture.getType() + ".";
-
-        currentUser.getGovernment().getMap().addObject(Building.getBuildingByType(buildingType,
-                                                                                  currentUser,
-                                                                                  x,
-                                                                                  y),
+        if (!canPlaceObject(x, y).truth)
+            return "Cannot place object here.";
+        Building buildingByType = Building.getBuildingByType(buildingType,
+                                                             currentUser,
+                                                             x,
+                                                             y);
+        currentUser.getGovernment().getMap().addObject(buildingByType,
                                                        x,
                                                        y);
+
+        this.currentUser.getGovernment().addBuildings(buildingByType);
         return "Building dropped.";
     }
 
@@ -300,13 +345,17 @@ public class MapMenuController {
         SoldierName name = SoldierName.getSoldierNameByType(type);
         int x = Integer.parseInt(matcher.group("x")),
                 y = Integer.parseInt(matcher.group("y")),
-                c = Integer.parseInt(matcher.group("c"));
+                c = Integer.parseInt(matcher.group("count"));
 
         if (x < 0 || x > currentUser.getGovernment().getMap().getXSize()) return "x is invalid!";
         if (y < 0 || y > currentUser.getGovernment().getMap().getYSize()) return "y is invalid!";
         if (c < 0) return "Invalid count!";
         if (name == null) return "Invalid tree type!";
+
         if (!Person.canPlace(currentUser.getGovernment().getMap().getXY(x, y).getTexture()))
+            return "Cannot place here.";
+
+        if (!canPlaceObject(x, y).truth)
             return "Cannot place here.";
 
         currentUser.getGovernment().getMap().addObject(Soldier.getSoldierByType(name, currentUser),
