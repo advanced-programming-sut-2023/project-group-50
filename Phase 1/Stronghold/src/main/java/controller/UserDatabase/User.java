@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 
 public class User implements Serializable, Comparable<User> {
     private final Government government;
+    private final UserColor color;
     private String userName;
     private String password;
     private String nickName;
@@ -28,7 +29,6 @@ public class User implements Serializable, Comparable<User> {
     private LinkedHashMap<Integer, Trade> trades;
     private ArrayList<Item> items;
     private int highScore;
-    private final UserColor color;
 
     public User(String userName,
                 String password,

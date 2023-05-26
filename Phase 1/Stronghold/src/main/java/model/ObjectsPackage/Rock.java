@@ -1,8 +1,12 @@
 package model.ObjectsPackage;
 
 import controller.UserDatabase.User;
+import javafx.scene.image.Image;
 import model.Direction.Direction;
 import model.Map.GroundType;
+import model.RandomGenerator.RandomRock;
+
+import java.net.URL;
 
 public class Rock extends Objects {
     private Direction direction;
@@ -33,5 +37,11 @@ public class Rock extends Objects {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    @Override
+    public Image getImage() {
+        URL url = GroundType.class.getResource("phase2-assets/" + RandomRock.getRandomRock());
+        return new Image(url.toExternalForm());
     }
 }

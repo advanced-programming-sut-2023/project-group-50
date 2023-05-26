@@ -76,6 +76,21 @@ public class Workshops extends Building {
                 toResource = new Resource[]{Resource.MEAT};
                 toWeapon = null;
             }
+            case BAKERY -> {
+                fromResource = Resource.FLOUR;
+                toResource = new Resource[]{Resource.BREAD};
+                toWeapon = null;
+            }
+            case WHEAT_FARMER -> {
+                fromResource = null;
+                toResource = new Resource[]{Resource.WHEAT};
+                toWeapon = null;
+            }
+            case BREWER -> {
+                fromResource = Resource.HOPS;
+                toResource = new Resource[]{Resource.ALE};
+                toWeapon = null;
+            }
             default -> throw new IllegalStateException("Unexpected value: " + type);
         }
     }

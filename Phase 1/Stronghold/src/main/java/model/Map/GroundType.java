@@ -1,6 +1,10 @@
 package model.Map;
 
+import javafx.scene.image.Image;
 import model.ObjectsPackage.People.Soldier.SoldierName;
+import model.RandomGenerator.RandomGroundType;
+
+import java.net.URL;
 
 public enum GroundType {
     GROUND(ConsoleColors.YELLOW_BACKGROUND_BRIGHT), // zamin
@@ -47,5 +51,54 @@ public enum GroundType {
 
     public String getString(String content) {
         return color + content + ConsoleColors.RESET;
+    }
+
+    private String getURLPath() {
+        switch (this) {
+            case GROUND -> {
+                return RandomGroundType.getRandomPlain();
+            }
+            case RIGGED_GROUND -> {
+                return RandomGroundType.getRandomRigged();
+            }
+            case CLIFF -> {
+                return RandomGroundType.getRandomCliff();
+            }
+            case STONE -> {
+                return RandomGroundType.getRandomStone();
+            }
+            case IRON -> {
+                return RandomGroundType.getRandomIron();
+            }
+            case GRASS, MEADOW, LAWN -> {
+                return RandomGroundType.getRandomGrassLawnMeadow();
+            }
+            case OIL -> {
+                return RandomGroundType.getRandomOil();
+            }
+            case PLAIN -> {
+                return RandomGroundType.getRandomPlain();
+            }
+            case BIG_POND, SEA, RIVER, SHALLOW_WATER, SMALL_POND -> {
+                return RandomGroundType.getRandomWater();
+            }
+            case BEACH -> {
+                return RandomGroundType.getRandomBeach();
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + this);
+        }
+    }
+
+    private URL getURL() {
+        return GroundType.class.getResource("/phase2-assets/" + getURLPath());
+    }
+
+    public Image getImage() {
+        return new Image(getURL().toExternalForm());
+    }
+
+    public boolean isWater() {
+        return this == GroundType.SHALLOW_WATER || this == GroundType.SEA || this == GroundType.BIG_POND ||
+                this == GroundType.SMALL_POND || this == GroundType.RIVER;
     }
 }

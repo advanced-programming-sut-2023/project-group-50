@@ -1,12 +1,15 @@
 package model.ObjectsPackage.Buildings;
 
 import controller.UserDatabase.User;
+import javafx.scene.image.Image;
 import model.Map.GroundType;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.NonSoldier.Job;
 import model.ObjectsPackage.Storage;
+import model.RandomGenerator.RandomBuilding;
 
+import java.net.URL;
 import java.util.HashMap;
 
 public abstract class Building extends Objects {
@@ -416,5 +419,11 @@ public abstract class Building extends Objects {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    @Override
+    public Image getImage() {
+        URL url = Building.class.getResource("/phase2-assets/" + RandomBuilding.getBuilding(type));
+        return new Image(url.toExternalForm());
     }
 }

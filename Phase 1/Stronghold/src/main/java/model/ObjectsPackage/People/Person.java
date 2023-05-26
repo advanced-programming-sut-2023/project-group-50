@@ -1,9 +1,14 @@
 package model.ObjectsPackage.People;
 
 import controller.UserDatabase.User;
+import javafx.scene.image.Image;
 import model.Map.GroundType;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
+import model.ObjectsPackage.People.NonSoldier.NonSoldier;
+import model.ObjectsPackage.People.Soldier.Soldier;
+import model.RandomGenerator.RandomNonSoldier;
+import model.RandomGenerator.RandomSoldier;
 
 public abstract class Person extends Objects {
     private final int maxLife;
@@ -79,5 +84,15 @@ public abstract class Person extends Objects {
 
     public void setIncome(double income) {
         this.income = income;
+    }
+
+    @Override
+    public Image getImage() {
+        String path;
+        if (this instanceof Soldier soldier) path = RandomSoldier.getSoldier(soldier.getType());
+        else if (this instanceof NonSoldier nonSoldier) path = RandomNonSoldier.getNonSoldier(nonSoldier.getJob());
+        else throw new RuntimeException();
+
+        return new Image(Person.class.getResource("/phase2-assets/" + path).toExternalForm());
     }
 }

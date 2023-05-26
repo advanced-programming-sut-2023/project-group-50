@@ -1,6 +1,7 @@
 package model.ObjectsPackage;
 
 import controller.UserDatabase.User;
+import javafx.scene.image.Image;
 import model.Government.Government;
 import model.Map.Map;
 import model.ObjectsPackage.Buildings.Building;
@@ -15,12 +16,6 @@ public class Storage extends Building {
     private final int maximumCapacity;
     private Storage nextStorage;
 
-    public Storage(BuildingType type, User owner, int x, int y, int maxHp, Storage nextStorage, int maximumCapacity) {
-        super(type, owner, x, y, maxHp);
-        this.nextStorage = nextStorage;
-        this.maximumCapacity = maximumCapacity;
-        currentCapacity = new HashMap<>();
-    }
 
     public Storage(BuildingType type, User owner, int x, int y, int maxHp, int maximumCapacity) {
         super(type, owner, x, y, maxHp);
@@ -167,5 +162,10 @@ public class Storage extends Building {
 
     public boolean isEmpty() {
         return getCurrentCapacity() == 0;
+    }
+
+    @Override
+    public Image getImage() {
+        return null;
     }
 }

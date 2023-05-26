@@ -164,4 +164,8 @@ public class Map implements Serializable {
     public void clearXY(int x, int y) {
         map.get(x).put(y, new Unit(x, y, GroundType.GROUND));
     }
+
+    public boolean isValid(int x, int y) {
+        return x < xSize && y < ySize && x >= 0 && y >= 0;
+    }
 }
