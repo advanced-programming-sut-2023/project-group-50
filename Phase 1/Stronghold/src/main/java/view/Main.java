@@ -1,3 +1,5 @@
+package view;
+
 import controller.Controller;
 
 import java.io.IOException;
