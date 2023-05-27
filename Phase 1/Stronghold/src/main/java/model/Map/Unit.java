@@ -176,4 +176,18 @@ public class Unit implements Serializable {
         }
         return false;
     }
+
+    public boolean hasBuilding() {
+        for (Objects object : objects)
+            if (object instanceof Building)
+                return true;
+        return false;
+    }
+
+    public boolean hasObjects() {
+        for (Objects object : objects)
+            if (!(object instanceof Building))
+                return true;
+        return false;
+    }
 }

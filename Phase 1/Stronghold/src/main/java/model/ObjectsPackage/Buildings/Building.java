@@ -423,7 +423,9 @@ public abstract class Building extends Objects {
 
     @Override
     public Image getImage() {
-        URL url = Building.class.getResource("/phase2-assets/" + RandomBuilding.getBuilding(type));
+        String building = RandomBuilding.getBuilding(type);
+        System.out.println(building);
+        URL url = Building.class.getResource("/phase2-assets/" + building);
         return new Image(url.toExternalForm());
     }
 }

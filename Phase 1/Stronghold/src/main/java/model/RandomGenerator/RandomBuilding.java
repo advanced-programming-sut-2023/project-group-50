@@ -9,8 +9,8 @@ public class RandomBuilding {
     }
 
     public static String getRandomKillingPit() {
-        int randomNumber = RandomGenerator.getRandomNumber(0, 7);
-        return "buildings/Military Buildings/anim_killing_pits.gm1/kp (" + randomNumber + ").png";
+        int randomNumber = RandomGenerator.getRandomNumber(0, 15);
+        return "buildings/Military Buildings/killing_pits.gm1/collection" + randomNumber + ".png";
     }
 
     public static String getBuilding(BuildingType buildingType) {

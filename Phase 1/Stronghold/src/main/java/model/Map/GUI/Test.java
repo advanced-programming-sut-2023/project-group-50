@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.Map.GroundType;
 import model.Map.Map;
+import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.Buildings.BuildingType;
 import model.RandomGenerator.RandomGenerator;
 import model.UserColor.UserColor;
@@ -17,7 +18,7 @@ public class Test extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         initMap();
-        Pane mapPane = MapPane.getMapPane(map, 18, 18, -25, 25);
+        Pane mapPane = MapPane.getMapPane(map, 50, 50, 0, 0);
 
         Scene scene = new Scene(mapPane);
         stage.setScene(scene);
@@ -44,14 +45,12 @@ public class Test extends Application {
         for (int i = 0; i < 500; i++) {
             int x = RandomGenerator.getRandomNumber(0, 99);
             int y = RandomGenerator.getRandomNumber(0, 99);
-            GroundType groundType;
-            do {
-                groundType = RandomGenerator.randomFrom(groundTypes);
-            } while (groundType.isWater());
-            map.getXY(x, y).setTexture(groundType);
+            int s = RandomGenerator.getRandomNumber(0, 1);
+            if (s == 0) map.addObject(Building.getBuildingByType(RandomGenerator.randomFrom(buildingTypes), user, x, y),
+                                      x,
+                                      y);
+            else map.getUnitByXY(x, y).setTexture(RandomGenerator.randomFrom(groundTypes));
         }
-
-        for (int i = 30; i < 50; i++) for (int j = 30; j < 50; j++) map.getXY(i, j).setTexture(GroundType.SEA);
     }
 }
 

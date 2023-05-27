@@ -8,6 +8,9 @@ import javafx.stage.Screen;
 import model.Map.Map;
 import model.RandomGenerator.RandomRuin;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 public class MapPane {
     /*
      * x_center = DX * tile / 2 + DY * tile / 2
@@ -53,6 +56,8 @@ public class MapPane {
         pane.setMaxSize(width, height);
         pane.setPrefSize(width, height);
 
+        HashMap<Pair, Group> buildings = new HashMap<>();
+        HashMap<Pair, Group> people = new HashMap<>();
 
         for (double dx = -tileWidth / 2; dx <= width; dx += tileWidth / 2) {
             for (double dy = -tileHeight / 2; dy <= height; dy += tileHeight / 2) {
@@ -63,7 +68,12 @@ public class MapPane {
 
                 Group group;
                 if (map.isValid(x, y)) {
-                    group = new UnitGroup(map.getUnitByXY(x, y), tileHeight, tileWidth).getGroup();
+                    UnitGroup unitGroup = new UnitGroup(map.getUnitByXY(x, y), tileHeight, tileWidth);
+                    group = unitGroup.getWallpaperGroup();
+                    if (unitGroup.hasBuilding())
+                        buildings.put(new Pair(dx, dy), unitGroup.getBuilding());
+                    if (unitGroup.hasObjects())
+                        people.put(new Pair(dx, dy), unitGroup.getPeople());
                 } else {
                     group = getRandomRuinGroup(tileHeight, tileWidth);
                 }
@@ -73,7 +83,20 @@ public class MapPane {
             }
         }
 
+        addHashMap(pane, buildings);
+        addHashMap(pane, people);
+
         return pane;
+    }
+
+    private static void addHashMap(Pane pane, HashMap<Pair, Group> people) {
+        for (Entry<Pair, Group> entry : people.entrySet()) {
+            double x = entry.getKey().x, y = entry.getKey().y;
+            Group group = entry.getValue();
+            pane.getChildren().add(group);
+            group.setLayoutX(x);
+            group.setLayoutY(y);
+        }
     }
 
     private static Group getRandomRuinGroup(double tileHeight, double tileWidth) {

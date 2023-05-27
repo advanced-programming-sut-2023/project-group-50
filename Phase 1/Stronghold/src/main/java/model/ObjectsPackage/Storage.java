@@ -29,15 +29,15 @@ public class Storage extends Building {
     }
 
     private void checkNeighboursForStorage(BuildingType type, int x, int y, Map map) {
-        if (checkForStorage(type, x - 1, y, map)) return;
-        if (checkForStorage(type, x + 1, y, map)) return;
-        if (checkForStorage(type, x, y - 1, map)) return;
-        if (checkForStorage(type, x, y + 1, map)) {
+        if (x != 0 && checkForStorage(type, x - 1, y, map)) return;
+        if (x != map.getXSize() && checkForStorage(type, x + 1, y, map)) return;
+        if (y != 0 && checkForStorage(type, x, y - 1, map)) return;
+        if (y != map.getYSize() && checkForStorage(type, x, y + 1, map)) {
         }
     }
 
     private boolean checkForStorage(BuildingType type, int x, int y, Map map) {
-        if (map.getXY(x - 1, y).hasObjectType(type)) {
+        if (map.getXY(x, y).hasObjectType(type)) {
             Storage prevStorage = (Storage) map.getXY(x - 1, y).getObjectType(type);
             prevStorage.setNextStorage(this);
             return true;
