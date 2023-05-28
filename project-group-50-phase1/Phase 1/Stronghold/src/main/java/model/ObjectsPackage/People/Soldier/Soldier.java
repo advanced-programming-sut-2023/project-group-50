@@ -3,7 +3,6 @@ package model.ObjectsPackage.People.Soldier;
 import controller.UserDatabase.User;
 import model.ObjectsPackage.People.Person;
 import model.ObjectsPackage.Weapons.Weapon;
-import model.ObjectsPackage.Weapons.WeaponName;
 
 public abstract class Soldier extends Person {
     private Weapon weapon;
@@ -28,32 +27,5 @@ public abstract class Soldier extends Person {
 
     public SoldierName getType() {
         return type;
-    }
-
-    public static WeaponName getWeaponName(SoldierName soldierName) {
-        switch (soldierName) {
-            case ARCHER, ARABIAN_BOWMAN, SLINGER, HORSE_ARCHER, FIRE_THROWER -> {
-                return WeaponName.BOW;
-            }
-            case CROSSBOWMAN -> {
-                return WeaponName.CROSSBOW;
-            }
-            case SPEARMAN -> {
-                return WeaponName.SPEAR;
-            }
-            case PIKEMAN -> {
-                return WeaponName.PIKE;
-            }
-            case MACEMAN -> {
-                return WeaponName.MACE;
-            }
-            case SWORDSMAN, KNIGHT, ARABIAN_SWORDSMAN -> {
-                return WeaponName.SWORDS;
-            }
-            case SLAVE, TUNNELER, LADDERMAN, ENGINEER, BLACK_MONK, ASSASIN -> {
-                return null;
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + soldierName);
-        }
     }
 }
