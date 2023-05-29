@@ -163,21 +163,8 @@ public class ProfileController {
             return "Please enter a new password!";
         }
 
-        if (newPass.length() < 6) {
-            return "Your new password should have 6 character";
-        }
-        if (!Commands.getMatcher(Commands.CAPITAL_LETTER, newPass).find()) {
-            return "Your new password should have a capital letter";
-        }
-        if (!Commands.getMatcher(Commands.SMALL_LETTER, newPass).find()) {
-            return "Your password should have a small letter";
-        }
-        if (!Commands.getMatcher(Commands.DIGIT, newPass).find()) {
-            return "Your new password should have a digit ";
-        }
-        if (!Pattern.compile("[^a-zA-Z0-9 ]").matcher(newPass).find()) {
-            return "Your new password should have a non-word character";
-        }
+        String x = checkPassword(newPass);
+        if (x != null) return x;
 
         System.out.print("Please enter your new password again :");
 
@@ -196,6 +183,25 @@ public class ProfileController {
         this.currentUser.setPassword(newPass);
         return "Your change password was successfully";
 
+    }
+
+    public static String checkPassword(String newPass) {
+        if (newPass.length() < 6) {
+            return "Your new password should have 6 character";
+        }
+        if (!Commands.getMatcher(Commands.CAPITAL_LETTER, newPass).find()) {
+            return "Your new password should have a capital letter";
+        }
+        if (!Commands.getMatcher(Commands.SMALL_LETTER, newPass).find()) {
+            return "Your password should have a small letter";
+        }
+        if (!Commands.getMatcher(Commands.DIGIT, newPass).find()) {
+            return "Your new password should have a digit ";
+        }
+        if (!Pattern.compile("[^a-zA-Z0-9 ]").matcher(newPass).find()) {
+            return "Your new password should have a non-word character";
+        }
+        return null;
     }
 
     private Error emailIsValid(String input) {

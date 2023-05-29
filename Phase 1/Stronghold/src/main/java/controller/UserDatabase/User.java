@@ -105,7 +105,9 @@ public class User implements Serializable, Comparable<User> {
     }
 
     public void setUserName(String userName) {
+        Users.removeUser(this);
         this.userName = userName;
+        Users.addUser(this);
     }
 
     public String getPassword() {
