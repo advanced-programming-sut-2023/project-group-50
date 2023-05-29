@@ -12,19 +12,6 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class MapPane {
-    /*
-     * x_center = DX * tile / 2 + DY * tile / 2
-     * y_center = DX * tile / 2 - DY * tile / 2
-     * x = 5, y = 0  -> x_center = 5 * tile/2
-     *               -> y_center = 5 * tile/2
-     * x = 7, y = 3  -> x_center = 7/2 + 3/2 = 5
-     *               -> y_center = 7/2 - 3/2 = 2
-     * x = 10, y = 6 -> x_center = 8
-     *               -> y_center = 2
-     *
-     * x_center = 4, y_center = 5 -> DX = (4 + 5) / tile
-     * DY = (4 - 5) / tile
-     * */
     private static Pair getXY(double tileHeight, double tileWidth, int X0, int Y0, int x, int y) {
         int DX = x - X0, DY = y - Y0;
         return new Pair(DX * tileHeight / 2 + DY * tileHeight / 2,

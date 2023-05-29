@@ -5,4 +5,7 @@ module Stronghold {
 
     opens model.Map.GUI to javafx.fxml;
     exports model.Map.GUI;
+
+    opens view.show.ProfileMenu to javafx.fxml;
+    exports view.show.ProfileMenu;
 }
