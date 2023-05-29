@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
@@ -48,7 +47,7 @@ public class ProfileMenuGUIController {
         return new Background(backgroundImage);
     }
 
-    private static StackPane getUserData(double height, double width){
+    private static StackPane getUserData(double height, double width) {
         StackPane avatar = getAvatar();
         HBox username = getHbox("Username:", user.getUserName(), ProfileMenuGUIController::editUsername);
         HBox nickname = getHbox("Nickname:", user.getNickName(), ProfileMenuGUIController::editNickname);
@@ -166,7 +165,8 @@ public class ProfileMenuGUIController {
                                                               backgroundSize);
         return backgroundImage;
     }
-    private static void editUsername(ActionEvent actionEvent){
+
+    private static void editUsername(ActionEvent actionEvent) {
         EditUsernameMenu editUsernameMenu = new EditUsernameMenu();
         editUsernameMenu.newMenu(user.getUserName());
         try {
@@ -227,6 +227,13 @@ public class ProfileMenuGUIController {
     }
 
     private static void editAvatar(ActionEvent actionEvent) {
+        EditAvatarMenu editAvatarMenu = new EditAvatarMenu();
+        editAvatarMenu.newMenu(user.getUserName());
+        try {
+            editAvatarMenu.start(ShowProfileMenu.getStage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static String getRandomSlogan() {

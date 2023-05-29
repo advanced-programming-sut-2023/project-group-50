@@ -57,12 +57,6 @@ public class User implements Serializable, Comparable<User> {
         avatar = getRandomAvatar();
     }
 
-    private URL getRandomAvatar() {
-        int randomNumber = RandomGenerator.getRandomNumber(1, 45);
-        String s = "/background/profile backgrounds/BetterAvatars/Avatar (" + randomNumber + ").png";
-        return User.class.getResource("/phase2-assets" + s);
-    }
-
     public User(String userName,
                 String password,
                 String nickName,
@@ -86,6 +80,12 @@ public class User implements Serializable, Comparable<User> {
         government = new Government(this, X0, Y0);
         Users.addUser(this);
         avatar = getRandomAvatar();
+    }
+
+    private URL getRandomAvatar() {
+        int randomNumber = RandomGenerator.getRandomNumber(1, 45);
+        String s = "/background/profile backgrounds/BetterAvatars/Avatar (" + randomNumber + ").png";
+        return User.class.getResource("/phase2-assets" + s);
     }
 
     public UserColor getColor() {
@@ -289,5 +289,9 @@ public class User implements Serializable, Comparable<User> {
 
     public URL getAvatar() {
         return avatar;
+    }
+
+    public void setAvatar(URL url) {
+        avatar = url;
     }
 }

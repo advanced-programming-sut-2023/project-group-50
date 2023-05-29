@@ -49,7 +49,7 @@ public class EditSecurityQuestionMenu extends Application {
 
     private Pane getPane(double width, double height) {
         VBox vBox = new VBox();
-        Text text = new Text("Edit Nickname");
+        Text text = new Text("Edit Security Question");
         text.setStyle("-fx-font: 25 System; -fx-fill: Black; -fx-font-weight: bold");
 
         button = getButton();

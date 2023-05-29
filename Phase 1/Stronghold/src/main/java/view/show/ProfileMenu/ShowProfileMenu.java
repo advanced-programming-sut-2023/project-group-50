@@ -12,8 +12,8 @@ import model.UserColor.UserColor;
 
 public class ShowProfileMenu extends Application {
 
-    private static Stage stage;
     private static final User user;
+    private static Stage stage;
 
     static {
         user = new User("Sahand",

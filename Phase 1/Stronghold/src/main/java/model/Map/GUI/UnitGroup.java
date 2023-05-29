@@ -9,11 +9,11 @@ import model.ObjectsPackage.People.Person;
 
 public class UnitGroup {
     private final Unit unit;
+    private final boolean hasBuilding;
+    private final boolean hasObjects;
     private Group peopleGroup;
     private Group buildingGroup;
     private Group wallpaperGroup;
-    private final boolean hasBuilding;
-    private final boolean hasObjects;
 
     public UnitGroup(Unit unit, double tileHeight, double tileWidth) {
         this.unit = unit;
