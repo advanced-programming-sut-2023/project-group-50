@@ -44,43 +44,161 @@ assignees: Arman17Babaei
 
 ## تسک‌های نفر اول
 
-  **نام و نام خانوادگی:**
+  **نام و نام خانوادگی: علیرضا اعلایی**
 <details>
-  <summary>تسک مربوطه</summary>
+  <summary>Signup menu</summary>
 
   <div dir="ltr" align='right'>
 
   1. [ ] شروع نشده
   2. [ ] در حال انجام
-  3. [ ] تمام شده
+  3. [x] تمام شده
+  </div>
+</details>
+<details>
+  <summary>Login menu</summary>
+
+  <div dir="ltr" align='right'>
+
+1. [ ] شروع نشده
+2. [ ] در حال انجام
+3. [x] تمام شده
+  </div>
+</details>
+
+<details>
+  <summary>Shop Menu</summary>
+
+  <div dir="ltr" align='right'>
+
+1. [x] شروع نشده
+2. [ ] در حال انجام
+3. [ ] تمام شده
+  </div>
+</details>
+
+<details>
+  <summary>Trade Menu</summary>
+
+  <div dir="ltr" align='right'>
+
+1. [x] شروع نشده
+2. [ ] در حال انجام
+3. [ ] تمام شده
+  </div>
+</details>
+
+<details>
+  <summary>Sickness Logic</summary>
+
+  <div dir="ltr" align='right'>
+
+1. [x] شروع نشده
+2. [ ] در حال انجام
+3. [ ] تمام شده
+  </div>
+</details>
+
+<details>
+  <summary>animation for move and attack strategy unit</summary>
+
+  <div dir="ltr" align='right'>
+
+1. [ ] شروع نشده
+2. [x] در حال انجام
+3. [ ] تمام شده
+  </div>
+</details>
+
+<details>
+  <summary>fire animation</summary>
+
+  <div dir="ltr" align='right'>
+
+1. [x] شروع نشده
+2. [ ] در حال انجام
+3. [ ] تمام شده
   </div>
 </details>
 
 ## تسک‌های نفر دوم
 
-  **نام و نام خانوادگی:**
+  **نام و نام خانوادگی: سهند اکرمی پور**
 <details>
-  <summary>تسک مربوطه</summary>
+  <summary>پیاده کردن Map</summary>
 
   <div dir="ltr" align='right'>
 
   1. [ ] شروع نشده
   2. [ ] در حال انجام
-  3. [ ] تمام شده
+  3. [x] تمام شده
   </div>
 </details>
 
-## تسک‌های نفر سوم
-
-  **نام و نام خانوادگی:**
 <details>
-  <summary>تسک مربوطه</summary>
+  <summary>Game Menu</summary>
 
   <div dir="ltr" align='right'>
 
-  1. [ ] شروع نشده
-  2. [ ] در حال انجام
-  3. [ ] تمام شده
+1. [ ] شروع نشده
+2. [x] در حال انجام
+3. [ ] تمام شده
   </div>
 </details>
+
+<details>
+  <summary>Profile Menu</summary>
+
+  <div dir="ltr" align='right'>
+
+1. [ ] شروع نشده
+2. [x] در حال انجام
+3. [ ] تمام شده
+  </div>
+</details>
+
+<details>
+  <summary>Game Menu</summary>
+
+  <div dir="ltr" align='right'>
+
+1. [ ] شروع نشده
+2. [x] در حال انجام
+3. [ ] تمام شده
+  </div>
+</details>
+
+<details>
+  <summary>Government Menu</summary>
+
+  <div dir="ltr" align='right'>
+
+1. [x] شروع نشده
+2. [ ] در حال انجام
+3. [ ] تمام شده
+  </div>
+</details>
+
+<details>
+  <summary>animation for action and move building and unit</summary>
+
+  <div dir="ltr" align='right'>
+
+1. [x] شروع نشده
+2. [ ] در حال انجام
+3. [ ] تمام شده
+  </div>
+</details>
+
+<details>
+  <summary>تکمیل عملیات های مپ</summary>
+
+  <div dir="ltr" align='right'>
+
+1. [x] شروع نشده
+2. [ ] در حال انجام
+3. [ ] تمام شده
+  </div>
+</details>
+
 </div>
