@@ -478,7 +478,6 @@ public class Government implements Serializable {
     }
 
     public int checkReligionPopularity() {
-
         int value = 0;
         for (Building building : buildings) {
             if (building instanceof ReligiousBuilding) {
@@ -887,6 +886,26 @@ public class Government implements Serializable {
             }
         }
         return false;
+    }
+
+    public int getMaxPopulation() {
+        int cap = 0;
+        for (int x = 0; x < map.getXSize(); x++)
+            for (int y = 0; y < map.getYSize(); y++)
+                for (Objects object : map.getXY(x, y).getObjects())
+                    if (object.getOwner().equals(user) && object instanceof House house)
+                        cap += house.getCapacity();
+        return cap;
+    }
+
+    public int getResources() {
+        int value = 0;
+        for (int x = 0; x < map.getXSize(); x++)
+            for (int y = 0; y < map.getYSize(); y++)
+                for (Objects object : map.getXY(x, y).getObjects())
+                    if (object.getOwner().equals(user) && object instanceof Storage storage)
+                        value += storage.getCurrentCapacity();
+        return value;
     }
 
     public static class Pair {

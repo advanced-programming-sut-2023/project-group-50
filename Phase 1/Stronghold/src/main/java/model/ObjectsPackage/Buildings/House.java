@@ -44,4 +44,7 @@ public class House extends Building {
         soldierCount.put(soldierName, initCount);
     }
 
+    public int getCapacity() {
+        return capacity;
+    }
 }

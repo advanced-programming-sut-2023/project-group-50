@@ -18,7 +18,9 @@ public class Test extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         initMap();
-        Pane mapPane = MapPane.getMapPane(map, 50, 50, 0, 0);
+//        Pane mapPane = MapPane.getMapPane(map, 20, 20, 0, 0);
+
+        Pane mapPane = new MiniMap(map).getMiniMap(500, 500);
 
         Scene scene = new Scene(mapPane);
         stage.setScene(scene);
@@ -38,9 +40,9 @@ public class Test extends Application {
                              "shndap",
                              "bjbdkw",
                              "wewd",
+                             10,
                              5,
-                             5,
-                             UserColor.PURPLE, map);
+                             UserColor.RED, map);
 
         for (int i = 0; i < 500; i++) {
             int x = RandomGenerator.getRandomNumber(0, 99);
@@ -51,6 +53,8 @@ public class Test extends Application {
                                       y);
             else map.getUnitByXY(x, y).setTexture(RandomGenerator.randomFrom(groundTypes));
         }
+
+        map.addObject(Building.getBuildingByType(BuildingType.PALACE, user, 50, 5), 50, 5);
     }
 }
 

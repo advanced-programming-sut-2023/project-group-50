@@ -8,4 +8,7 @@ module Stronghold {
 
     opens view.show.ProfileMenu to javafx.fxml;
     exports view.show.ProfileMenu;
+
+    opens model.Government.GUI to javafx.fxml;
+    exports model.Government.GUI;
 }

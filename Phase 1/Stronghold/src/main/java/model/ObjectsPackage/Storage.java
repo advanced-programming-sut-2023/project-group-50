@@ -24,7 +24,6 @@ public class Storage extends Building {
         currentCapacity = new HashMap<>();
 
         Map map = owner.getGovernment().getMap();
-
         checkNeighboursForStorage(type, x, y, map);
     }
 

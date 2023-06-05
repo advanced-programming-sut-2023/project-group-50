@@ -1,9 +1,7 @@
 package model.Map;
 
-import model.ObjectsPackage.Buildings.Building;
-import model.ObjectsPackage.Buildings.BuildingType;
-import model.ObjectsPackage.Buildings.Gate;
-import model.ObjectsPackage.Buildings.Tower;
+import javafx.scene.paint.Color;
+import model.ObjectsPackage.Buildings.*;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Soldier.Engineer;
@@ -189,5 +187,19 @@ public class Unit implements Serializable {
             if (!(object instanceof Building))
                 return true;
         return false;
+    }
+
+    public boolean hasPalace() {
+        for (Objects object : objects)
+            if (object instanceof House house && house.getType().equals(BuildingType.PALACE))
+                return true;
+        return false;
+    }
+
+    public Color getPalaceOwnerColor() {
+        for (Objects object : objects)
+            if (object instanceof House house && house.getType().equals(BuildingType.PALACE))
+                return house.getOwner().getColor().toColor();
+        throw new RuntimeException();
     }
 }

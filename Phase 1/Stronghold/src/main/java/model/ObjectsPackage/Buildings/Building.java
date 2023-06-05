@@ -158,7 +158,7 @@ public abstract class Building extends Objects {
                                             0,
                                             0);
             }
-            case INN, MILL, HOVEL, WATER_POT, SIEGE_TENT, STABLE -> {
+            case INN, HOVEL, WATER_POT, SIEGE_TENT, STABLE -> {
                 return new House(buildingType,
                                  owner,
                                  x,
@@ -243,14 +243,6 @@ public abstract class Building extends Objects {
                                      300,
                                      10);
             }
-            case OIL_SMELTER -> {
-                return new Storage(buildingType,
-                                   owner,
-                                   x,
-                                   y,
-                                   250,
-                                   10);
-            }
             case TUNNEL, PITCH_DITCH, CAGED_WAR_DOGS -> {
                 return new Tunnel(buildingType,
                                   owner,
@@ -263,7 +255,7 @@ public abstract class Building extends Objects {
                                   y);
             }
             case BLACKSMITH, FLETCHER, POLETURNER, APPLE_ORCHARD, DIARY_FARMER, HOPS_FARMER, HUNTER_POST,
-                    WHEAT_FARMER, BAKERY, BREWER, TANNERS_WORKSHOP -> {
+                    WHEAT_FARMER, BAKERY, BREWER, TANNERS_WORKSHOP, MILL, OIL_SMELTER -> {
                 return new Workshops(buildingType,
                                      owner,
                                      x,

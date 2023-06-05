@@ -101,4 +101,8 @@ public enum GroundType {
         return this == GroundType.SHALLOW_WATER || this == GroundType.SEA || this == GroundType.BIG_POND ||
                 this == GroundType.SMALL_POND || this == GroundType.RIVER;
     }
+
+    public boolean isGreen() {
+        return this == GroundType.GRASS || this == GroundType.LAWN || this == GroundType.MEADOW;
+    }
 }
