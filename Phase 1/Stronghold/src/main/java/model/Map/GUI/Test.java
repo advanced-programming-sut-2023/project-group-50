@@ -15,22 +15,8 @@ import model.UserColor.UserColor;
 public class Test extends Application {
     private Map map;
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        initMap();
-//        Pane mapPane = MapPane.getMapPane(map, 20, 20, 0, 0);
-
-        Pane mapPane = new MiniMap(map).getMiniMap(500, 500);
-
-        Scene scene = new Scene(mapPane);
-        stage.setScene(scene);
-        stage.setFullScreen(true);
-        stage.setTitle("Stronghold");
-        stage.show();
-    }
-
-    private void initMap() {
-        map = new Map(100, 100);
+    public static User initMap() {
+        Map map = new Map(100, 100);
 
         GroundType[] groundTypes = GroundType.values();
         BuildingType[] buildingTypes = BuildingType.values();
@@ -55,6 +41,22 @@ public class Test extends Application {
         }
 
         map.addObject(Building.getBuildingByType(BuildingType.PALACE, user, 50, 5), 50, 5);
+        user.getGovernment().setMap(map);
+        return user;
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        map = initMap().getGovernment().getMap();
+//        Pane mapPane = MapPane.getMapPane(map, 20, 20, 0, 0);
+
+        Pane mapPane = new MiniMap(map).getMiniMap(500, 500);
+
+        Scene scene = new Scene(mapPane);
+        stage.setScene(scene);
+        stage.setFullScreen(true);
+        stage.setTitle("Stronghold");
+        stage.show();
     }
 }
 

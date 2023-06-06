@@ -4,6 +4,7 @@ import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import model.Map.Unit;
 import model.ObjectsPackage.Buildings.Building;
+import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Person;
 
@@ -33,6 +34,8 @@ public class UnitGroup {
     private void getObjects(double tileHeight, double tileWidth) {
 
         for (Objects object : unit.getObjects()) {
+            if (object.getObjectType().equals(ObjectType.PERSON))
+                continue;
             ImageView imageView = new ImageView(object.getImage());
             addToGroups(tileHeight, tileWidth, object, imageView);
         }

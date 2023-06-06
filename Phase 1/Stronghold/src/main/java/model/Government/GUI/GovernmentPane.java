@@ -28,10 +28,27 @@ public class GovernmentPane {
         Pane pane = new Pane();
         pane.setPrefSize(width, 200);
 
+        Region shadow = shadow(width - 50, 200 * 0.7);
+        pane.getChildren().add(shadow);
+        shadow.setLayoutY(200 * (1 - 0.7) / 2);
+        shadow.setLayoutX(25);
+
         pane.getChildren().add(getHBox(width, 200, government));
         Pane miniMap = new MiniMap(government.getMap()).getMiniMap(200, 200);
         addChildren(width, pane, miniMap);
         return pane;
+    }
+
+    private static Region shadow(double width, double height) {
+        Region region = new Region();
+        region.setPrefSize(width, height);
+
+        region.setStyle("\n" +
+                                "    -fx-border-color: black;\n" +
+                                "    -fx-border-style: solid;\n" +
+                                "    -fx-border-width: 2.5;\n" +
+                                "    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 20, 0.9, 0, 0);\n");
+        return region;
     }
 
     private static void addChildren(double width, Pane pane, Pane miniMap) {

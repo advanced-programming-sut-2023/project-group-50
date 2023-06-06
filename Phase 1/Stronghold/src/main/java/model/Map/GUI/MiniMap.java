@@ -36,9 +36,11 @@ public class MiniMap {
         pane.setPrefSize(width, height);
         pane.setAlignment(Pos.CENTER);
         pane.getChildren().addAll(getBackground(height, width), getVBox(height * 0.9, width * 0.9));
-        pane.setStyle("-fx-border-color: black;\n" +
+        pane.setStyle("\n" +
+                              "    -fx-border-color: black;\n" +
                               "    -fx-border-style: solid;\n" +
-                              "    -fx-border-width: 2.5;");
+                              "    -fx-border-width: 2.5;\n" +
+                              "    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 10), 50, 0, 0, 0);\n");
 
         return pane;
     }

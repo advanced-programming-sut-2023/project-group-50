@@ -158,11 +158,13 @@ public class ProfileMenuGUIController {
         URL url = Resource;
         assert url != null;
         Image image = new Image(url.toExternalForm());
+
         BackgroundImage backgroundImage = new BackgroundImage(image,
                                                               BackgroundRepeat.NO_REPEAT,
                                                               BackgroundRepeat.NO_REPEAT,
                                                               BackgroundPosition.CENTER,
                                                               backgroundSize);
+
         return backgroundImage;
     }
 
