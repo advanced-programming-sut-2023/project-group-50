@@ -9,14 +9,11 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class SignupMenu {
-    private final SignupController signupController;
+
     private Matcher nextMatcher;
 
 
-    public SignupMenu() {
-        this.signupController = new SignupController(this);
 
-    }
 
     public Matcher getNextMatcher() {
         return nextMatcher;
@@ -31,10 +28,7 @@ public class SignupMenu {
 
         while (true) {
             String input = getInput(scanner);
-
-            if ((matcher = Commands.getMatcher(Commands.CREATE_USER, input)).find()) {
-                System.out.println(this.signupController.createUser(matcher, scanner, game.getRemainingColors()));
-            } else if (Commands.getMatcher(Commands.EXIT, input).find()) {
+             if (Commands.getMatcher(Commands.EXIT, input).find()) {
                 return State.EXIT;
             } else if ((matcher = Commands.getMatcher(Commands.LOGIN, input)).matches()) {
                 this.setNextMatcher(matcher);

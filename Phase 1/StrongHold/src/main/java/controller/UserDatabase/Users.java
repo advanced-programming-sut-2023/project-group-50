@@ -52,4 +52,8 @@ public class Users implements Serializable {
     private static void updateAllUsers() {
         for (User user : users.values()) user.updateScore();
     }
+
+    public static void removeUser(User user){
+        users.remove ( user.getUserName () );
+    }
 }
