@@ -1,6 +1,7 @@
 package model.Map.GUI;
 
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import model.Map.Unit;
 import model.ObjectsPackage.Buildings.Building;
@@ -92,5 +93,31 @@ public class UnitGroup {
 
     public Group getPeople() {
         return peopleGroup;
+    }
+
+    public void setSize(double tileWidth, double tileHeight) {
+        if (peopleGroup != null && !peopleGroup.getChildren().isEmpty())
+            for (Node node : peopleGroup.getChildren()) {
+                if (node instanceof ImageView imageView) {
+                    imageView.setFitHeight(tileHeight);
+                    imageView.setFitWidth(tileWidth);
+                }
+            }
+
+        if (buildingGroup != null && !buildingGroup.getChildren().isEmpty())
+            for (Node node : buildingGroup.getChildren()) {
+                if (node instanceof ImageView imageView) {
+                    imageView.setFitHeight(tileHeight);
+                    imageView.setFitWidth(tileWidth);
+                }
+            }
+
+        if (!wallpaperGroup.getChildren().isEmpty())
+            for (Node node : wallpaperGroup.getChildren()) {
+                if (node instanceof ImageView imageView) {
+                    imageView.setFitHeight(tileHeight);
+                    imageView.setFitWidth(tileWidth);
+                }
+            }
     }
 }

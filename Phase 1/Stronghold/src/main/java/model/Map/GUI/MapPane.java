@@ -1,10 +1,13 @@
 package model.Map.GUI;
 
+import javafx.event.ActionEvent;
 import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.stage.Screen;
 import model.Map.GroundType;
 import model.Map.Map;
@@ -23,6 +26,7 @@ public class MapPane {
     private static Pane pane;
     private static HashMap<Integer, HashMap<Integer, UnitGroup>> unitGroups;
     private static HashMap<Integer, HashMap<Integer, Group>> ruinGroups;
+    private static StackPane zoom;
 
     private static Pair diffXY(Pair xy) {
         return new Pair(xy.x / 2 + xy.y / 2, xy.x / 2 - xy.y / 2).by(0.75);
@@ -74,6 +78,80 @@ public class MapPane {
         pane.setPrefSize(width, height);
         pane.setOnMousePressed(MapPane::handleStartDrag);
         pane.setOnMouseDragged(MapPane::handleEndDrag);
+
+        zoom = initZoom();
+    }
+
+    private static StackPane initZoom() {
+        VBox vBox = getZoomVBox();
+        Region region = getBorder();
+        return new StackPane(vBox, region);
+    }
+
+    private static Region getBorder() {
+        Region region = new Region();
+        region.setMaxHeight(110);
+        region.setMaxWidth(50);
+        region.setStyle("-fx-border-color: black; -fx-border-width: 5; -fx-border-radius: 25");
+        return region;
+    }
+
+    private static VBox getZoomVBox() {
+        Button zoomIn = new Button();
+        Button zoomOut = new Button();
+
+        zoomIn.setBackground(getZoomBackground(true));
+        zoomOut.setBackground(getZoomBackground(false));
+
+        zoomOut.setPrefSize(50, 50);
+        zoomOut.setMaxSize(50, 50);
+        zoomIn.setPrefSize(50, 50);
+        zoomIn.setMaxSize(50, 50);
+
+        zoomIn.setStyle("-fx-font: 40 Impact; -fx-font-weight: bolder");
+        zoomOut.setStyle("-fx-font: 40 Impact; -fx-font-weight: bolder");
+
+        zoomIn.setOnAction(MapPane::zoomIn);
+        zoomOut.setOnAction(MapPane::zoomOut);
+
+        VBox vBox = new VBox(zoomIn, zoomOut);
+        vBox.setSpacing(-25);
+        vBox.setMaxSize(50, 100);
+        return vBox;
+    }
+
+    private static Background getZoomBackground(boolean in) {
+        Image image = new Image(MapPane.class.getResource(
+                "/images/Buttons/Zoom/" + (in ? "in" : "out") + ".png").toExternalForm());
+
+        BackgroundImage backgroundImage = new BackgroundImage(image,
+                                                              BackgroundRepeat.NO_REPEAT,
+                                                              BackgroundRepeat.NO_REPEAT,
+                                                              BackgroundPosition.CENTER,
+                                                              BackgroundSize.DEFAULT
+        );
+
+        return new Background(backgroundImage);
+    }
+
+    private static void zoomIn(ActionEvent actionEvent) {
+        if (tileHeight >= 100) return;
+
+        tileHeight += 10;
+        tileWidth += 10;
+
+        updateSize();
+        fillTiles();
+    }
+
+    private static void zoomOut(ActionEvent actionEvent) {
+        if (tileHeight <= 30) return;
+
+        tileHeight -= 10;
+        tileWidth -= 10;
+
+        updateSize();
+        fillTiles();
     }
 
     private static void fillTiles() {
@@ -113,6 +191,8 @@ public class MapPane {
         }
         addHashMap(pane, buildings);
         addHashMap(pane, people);
+
+        pane.getChildren().add(zoom);
     }
 
     private static void initTiles() {
@@ -123,6 +203,22 @@ public class MapPane {
             for (int y = 0; y < map.getYSize(); y++)
                 unitGroups.get(x).putIfAbsent(y, new UnitGroup(map.getUnitByXY(x, y), tileHeight, tileWidth));
         }
+    }
+
+    private static void updateSize() {
+        for (int x = 0; x < unitGroups.size(); x++) {
+            unitGroups.putIfAbsent(x, new HashMap<>());
+            for (int y = 0; y < unitGroups.get(x).size(); y++)
+                unitGroups.get(x).get(y).setSize(tileWidth, tileHeight);
+        }
+
+        for (HashMap<Integer, Group> X : ruinGroups.values())
+            for (Group Y : X.values())
+                for (Node Z : Y.getChildren())
+                    if (Z instanceof ImageView imageView) {
+                        imageView.setFitHeight(tileHeight);
+                        imageView.setFitWidth(tileWidth);
+                    }
     }
 
     private static void addHashMap(Pane pane, HashMap<Pair, Group> people) {
