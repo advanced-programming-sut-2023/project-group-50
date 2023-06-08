@@ -1,7 +1,12 @@
 package model.Map.GUI;
 
+import controller.GUIControllers.MainMenuGUIController;
 import javafx.event.ActionEvent;
+import javafx.geometry.Dimension2D;
+import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
+import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -9,11 +14,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Screen;
+import model.Government.GUI.GovernmentPane;
 import model.Map.GroundType;
 import model.Map.Map;
+import model.Map.Unit;
+import model.ObjectsPackage.Buildings.Building;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MapPane {
     private static double startX;
@@ -27,9 +39,10 @@ public class MapPane {
     private static HashMap<Integer, HashMap<Integer, UnitGroup>> unitGroups;
     private static HashMap<Integer, HashMap<Integer, Group>> ruinGroups;
     private static StackPane zoom;
+    private static HBox navigation;
 
     private static Pair diffXY(Pair xy) {
-        return new Pair(xy.x / 2 + xy.y / 2, xy.x / 2 - xy.y / 2).by(0.75);
+        return new Pair(xy.x / 2 + xy.y / 2, xy.x / 2 - xy.y / 2).by(0.5);
     }
 
     private static Pair getXY(double tileHeight, double tileWidth, int X0, int Y0, int x, int y) {
@@ -79,19 +92,65 @@ public class MapPane {
         pane.setOnMousePressed(MapPane::handleStartDrag);
         pane.setOnMouseDragged(MapPane::handleEndDrag);
 
+        navigation = initNavigation();
+    }
+
+    private static HBox initNavigation() {
         zoom = initZoom();
+        HBox hBox = new HBox(zoom, initNavigation(true), initNavigation(false));
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setSpacing(5);
+        return hBox;
+    }
+
+    private static StackPane initNavigation(boolean upLeft) {
+        VBox vBox = getNavigationVBox(upLeft);
+        Region region = getBorder();
+        return new StackPane(region, vBox);
+    }
+
+    private static VBox getNavigationVBox(boolean leftOrRight) {
+        Button up = new Button();
+        Button down = new Button();
+
+
+        down.setPrefSize(50, 50);
+        down.setMaxSize(50, 50);
+        up.setPrefSize(50, 50);
+        up.setMaxSize(50, 50);
+
+        up.setStyle("-fx-font: 40 Impact; -fx-font-weight: bolder");
+        down.setStyle("-fx-font: 40 Impact; -fx-font-weight: bolder");
+
+        if (!leftOrRight) {
+            up.setBackground(getNavigationBackground("up"));
+            up.setOnAction(MapPane::up);
+            down.setBackground(getNavigationBackground("down"));
+            down.setOnAction(MapPane::down);
+        } else {
+            up.setBackground(getNavigationBackground("left"));
+            up.setOnAction(MapPane::left);
+            down.setBackground(getNavigationBackground("right"));
+            down.setOnAction(MapPane::right);
+        }
+
+        VBox vBox = new VBox(up, down);
+        vBox.setSpacing(-27);
+        vBox.setMaxSize(50, 100);
+        return vBox;
     }
 
     private static StackPane initZoom() {
         VBox vBox = getZoomVBox();
         Region region = getBorder();
-        return new StackPane(vBox, region);
+        return new StackPane(region, vBox);
     }
 
     private static Region getBorder() {
         Region region = new Region();
         region.setMaxHeight(110);
-        region.setMaxWidth(50);
+        region.setMaxWidth(60);
+        region.setPrefWidth(60);
         region.setStyle("-fx-border-color: black; -fx-border-width: 5; -fx-border-radius: 25");
         return region;
     }
@@ -115,7 +174,7 @@ public class MapPane {
         zoomOut.setOnAction(MapPane::zoomOut);
 
         VBox vBox = new VBox(zoomIn, zoomOut);
-        vBox.setSpacing(-25);
+        vBox.setSpacing(-27);
         vBox.setMaxSize(50, 100);
         return vBox;
     }
@@ -123,6 +182,20 @@ public class MapPane {
     private static Background getZoomBackground(boolean in) {
         Image image = new Image(MapPane.class.getResource(
                 "/images/Buttons/Zoom/" + (in ? "in" : "out") + ".png").toExternalForm());
+
+        BackgroundImage backgroundImage = new BackgroundImage(image,
+                                                              BackgroundRepeat.NO_REPEAT,
+                                                              BackgroundRepeat.NO_REPEAT,
+                                                              BackgroundPosition.CENTER,
+                                                              BackgroundSize.DEFAULT
+        );
+
+        return new Background(backgroundImage);
+    }
+
+    private static Background getNavigationBackground(String dir) {
+        Image image = new Image(MapPane.class.getResource(
+                "/images/Buttons/Zoom/" + dir + ".png").toExternalForm());
 
         BackgroundImage backgroundImage = new BackgroundImage(image,
                                                               BackgroundRepeat.NO_REPEAT,
@@ -161,6 +234,8 @@ public class MapPane {
 
         HashMap<Pair, Group> buildings = new HashMap<>();
         HashMap<Pair, Group> people = new HashMap<>();
+        HashMap<Pair, String> buildingsID = new HashMap<>();
+        HashMap<Pair, String> peopleID = new HashMap<>();
 
         for (double dx = -tileWidth / 2; dx <= width; dx += tileWidth / 2) {
             for (double dy = -tileHeight / 2; dy <= height; dy += tileHeight / 2) {
@@ -173,11 +248,16 @@ public class MapPane {
                 if (map.isValid(x, y)) {
                     UnitGroup unitGroup = unitGroups.get(x).get(y);
                     group = unitGroup.getWallpaperGroup();
-                    if (unitGroup.hasBuilding())
-                        buildings.put(new Pair(dx, dy), unitGroup.getBuilding());
+                    if (unitGroup.hasBuilding()) {
+                        Pair pair1 = new Pair(dx, dy);
+                        buildings.put(pair1, unitGroup.getBuilding());
+                        buildingsID.put(pair1, "{%d, %d}".formatted(x, y));
+                    }
                     if (unitGroup.hasObjects()) {
                         //TODO
-//                        people.put(new Pair(dx, dy), unitGroup.getPeople());
+//                        Pair pair1 = new Pair(dx, dy);
+//                        people.put(pair1, unitGroup.getPeople());
+//                        peopleID.put(pair1, "{%d, %d}".formatted(x, y));
                     }
                 } else {
                     ruinGroups.putIfAbsent(x, new HashMap<>());
@@ -187,12 +267,46 @@ public class MapPane {
                 pane.getChildren().add(group);
                 group.setLayoutX(dx);
                 group.setLayoutY(dy);
+                setUpGroup(group, "{%d, %d}".formatted(x, y));
+
+                group.setOnMouseEntered(MapPane::mouseEnteredTile);
+
             }
         }
-        addHashMap(pane, buildings);
-        addHashMap(pane, people);
+        addHashMap(pane, buildings, buildingsID);
+        addHashMap(pane, people, peopleID);
 
-        pane.getChildren().add(zoom);
+        pane.getChildren().addAll(navigation);
+        navigation.setLayoutX(10);
+        navigation.setLayoutY(5);
+    }
+
+    private static void mouseEnteredTile(MouseEvent mouseEvent) {
+        if (GovernmentPane.selectedBuilding == null) return;
+
+        Node group = mouseEvent.getPickResult().getIntersectedNode();
+
+        Pair xy = new Pair(group.getId());
+
+        Unit unit = map.getXY((int) xy.x, (int) xy.y);
+
+        Image image;
+        if (xy.x < 0 || xy.x >= map.getXSize() || xy.y < 0 || xy.y >= map.getYSize() ||
+                !Building.canPlace(GovernmentPane.selectedBuilding, unit.getTexture()) ||
+                unit.isOnFire() || unit.hasBuilding()
+        )
+            image = GovernmentPane.getUnavailableTileCursor();
+        else if (!GovernmentPane.government.canAfford(GovernmentPane.selectedBuilding)) {
+            pane.setCursor(Cursor.DEFAULT);
+            GovernmentPane.selectedBuilding = null;
+            return;
+        } else
+            image = GovernmentPane.getChosenBuildingCursor();
+        Dimension2D dim = ImageCursor.getBestSize(Screen.getPrimary().getBounds().getWidth(),
+                                                  Screen.getPrimary().getBounds().getHeight());
+
+        ImageCursor imageCursor = new ImageCursor(image, dim.getWidth(), dim.getHeight());
+        pane.setCursor(imageCursor);
     }
 
     private static void initTiles() {
@@ -221,14 +335,50 @@ public class MapPane {
                     }
     }
 
-    private static void addHashMap(Pane pane, HashMap<Pair, Group> people) {
-        for (Entry<Pair, Group> entry : people.entrySet()) {
+    private static void addHashMap(Pane pane, HashMap<Pair, Group> people, HashMap<Pair, String> peopleID) {
+        ArrayList<Entry<Pair, Group>> entries = new ArrayList<>(people.entrySet());
+
+        Collections.sort(entries, MapPane::front);
+
+
+        for (Entry<Pair, Group> entry : entries) {
             double x = entry.getKey().x, y = entry.getKey().y;
             Group group = entry.getValue();
             pane.getChildren().add(group);
             group.setLayoutX(x);
             group.setLayoutY(y);
+            String s = peopleID.get(entry.getKey());
+
+            setUpGroup(group, s);
         }
+    }
+
+    private static <T> int front(T t, T t1) {
+        try {
+            Entry<Pair, Group> a = (Entry<Pair, Group>) t;
+            Entry<Pair, Group> b = (Entry<Pair, Group>) t1;
+
+            return a.getKey().isInFrontOf(b.getKey()) ? -1 : 1;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    private static void setUpGroup(Group group, String s) {
+        group.setOnMouseEntered(MapPane::mouseEnteredTile);
+        group.setOnMouseExited(MapPane::mouseExitedTile);
+
+        group.setId(s);
+        for (Node child : group.getChildren()) {
+            if (child instanceof Group group1) {
+                setUpGroup(group1, s);
+            } else
+                child.setId(s);
+        }
+    }
+
+    private static void mouseExitedTile(MouseEvent mouseEvent) {
+        pane.setCursor(Cursor.DEFAULT);
     }
 
     private static Group getRandomRuinGroup(int x, int y, double tileHeight, double tileWidth) {
@@ -271,6 +421,46 @@ public class MapPane {
     private static void handleStartDrag(MouseEvent mouseEvent) {
         startX = mouseEvent.getX();
         startY = mouseEvent.getY();
+
+        if (GovernmentPane.selectedBuilding != null) {
+            placeBuilding(mouseEvent);
+        }
+    }
+
+    private static void placeBuilding(MouseEvent mouseEvent) {
+        if (mouseEvent.isSecondaryButtonDown()) {
+            GovernmentPane.selectedBuilding = null;
+            pane.setCursor(Cursor.DEFAULT);
+            return;
+        }
+
+        Node group = mouseEvent.getPickResult().getIntersectedNode();
+        Pair xy = new Pair(group.getId());
+        int x = (int) xy.x;
+        int y = (int) xy.y;
+
+        Unit unit = map.getXY(x, y);
+
+        if (xy.x < 0 || xy.x >= map.getXSize() || xy.y < 0 || xy.y >= map.getYSize() ||
+                !Building.canPlace(GovernmentPane.selectedBuilding, unit.getTexture()) ||
+                unit.isOnFire() || unit.hasBuilding()
+        ) return;
+        else {
+            Building building = Building.getBuildingByType(GovernmentPane.selectedBuilding,
+                                                           GovernmentPane.government.getLord().getOwner(),
+                                                           x,
+                                                           y);
+            GovernmentPane.government.getMap().addObject(building, x, y);
+            GovernmentPane.government.buyBuilding(GovernmentPane.selectedBuilding, 1);
+            GovernmentPane.government.addBuildings(building);
+            UnitGroup unitGroup = new UnitGroup(map.getXY(x, y), tileHeight, tileWidth);
+            unitGroups.get(x).replace(y, unitGroup);
+            MainMenuGUIController.updateGovernmentPane(GovernmentPane.government.getLord().getOwner().getUserName());
+            fillTiles();
+        }
+
+
+        pane.setCursor(Cursor.DEFAULT);
     }
 
     private static void handleEndDrag(MouseEvent mouseEvent) {
@@ -293,6 +483,34 @@ public class MapPane {
         fillTiles();
     }
 
+    private static void up(ActionEvent actionEvent) {
+        topLeftY++;
+        topLeftX--;
+        updateSize();
+        fillTiles();
+    }
+
+    private static void left(ActionEvent actionEvent) {
+        topLeftX--;
+        topLeftY--;
+        updateSize();
+        fillTiles();
+    }
+
+    private static void down(ActionEvent actionEvent) {
+        topLeftY--;
+        topLeftX++;
+        updateSize();
+        fillTiles();
+    }
+
+    private static void right(ActionEvent actionEvent) {
+        topLeftX++;
+        topLeftY++;
+        updateSize();
+        fillTiles();
+    }
+
     private static class Pair {
 
         double x;
@@ -303,8 +521,31 @@ public class MapPane {
             this.y = y;
         }
 
+        public Pair(String id) {
+            Pattern pattern = Pattern.compile("\\{(?<x>-?\\d+), (?<y>-?\\d+)}");
+            Matcher matcher = pattern.matcher(id);
+
+            try {
+                matcher.find();
+                x = Double.parseDouble(matcher.group("x"));
+                y = Double.parseDouble(matcher.group("y"));
+            } catch (Exception e) {
+                System.out.println(id);
+                throw new RuntimeException(e);
+            }
+        }
+
         public Pair by(double mul) {
             return new Pair(x * mul, y * mul);
+        }
+
+        public boolean isInFrontOf(Pair that) {
+            Pair This = getXY(tileHeight, tileWidth, topLeftX, topLeftY, (int) this.x, (int) this.y);
+            Pair That = getXY(tileHeight, tileWidth, topLeftX, topLeftY, (int) that.x, (int) that.y);
+
+            if (This.y > That.y) return true;
+            if (This.y < That.y) return false;
+            return This.x < That.x;
         }
     }
 }

@@ -24,7 +24,7 @@ public class Test extends Application {
                              5,
                              UserColor.PURPLE, map);
 
-        Pane pane = GovernmentPane.getPane(new Government(user, 10, 10));
+        Pane pane = GovernmentPane.getPane(new Government(user, 10, 10), null);
 
         Scene scene = new Scene(pane);
 

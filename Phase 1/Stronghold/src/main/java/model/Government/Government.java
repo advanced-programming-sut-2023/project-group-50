@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Random;
 
 public class Government implements Serializable {
@@ -461,7 +462,7 @@ public class Government implements Serializable {
             }
 
         }
-        for (java.util.Map.Entry<PersonState, ArrayList<Person>> set : this.people.entrySet()) {
+        for (Entry<PersonState, ArrayList<Person>> set : this.people.entrySet()) {
             for (Person person : set.getValue()) {
                 if (value > 0 && person.getIncome() < value) {
                     person.setIncome(0);
@@ -900,12 +901,18 @@ public class Government implements Serializable {
 
     public int getResources() {
         int value = 0;
-        for (int x = 0; x < map.getXSize(); x++)
-            for (int y = 0; y < map.getYSize(); y++)
-                for (Objects object : map.getXY(x, y).getObjects())
-                    if (object.getOwner().equals(user) && object instanceof Storage storage)
-                        value += storage.getCurrentCapacity();
+        for (Entry<Resource, Integer> resource : resources.entrySet())
+            value += resource.getValue();
         return value;
+    }
+
+    public boolean canAfford(BuildingType buildingType) {
+        if (coins < buildingType.getCoinCost()) return false;
+        if (resources.getOrDefault(Resource.IRON, 0) < buildingType.getIronCost()) return false;
+        if (resources.getOrDefault(Resource.WOOD, 0) < buildingType.getWoodCost()) return false;
+        if (resources.getOrDefault(Resource.STONE, 0) < buildingType.getStoneCost()) return false;
+        if (resources.getOrDefault(Resource.PITCH, 0) < buildingType.getPitchCost(1)) return false;
+        return !buildingType.equals(BuildingType.PALACE) || map.getPalace() == null;
     }
 
     public static class Pair {

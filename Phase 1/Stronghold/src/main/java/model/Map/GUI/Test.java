@@ -9,6 +9,7 @@ import model.Map.GroundType;
 import model.Map.Map;
 import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.Buildings.BuildingType;
+import model.ObjectsPackage.Resource;
 import model.RandomGenerator.RandomGenerator;
 import model.UserColor.UserColor;
 
@@ -42,6 +43,13 @@ public class Test extends Application {
 
         map.addObject(Building.getBuildingByType(BuildingType.PALACE, user, 50, 5), 50, 5);
         user.getGovernment().setMap(map);
+
+        user.getGovernment().setCoins(10000);
+        user.getGovernment().setResourceAmount(Resource.WOOD, 10000);
+        user.getGovernment().setResourceAmount(Resource.STONE, 10000);
+        user.getGovernment().setResourceAmount(Resource.OIL, 10000);
+        user.getGovernment().setResourceAmount(Resource.IRON, 10000);
+
         return user;
     }
 

@@ -38,7 +38,7 @@ public class Storage extends Building {
     private boolean checkForStorage(BuildingType type, int x, int y, Map map) {
         if (map.getXY(x, y).hasObjectType(type)) {
             Storage prevStorage = (Storage) map.getXY(x - 1, y).getObjectType(type);
-            prevStorage.setNextStorage(this);
+            if (prevStorage != null) prevStorage.setNextStorage(this);
             return true;
         }
         return false;

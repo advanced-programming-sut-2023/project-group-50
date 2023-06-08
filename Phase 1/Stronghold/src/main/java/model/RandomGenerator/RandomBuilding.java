@@ -14,6 +14,9 @@ public class RandomBuilding {
     }
 
     public static String getBuilding(BuildingType buildingType) {
+        if (buildingType == null) {
+            return "16x16.png";
+        }
         switch (buildingType) {
             case SMALL_STONE_GATEHOUSE -> {
                 return "buildings/Military Buildings/st47_gate_wood.tgx.png";
@@ -67,16 +70,16 @@ public class RandomBuilding {
                 return "buildings/buildings/Market.png";
             }
             case OX_TETHER -> {
-                return "buildings/buildings2/Industry Buildings in Crusader/gameinfo_buildings_resources_oxtether.gif";
+                return "NPCs _ Soldiers/Resource Gatherers/ST04_Oxen_Base.tgx.png";
             }
             case PITCH_RIG -> {
-                return "buildings/buildings2/Industry Buildings in Crusader/gameinfo_buildings_resources_pitchrig.gif";
+                return "Tiles/tile_buildings2.gm1/collection72.png";
             }
             case QUARRY -> {
                 return "buildings/buildings/Quarry.png";
             }
             case STOCKPILE -> {
-                return "buildings/buildings2/Industry Buildings in Crusader/gameinfo_buildings_resources_stockpile.gif";
+                return "Tiles/tile_goods.gm1/collection228.png";
             }
             case WOODCUTTER -> {
                 return "buildings/buildings/Woodcutter.png";

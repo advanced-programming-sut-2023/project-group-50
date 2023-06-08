@@ -79,6 +79,14 @@ public enum BuildingType {
         return null;
     }
 
+    public static BuildingType getByName(String id) {
+        for (BuildingType buildingType : BuildingType.values())
+            if (buildingType.name().equals(id))
+                return buildingType;
+
+        return null;
+    }
+
     public int getNumberOfWorkers() {
         return numberOfWorkers;
     }

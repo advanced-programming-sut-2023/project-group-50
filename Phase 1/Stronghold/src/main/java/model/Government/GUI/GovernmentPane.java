@@ -1,13 +1,17 @@
 package model.Government.GUI;
 
 import controller.GUIControllers.GovernmentMenuGUIController;
+import javafx.geometry.Dimension2D;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -16,16 +20,27 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import model.Government.Government;
 import model.Map.GUI.MiniMap;
+import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.Buildings.BuildingSet;
 import model.ObjectsPackage.Buildings.BuildingType;
+import model.RandomGenerator.RandomBuilding;
 import view.show.ProfileMenu.ShowProfileMenu;
+
+import java.net.URL;
 
 import static controller.GUIControllers.ProfileMenuGUIController.getEditBackgroundImage;
 
 public class GovernmentPane {
-    public static Pane getPane(Government government) {
+    public static Government government;
+    public static BuildingType selectedBuilding;
+    private static Pane pane;
+    private static Pane mainPane;
+
+    public static Pane getPane(Government government, Pane mainPane) {
+        GovernmentPane.mainPane = mainPane;
+        GovernmentPane.government = government;
         double width = Screen.getPrimary().getBounds().getWidth();
-        Pane pane = new Pane();
+        pane = new Pane();
         pane.setPrefSize(width, 200);
 
         Region shadow = shadow(width - 50, 200 * 0.7);
@@ -118,6 +133,7 @@ public class GovernmentPane {
         HBox hBox = getBuildingsTab(buildingSet, height - 50);
         scrollPane.setContent(hBox);
         tab.setContent(scrollPane);
+        scrollPane.setPrefWidth(scrollPane.getWidth() + 200);
 
         tab.setStyle("-fx-background-color: rgb(0, 0, 0, 0); -fx-font-weight: bold");
 
@@ -132,14 +148,30 @@ public class GovernmentPane {
         for (BuildingType buildingType : buildingSet.getBuildingTypes())
             hBox.getChildren().add(getBuildingVBox(buildingType, height));
 
+        hBox.getChildren().add(getBuildingVBox(null, height));
+
         hBox.setAlignment(Pos.BOTTOM_LEFT);
         hBox.setSpacing(15);
         return hBox;
     }
 
     private static Node getBuildingVBox(BuildingType buildingType, double height) {
-        Text text = new Text(buildingType.getType());
-        Image image = buildingType.getImage();
+        Text text = new Text(buildingType == null ? "" : buildingType.getType());
+        Image image;
+        if (buildingType == null) {
+            String building = RandomBuilding.getBuilding(null);
+            URL url = Building.class.getResource("/phase2-assets/" + building);
+            image = new Image(url.toExternalForm());
+            ImageView imageView = new ImageView(image);
+            imageView.setFitHeight(height * 0.65);
+            imageView.setPreserveRatio(true);
+            VBox vBox = new VBox(imageView, text);
+            vBox.setSpacing(5);
+            vBox.setAlignment(Pos.BOTTOM_CENTER);
+            return vBox;
+        } else
+            image = buildingType.getImage();
+
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(height * 0.65);
         imageView.setPreserveRatio(true);
@@ -147,14 +179,71 @@ public class GovernmentPane {
         VBox vBox = new VBox(imageView, text);
         vBox.setSpacing(5);
         vBox.setAlignment(Pos.BOTTOM_CENTER);
+
+        imageView.setId(buildingType.name());
+
+        imageView.setOnMouseEntered(GovernmentPane::mouseEntered);
+        imageView.setOnMouseExited(GovernmentPane::mouseExited);
+        imageView.setOnMouseClicked(GovernmentPane::mouseClicked);
         return vBox;
+    }
+
+    private static void mouseClicked(MouseEvent mouseEvent) {
+        BuildingType buildingType = getBuildingTypeOnMouse(mouseEvent);
+
+        if (government.canAfford(buildingType)) {
+            selectedBuilding = buildingType;
+            mainPane.setCursor(getCursor(buildingType));
+        }
+    }
+
+    private static BuildingType getBuildingTypeOnMouse(MouseEvent mouseEvent) {
+        return BuildingType.getByName(mouseEvent.getPickResult().getIntersectedNode().getId());
+    }
+
+    private static void mouseEntered(MouseEvent mouseEvent) {
+        BuildingType buildingType = getBuildingTypeOnMouse(mouseEvent);
+        mainPane.setCursor(getCursor(buildingType));
+    }
+
+    private static void mouseExited(MouseEvent mouseEvent) {
+        mainPane.setCursor(selectedBuilding == null ? Cursor.DEFAULT : getCursor(selectedBuilding));
+    }
+
+    private static Cursor getCursor(BuildingType buildingType) {
+        if (government.canAfford(buildingType) && selectedBuilding == null)
+            return Cursor.DEFAULT;
+
+        Image image = selectedBuilding != null ? getChosenBuildingCursor() : getNotAvailableImage();
+
+        Dimension2D dim = ImageCursor.getBestSize(Screen.getPrimary().getBounds().getWidth(),
+                                                  Screen.getPrimary().getBounds().getHeight());
+
+        return new ImageCursor(image, dim.getWidth(), dim.getHeight());
+    }
+
+    public static Image getChosenBuildingCursor() {
+        return new Image(GovernmentPane.class.getResource("/images/Cursors/selected.png").toExternalForm());
+    }
+
+    public static Image getUnavailableTileCursor() {
+        return new Image(GovernmentPane.class.getResource("/images/Cursors/unavailable.png").toExternalForm());
+    }
+
+    private static Image getNotAvailableImage() {
+        return new Image(GovernmentPane.class.getResource("/images/Cursors/not.png").toExternalForm());
+    }
+
+    private static void selectedBuilding(MouseEvent mouseEvent) {
+        String img = mouseEvent.getPickResult().getIntersectedNode().getId();
+        System.out.println(img);
     }
 
     private static HBox getGovernmentData(double width, double height, Government government) {
         HBox hBox = new HBox();
         hBox.setPrefSize(width, height);
         hBox.setBackground(getDataBackground(width, height));
-        hBox.setAlignment(Pos.CENTER_RIGHT);
+        hBox.setAlignment(Pos.CENTER);
 
         HBox items = gethBox(width - 100, height, government);
         hBox.getChildren().add(items);

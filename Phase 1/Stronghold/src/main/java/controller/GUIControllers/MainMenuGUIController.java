@@ -8,12 +8,15 @@ import model.Government.GUI.GovernmentPane;
 import model.Map.GUI.MapPane;
 
 public class MainMenuGUIController {
+    private static Pane pane;
+    private static Pane governmentPane;
+
     public static Pane getPane(String username) {
         double width = Screen.getPrimary().getBounds().getWidth();
         double height = Screen.getPrimary().getBounds().getHeight();
         User user = Users.getUser(username);
 
-        Pane pane = new Pane();
+        pane = new Pane();
         pane.setPrefSize(width, height);
         pane.getChildren().add(MapPane.getMapPane(user.getGovernment().getMap(),
                                                   50,
@@ -21,7 +24,7 @@ public class MainMenuGUIController {
                                                   0,
                                                   0));
 
-        Pane governmentPane = GovernmentPane.getPane(user.getGovernment());
+        governmentPane = GovernmentPane.getPane(user.getGovernment(), pane);
 
         pane.getChildren().add(governmentPane);
 
@@ -35,7 +38,7 @@ public class MainMenuGUIController {
         double width = Screen.getPrimary().getBounds().getWidth();
         double height = Screen.getPrimary().getBounds().getHeight();
 
-        Pane pane = new Pane();
+        pane = new Pane();
         pane.setPrefSize(width, height);
         pane.getChildren().add(MapPane.getMapPane(user.getGovernment().getMap(),
                                                   50,
@@ -43,7 +46,7 @@ public class MainMenuGUIController {
                                                   0,
                                                   0));
 
-        Pane governmentPane = GovernmentPane.getPane(user.getGovernment());
+        governmentPane = GovernmentPane.getPane(user.getGovernment(), pane);
 
         pane.getChildren().add(governmentPane);
 
@@ -51,5 +54,14 @@ public class MainMenuGUIController {
         governmentPane.setLayoutY(height - 200);
 
         return pane;
+    }
+
+    public static void updateGovernmentPane(String username) {
+        pane.getChildren().remove(governmentPane);
+        governmentPane = GovernmentPane.getPane(Users.getUser(username).getGovernment(), pane);
+        pane.getChildren().add(governmentPane);
+
+        governmentPane.setLayoutX(0);
+        governmentPane.setLayoutY(pane.getHeight() - 200);
     }
 }

@@ -1,6 +1,8 @@
 package model.Map;
 
 import controller.UserDatabase.User;
+import model.ObjectsPackage.Buildings.Building;
+import model.ObjectsPackage.Buildings.BuildingType;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Soldier.Soldier;
@@ -167,5 +169,13 @@ public class Map implements Serializable {
 
     public boolean isValid(int x, int y) {
         return x < xSize && y < ySize && x >= 0 && y >= 0;
+    }
+
+    public Building getPalace() {
+        for (HashMap<Integer, Unit> X : map.values())
+            for (Unit Y : X.values())
+                if (Y.hasPalace())
+                    return Y.getObjectType(BuildingType.PALACE);
+        return null;
     }
 }
