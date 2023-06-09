@@ -1,5 +1,6 @@
 package view.show.ProfileMenu;
 
+import controller.GUIControllers.MainMenuGUIController;
 import controller.Menus.ProfileController;
 import controller.UserDatabase.Users;
 import controller.control.Commands;
@@ -18,6 +19,8 @@ import javafx.stage.Stage;
 import view.ProfileMenu;
 
 import java.util.regex.Matcher;
+
+import static controller.GUIControllers.ProfileMenuGUIController.getBackButton;
 
 public class EditNicknameMenu extends Application {
     private Stage stage;
@@ -43,6 +46,10 @@ public class EditNicknameMenu extends Application {
         vBox.setAlignment(Pos.CENTER);
 
         pane.getChildren().add(vBox);
+        Button backButton = getBackButton(MainMenuGUIController::profile);
+        pane.getChildren().add(backButton);
+        backButton.setLayoutY(25);
+        backButton.setLayoutX(width - 125);
 
         return pane;
     }
@@ -119,6 +126,7 @@ public class EditNicknameMenu extends Application {
 
     private void setNewNickname() {
         try {
+            newNickname.setText(newNickname.getText().replaceAll("\\s", "_"));
             ProfileController profileController = new ProfileController(new ProfileMenu());
             profileController.setCurrentUser(Users.getUser(username));
             Matcher matcher = Commands.getMatcher(Commands.PROFILE_CHANGE,

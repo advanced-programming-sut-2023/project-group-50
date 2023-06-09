@@ -11,11 +11,18 @@ import model.Government.GUI.GovernmentPane;
 import static model.Map.GUI.Test.initMap;
 
 public class MainMenu extends Application {
+    private static Stage stage;
     private Pane pane;
+    private User user;
+
+    public static Stage getStage() {
+        return stage;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
-        User user = initMap();
+        MainMenu.stage = stage;
+        if (user == null) user = initMap();
         pane = MainMenuGUIController.getPane(user);
 
         Scene scene = new Scene(pane);
@@ -24,5 +31,9 @@ public class MainMenu extends Application {
         stage.setTitle("Stronghold");
         stage.setFullScreen(true);
         stage.show();
+    }
+
+    public void init(User user) {
+        this.user = user;
     }
 }

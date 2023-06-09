@@ -1,5 +1,6 @@
 package view.show.ProfileMenu;
 
+import controller.GUIControllers.MainMenuGUIController;
 import controller.Menus.ProfileController;
 import controller.UserDatabase.User;
 import controller.UserDatabase.Users;
@@ -18,6 +19,7 @@ import view.ProfileMenu;
 
 import java.util.regex.Matcher;
 
+import static controller.GUIControllers.ProfileMenuGUIController.getBackButton;
 import static controller.GUIControllers.ProfileMenuGUIController.getEditBackgroundImage;
 
 public class EditUsernameMenu extends Application {
@@ -75,6 +77,10 @@ public class EditUsernameMenu extends Application {
         vBox.setAlignment(Pos.CENTER);
 
         pane.getChildren().add(vBox);
+        Button backButton = getBackButton(MainMenuGUIController::profile);
+        pane.getChildren().add(backButton);
+        backButton.setLayoutY(25);
+        backButton.setLayoutX(width - 125);
 
         return pane;
     }
@@ -100,8 +106,8 @@ public class EditUsernameMenu extends Application {
         newUsername.setPromptText("New Username");
         newUsername.setMaxWidth(width * 2 / 3);
         newUsername.textProperty().addListener(observable -> {
-            if (newUsername.getText().isBlank()) {
-                button.setText("Username is blank");
+            if (newUsername.getText().isBlank() || !newUsername.getText().matches("\\S+")) {
+                button.setText("Username is invalid");
                 button.setStyle("-fx-background-color: red; -fx-background-radius: 20;" +
                                         " -fx-text-fill: black; -fx-font: 20 System");
                 done = false;

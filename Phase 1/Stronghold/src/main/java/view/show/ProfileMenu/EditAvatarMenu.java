@@ -1,5 +1,6 @@
 package view.show.ProfileMenu;
 
+import controller.GUIControllers.MainMenuGUIController;
 import controller.UserDatabase.Users;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static controller.GUIControllers.ProfileMenuGUIController.getBackButton;
 
 public class EditAvatarMenu extends Application {
     private Stage stage;
@@ -53,6 +56,10 @@ public class EditAvatarMenu extends Application {
         vBox.setAlignment(Pos.CENTER);
 
         pane.getChildren().add(vBox);
+        Button backButton = getBackButton(MainMenuGUIController::profile);
+        pane.getChildren().add(backButton);
+        backButton.setLayoutY(25);
+        backButton.setLayoutX(width - 125);
 
         return pane;
     }

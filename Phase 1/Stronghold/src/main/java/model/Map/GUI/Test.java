@@ -1,6 +1,7 @@
 package model.Map.GUI;
 
 import controller.UserDatabase.User;
+import controller.control.SecurityQuestion;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -30,6 +31,8 @@ public class Test extends Application {
                              10,
                              5,
                              UserColor.RED, map);
+        user.setSecurityQuestion(SecurityQuestion.NUMBER1);
+        user.setSecurityQuestionAnswer("haha");
 
         for (int i = 0; i < 500; i++) {
             int x = RandomGenerator.getRandomNumber(0, 99);

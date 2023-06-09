@@ -15,9 +15,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import model.RandomGenerator.RandomGenerator;
+import view.show.MainMenu.MainMenu;
 import view.show.ProfileMenu.*;
 
 import java.net.URL;
@@ -151,7 +153,35 @@ public class ProfileMenuGUIController {
 
         pane.getChildren().add(getUserData(height, width));
 
+        Button backButton = getBackButton(ProfileMenuGUIController::showMainMenu);
+        pane.getChildren().add(backButton);
+        backButton.setLayoutY(25);
+        backButton.setLayoutX(width - 125);
+
         return pane;
+    }
+
+    public static Button getBackButton(EventHandler<ActionEvent> eventHandler) {
+        Image image;
+        image = new Image(MainMenuGUIController.class.getResource("/images/Buttons/bg.jpg").toExternalForm());
+        BackgroundImage backgroundImage = new BackgroundImage(image,
+                                                              BackgroundRepeat.NO_REPEAT,
+                                                              BackgroundRepeat.NO_REPEAT,
+                                                              BackgroundPosition.CENTER,
+                                                              new BackgroundSize(
+                                                                      100,
+                                                                      50,
+                                                                      false, false, false, false
+                                                              ));
+
+        Button button = new Button("Back");
+        button.setBackground(new Background(backgroundImage));
+        button.setPrefSize(100, 50);
+        button.setFont(new Font("Bell MT", 18));
+        button.setStyle("-fx-text-fill: yellow");
+        button.setAlignment(Pos.CENTER);
+        button.setOnAction(eventHandler);
+        return button;
     }
 
     public static BackgroundImage getEditBackgroundImage(URL Resource, BackgroundSize backgroundSize) {
@@ -258,5 +288,15 @@ public class ProfileMenuGUIController {
         }
 
         return checkBoxes;
+    }
+
+    public static void showMainMenu(ActionEvent actionEvent) {
+        MainMenu mainMenu = new MainMenu();
+        mainMenu.init(user);
+        try {
+            mainMenu.start(MainMenu.getStage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

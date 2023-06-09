@@ -1,5 +1,6 @@
 package view.show.ProfileMenu;
 
+import controller.GUIControllers.MainMenuGUIController;
 import controller.GUIControllers.ProfileMenuGUIController;
 import controller.UserDatabase.Users;
 import javafx.application.Application;
@@ -15,6 +16,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import static controller.GUIControllers.ProfileMenuGUIController.getBackButton;
 
 public class EditSecurityQuestionMenu extends Application {
     private Stage stage;
@@ -43,6 +46,10 @@ public class EditSecurityQuestionMenu extends Application {
         vBox.setAlignment(Pos.CENTER);
 
         pane.getChildren().add(vBox);
+        Button backButton = getBackButton(MainMenuGUIController::profile);
+        pane.getChildren().add(backButton);
+        backButton.setLayoutY(25);
+        backButton.setLayoutX(width - 125);
 
         return pane;
     }

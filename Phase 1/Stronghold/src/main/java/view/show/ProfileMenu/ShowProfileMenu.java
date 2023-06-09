@@ -2,34 +2,22 @@ package view.show.ProfileMenu;
 
 import controller.GUIControllers.ProfileMenuGUIController;
 import controller.UserDatabase.User;
-import controller.control.SecurityQuestion;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.Map.Map;
-import model.UserColor.UserColor;
 
 public class ShowProfileMenu extends Application {
 
-    private static final User user;
+    private static User user;
     private static Stage stage;
-
-    static {
-        user = new User("Sahand",
-                        "Ap",
-                        "shndap",
-                        "bjbdkw",
-                        "wewd",
-                        5,
-                        5,
-                        UserColor.PURPLE, new Map(200, 200));
-        user.setSecurityQuestion(SecurityQuestion.NUMBER1);
-        user.setSecurityQuestionAnswer("Hahah");
-    }
 
     public static Stage getStage() {
         return stage;
+    }
+
+    public void init(User user) {
+        ShowProfileMenu.user = user;
     }
 
     @Override
