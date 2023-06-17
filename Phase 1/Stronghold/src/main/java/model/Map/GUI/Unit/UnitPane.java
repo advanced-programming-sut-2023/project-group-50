@@ -30,8 +30,8 @@ import static controller.GUIControllers.ProfileMenuGUIController.getDataBackgrou
 
 public class UnitPane {
     private final Unit unit;
-    private Pane pane;
     private final boolean done = false;
+    private Pane pane;
 
     public UnitPane(Unit unit) {
         UnitMenuController.init(MainMenuGUIController.getUser(), unit);

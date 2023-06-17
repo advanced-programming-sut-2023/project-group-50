@@ -20,7 +20,9 @@ public class House extends Building {
 
         if (type != BuildingType.PALACE) {
             for (int i = 0; i < capacity; i++)
-                owner.getGovernment().addPeopleByState(new NonSoldier(Job.CHILD, owner, this), PersonState.JOBLESS);
+                owner.getGovernment().addPeopleByState(new NonSoldier(Job.randomHousePerson(),
+                                                                      owner,
+                                                                      this), PersonState.JOBLESS);
         }
     }
 

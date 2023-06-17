@@ -276,8 +276,7 @@ public abstract class Building extends Objects {
     }
 
     public static boolean isCastles(Building building) {
-        BuildingType buildingType = building.type;
-        switch (buildingType) {
+        switch (building.type) {
             case SMALL_STONE_GATEHOUSE,
                     BIG_STONE_GATEHOUSE,
                     DRAW_BRIDGE,
@@ -345,7 +344,68 @@ public abstract class Building extends Objects {
     }
 
     public static Job getJobByBuildingType(BuildingType buildingType) {
-        return null;
+        switch (buildingType) {
+            case ARMOURY, ARMOURER -> {
+                return Job.ARMORER;
+            }
+            case INN -> {
+                return Job.INNKEEPER;
+            }
+            case MILL -> {
+                return Job.MILL_BOY;
+            }
+            case IRON_MINE -> {
+                return Job.IRON_MINER;
+            }
+            case MARKET -> {
+                return Job.MARKER_TRADER;
+            }
+            case PITCH_RIG -> {
+                return Job.PITCH_DIGGER;
+            }
+            case QUARRY -> {
+                return Job.STONE_MASON;
+            }
+            case STOCKPILE, HOVEL, GRANARY -> {
+                return Job.PEASANT;
+            }
+            case WOODCUTTER -> {
+                return Job.WOODCUTTER;
+            }
+            case APOTHECARY -> {
+                return Job.HEALER;
+            }
+            case CHAPEL, CATHEDRAL, CHURCH -> {
+                return Job.PRIEST;
+            }
+            case BLACKSMITH -> {
+                return Job.BLACKSMITH;
+            }
+            case FLETCHER -> {
+                return Job.FLETCHER;
+            }
+            case POLETURNER -> {
+                return Job.POLETURNER;
+            }
+            case APPLE_ORCHARD, WHEAT_FARMER, HUNTER_POST, HOPS_FARMER, DIARY_FARMER -> {
+                return Job.FARMER;
+            }
+            case BAKERY -> {
+                return Job.BAKER;
+            }
+            case BREWER -> {
+                return Job.BREWER;
+            }
+            case TANNERS_WORKSHOP -> {
+                return Job.TANNER;
+            }
+            case PALACE -> {
+                return Job.LADY;
+            }
+            default -> {
+                return null;
+            }
+        }
     }
 
     public static int isGoodOrBad(Building building) {

@@ -1,5 +1,8 @@
 package model.ObjectsPackage.People.NonSoldier;
 
+import model.ObjectsPackage.People.Soldier.SoldierName;
+import model.RandomGenerator.RandomGenerator;
+
 public enum Job {
     LADY,
     JESTER,
@@ -26,5 +29,21 @@ public enum Job {
     HEALER,
     MARKER_TRADER,
     JUGGLER,
-    FIRE_EATER
+    FIRE_EATER;
+
+    public static Job randomHousePerson() {
+        return RandomGenerator.randomFrom(
+                JESTER,
+                PEASANT,
+                CHILD,
+                MOTHER_AND_BABY,
+                DRUNKARD,
+                JUGGLER,
+                FIRE_EATER
+        );
+    }
+
+    public String getType() {
+        return SoldierName.getName(this.name());
+    }
 }
