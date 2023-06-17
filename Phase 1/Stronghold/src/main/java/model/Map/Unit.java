@@ -7,12 +7,15 @@ import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Soldier.Engineer;
 import model.ObjectsPackage.People.Soldier.Soldier;
+import model.ObjectsPackage.Rock;
+import model.ObjectsPackage.Tree;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Unit implements Serializable {
     private final LinkedHashSet<Objects> objects;
@@ -112,6 +115,13 @@ public class Unit implements Serializable {
     public boolean hasObjectType(BuildingType type) {
         for (Objects object : objects)
             if (object instanceof Building building && building.getType().equals(type))
+                return true;
+        return false;
+    }
+
+    public boolean hasObjectByType(ObjectType type) {
+        for (Objects object : objects)
+            if (object.getObjectType().equals(type))
                 return true;
         return false;
     }
@@ -216,5 +226,28 @@ public class Unit implements Serializable {
             if (object instanceof Building building)
                 return building;
         return null;
+    }
+
+    public Tree getTree() {
+        for (Objects object : objects)
+            if (object instanceof Tree tree)
+                return tree;
+        return null;
+    }
+
+    public Rock getRock() {
+        for (Objects object : objects)
+            if (object instanceof Rock rock)
+                return rock;
+        return null;
+    }
+
+    public void clear(User user) {
+        ArrayList<Objects> toRemove = objects.stream().filter(
+                objects1 -> java.util.Objects.equals(objects1.getOwner(), user)
+        ).collect(Collectors.toCollection(ArrayList::new));
+
+        toRemove.forEach(objects::remove);
+        setTexture(GroundType.PLAIN);
     }
 }

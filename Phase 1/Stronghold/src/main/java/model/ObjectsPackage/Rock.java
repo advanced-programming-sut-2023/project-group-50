@@ -16,9 +16,13 @@ public class Rock extends Objects {
         this.direction = direction;
     }
 
-    public boolean canPlace(int x, int y) {
-        GroundType groundType = this.getOwner().getGovernment().getMap().getXY(x, y).getTexture();
+    public static boolean canPlace(int x, int y, User user) {
+        GroundType groundType = user.getGovernment().getMap().getXY(x, y).getTexture();
 
+        return validGround(groundType);
+    }
+
+    private static boolean validGround(GroundType groundType) {
         switch (groundType) {
             case GROUND, BEACH, PLAIN, MEADOW, LAWN, GRASS, RIGGED_GROUND -> {
                 return true;
@@ -31,6 +35,12 @@ public class Rock extends Objects {
         }
     }
 
+    public boolean canPlace(int x, int y) {
+        GroundType groundType = this.getOwner().getGovernment().getMap().getXY(x, y).getTexture();
+
+        return validGround(groundType);
+    }
+
     public Direction getDirection() {
         return direction;
     }
@@ -41,7 +51,7 @@ public class Rock extends Objects {
 
     @Override
     public Image getImage() {
-        URL url = GroundType.class.getResource("phase2-assets/" + RandomRock.getRandomRock());
+        URL url = GroundType.class.getResource("/phase2-assets/" + RandomRock.getRandomRock());
         return new Image(url.toExternalForm());
     }
 }

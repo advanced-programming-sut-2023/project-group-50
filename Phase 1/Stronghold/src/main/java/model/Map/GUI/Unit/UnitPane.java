@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -30,6 +31,7 @@ import static controller.GUIControllers.ProfileMenuGUIController.getDataBackgrou
 public class UnitPane {
     private final Unit unit;
     private Pane pane;
+    private final boolean done = false;
 
     public UnitPane(Unit unit) {
         UnitMenuController.init(MainMenuGUIController.getUser(), unit);
@@ -152,7 +154,11 @@ public class UnitPane {
 
         vBox.getChildren().addAll(
                 getButton("Change texture", height * 0.1, UnitMenuController::changeTexture),
-                getButton("Repair building", height * 0.1, UnitMenuController::repairBuilding)
+                getButton("Repair building", height * 0.1, UnitMenuController::repairBuilding),
+                getButton("Drop Tree", height * 0.1, UnitMenuController::dropTree),
+                getButton("Drop Rock", height * 0.1, UnitMenuController::dropRock),
+                getButton("Drop Unit", height * 0.1, UnitMenuController::dropUnit),
+                getButton("Clear", height * 0.1, UnitMenuController::clear)
         );
 
         return vBox;
@@ -165,10 +171,20 @@ public class UnitPane {
         vBox.setMaxSize(width, height);
         vBox.setSpacing(15);
 
-        VBox data = new VBox(getPeopleHBox(width * 0.5, height * 0.1),
-                             getTextureHBox(width * 0.5, height * 0.1),
-                             getOwnerHBox(width * 0.5, height * 0.1),
-                             getBuildingHBox(width * 0.5, height * 0.1));
+        VBox data;
+        if (unit.hasBuilding()) {
+            data = new VBox(getHealth(width * 0.5, height * 0.05),
+                            getPeopleHBox(width * 0.5, height * 0.1),
+                            getTextureHBox(width * 0.5, height * 0.1),
+                            getOwnerHBox(width * 0.5, height * 0.1),
+                            getBuildingHBox(width * 0.5, height * 0.1));
+        } else {
+            data = new VBox(getPeopleHBox(width * 0.5, height * 0.1),
+                            getTextureHBox(width * 0.5, height * 0.1),
+                            getOwnerHBox(width * 0.5, height * 0.1),
+                            getBuildingHBox(width * 0.5, height * 0.1));
+        }
+
         data.setAlignment(Pos.CENTER);
         data.setMaxSize(width * 0.5, height * 0.5);
         data.setSpacing(10);
@@ -177,6 +193,23 @@ public class UnitPane {
                                   data);
         return vBox;
     }
+
+    private HBox getHealth(double width, double height) {
+        HBox hBox = new HBox();
+
+        ProgressBar healthBar = new ProgressBar(
+                (double) unit.getBuilding().getHp() / (double) unit.getBuilding().getMaxHp());
+        Text text = getText(String.valueOf(unit.getBuilding().getHp()));
+
+        healthBar.setPrefSize(width * 0.8, height);
+        hBox.getChildren().addAll(healthBar, text);
+        hBox.setPrefSize(width, height);
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setSpacing(15);
+
+        return hBox;
+    }
+
 
     private HBox getBuildingHBox(double width, double height) {
         HBox hBox = gethBox(width, height, 15);
@@ -274,12 +307,17 @@ public class UnitPane {
         Group wallpaperGroup = unitGroup.getWallpaperGroup();
         Group people = unitGroup.getPeople();
         Group building = unitGroup.getBuilding();
+        Group objectsGroup = unitGroup.getObjectsGroup();
 
         if (wallpaperGroup != null) group.getChildren().add(wallpaperGroup);
         if (people != null) group.getChildren().add(people);
         if (building != null) {
             group.getChildren().add(building);
             building.setLayoutY(building.getLayoutY() - width / 2);
+        }
+        if (objectsGroup != null) {
+            group.getChildren().add(objectsGroup);
+            objectsGroup.setLayoutY(objectsGroup.getLayoutY() - width / 2);
         }
 
         if (group.getLayoutBounds().getHeight() > width) {

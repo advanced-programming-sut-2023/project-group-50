@@ -13,14 +13,17 @@ public class UnitGroup {
     private final Unit unit;
     private final boolean hasBuilding;
     private final boolean hasObjects;
+    private final boolean hasPeople;
     private Group peopleGroup;
     private Group buildingGroup;
     private Group wallpaperGroup;
+    private Group objectsGroup;
 
     public UnitGroup(Unit unit, double tileHeight, double tileWidth) {
         this.unit = unit;
         hasBuilding = unit.hasBuilding();
         hasObjects = unit.hasObjects();
+        hasPeople = unit.hasObjectByType(ObjectType.PERSON);
         initGroup(tileHeight, tileWidth);
     }
 
@@ -33,7 +36,6 @@ public class UnitGroup {
     }
 
     private void getObjects(double tileHeight, double tileWidth) {
-
         for (Objects object : unit.getObjects()) {
             if (object.getObjectType().equals(ObjectType.PERSON))
                 continue;
@@ -49,10 +51,10 @@ public class UnitGroup {
     }
 
     private void addObject(double tileHeight, double tileWidth, ImageView imageView) {
-        imageView.setFitHeight(tileHeight);
         imageView.setFitWidth(tileWidth);
-        if (peopleGroup == null) peopleGroup = new Group();
-        peopleGroup.getChildren().add(imageView);
+        imageView.setPreserveRatio(true);
+        if (objectsGroup == null) objectsGroup = new Group();
+        objectsGroup.getChildren().add(imageView);
     }
 
     private void addToPeople(double tileWidth, ImageView imageView) {
@@ -95,6 +97,10 @@ public class UnitGroup {
         return peopleGroup;
     }
 
+    public Group getObjectsGroup() {
+        return objectsGroup;
+    }
+
     public void setSize(double tileWidth, double tileHeight) {
         if (peopleGroup != null && !peopleGroup.getChildren().isEmpty())
             for (Node node : peopleGroup.getChildren()) {
@@ -119,5 +125,9 @@ public class UnitGroup {
                     imageView.setFitWidth(tileWidth);
                 }
             }
+    }
+
+    public boolean hasPeople() {
+        return hasPeople;
     }
 }

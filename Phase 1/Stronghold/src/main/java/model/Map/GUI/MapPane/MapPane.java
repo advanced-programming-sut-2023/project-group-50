@@ -233,8 +233,10 @@ public class MapPane {
 
         HashMap<Pair, Group> buildings = new HashMap<>();
         HashMap<Pair, Group> people = new HashMap<>();
+        HashMap<Pair, Group> objects = new HashMap<>();
         HashMap<Pair, String> buildingsID = new HashMap<>();
         HashMap<Pair, String> peopleID = new HashMap<>();
+        HashMap<Pair, String> objectID = new HashMap<>();
 
         for (double dx = -tileWidth / 2; dx <= width; dx += tileWidth / 2) {
             for (double dy = -tileHeight / 2; dy <= height; dy += tileHeight / 2) {
@@ -252,11 +254,13 @@ public class MapPane {
                         buildings.put(pair1, unitGroup.getBuilding());
                         buildingsID.put(pair1, "{%d, %d}".formatted(x, y));
                     }
-                    if (unitGroup.hasObjects()) {
+                    if (unitGroup.hasPeople()) {
                         //TODO
-//                        Pair pair1 = new Pair(dx, dy);
-//                        people.put(pair1, unitGroup.getPeople());
-//                        peopleID.put(pair1, "{%d, %d}".formatted(x, y));
+                    }
+                    if (unitGroup.hasObjects()) {
+                        Pair pair1 = new Pair(dx, dy);
+                        objects.put(pair1, unitGroup.getObjectsGroup());
+                        objectID.put(pair1, "{%d, %d}".formatted(x, y));
                     }
                 } else {
                     ruinGroups.putIfAbsent(x, new HashMap<>());
@@ -274,8 +278,9 @@ public class MapPane {
 
             }
         }
-        addHashMap(pane, buildings, buildingsID);
-        addHashMap(pane, people, peopleID);
+        addHashMap(pane, buildings, buildingsID, tileHeight / 4);
+        addHashMap(pane, people, peopleID, 0);
+        addHashMap(pane, objects, objectID, tileHeight / 4);
 
         pane.getChildren().addAll(navigation);
         navigation.setLayoutX(10);
@@ -336,7 +341,10 @@ public class MapPane {
                     }
     }
 
-    private static void addHashMap(Pane pane, HashMap<Pair, Group> people, HashMap<Pair, String> peopleID) {
+    private static void addHashMap(Pane pane,
+                                   HashMap<Pair, Group> people,
+                                   HashMap<Pair, String> peopleID,
+                                   double intersect) {
         ArrayList<Entry<Pair, Group>> entries = new ArrayList<>(people.entrySet());
 
         entries.sort(MapPane::front);
@@ -346,7 +354,7 @@ public class MapPane {
             Group group = entry.getValue();
             pane.getChildren().add(group);
             group.setLayoutX(x);
-            group.setLayoutY(y - tileHeight / 4);
+            group.setLayoutY(y - intersect);
             String s = peopleID.get(entry.getKey());
 
             setUpGroup(group, s);
@@ -441,10 +449,10 @@ public class MapPane {
         int x = (int) xy.x;
         int y = (int) xy.y;
 
-        Unit unit = map.getXY(x, y);
-
-        if (xy.x >= 0 && xy.x < map.getXSize() && xy.y >= 0 && xy.y < map.getYSize())
+        if (xy.x >= 0 && xy.x < map.getXSize() && xy.y >= 0 && xy.y < map.getYSize()) {
+            Unit unit = map.getXY(x, y);
             MainMenuGUIController.showUnit(unit);
+        }
     }
 
     private static void placeBuilding(MouseEvent mouseEvent) {
