@@ -8,14 +8,20 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import model.Government.GUI.GovernmentPane;
-import model.Map.GUI.MapPane;
+import model.Map.GUI.MapPane.MapPane;
+import model.Map.Unit;
 import view.show.MainMenu.MainMenu;
 import view.show.ProfileMenu.ShowProfileMenu;
+import view.show.UnitMenu.UnitMenu;
+
+import static model.Map.GUI.Unit.UnitPane.getButtonUtil;
 
 public class MainMenuGUIController {
     private static Pane pane;
@@ -113,29 +119,8 @@ public class MainMenuGUIController {
         return vBox;
     }
 
-
     private static Button getButton(String text, double height, EventHandler<ActionEvent> eventHandler) {
-        Image image;
-        image = new Image(MainMenuGUIController.class.getResource("/images/Buttons/bg.jpg").toExternalForm());
-        BackgroundImage backgroundImage = new BackgroundImage(image,
-                                                              BackgroundRepeat.NO_REPEAT,
-                                                              BackgroundRepeat.NO_REPEAT,
-                                                              BackgroundPosition.CENTER,
-                                                              new BackgroundSize(
-                                                                      image.getWidth() / image.getHeight() * height / 2,
-                                                                      height,
-                                                                      false, false, false, false
-                                                              ));
-
-        Button button = new Button(text);
-        button.setBackground(new Background(backgroundImage));
-        button.setPrefSize(image.getWidth() / image.getHeight() * height / 2, height);
-        button.setFont(new Font("Bell MT", 18));
-        button.setStyle("-fx-text-fill: yellow");
-        button.setAlignment(Pos.CENTER);
-        button.setOnAction(eventHandler);
-
-        return button;
+        return getButtonUtil(text, height, eventHandler);
     }
 
     private static VBox getUserAvatar(double height) {
@@ -178,5 +163,15 @@ public class MainMenuGUIController {
 
     private static void online(ActionEvent actionEvent) {
         //TODO
+    }
+
+    public static void showUnit(Unit unit) throws Exception {
+        UnitMenu unitMenu = new UnitMenu();
+        unitMenu.initialize(unit);
+        unitMenu.start(MainMenu.getStage());
+    }
+
+    public static User getUser() {
+        return user;
     }
 }

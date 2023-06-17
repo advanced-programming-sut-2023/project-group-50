@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import model.Map.GUI.MiniMap.MiniMap;
 import model.Map.GroundType;
 import model.Map.Map;
 import model.ObjectsPackage.Buildings.Building;

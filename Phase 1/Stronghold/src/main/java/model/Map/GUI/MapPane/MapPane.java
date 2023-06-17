@@ -1,4 +1,4 @@
-package model.Map.GUI;
+package model.Map.GUI.MapPane;
 
 import controller.GUIControllers.MainMenuGUIController;
 import javafx.event.ActionEvent;
@@ -9,6 +9,7 @@ import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -21,7 +22,6 @@ import model.Map.Unit;
 import model.ObjectsPackage.Buildings.Building;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -38,7 +38,6 @@ public class MapPane {
     private static Pane pane;
     private static HashMap<Integer, HashMap<Integer, UnitGroup>> unitGroups;
     private static HashMap<Integer, HashMap<Integer, Group>> ruinGroups;
-    private static StackPane zoom;
     private static HBox navigation;
 
     private static Pair diffXY(Pair xy) {
@@ -96,7 +95,7 @@ public class MapPane {
     }
 
     private static HBox initNavigation() {
-        zoom = initZoom();
+        StackPane zoom = initZoom();
         HBox hBox = new HBox(zoom, initNavigation(true), initNavigation(false));
         hBox.setAlignment(Pos.CENTER);
         hBox.setSpacing(5);
@@ -269,6 +268,8 @@ public class MapPane {
                 group.setLayoutY(dy);
                 setUpGroup(group, "{%d, %d}".formatted(x, y));
 
+                Tooltip.install(group, new Tooltip(group.getId()));
+
                 group.setOnMouseEntered(MapPane::mouseEnteredTile);
 
             }
@@ -338,15 +339,14 @@ public class MapPane {
     private static void addHashMap(Pane pane, HashMap<Pair, Group> people, HashMap<Pair, String> peopleID) {
         ArrayList<Entry<Pair, Group>> entries = new ArrayList<>(people.entrySet());
 
-        Collections.sort(entries, MapPane::front);
-
+        entries.sort(MapPane::front);
 
         for (Entry<Pair, Group> entry : entries) {
             double x = entry.getKey().x, y = entry.getKey().y;
             Group group = entry.getValue();
             pane.getChildren().add(group);
             group.setLayoutX(x);
-            group.setLayoutY(y);
+            group.setLayoutY(y - tileHeight / 4);
             String s = peopleID.get(entry.getKey());
 
             setUpGroup(group, s);
@@ -424,7 +424,27 @@ public class MapPane {
 
         if (GovernmentPane.selectedBuilding != null) {
             placeBuilding(mouseEvent);
+        } else {
+            if (mouseEvent.isSecondaryButtonDown()) {
+                try {
+                    openUnitPane(mouseEvent);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
+    }
+
+    private static void openUnitPane(MouseEvent mouseEvent) throws Exception {
+        Node group = mouseEvent.getPickResult().getIntersectedNode();
+        Pair xy = new Pair(group.getId());
+        int x = (int) xy.x;
+        int y = (int) xy.y;
+
+        Unit unit = map.getXY(x, y);
+
+        if (xy.x >= 0 && xy.x < map.getXSize() && xy.y >= 0 && xy.y < map.getYSize())
+            MainMenuGUIController.showUnit(unit);
     }
 
     private static void placeBuilding(MouseEvent mouseEvent) {

@@ -915,6 +915,31 @@ public class Government implements Serializable {
         return !buildingType.equals(BuildingType.PALACE) || map.getPalace() == null;
     }
 
+    public boolean canAfford(BuildingType buildingType, float coeff) {
+        if (coins < buildingType.getCoinCost() * coeff) return false;
+        if (resources.getOrDefault(Resource.IRON, 0) < buildingType.getIronCost() * coeff) return false;
+        if (resources.getOrDefault(Resource.WOOD, 0) < buildingType.getWoodCost() * coeff) return false;
+        if (resources.getOrDefault(Resource.STONE, 0) < buildingType.getStoneCost() * coeff) return false;
+        return !(resources.getOrDefault(Resource.PITCH, 0) < buildingType.getPitchCost(1) * coeff);
+    }
+
+    public String canRepair(Building building) {
+        float cost;
+        if (building.isDestroyed()) cost = 1;
+        else cost = 1 - ((float) building.getHp() / (float) building.getMaxHp());
+
+        if (!canAfford(building.getType(), cost))
+            return "You don't have enough resources";
+
+        if (building.getOwner().getGovernment().getMap().searchForEnemy(building.getX(), building.getY(),
+                                                                        building.getOwner()))
+            return "The enemy soldier is close";
+
+        building.getOwner().getGovernment().buyBuilding(building.getType(), cost);
+        building.repair();
+        return null;
+    }
+
     public static class Pair {
         public int x;
         public int y;

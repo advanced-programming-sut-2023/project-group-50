@@ -1,5 +1,6 @@
 package model.Map;
 
+import controller.UserDatabase.User;
 import javafx.scene.paint.Color;
 import model.ObjectsPackage.Buildings.*;
 import model.ObjectsPackage.ObjectType;
@@ -201,5 +202,19 @@ public class Unit implements Serializable {
             if (object instanceof House house && house.getType().equals(BuildingType.PALACE))
                 return house.getOwner().getColor().toColor();
         throw new RuntimeException();
+    }
+
+    public User getOwner() {
+        for (Objects object : objects)
+            if (object instanceof Building building)
+                return building.getOwner();
+        return null;
+    }
+
+    public Building getBuilding() {
+        for (Objects object : objects)
+            if (object instanceof Building building)
+                return building;
+        return null;
     }
 }

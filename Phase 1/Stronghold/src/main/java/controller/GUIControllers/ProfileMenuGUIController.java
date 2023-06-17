@@ -25,13 +25,10 @@ import view.show.ProfileMenu.*;
 import java.net.URL;
 
 public class ProfileMenuGUIController {
-    private static boolean done;
     private static User user;
-    private static Pane pane;
 
     public static void init(User user) {
         ProfileMenuGUIController.user = user;
-        done = false;
     }
 
     private static Background getBackground(double width, double height) {
@@ -75,7 +72,7 @@ public class ProfileMenuGUIController {
         return stackPane;
     }
 
-    private static ImageView getDataBackgroundImage(double height, double width) {
+    public static ImageView getDataBackgroundImage(double height, double width) {
         URL url = User.class.getResource("/images/background/profileData.png");
         assert url != null;
         Image image = new Image(url.toExternalForm());
@@ -146,7 +143,7 @@ public class ProfileMenuGUIController {
     public static Pane getPane() {
         double width = Screen.getPrimary().getBounds().getWidth();
         double height = Screen.getPrimary().getBounds().getHeight();
-        pane = new Pane();
+        Pane pane = new Pane();
         pane.setMaxSize(width, height);
         pane.setPrefSize(width, height);
         pane.setBackground(getBackground(width, height));

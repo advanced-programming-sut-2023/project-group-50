@@ -1,4 +1,4 @@
-package model.Map.GUI;
+package model.Map.GUI.MiniMap;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

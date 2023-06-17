@@ -14,4 +14,8 @@ module Stronghold {
 
     opens view.show.MainMenu to javafx.fxml;
     exports view.show.MainMenu;
+    exports model.Map.GUI.MiniMap;
+    opens model.Map.GUI.MiniMap to javafx.fxml;
+    exports model.Map.GUI.MapPane;
+    opens model.Map.GUI.MapPane to javafx.fxml;
 }

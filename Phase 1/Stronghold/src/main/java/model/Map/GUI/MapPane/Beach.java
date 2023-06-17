@@ -1,4 +1,4 @@
-package model.Map.GUI;
+package model.Map.GUI.MapPane;
 
 import javafx.scene.image.Image;
 import model.RandomGenerator.RandomGenerator;

@@ -157,6 +157,7 @@ public class EditAvatarMenu extends Application {
             if (file == null)
                 return;
             Objects.requireNonNull(Users.getUser(username)).setAvatar(file.toURI().toURL());
+            handleConfirm(null);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

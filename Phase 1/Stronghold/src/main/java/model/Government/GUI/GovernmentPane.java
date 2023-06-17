@@ -19,7 +19,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import model.Government.Government;
-import model.Map.GUI.MiniMap;
+import model.Map.GUI.MiniMap.MiniMap;
 import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.Buildings.BuildingSet;
 import model.ObjectsPackage.Buildings.BuildingType;

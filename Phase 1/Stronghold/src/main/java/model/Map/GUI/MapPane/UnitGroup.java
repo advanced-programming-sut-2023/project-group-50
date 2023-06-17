@@ -1,4 +1,4 @@
-package model.Map.GUI;
+package model.Map.GUI.MapPane;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -107,7 +107,7 @@ public class UnitGroup {
         if (buildingGroup != null && !buildingGroup.getChildren().isEmpty())
             for (Node node : buildingGroup.getChildren()) {
                 if (node instanceof ImageView imageView) {
-                    imageView.setFitHeight(tileHeight);
+                    imageView.setPreserveRatio(true);
                     imageView.setFitWidth(tileWidth);
                 }
             }
