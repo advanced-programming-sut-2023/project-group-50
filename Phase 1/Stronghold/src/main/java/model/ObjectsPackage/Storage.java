@@ -52,7 +52,7 @@ public class Storage extends Building {
     }
 
     public int getCurrentCapacity(WeaponName resource) {
-        return currentCapacity.get(resource.name());
+        return currentCapacity.getOrDefault(resource.name(), 0);
     }
 
     public int getMaximumCapacity() {

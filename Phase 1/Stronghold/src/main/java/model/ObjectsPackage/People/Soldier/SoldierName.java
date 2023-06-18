@@ -1,5 +1,8 @@
 package model.ObjectsPackage.People.Soldier;
 
+import javafx.scene.image.Image;
+import model.ObjectsPackage.People.Person;
+
 import java.util.ArrayList;
 
 public enum SoldierName {
@@ -96,5 +99,10 @@ public enum SoldierName {
                 return ArmourType.NONE;
             }
         }
+    }
+
+    public Image getImage() {
+        String path = "Soldier/" + this.getType().replaceAll(" ", "") + ".png";
+        return new Image(Person.class.getResource("/images/People/" + path).toExternalForm());
     }
 }

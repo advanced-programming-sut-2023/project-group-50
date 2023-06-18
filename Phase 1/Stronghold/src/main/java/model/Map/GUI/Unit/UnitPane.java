@@ -7,8 +7,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -175,18 +177,18 @@ public class UnitPane {
         VBox data;
         if (unit.hasBuilding()) {
             data = new VBox(getHealth(width * 0.5, height * 0.05),
-                            getPeopleHBox(width * 0.5, height * 0.1),
                             getTextureHBox(width * 0.5, height * 0.1),
                             getOwnerHBox(width * 0.5, height * 0.1),
-                            getBuildingHBox(width * 0.5, height * 0.1));
+                            getBuildingHBox(width * 0.5, height * 0.1),
+                            getPeopleHBox(width * 0.5, height * 0.1));
 
             if (unit.getBuilding() instanceof Storage storage)
                 data.getChildren().add(getPrevStorage(width * 0.5, height * 0.05));
         } else {
-            data = new VBox(getPeopleHBox(width * 0.5, height * 0.1),
-                            getTextureHBox(width * 0.5, height * 0.1),
+            data = new VBox(getTextureHBox(width * 0.5, height * 0.1),
                             getOwnerHBox(width * 0.5, height * 0.1),
-                            getBuildingHBox(width * 0.5, height * 0.1));
+                            getBuildingHBox(width * 0.5, height * 0.1),
+                            getPeopleHBox(width * 0.5, height * 0.1));
         }
 
         data.setAlignment(Pos.CENTER);
@@ -288,17 +290,27 @@ public class UnitPane {
         return text;
     }
 
-    private HBox getPeopleHBox(double width, double height) {
+    private Node getPeopleHBox(double width, double height) {
         HBox hBox = gethBox(width, height, 5);
+        hBox.setAlignment(Pos.TOP_CENTER);
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(hBox);
+        scrollPane.setPrefSize(width, height);
+        scrollPane.setBackground(Background.EMPTY);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         for (Objects object : unit.getObjects())
             if (object instanceof Person person)
-                hBox.getChildren().add(getPersonStackPane(height, person));
+                hBox.getChildren().add(getPersonStackPane(height * 0.8, person));
 
-        if (hBox.getChildren().isEmpty())
+        if (hBox.getChildren().isEmpty()) {
             hBox.getChildren().add(getText("No people in this unit"));
+            return hBox;
+        }
 
-        return hBox;
+        return scrollPane;
     }
 
     private StackPane getPersonStackPane(double height, Person person) {

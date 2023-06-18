@@ -1,6 +1,7 @@
 package model.RandomGenerator;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomGenerator {
     private static final Random rand = new Random();
@@ -17,6 +18,6 @@ public class RandomGenerator {
     }
 
     public static double getRandomIntersection(double lo, double hi) {
-        return rand.nextDouble(lo, hi - lo);
+        return ThreadLocalRandom.current().nextDouble(lo, hi);
     }
 }

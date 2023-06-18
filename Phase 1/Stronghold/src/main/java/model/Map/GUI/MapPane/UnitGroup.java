@@ -57,17 +57,18 @@ public class UnitGroup {
     }
 
     private void addToPeople(double tileWidth, double tileHeight, ImageView imageView) {
-        imageView.setFitHeight(tileHeight / 5);
+        imageView.setFitHeight(tileHeight / 2.5);
         imageView.setPreserveRatio(true);
         if (peopleGroup == null) peopleGroup = new Group();
         peopleGroup.getChildren().add(imageView);
         double x0 = RandomGenerator.getRandomIntersection(0, tileWidth);
-        double y0 = RandomGenerator.getRandomIntersection(-(x0 % (tileWidth / 2)) / (2 * tileWidth / tileHeight),
-                                                          (x0 % (tileWidth / 2)) / (2 * tileWidth / tileHeight));
+        double y0 = RandomGenerator.getRandomIntersection(-tileHeight / 2, tileHeight / 2);
 
+        if (Math.abs(y0) / (x0 % (tileHeight / 2)) > tileHeight / tileWidth)
+            y0 = (y0 > 0 ? +1 : -1) * (Math.abs(y0) % ((x0 % (tileHeight / 2)) * tileHeight / tileWidth));
 
-        imageView.setLayoutX(imageView.getLayoutX() + x0);
-        imageView.setLayoutY(imageView.getLayoutY() + y0);
+        imageView.setLayoutX(wallpaperGroup.getLayoutBounds().getMinX() + x0);
+        imageView.setLayoutY(wallpaperGroup.getLayoutBounds().getCenterY() + y0);
     }
 
     private void addToBuildings(double tileWidth, ImageView imageView) {
@@ -115,7 +116,7 @@ public class UnitGroup {
         if (peopleGroup != null && !peopleGroup.getChildren().isEmpty())
             for (Node node : peopleGroup.getChildren()) {
                 if (node instanceof ImageView imageView) {
-                    imageView.setFitHeight(tileHeight / 5);
+                    imageView.setFitHeight(tileHeight / 2.5);
                     imageView.setPreserveRatio(true);
                 }
             }

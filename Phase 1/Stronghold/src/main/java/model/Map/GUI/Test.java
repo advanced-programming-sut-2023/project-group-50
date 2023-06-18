@@ -12,6 +12,7 @@ import model.Map.Map;
 import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.Buildings.BuildingType;
 import model.ObjectsPackage.Resource;
+import model.ObjectsPackage.Weapons.WeaponName;
 import model.RandomGenerator.RandomGenerator;
 import model.UserColor.UserColor;
 
@@ -53,6 +54,10 @@ public class Test extends Application {
         user.getGovernment().setResourceAmount(Resource.STONE, 10000);
         user.getGovernment().setResourceAmount(Resource.OIL, 10000);
         user.getGovernment().setResourceAmount(Resource.IRON, 10000);
+
+        for (WeaponName weaponName : WeaponName.values()) {
+            user.getGovernment().setWeaponAmount(weaponName, 1000);
+        }
 
         return user;
     }

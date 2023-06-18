@@ -536,6 +536,23 @@ public class Government implements Serializable {
         return sum;
     }
 
+    public void decrementArmourAmount(ArmourType armourType, int count) {
+        WeaponName armour = getArmourByArmourType(armourType);
+        if (armour == null) return;
+
+        for (int x = 0; x < map.getXSize(); x++)
+            for (int y = 0; y < map.getYSize(); y++)
+                for (Objects object : map.getXY(x, y).getObjects())
+                    if (object instanceof Storage storage) {
+                        int dec = Math.min(storage.getCurrentCapacity(armour), count);
+                        count -= dec;
+                        for (int i = 0; i < dec; i++) storage.reduceByOne(armour);
+                        if (count == 0)
+                            return;
+                    }
+
+    }
+
     private WeaponName getArmourByArmourType(ArmourType armourType) {
         switch (armourType) {
             case LEATHER -> {
@@ -962,6 +979,19 @@ public class Government implements Serializable {
         addPeopleByState(nonSoldier, PersonState.WORKER);
 
         return nonSoldier;
+    }
+
+    public boolean canAffordSoldiers(SoldierName selected, int number) {
+        return coins >= selected.getCoinCost() * number;
+    }
+
+    public boolean hasEnoughWeapons(SoldierName selected, int number) {
+        return weapons.getOrDefault(Soldier.getWeaponName(selected), 0) >= number;
+    }
+
+    public boolean hasEnoughArmour(SoldierName selected, int number) {
+        if (selected.getArmourType() == ArmourType.NONE) return true;
+        return getArmourAmount(selected.getArmourType()) >= number;
     }
 
     public static class Pair {
