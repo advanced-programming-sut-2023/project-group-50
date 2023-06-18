@@ -8,6 +8,7 @@ import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Person;
+import model.RandomGenerator.RandomGenerator;
 
 public class UnitGroup {
     private final Unit unit;
@@ -37,8 +38,6 @@ public class UnitGroup {
 
     private void getObjects(double tileHeight, double tileWidth) {
         for (Objects object : unit.getObjects()) {
-            if (object.getObjectType().equals(ObjectType.PERSON))
-                continue;
             ImageView imageView = new ImageView(object.getImage());
             addToGroups(tileHeight, tileWidth, object, imageView);
         }
@@ -46,22 +45,29 @@ public class UnitGroup {
 
     private void addToGroups(double tileHeight, double tileWidth, Objects object, ImageView imageView) {
         if (object instanceof Building) addToBuildings(tileWidth, imageView);
-        else if (object instanceof Person) addToPeople(tileWidth, imageView);
-        else addObject(tileHeight, tileWidth, imageView);
+        else if (object instanceof Person) addToPeople(tileWidth, tileHeight, imageView);
+        else addObject(tileWidth, imageView);
     }
 
-    private void addObject(double tileHeight, double tileWidth, ImageView imageView) {
+    private void addObject(double tileWidth, ImageView imageView) {
         imageView.setFitWidth(tileWidth);
         imageView.setPreserveRatio(true);
         if (objectsGroup == null) objectsGroup = new Group();
         objectsGroup.getChildren().add(imageView);
     }
 
-    private void addToPeople(double tileWidth, ImageView imageView) {
-        imageView.setFitWidth(tileWidth / 5);
+    private void addToPeople(double tileWidth, double tileHeight, ImageView imageView) {
+        imageView.setFitHeight(tileHeight / 5);
         imageView.setPreserveRatio(true);
         if (peopleGroup == null) peopleGroup = new Group();
         peopleGroup.getChildren().add(imageView);
+        double x0 = RandomGenerator.getRandomIntersection(0, tileWidth);
+        double y0 = RandomGenerator.getRandomIntersection(-(x0 % (tileWidth / 2)) / (2 * tileWidth / tileHeight),
+                                                          (x0 % (tileWidth / 2)) / (2 * tileWidth / tileHeight));
+
+
+        imageView.setLayoutX(imageView.getLayoutX() + x0);
+        imageView.setLayoutY(imageView.getLayoutY() + y0);
     }
 
     private void addToBuildings(double tileWidth, ImageView imageView) {
@@ -82,11 +88,15 @@ public class UnitGroup {
     }
 
     public boolean hasBuilding() {
-        return hasBuilding;
+        return hasBuilding && buildingGroup != null;
     }
 
     public boolean hasObjects() {
-        return hasObjects;
+        return hasObjects && objectsGroup != null;
+    }
+
+    public boolean hasPeople() {
+        return hasPeople && peopleGroup != null;
     }
 
     public Group getBuilding() {
@@ -105,8 +115,8 @@ public class UnitGroup {
         if (peopleGroup != null && !peopleGroup.getChildren().isEmpty())
             for (Node node : peopleGroup.getChildren()) {
                 if (node instanceof ImageView imageView) {
-                    imageView.setFitHeight(tileHeight);
-                    imageView.setFitWidth(tileWidth);
+                    imageView.setFitHeight(tileHeight / 5);
+                    imageView.setPreserveRatio(true);
                 }
             }
 
@@ -125,9 +135,5 @@ public class UnitGroup {
                     imageView.setFitWidth(tileWidth);
                 }
             }
-    }
-
-    public boolean hasPeople() {
-        return hasPeople;
     }
 }

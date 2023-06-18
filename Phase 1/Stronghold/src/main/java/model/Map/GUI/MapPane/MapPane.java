@@ -255,7 +255,9 @@ public class MapPane {
                         buildingsID.put(pair1, "{%d, %d}".formatted(x, y));
                     }
                     if (unitGroup.hasPeople()) {
-                        //TODO
+                        Pair pair1 = new Pair(dx, dy);
+                        people.put(pair1, unitGroup.getPeople());
+                        peopleID.put(pair1, "{%d, %d}".formatted(x, y));
                     }
                     if (unitGroup.hasObjects()) {
                         Pair pair1 = new Pair(dx, dy);
@@ -278,8 +280,11 @@ public class MapPane {
 
             }
         }
+        addHashMap(pane,
+                   people,
+                   peopleID,
+                   0);
         addHashMap(pane, buildings, buildingsID, tileHeight / 4);
-        addHashMap(pane, people, peopleID, 0);
         addHashMap(pane, objects, objectID, tileHeight / 4);
 
         pane.getChildren().addAll(navigation);
@@ -344,7 +349,7 @@ public class MapPane {
     private static void addHashMap(Pane pane,
                                    HashMap<Pair, Group> people,
                                    HashMap<Pair, String> peopleID,
-                                   double intersect) {
+                                   double intersectY) {
         ArrayList<Entry<Pair, Group>> entries = new ArrayList<>(people.entrySet());
 
         entries.sort(MapPane::front);
@@ -354,7 +359,7 @@ public class MapPane {
             Group group = entry.getValue();
             pane.getChildren().add(group);
             group.setLayoutX(x);
-            group.setLayoutY(y - intersect);
+            group.setLayoutY(y - intersectY);
             String s = peopleID.get(entry.getKey());
 
             setUpGroup(group, s);

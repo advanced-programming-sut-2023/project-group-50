@@ -3,19 +3,15 @@ package model.Map;
 import controller.UserDatabase.User;
 import javafx.scene.paint.Color;
 import model.ObjectsPackage.Buildings.*;
-import model.ObjectsPackage.ObjectType;
-import model.ObjectsPackage.Objects;
+import model.ObjectsPackage.*;
 import model.ObjectsPackage.People.Soldier.Engineer;
 import model.ObjectsPackage.People.Soldier.Soldier;
-import model.ObjectsPackage.Rock;
-import model.ObjectsPackage.Tree;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class Unit implements Serializable {
     private final LinkedHashSet<Objects> objects;
@@ -243,9 +239,14 @@ public class Unit implements Serializable {
     }
 
     public void clear(User user) {
-        ArrayList<Objects> toRemove = objects.stream().filter(
-                objects1 -> java.util.Objects.equals(objects1.getOwner(), user)
-        ).collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<Objects> toRemove = new ArrayList<>();
+        for (Objects objects1 : objects) {
+            if (java.util.Objects.equals(objects1.getOwner(), user)) {
+                toRemove.add(objects1);
+                if (objects1 instanceof Storage storage)
+                    storage.prevStorage().removeNextStorage(storage);
+            }
+        }
 
         toRemove.forEach(objects::remove);
         setTexture(GroundType.PLAIN);

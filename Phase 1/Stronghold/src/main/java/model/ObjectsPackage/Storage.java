@@ -1,7 +1,6 @@
 package model.ObjectsPackage;
 
 import controller.UserDatabase.User;
-import javafx.scene.image.Image;
 import model.Government.Government;
 import model.Map.Map;
 import model.ObjectsPackage.Buildings.Building;
@@ -15,6 +14,7 @@ public class Storage extends Building {
     private final HashMap<String, Integer> currentCapacity;
     private final int maximumCapacity;
     private Storage nextStorage;
+    private Storage previousStorage;
 
 
     public Storage(BuildingType type, User owner, int x, int y, int maxHp, int maximumCapacity) {
@@ -29,16 +29,19 @@ public class Storage extends Building {
 
     private void checkNeighboursForStorage(BuildingType type, int x, int y, Map map) {
         if (x != 0 && checkForStorage(type, x - 1, y, map)) return;
-        if (x != map.getXSize() && checkForStorage(type, x + 1, y, map)) return;
+        if (x != map.getXSize() - 1 && checkForStorage(type, x + 1, y, map)) return;
         if (y != 0 && checkForStorage(type, x, y - 1, map)) return;
-        if (y != map.getYSize() && checkForStorage(type, x, y + 1, map)) {
+        if (y != map.getYSize() - 1 && checkForStorage(type, x, y + 1, map)) {
         }
     }
 
     private boolean checkForStorage(BuildingType type, int x, int y, Map map) {
         if (map.getXY(x, y).hasObjectType(type)) {
-            Storage prevStorage = (Storage) map.getXY(x - 1, y).getObjectType(type);
-            if (prevStorage != null) prevStorage.setNextStorage(this);
+            Storage prevStorage = (Storage) map.getXY(x, y).getObjectType(type);
+            if (prevStorage != null && prevStorage.nextStorage == null) {
+                prevStorage.setNextStorage(this);
+                this.previousStorage = prevStorage;
+            }
             return true;
         }
         return false;
@@ -163,8 +166,38 @@ public class Storage extends Building {
         return getCurrentCapacity() == 0;
     }
 
-    @Override
-    public Image getImage() {
-        return null;
+    public Storage prevStorage() {
+        return previousStorage;
+    }
+
+    public void removeNextStorage(Storage storage) {
+        findNextStorage(storage);
+    }
+
+    private void findNextStorage(Storage storage) {
+        int x = getX(), y = getY();
+        Map map = getOwner().getGovernment().getMap();
+        BuildingType type = getType();
+        if (x != 0 && checkForNextStorage(type, x - 1, y, map, storage)) return;
+        if (x != map.getXSize() - 1 && checkForNextStorage(type, x + 1, y, map, storage)) return;
+        if (y != 0 && checkForNextStorage(type, x, y - 1, map, storage)) return;
+        if (y != map.getYSize() - 1 && checkForNextStorage(type, x, y + 1, map, storage)) return;
+        nextStorage = null;
+    }
+
+    private boolean checkForNextStorage(BuildingType type, int x, int y, Map map, Storage storage) {
+        if (map.getXY(x, y).hasObjectType(type)) {
+            Storage nextStorage = (Storage) map.getXY(x, y).getObjectType(type);
+            if (nextStorage != null && nextStorage.previousStorage == null && nextStorage != storage) {
+                nextStorage.setPreviousStorage(this);
+                this.nextStorage = nextStorage;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private void setPreviousStorage(Storage storage) {
+        previousStorage = storage;
     }
 }

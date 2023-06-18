@@ -2,10 +2,15 @@ package model.ObjectsPackage.Buildings;
 
 import controller.UserDatabase.User;
 import javafx.scene.image.Image;
+import model.Government.Government;
 import model.Map.GroundType;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.NonSoldier.Job;
+import model.ObjectsPackage.People.NonSoldier.NonSoldier;
+import model.ObjectsPackage.People.PersonState;
+import model.ObjectsPackage.People.Soldier.Soldier;
+import model.ObjectsPackage.People.Soldier.SoldierName;
 import model.ObjectsPackage.Storage;
 import model.RandomGenerator.RandomBuilding;
 
@@ -31,7 +36,7 @@ public abstract class Building extends Objects {
         this.maxHp = maxHp;
         hp = maxHp;
         residents = new HashMap<>();
-
+        addPeople(type, owner.getGovernment(), owner);
     }
 
     public static Building getBuildingByType(BuildingType buildingType, User owner, int x, int y) {
@@ -427,6 +432,61 @@ public abstract class Building extends Objects {
             }
         }
 
+    }
+
+    private void addPeople(BuildingType type, Government government, User owner) {
+        switch (type) {
+            case SMALL_STONE_GATEHOUSE -> {
+                Soldier soldier = Soldier.getSoldierByType(SoldierName.SWORDSMAN, owner);
+                government.addPeopleByState(soldier, PersonState.DEPLOYED_SOLDIER);
+                government.getMap().getXY(X, Y).addObject(soldier);
+            }
+            case BIG_STONE_GATEHOUSE -> {
+                for (int i = 0; i < 2; i++) {
+                    Soldier soldier = Soldier.getSoldierByType(SoldierName.SWORDSMAN, owner);
+                    government.addPeopleByState(soldier, PersonState.DEPLOYED_SOLDIER);
+                    government.getMap().getXY(X, Y).addObject(soldier);
+                }
+            }
+            case LOOKOUT_TOWER, ROUND_TOWER, SQUARE_TOWER, TURRET, PERIMETER_TOWER -> {
+                Soldier soldier = Soldier.getSoldierByType(SoldierName.ARCHER, owner);
+                government.addPeopleByState(soldier, PersonState.DEPLOYED_SOLDIER);
+                government.getMap().getXY(X, Y).addObject(soldier);
+
+            }
+            case ARMOURY -> government.addPeopleByState(new NonSoldier(getJobByBuildingType(BuildingType.ARMOURY),
+                                                                       owner,
+                                                                       this),
+                                                        PersonState.WORKER);
+            case INN, HOVEL -> {
+                House house = (House) this;
+                for (int i = 0; i < house.getCapacity(); i++) {
+                    government.addPeopleByState(new NonSoldier(Job.randomHousePerson(),
+                                                               owner,
+                                                               this),
+                                                PersonState.JOBLESS);
+                }
+            }
+            case MILL -> government.joblessTo(Job.MILL_BOY, this);
+            case IRON_MINE -> government.joblessTo(Job.IRON_MINER, this);
+            case MARKET -> government.joblessTo(Job.MARKER_TRADER, this);
+            case PITCH_RIG, OIL_SMELTER -> government.joblessTo(Job.PITCH_DIGGER, this);
+            case QUARRY -> government.joblessTo(Job.STONE_MASON, this);
+            case STOCKPILE, STABLE, GRANARY -> government.joblessTo(Job.PEASANT, this);
+            case WOODCUTTER -> government.joblessTo(Job.WOODCUTTER, this);
+            case APOTHECARY -> government.joblessTo(Job.HEALER, this);
+            case CHAPEL, CHURCH, CATHEDRAL -> government.joblessTo(Job.PRIEST, this);
+            case ARMOURER -> government.joblessTo(Job.ARMORER, this);
+            case BLACKSMITH -> government.joblessTo(Job.BLACKSMITH, this);
+            case FLETCHER -> government.joblessTo(Job.FLETCHER, this);
+            case POLETURNER -> government.joblessTo(Job.POLETURNER, this);
+            case APPLE_ORCHARD, WHEAT_FARMER, HOPS_FARMER, DIARY_FARMER -> government.joblessTo(Job.FARMER, this);
+            case HUNTER_POST -> government.joblessTo(Job.HUNTER, this);
+            case BAKERY -> government.joblessTo(Job.BAKER, this);
+            case BREWER -> government.joblessTo(Job.BREWER, this);
+            case TANNERS_WORKSHOP -> government.joblessTo(Job.TANNER, this);
+//            case PALACE -> government.joblessTo(Job.LADY, this);
+        }
     }
 
     public void repair() {

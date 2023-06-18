@@ -32,6 +32,8 @@ public class Test extends Application {
                              10,
                              5,
                              UserColor.RED, map);
+
+        map = user.getGovernment().getMap();
         user.setSecurityQuestion(SecurityQuestion.NUMBER1);
         user.setSecurityQuestionAnswer("haha");
 
@@ -45,9 +47,7 @@ public class Test extends Application {
             else map.getUnitByXY(x, y).setTexture(RandomGenerator.randomFrom(groundTypes));
         }
 
-        map.addObject(Building.getBuildingByType(BuildingType.PALACE, user, 50, 5), 50, 5);
-        user.getGovernment().setMap(map);
-
+//        map.addObject(Building.getBuildingByType(BuildingType.PALACE, user, 50, 5), 50, 5);
         user.getGovernment().setCoins(10000);
         user.getGovernment().setResourceAmount(Resource.WOOD, 10000);
         user.getGovernment().setResourceAmount(Resource.STONE, 10000);

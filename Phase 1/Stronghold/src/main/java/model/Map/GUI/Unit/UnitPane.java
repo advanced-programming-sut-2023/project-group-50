@@ -21,6 +21,7 @@ import model.Map.Unit;
 import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Person;
+import model.ObjectsPackage.Storage;
 import view.show.ProfileMenu.ShowProfileMenu;
 
 import java.net.URL;
@@ -178,6 +179,9 @@ public class UnitPane {
                             getTextureHBox(width * 0.5, height * 0.1),
                             getOwnerHBox(width * 0.5, height * 0.1),
                             getBuildingHBox(width * 0.5, height * 0.1));
+
+            if (unit.getBuilding() instanceof Storage storage)
+                data.getChildren().add(getPrevStorage(width * 0.5, height * 0.05));
         } else {
             data = new VBox(getPeopleHBox(width * 0.5, height * 0.1),
                             getTextureHBox(width * 0.5, height * 0.1),
@@ -192,6 +196,16 @@ public class UnitPane {
         vBox.getChildren().addAll(getUnitImage(height * 0.4),
                                   data);
         return vBox;
+    }
+
+    private HBox getPrevStorage(double width, double height) {
+        HBox hBox = gethBox(width, height, 10);
+        Storage storage = (Storage) unit.getBuilding();
+        hBox.getChildren().add(getText("Next storage: " + (storage.getNextStorage() == null ? "Null" :
+                "{%d, %d}".formatted(storage.getNextStorage().getX(), storage.getNextStorage().getY()))));
+        hBox.getChildren().add(getText(
+                "Capacity: " + storage.getCurrentCapacity() + " of " + storage.getMaximumCapacity()));
+        return hBox;
     }
 
     private HBox getHealth(double width, double height) {

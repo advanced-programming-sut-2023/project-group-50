@@ -65,7 +65,7 @@ public class User implements Serializable, Comparable<User> {
                 int X0,
                 int Y0,
                 UserColor color,
-                Map map) {
+                Map ignoredMap) {
         this.userName = userName;
         this.password = password;
         this.nickName = nickName;

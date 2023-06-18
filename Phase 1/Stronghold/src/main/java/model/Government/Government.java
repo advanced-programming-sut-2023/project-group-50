@@ -2,6 +2,7 @@ package model.Government;
 
 import controller.UserDatabase.User;
 import model.Map.Map;
+import model.Map.Unit;
 import model.ObjectsPackage.Buildings.*;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.NonSoldier.Job;
@@ -87,7 +88,7 @@ public class Government implements Serializable {
         this.fearRate = 0;
         this.noneJob = new ArrayList<>();
         this.foods = new HashMap<>();
-        map = new Map(400, 400);
+        map = new Map(100, 100);
         placeLord(user, new Pair(X0, Y0));
     }
 
@@ -130,8 +131,11 @@ public class Government implements Serializable {
         lord = Soldier.getSoldierByType(SoldierName.THE_LORD, user);
         Pair xy = X0;
         lordsCastle = Building.getBuildingByType(BuildingType.PALACE, user, xy.x, xy.y);
+        NonSoldier lady = new NonSoldier(Job.LADY, user, lordsCastle);
         map.getXY(xy.x, xy.y).addObject(lord);
         map.getXY(xy.x, xy.y).addObject(lordsCastle);
+        map.getXY(xy.x, xy.y).addObject(lady);
+        addPeopleByState(lady, PersonState.WORKER);
     }
 
     public Building getLordsCastle() {
@@ -295,6 +299,7 @@ public class Government implements Serializable {
     }
 
     public void addPeopleByState(Person person, PersonState personState) {
+        people.putIfAbsent(personState, new ArrayList<>());
         this.people.get(personState).add(person);
         if (personState.equals(PersonState.JOBLESS)) {
             Building building = noneActiveBuilding();
@@ -938,6 +943,25 @@ public class Government implements Serializable {
         building.getOwner().getGovernment().buyBuilding(building.getType(), cost);
         building.repair();
         return null;
+    }
+
+    public Person joblessTo(Job job, Building building) {
+        if (!people.containsKey(PersonState.JOBLESS)) {
+            return null;
+        }
+
+        ArrayList<Person> jobless = people.get(PersonState.JOBLESS);
+        if (jobless.size() < 1) return null;
+
+        Person removed = jobless.remove(jobless.size() - 1);
+        Unit xy = map.getXY(removed.getX(), removed.getY());
+        xy.removeObject(removed);
+
+        NonSoldier nonSoldier = new NonSoldier(job, user, building);
+
+        addPeopleByState(nonSoldier, PersonState.WORKER);
+
+        return nonSoldier;
     }
 
     public static class Pair {
