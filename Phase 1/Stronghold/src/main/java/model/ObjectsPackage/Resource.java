@@ -1,6 +1,10 @@
 package model.ObjectsPackage;
 
+import javafx.scene.image.Image;
+import model.ObjectsPackage.People.Soldier.SoldierName;
+
 import java.io.Serializable;
+import java.net.URL;
 
 public enum Resource implements Serializable {
     WHEAT,
@@ -51,5 +55,14 @@ public enum Resource implements Serializable {
 
     public boolean isFood() {
         return getFoodByName(this.name().toLowerCase()) != null;
+    }
+
+    public String getName() {
+        return SoldierName.getName(this.name());
+    }
+
+    public Image getImage() {
+        URL url = Resource.class.getResource("/images/Resources/" + getName() + ".png");
+        return new Image(url.toExternalForm());
     }
 }

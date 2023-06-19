@@ -96,7 +96,7 @@ public abstract class Objects implements Serializable {
 
     public int getHp() {
         if (this instanceof Building building) return building.getHp();
-        if (this instanceof Soldier soldier) return soldier.getLife();
+        if (this instanceof Person person) return person.getLife();
         return 0;
     }
 

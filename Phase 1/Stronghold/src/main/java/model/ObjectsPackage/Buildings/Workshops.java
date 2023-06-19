@@ -6,6 +6,8 @@ import model.ObjectsPackage.Resource;
 import model.ObjectsPackage.Storage;
 import model.ObjectsPackage.Weapons.WeaponName;
 
+import java.util.Objects;
+
 public class Workshops extends Building {
     private final int rate;
     private Resource fromResource;
@@ -142,5 +144,18 @@ public class Workshops extends Building {
         if (toWeapon != null)
             for (WeaponName weaponName : toWeapon)
                 produce(weaponName);
+    }
+
+    public boolean produces(Resource resource) {
+        if (toResource == null) return false;
+        for (Resource resource1 : toResource)
+            if (resource1.equals(resource))
+                return true;
+
+        return false;
+    }
+
+    public boolean consumes(Resource resource) {
+        return Objects.equals(fromResource, resource);
     }
 }

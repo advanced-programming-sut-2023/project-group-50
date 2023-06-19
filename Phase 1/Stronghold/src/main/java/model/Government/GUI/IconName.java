@@ -2,6 +2,7 @@ package model.Government.GUI;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import model.ObjectsPackage.People.Soldier.SoldierName;
 
 import java.net.URL;
 
@@ -25,5 +26,9 @@ public enum IconName {
         imageView.setFitHeight(size);
         imageView.setFitWidth(size);
         return imageView;
+    }
+
+    public String getType() {
+        return SoldierName.getName(name());
     }
 }

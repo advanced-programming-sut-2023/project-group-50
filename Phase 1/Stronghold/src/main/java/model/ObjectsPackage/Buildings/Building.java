@@ -363,7 +363,7 @@ public abstract class Building extends Objects {
                 return Job.IRON_MINER;
             }
             case MARKET -> {
-                return Job.MARKER_TRADER;
+                return Job.MARKET_TRADER;
             }
             case PITCH_RIG -> {
                 return Job.PITCH_DIGGER;
@@ -469,7 +469,7 @@ public abstract class Building extends Objects {
             }
             case MILL -> government.joblessTo(Job.MILL_BOY, this);
             case IRON_MINE -> government.joblessTo(Job.IRON_MINER, this);
-            case MARKET -> government.joblessTo(Job.MARKER_TRADER, this);
+            case MARKET -> government.joblessTo(Job.MARKET_TRADER, this);
             case PITCH_RIG, OIL_SMELTER -> government.joblessTo(Job.PITCH_DIGGER, this);
             case QUARRY -> government.joblessTo(Job.STONE_MASON, this);
             case STOCKPILE, STABLE, GRANARY -> government.joblessTo(Job.PEASANT, this);

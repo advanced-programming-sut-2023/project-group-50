@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -17,9 +18,12 @@ import javafx.stage.Screen;
 import model.Government.GUI.GovernmentPane;
 import model.Map.GUI.MapPane.MapPane;
 import model.Map.Unit;
+import view.show.GovernmentDataMenu.GovernmentDataMenu;
 import view.show.MainMenu.MainMenu;
 import view.show.ProfileMenu.ShowProfileMenu;
 import view.show.UnitMenu.UnitMenu;
+
+import java.util.Objects;
 
 import static model.Map.GUI.Unit.UnitPane.getButtonUtil;
 
@@ -76,6 +80,7 @@ public class MainMenuGUIController {
         pane.getChildren().add(governmentPane);
         governmentPane.setLayoutX(0);
         governmentPane.setLayoutY(height - 200);
+        governmentPane.setOnMouseClicked(MainMenuGUIController::showGovernmentData);
 
         pane.getChildren().add(profileData);
         profileData.setLayoutX(width - 350);
@@ -84,9 +89,19 @@ public class MainMenuGUIController {
         return pane;
     }
 
+    private static void showGovernmentData(MouseEvent mouseEvent) {
+        GovernmentDataMenuController.init(user.getGovernment());
+
+        try {
+            new GovernmentDataMenu().start(MainMenu.getStage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void updateGovernmentPane(String username) {
         pane.getChildren().remove(governmentPane);
-        governmentPane = GovernmentPane.getPane(Users.getUser(username).getGovernment(), pane);
+        governmentPane = GovernmentPane.getPane(Objects.requireNonNull(Users.getUser(username)).getGovernment(), pane);
         pane.getChildren().add(governmentPane);
 
         governmentPane.setLayoutX(0);

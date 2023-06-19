@@ -1,6 +1,8 @@
 package model.Government;
 
 import controller.UserDatabase.User;
+import javafx.scene.paint.Color;
+import model.Government.GUI.IconName;
 import model.Map.Map;
 import model.Map.Unit;
 import model.ObjectsPackage.Buildings.*;
@@ -165,7 +167,7 @@ public class Government implements Serializable {
     }
 
     public int getResourceAmount(Resource resource) {
-        if (resource.isFood()) return (int) Math.ceil(foods.get(resource));
+        if (resource.isFood()) return (int) Math.ceil(foods.getOrDefault(resource, 0.0));
         return resources.getOrDefault(resource, 0);
     }
 
@@ -992,6 +994,116 @@ public class Government implements Serializable {
     public boolean hasEnoughArmour(SoldierName selected, int number) {
         if (selected.getArmourType() == ArmourType.NONE) return true;
         return getArmourAmount(selected.getArmourType()) >= number;
+    }
+
+    public int getBuildingCount(BuildingType buildingType) {
+        int sum = 0;
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object.getOwner().equals(user) && object instanceof Building building &&
+                            building.getType().equals(buildingType))
+                        sum++;
+                }
+            }
+        }
+        return sum;
+    }
+
+    public int getSoldierCount(SoldierName soldierName) {
+        int sum = 0;
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object.getOwner().equals(user) && object instanceof Soldier soldier &&
+                            soldier.getType().equals(soldierName))
+                        sum++;
+                }
+            }
+        }
+        return sum;
+    }
+
+    public int getNonSoldierCount(Job job) {
+        int sum = 0;
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object.getOwner().equals(user) && object instanceof NonSoldier nonSoldier &&
+                            nonSoldier.getJob().equals(job))
+                        sum++;
+                }
+            }
+        }
+        return sum;
+    }
+
+    public String getIconData(IconName iconName) {
+        switch (iconName) {
+            case COIN -> {
+                return String.valueOf(coins);
+            }
+            case FOOD -> {
+                return getFoodNumber() + " (rate: " + getRateFood() + ")";
+            }
+            case RELIGION -> {
+                return String.valueOf(checkReligionPopularity());
+            }
+            case RESOURCES -> {
+                return String.valueOf(getResources());
+            }
+            case FEAR -> {
+                return checkFearPopularity() + " (rate: " + getFearRate() + ")";
+            }
+            case TAX -> {
+                return String.valueOf(getTaxRate());
+            }
+        }
+
+        return null;
+    }
+
+    public int getResourceRate(Resource resource) {
+        int sum = 0;
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object.getOwner().equals(user) && object instanceof Workshops workshops) {
+                        if (workshops.produces(resource))
+                            sum++;
+                        if (workshops.consumes(resource))
+                            sum--;
+                    }
+                }
+            }
+        }
+        return sum;
+    }
+
+    public Color getColor() {
+        return user.getColor().toColor();
+    }
+
+    public String getPalaceState() {
+        return lordsCastle.isDestroyed() ? "Destroyed" : String.valueOf(lordsCastle.getHp());
+    }
+
+    public String getLadyState() {
+        Person lady = getLady();
+        return lady == null || !lady.isAlive() ? "Dead" : String.valueOf(lady.getHp());
+    }
+
+    private Person getLady() {
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object.getOwner().equals(user) && object instanceof NonSoldier nonSoldier &&
+                            nonSoldier.getJob().equals(Job.LADY))
+                        return nonSoldier;
+                }
+            }
+        }
+        return null;
     }
 
     public static class Pair {

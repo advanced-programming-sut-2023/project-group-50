@@ -1,5 +1,6 @@
 package model.ObjectsPackage.People.NonSoldier;
 
+import javafx.scene.image.Image;
 import model.ObjectsPackage.People.Soldier.SoldierName;
 import model.RandomGenerator.RandomGenerator;
 
@@ -27,7 +28,7 @@ public enum Job {
     TANNER,
     PRIEST,
     HEALER,
-    MARKER_TRADER,
+    MARKET_TRADER,
     JUGGLER,
     FIRE_EATER;
 
@@ -45,5 +46,10 @@ public enum Job {
 
     public String getType() {
         return SoldierName.getName(this.name());
+    }
+
+    public Image getImage() {
+        String path = "NonSoldier/" + getType().replaceAll(" ", "") + ".png";
+        return new Image(Job.class.getResource("/images/People/" + path).toExternalForm());
     }
 }
