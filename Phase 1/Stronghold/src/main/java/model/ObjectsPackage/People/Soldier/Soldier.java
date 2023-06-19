@@ -80,6 +80,10 @@ public abstract class Soldier extends Person {
         }
     }
 
+    public int[][] getPatrolPath() {
+        return patrolPath;
+    }
+
     public SoldierState getSoldierState() {
         return soldierState;
     }
@@ -91,6 +95,7 @@ public abstract class Soldier extends Person {
     public void startPatrolling(int x1, int y1, int x2, int y2) {
         patrolPath = new int[][]{{x1, x2}, {y1, y2}};
         isPatrolling = true;
+        System.out.println("done");
     }
 
     public void patrol() {

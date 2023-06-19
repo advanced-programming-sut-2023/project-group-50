@@ -25,6 +25,8 @@ public class MainMenu extends Application {
         stage.setScene(new Scene(Loading.getLoadingPane()));
         stage.setTitle("Loading...");
         stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
+        stage.setFullScreenExitHint("");
         stage.show();
 
         MainMenu.stage = stage;
@@ -37,6 +39,7 @@ public class MainMenu extends Application {
         stage.setScene(scene);
         stage.setTitle("Stronghold");
         stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
         stage.show();
     }
 

@@ -16,6 +16,7 @@ public class GovernmentDataMenu extends Application {
         stage.setScene(scene);
         stage.setTitle("Stronghold");
         stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
         stage.show();
     }
 }

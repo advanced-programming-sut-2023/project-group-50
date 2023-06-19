@@ -1,6 +1,7 @@
 package model.Map.GUI.Unit;
 
 import controller.GUIControllers.MainMenuGUIController;
+import controller.GUIControllers.SoldierMenuController.SoldierMenuController;
 import controller.GUIControllers.UnitMenuController;
 import controller.UserDatabase.User;
 import javafx.event.ActionEvent;
@@ -13,6 +14,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -23,18 +25,20 @@ import model.Map.Unit;
 import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Person;
+import model.ObjectsPackage.People.Soldier.Soldier;
 import model.ObjectsPackage.Storage;
 import view.show.ProfileMenu.ShowProfileMenu;
 
 import java.net.URL;
+import java.util.HashMap;
 
 import static controller.GUIControllers.ProfileMenuGUIController.getBackButton;
 import static controller.GUIControllers.ProfileMenuGUIController.getDataBackgroundImage;
 
 public class UnitPane {
     private final Unit unit;
-    private final boolean done = false;
     private Pane pane;
+    private HashMap<StackPane, Soldier> soldierHashMap;
 
     public UnitPane(Unit unit) {
         UnitMenuController.init(MainMenuGUIController.getUser(), unit);
@@ -84,7 +88,8 @@ public class UnitPane {
 
     public static Button getButtonUtil(String text, double height, EventHandler<ActionEvent> eventHandler) {
         Image image;
-        image = new Image(MainMenuGUIController.class.getResource("/images/Buttons/bg.jpg").toExternalForm());
+        image = new Image(java.util.Objects.requireNonNull(
+                MainMenuGUIController.class.getResource("/images/Buttons/bg.jpg")).toExternalForm());
         BackgroundImage backgroundImage = new BackgroundImage(image,
                                                               BackgroundRepeat.NO_REPEAT,
                                                               BackgroundRepeat.NO_REPEAT,
@@ -104,6 +109,13 @@ public class UnitPane {
         button.setOnAction(eventHandler);
 
         return button;
+    }
+
+    public static Text getText(String string) {
+        Text text = new Text(string);
+        text.setFont(new Font("System", 15));
+
+        return text;
     }
 
     private void initButton() {
@@ -182,7 +194,7 @@ public class UnitPane {
                             getBuildingHBox(width * 0.5, height * 0.1),
                             getPeopleHBox(width * 0.5, height * 0.1));
 
-            if (unit.getBuilding() instanceof Storage storage)
+            if (unit.getBuilding() instanceof Storage)
                 data.getChildren().add(getPrevStorage(width * 0.5, height * 0.05));
         } else {
             data = new VBox(getTextureHBox(width * 0.5, height * 0.1),
@@ -225,7 +237,6 @@ public class UnitPane {
 
         return hBox;
     }
-
 
     private HBox getBuildingHBox(double width, double height) {
         HBox hBox = gethBox(width, height, 15);
@@ -283,13 +294,6 @@ public class UnitPane {
         return hBox;
     }
 
-    private Text getText(String string) {
-        Text text = new Text(string);
-        text.setFont(new Font("System", 15));
-
-        return text;
-    }
-
     private Node getPeopleHBox(double width, double height) {
         HBox hBox = gethBox(width, height, 5);
         hBox.setAlignment(Pos.TOP_CENTER);
@@ -301,9 +305,19 @@ public class UnitPane {
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        for (Objects object : unit.getObjects())
-            if (object instanceof Person person)
-                hBox.getChildren().add(getPersonStackPane(height * 0.8, person));
+        soldierHashMap = new HashMap<>();
+
+        for (Objects object : unit.getObjects()) {
+            if (object instanceof Person person) {
+                StackPane personStackPane = getPersonStackPane(height * 0.8, person);
+                hBox.getChildren().add(personStackPane);
+                if (person instanceof Soldier soldier) {
+                    soldierHashMap.put(personStackPane, soldier);
+                    personStackPane.setOnMouseClicked(this::handleSoldier);
+                }
+            }
+
+        }
 
         if (hBox.getChildren().isEmpty()) {
             hBox.getChildren().add(getText("No people in this unit"));
@@ -367,6 +381,13 @@ public class UnitPane {
 
     public Pane getPane() {
         return pane;
+    }
+
+    private void handleSoldier(MouseEvent mouseEvent) {
+        StackPane stackPane = (StackPane) mouseEvent.getPickResult().getIntersectedNode().getParent();
+        SoldierMenuController soldierMenuController =
+                SoldierMenuController.getController(soldierHashMap.get(stackPane));
+        soldierMenuController.showSoldierMenu(null);
     }
 }
 

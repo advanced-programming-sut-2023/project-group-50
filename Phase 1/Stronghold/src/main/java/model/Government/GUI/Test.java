@@ -32,6 +32,7 @@ public class Test extends Application {
 
         stage.setScene(scene);
         stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
         stage.show();
     }
 }

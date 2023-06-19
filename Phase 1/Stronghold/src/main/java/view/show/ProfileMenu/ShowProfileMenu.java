@@ -31,6 +31,7 @@ public class ShowProfileMenu extends Application {
             Scene scene = new Scene(profilePane);
             stage.setScene(scene);
             stage.setFullScreen(true);
+            stage.setFullScreenExitHint("");
             stage.setTitle("Stronghold");
         } else stage.getScene().setRoot(profilePane);
 

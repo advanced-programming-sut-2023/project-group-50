@@ -47,6 +47,7 @@ public class TreeMenu extends Application {
 
         Scene scene = new Scene(pane);
         stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
         stage.setTitle("Stronghold");
         stage.setScene(scene);
         stage.show();

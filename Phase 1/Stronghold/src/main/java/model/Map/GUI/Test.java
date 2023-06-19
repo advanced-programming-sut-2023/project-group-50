@@ -72,6 +72,7 @@ public class Test extends Application {
         Scene scene = new Scene(mapPane);
         stage.setScene(scene);
         stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
         stage.setTitle("Stronghold");
         stage.show();
     }

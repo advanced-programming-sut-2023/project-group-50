@@ -25,6 +25,7 @@ public class UnitMenu extends Application {
         stage.setScene(scene);
         stage.setTitle("Stronghold");
         stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
         stage.show();
     }
 }
