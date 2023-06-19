@@ -80,7 +80,6 @@ public class MainMenuGUIController {
         pane.getChildren().add(governmentPane);
         governmentPane.setLayoutX(0);
         governmentPane.setLayoutY(height - 200);
-        governmentPane.setOnMouseClicked(MainMenuGUIController::showGovernmentData);
 
         pane.getChildren().add(profileData);
         profileData.setLayoutX(width - 350);
@@ -89,7 +88,7 @@ public class MainMenuGUIController {
         return pane;
     }
 
-    private static void showGovernmentData(MouseEvent mouseEvent) {
+    public static void showGovernmentData(MouseEvent mouseEvent) {
         GovernmentDataMenuController.init(user.getGovernment());
 
         try {

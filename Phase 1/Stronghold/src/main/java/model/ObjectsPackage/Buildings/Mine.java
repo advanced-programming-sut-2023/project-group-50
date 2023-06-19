@@ -26,4 +26,28 @@ public class Mine extends Building {
         Government government = getOwner().getGovernment();
         government.setResourceAmount(resource, government.getResourceAmount(resource) + rate);
     }
+
+    public boolean produces(Resource resource) {
+        switch (getType()) {
+            case IRON_MINE -> {
+                return Resource.IRON.equals(resource);
+            }
+            case PITCH_RIG -> {
+                return Resource.PITCH.equals(resource);
+            }
+            case QUARRY -> {
+                return Resource.STONE.equals(resource);
+            }
+            case WOODCUTTER -> {
+                return Resource.WOOD.equals(resource);
+            }
+            default -> {
+                return false;
+            }
+        }
+    }
+
+    public int getRate() {
+        return rate;
+    }
 }

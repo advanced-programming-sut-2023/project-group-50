@@ -1073,7 +1073,8 @@ public class Government implements Serializable {
                             sum++;
                         if (workshops.consumes(resource))
                             sum--;
-                    }
+                    } else if (object.getOwner().equals(user) && object instanceof Mine mine && mine.produces(resource))
+                        sum += mine.getRate();
                 }
             }
         }

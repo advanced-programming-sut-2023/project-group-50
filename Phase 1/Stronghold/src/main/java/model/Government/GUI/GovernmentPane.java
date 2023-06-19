@@ -1,6 +1,7 @@
 package model.Government.GUI;
 
 import controller.GUIControllers.GovernmentMenuGUIController;
+import controller.GUIControllers.MainMenuGUIController;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -247,6 +248,8 @@ public class GovernmentPane {
 
         HBox items = gethBox(width - 100, height, government);
         hBox.getChildren().add(items);
+
+        hBox.setOnMouseClicked(MainMenuGUIController::showGovernmentData);
 
         return hBox;
     }
