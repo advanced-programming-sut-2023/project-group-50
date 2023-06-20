@@ -251,4 +251,29 @@ public class Unit implements Serializable {
         toRemove.forEach(objects::remove);
         setTexture(GroundType.PLAIN);
     }
+
+    public boolean hasGate() {
+        for (Objects objects1 : objects)
+            if (objects1 instanceof Gate)
+                return true;
+        return false;
+    }
+
+    public Gate getGate() {
+        for (Objects objects1 : objects)
+            if (objects1 instanceof Gate gate)
+                return gate;
+        return null;
+    }
+
+    public Tunnel getTunnel() {
+        for (Objects objects1 : objects)
+            if (objects1 instanceof Tunnel tunnel)
+                return tunnel;
+        return null;
+    }
+
+    public boolean hasTunnel() {
+        return getTunnel() != null;
+    }
 }

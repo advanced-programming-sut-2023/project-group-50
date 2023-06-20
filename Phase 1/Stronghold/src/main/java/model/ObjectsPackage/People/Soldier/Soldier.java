@@ -11,6 +11,7 @@ import model.ObjectsPackage.Weapons.WeaponName;
 public abstract class Soldier extends Person {
     private final Weapon weapon;
     private final SoldierName type;
+    protected NextTurnData nextTurnData;
     private SoldierState soldierState;
     private boolean isPatrolling;
     private int[][] patrolPath; //[x,y][0,1]
@@ -26,6 +27,7 @@ public abstract class Soldier extends Person {
         patrolPath = new int[2][2];
         going = false;
         attacker = null;
+        nextTurnData = new NextTurnData(0, 0, false, null, null);
     }
 
     public static WeaponName getWeaponName(SoldierName soldierName) {
@@ -78,6 +80,10 @@ public abstract class Soldier extends Person {
             }
             default -> throw new IllegalStateException("Unexpected value: " + soldierName);
         }
+    }
+
+    public NextTurnData getNextTurnData() {
+        return nextTurnData;
     }
 
     public int[][] getPatrolPath() {

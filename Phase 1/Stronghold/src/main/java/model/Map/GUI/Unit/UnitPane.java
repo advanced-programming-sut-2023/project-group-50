@@ -111,6 +111,32 @@ public class UnitPane {
         return button;
     }
 
+    public static Button getLongButtonUtil(String text, double height, EventHandler<ActionEvent> eventHandler) {
+        Image image;
+        image = new Image(java.util.Objects.requireNonNull(
+                MainMenuGUIController.class.getResource("/images/Buttons/bg.jpg")).toExternalForm());
+        BackgroundImage backgroundImage = new BackgroundImage(image,
+                                                              BackgroundRepeat.NO_REPEAT,
+                                                              BackgroundRepeat.NO_REPEAT,
+                                                              BackgroundPosition.CENTER,
+                                                              new BackgroundSize(
+                                                                      image.getWidth() / image.getHeight() * height /
+                                                                              1.5,
+                                                                      height,
+                                                                      false, false, false, false
+                                                              ));
+
+        Button button = new Button(text);
+        button.setBackground(new Background(backgroundImage));
+        button.setPrefSize(image.getWidth() / image.getHeight() * height / 1.5, height);
+        button.setFont(new Font("Bell MT", 18));
+        button.setStyle("-fx-text-fill: yellow");
+        button.setAlignment(Pos.CENTER);
+        button.setOnAction(eventHandler);
+
+        return button;
+    }
+
     public static Text getText(String string) {
         Text text = new Text(string);
         text.setFont(new Font("System", 15));

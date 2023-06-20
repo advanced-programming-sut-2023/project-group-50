@@ -16,6 +16,8 @@ import model.Map.GUI.Unit.UnitPane;
 import model.Map.Map;
 import model.ObjectsPackage.People.Soldier.*;
 import view.show.MainMenu.MainMenu;
+import view.show.SoldierMenu.AttackMenu;
+import view.show.SoldierMenu.MoveMenu;
 import view.show.SoldierMenu.PatrolMenu;
 import view.show.SoldierMenu.SoldierMenu;
 
@@ -71,9 +73,9 @@ public abstract class SoldierMenuController {
         return new Background(backgroundImage);
     }
 
-    public static boolean isValid(int xFrom, int xTo, int yFrom, int yTo) {
+    public static boolean isInvalid(int xFrom, int xTo, int yFrom, int yTo) {
         Map map = MainMenuGUIController.getUser().getGovernment().getMap();
-        return map.isValid(xFrom, yFrom) && map.isValid(xTo, yTo);
+        return !map.isValid(xFrom, yFrom) || !map.isValid(xTo, yTo);
     }
 
     public static SoldierMenuController getController(Soldier soldier) {
@@ -130,6 +132,8 @@ public abstract class SoldierMenuController {
 
         addButton("Change soldier state", buttonHeight, new changeSoldierState());
         addButton("Patrol", buttonHeight, new patrol());
+        addButton("Move", buttonHeight, new move());
+        addButton("Attack", buttonHeight, new attack());
 
         return buttons;
     }
@@ -232,7 +236,7 @@ public abstract class SoldierMenuController {
     }
 
     protected void addButton(String string, double height, EventHandler<ActionEvent> eventHandler) {
-        Button button = UnitPane.getButtonUtil(string, height, eventHandler);
+        Button button = UnitPane.getLongButtonUtil(string, height, eventHandler);
         buttons.getChildren().add(button);
     }
 
@@ -258,6 +262,50 @@ public abstract class SoldierMenuController {
         }
     }
 
+    public String getPromptX() {
+        return soldier.getNextTurnData().isMoving()
+                ? String.valueOf(soldier.getNextTurnData().getToX())
+                : "Enter X";
+    }
+
+    public String getPromptY() {
+        return soldier.getNextTurnData().isMoving()
+                ? String.valueOf(soldier.getNextTurnData().getToY())
+                : "Enter Y";
+    }
+
+    public boolean cannotMoveTo(int xTo, int yTo) {
+        return !soldier.canMoveTo(xTo, yTo);
+    }
+
+    public void setMoving(int xTo, int yTo) {
+        soldier.getNextTurnData().setMoveTo(xTo, yTo);
+    }
+
+    public void stopMoving() {
+        soldier.getNextTurnData().stopMoving();
+    }
+
+    public String getPromptAttackX() {
+        return soldier.getNextTurnData().getToAttack() == null
+                ? "Enter X"
+                : String.valueOf(soldier.getNextTurnData().getToAttack().getX());
+    }
+
+    public String getPromptAttackY() {
+        return soldier.getNextTurnData().getToAttack() == null
+                ? "Enter Y"
+                : String.valueOf(soldier.getNextTurnData().getToAttack().getY());
+    }
+
+    public void setAttack(int xTo, int yTo) {
+        soldier.getNextTurnData().setToAttack(soldier.getOwner().getGovernment().getMap().getUnitByXY(xTo, yTo));
+    }
+
+    public void stopAttacking() {
+        soldier.getNextTurnData().setToAttack(null);
+    }
+
     private class changeSoldierState implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent actionEvent) {
@@ -277,6 +325,32 @@ public abstract class SoldierMenuController {
                 PatrolMenu patrolMenu = new PatrolMenu();
                 patrolMenu.init(getThis());
                 patrolMenu.start(MainMenu.getStage());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private class move implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent actionEvent) {
+            try {
+                MoveMenu moveMenu = new MoveMenu();
+                moveMenu.init(getThis());
+                moveMenu.start(MainMenu.getStage());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private class attack implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent actionEvent) {
+            try {
+                AttackMenu attackMenu = new AttackMenu();
+                attackMenu.init(getThis());
+                attackMenu.start(MainMenu.getStage());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

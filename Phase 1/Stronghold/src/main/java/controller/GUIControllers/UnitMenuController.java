@@ -10,6 +10,7 @@ import model.Map.GUI.Unit.UnitPane;
 import model.Map.GroundType;
 import model.Map.Unit;
 import model.ObjectsPackage.Buildings.Building;
+import model.ObjectsPackage.Buildings.BuildingType;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.People.Person;
 import model.ObjectsPackage.People.Soldier.Soldier;
@@ -229,5 +230,27 @@ public class UnitMenuController {
 
         for (int i = 0; i < number; i++)
             unit.addObject(Soldier.getSoldierByType(selected, user));
+    }
+
+    public static boolean isProtected() {
+        return unit.isProtected();
+    }
+
+    public static boolean hasBuilding(User owner) {
+        return unit.getBuilding() != null && Objects.equals(unit.getBuilding().getOwner(), owner);
+    }
+
+    public static boolean canBuild(User owner) {
+        return unit.getBuilding() == null || Objects.equals(unit.getBuilding().getOwner(), owner);
+    }
+
+    public static boolean hasPitchDitch(User owner) {
+        return unit.getBuilding() != null && unit.getBuilding().getType().equals(BuildingType.PITCH_DITCH) &&
+                unit.getBuilding().getOwner() == owner;
+    }
+
+    public static boolean canPlacePitchDitch(User owner) {
+        return unit.getBuilding() == null || (unit.getBuilding().getType().equals(BuildingType.PITCH_DITCH) &&
+                unit.getBuilding().getOwner() == owner);
     }
 }

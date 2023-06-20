@@ -220,9 +220,7 @@ public class Government implements Serializable {
     }
 
     public void addBuildings(Building building) {
-        System.out.println("added" + building.getType());
         this.buildings.add(building);
-
     }
 
     public int getFearRate() {
@@ -1105,6 +1103,10 @@ public class Government implements Serializable {
             }
         }
         return null;
+    }
+
+    public boolean hasPalace() {
+        return lordsCastle == null || lordsCastle.isDestroyed();
     }
 
     public static class Pair {

@@ -160,7 +160,11 @@ public class Map implements Serializable {
     }
 
     public Unit getXY(int x, int y) {
-        return map.get(x).get(y);
+        try {
+            return map.get(x).get(y);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public void clearXY(int x, int y) {

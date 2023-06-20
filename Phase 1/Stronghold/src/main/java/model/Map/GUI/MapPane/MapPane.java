@@ -274,7 +274,7 @@ public class MapPane {
                 group.setLayoutY(dy);
                 setUpGroup(group, "{%d, %d}".formatted(x, y));
 
-                Tooltip.install(group, new Tooltip(group.getId()));
+                Tooltip.install(group, new Tooltip(getToolTip(x, y)));
 
                 group.setOnMouseEntered(MapPane::mouseEnteredTile);
 
@@ -290,6 +290,10 @@ public class MapPane {
         pane.getChildren().addAll(navigation);
         navigation.setLayoutX(10);
         navigation.setLayoutY(5);
+    }
+
+    private static String getToolTip(int x, int y) {
+        return map.isValid(x, y) ? "%d, %d".formatted(x, y) : "Nowhere!";
     }
 
     private static void mouseEnteredTile(MouseEvent mouseEvent) {

@@ -135,6 +135,8 @@ public class GovernmentPane {
         scrollPane.setContent(hBox);
         tab.setContent(scrollPane);
         scrollPane.setPrefWidth(scrollPane.getWidth() + 200);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         tab.setStyle("-fx-background-color: rgb(0, 0, 0, 0); -fx-font-weight: bold");
 
