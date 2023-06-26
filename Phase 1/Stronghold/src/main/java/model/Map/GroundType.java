@@ -4,9 +4,10 @@ import javafx.scene.image.Image;
 import model.ObjectsPackage.People.Soldier.SoldierName;
 import model.RandomGenerator.RandomGroundType;
 
+import java.io.Serializable;
 import java.net.URL;
 
-public enum GroundType {
+public enum GroundType implements Serializable {
     GROUND(ConsoleColors.YELLOW_BACKGROUND_BRIGHT), // zamin
     RIGGED_GROUND(ConsoleColors.YELLOW_BACKGROUND), // zamin ba sangrize
     CLIFF(ConsoleColors.BLACK_BACKGROUND), // takhte sang

@@ -13,8 +13,8 @@ import static model.Map.GUI.Test.initMap;
 
 public class MainMenu extends Application {
     private static Stage stage;
+    private static User user;
     private Pane pane;
-    private User user;
 
     public static Stage getStage() {
         return stage;
@@ -44,6 +44,7 @@ public class MainMenu extends Application {
     }
 
     public void init(User user) {
-        this.user = user;
+        if (user != null)
+            MainMenu.user = user;
     }
 }

@@ -20,6 +20,7 @@ import model.Map.GUI.MapPane.MapPane;
 import model.Map.Unit;
 import view.show.GovernmentDataMenu.GovernmentDataMenu;
 import view.show.MainMenu.MainMenu;
+import view.show.MainMenu.ShowSaveMapMenu;
 import view.show.ProfileMenu.ShowProfileMenu;
 import view.show.UnitMenu.UnitMenu;
 
@@ -123,7 +124,8 @@ public class MainMenuGUIController {
                 getButton("Connect to server", height / 4, MainMenuGUIController::online),
                 getButton("Trade Menu", height / 4, MainMenuGUIController::trade),
                 getButton("Shop Menu", height / 4, MainMenuGUIController::shop),
-                getButton("Profile Menu", height / 4, MainMenuGUIController::profile)
+                getButton("Profile Menu", height / 4, MainMenuGUIController::profile),
+                getButton("Saved maps", height / 4, MainMenuGUIController::saveMap)
         );
 
         vBox.setPrefHeight(height);
@@ -133,7 +135,18 @@ public class MainMenuGUIController {
         return vBox;
     }
 
-    private static Button getButton(String text, double height, EventHandler<ActionEvent> eventHandler) {
+    private static void saveMap(ActionEvent actionEvent) {
+        try {
+            ShowSaveMapMenu showSaveMapMenu = new ShowSaveMapMenu();
+            SaveMapMenuController saveMapMenuController = new SaveMapMenuController(user);
+            showSaveMapMenu.init(saveMapMenuController);
+            showSaveMapMenu.start(MainMenu.getStage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static Button getButton(String text, double height, EventHandler<ActionEvent> eventHandler) {
         return getButtonUtil(text, height, eventHandler);
     }
 

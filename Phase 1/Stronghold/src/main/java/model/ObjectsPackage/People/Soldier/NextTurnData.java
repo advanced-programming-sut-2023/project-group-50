@@ -3,7 +3,9 @@ package model.ObjectsPackage.People.Soldier;
 import model.Map.Unit;
 import model.ObjectsPackage.Buildings.Gate;
 
-public class NextTurnData {
+import java.io.Serializable;
+
+public class NextTurnData implements Serializable {
     private int toX;
     private int toY;
     private boolean isMoving;
