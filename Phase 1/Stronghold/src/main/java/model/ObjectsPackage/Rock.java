@@ -54,4 +54,8 @@ public class Rock extends Objects {
         URL url = GroundType.class.getResource("/phase2-assets/" + RandomRock.getRandomRock());
         return new Image(url.toExternalForm());
     }
+
+    public boolean canPlace(GroundType texture) {
+        return validGround(texture);
+    }
 }

@@ -2,6 +2,7 @@ package model.ObjectsPackage;
 
 import controller.UserDatabase.User;
 import javafx.scene.image.Image;
+import model.Map.GroundType;
 import model.Map.Map;
 import model.RandomGenerator.RandomTree;
 
@@ -24,6 +25,17 @@ public class Tree extends Objects {
         Map map = owner.getGovernment().getMap();
 
         switch (map.getXY(x, y).getTexture()) {
+            case GROUND, MEADOW, LAWN, GRASS, RIGGED_GROUND -> {
+                return true;
+            }
+            default -> {
+                return false;
+            }
+        }
+    }
+
+    public boolean canPlace(GroundType type) {
+        switch (type) {
             case GROUND, MEADOW, LAWN, GRASS, RIGGED_GROUND -> {
                 return true;
             }

@@ -25,7 +25,9 @@ import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.Buildings.BuildingSet;
 import model.ObjectsPackage.Buildings.BuildingType;
 import model.RandomGenerator.RandomBuilding;
+import view.show.MainMenu.MainMenu;
 import view.show.ProfileMenu.ShowProfileMenu;
+import view.show.UnitMenu.SelectMenu;
 
 import java.net.URL;
 
@@ -51,8 +53,19 @@ public class GovernmentPane {
 
         pane.getChildren().add(getHBox(width, 200, government));
         Pane miniMap = new MiniMap(government.getMap()).getMiniMap(200, 200);
+        miniMap.setOnMouseClicked(GovernmentPane::selection);
         addChildren(width, pane, miniMap);
         return pane;
+    }
+
+    private static void selection(MouseEvent mouseEvent) {
+        try {
+            SelectMenu selectMenu = new SelectMenu();
+            selectMenu.init(government.getLord().getOwner());
+            selectMenu.start(MainMenu.getStage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static Region shadow(double width, double height) {

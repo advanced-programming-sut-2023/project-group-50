@@ -1,5 +1,6 @@
 package view.show.UnitMenu;
 
+import controller.GUIControllers.MultiUnitMenuController;
 import controller.GUIControllers.UnitMenuController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -29,6 +30,11 @@ import static model.Map.GUI.Unit.UnitPane.getBackground;
 public class ChangeTextureMenu extends Application {
     private Pane pane;
     private ArrayList<HBox> hBoxes;
+    private boolean isMulti = false;
+
+    public void init(boolean multi) {
+        this.isMulti = multi;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -55,7 +61,10 @@ public class ChangeTextureMenu extends Application {
     }
 
     private Button initButton() {
-        Button backButton = getBackButton(UnitMenuController::showUnitMenu);
+        Button backButton = getBackButton(
+                isMulti
+                        ? MultiUnitMenuController::showMultiUnitMenu
+                        : UnitMenuController::showUnitMenu);
         pane.getChildren().add(backButton);
         backButton.setLayoutY(25);
         backButton.setLayoutX(Screen.getPrimary().getBounds().getWidth() - 125);
@@ -111,7 +120,11 @@ public class ChangeTextureMenu extends Application {
         colorAdjust.setBrightness(-0.5);
         imageView.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> imageView.setEffect(colorAdjustHover));
         imageView.addEventFilter(MouseEvent.MOUSE_EXITED, e -> imageView.setEffect(
-                Objects.equals(imageView.getId(), UnitMenuController.getTexture().getType())
+                Objects.equals(imageView.getId(),
+                               isMulti
+                                       ? MultiUnitMenuController.getTexture().getType()
+                                       : UnitMenuController.getTexture().getType()
+                )
                         ? colorAdjust : null)
         );
     }
@@ -122,7 +135,8 @@ public class ChangeTextureMenu extends Application {
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(-0.5);
         imageView.setEffect(colorAdjust);
-        UnitMenuController.setTexture(texture);
+        if (!isMulti) UnitMenuController.setTexture(texture);
+        else MultiUnitMenuController.setTexture(texture);
     }
 
     private void setNotSelected(GroundType texture) {
@@ -134,7 +148,7 @@ public class ChangeTextureMenu extends Application {
     private class WhatImage implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent event) {
-            GroundType texture = UnitMenuController.getTexture();
+            GroundType texture = isMulti ? MultiUnitMenuController.getTexture() : UnitMenuController.getTexture();
             String img = event.getPickResult().getIntersectedNode().getId();
             GroundType selected = GroundType.get(img);
 

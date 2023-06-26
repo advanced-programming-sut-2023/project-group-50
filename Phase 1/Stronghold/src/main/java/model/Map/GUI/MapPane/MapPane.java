@@ -32,6 +32,8 @@ public class MapPane {
     private static double startY;
     private static int topLeftY;
     private static int topLeftX;
+    private static int BottomRightY;
+    private static int BottomRightX;
     private static double tileWidth;
     private static double tileHeight;
     private static Map map;
@@ -39,6 +41,8 @@ public class MapPane {
     private static HashMap<Integer, HashMap<Integer, UnitGroup>> unitGroups;
     private static HashMap<Integer, HashMap<Integer, Group>> ruinGroups;
     private static HBox navigation;
+    private static int TopLeftX;
+    private static int TopLeftY;
 
     private static Pair diffXY(Pair xy) {
         return new Pair(xy.x / 2 + xy.y / 2, xy.x / 2 - xy.y / 2).by(0.5);
@@ -80,6 +84,108 @@ public class MapPane {
         fillTiles();
 
         return pane;
+    }
+
+    public static Pane getSmallPane(Map map, int xFrom, int yFrom, int xTo, int yTo, double width, double height) {
+        MapPane.tileWidth = width / ((xTo - xFrom) + (yTo - yFrom) + 1);
+        MapPane.tileHeight = tileWidth;
+        MapPane.BottomRightX = xTo;
+        MapPane.BottomRightY = yTo;
+        MapPane.TopLeftX = xFrom - (xTo - xFrom) / 2;
+        MapPane.TopLeftY = yFrom - (yTo - yFrom) / 2;
+        MapPane.topLeftX = xFrom;
+        MapPane.topLeftY = yTo;
+        MapPane.map = map;
+
+        initSmallTiles();
+        initSmallPane(width, height);
+        fillSmallTiles(width);
+
+        return pane;
+    }
+
+    private static void fillTiles() {
+        pane.getChildren().clear();
+        double width = Screen.getPrimary().getBounds().getWidth();
+        double height = Screen.getPrimary().getBounds().getHeight();
+
+        HashMap<Pair, Group> buildings = new HashMap<>();
+        HashMap<Pair, Group> people = new HashMap<>();
+        HashMap<Pair, Group> objects = new HashMap<>();
+        HashMap<Pair, String> buildingsID = new HashMap<>();
+        HashMap<Pair, String> peopleID = new HashMap<>();
+        HashMap<Pair, String> objectID = new HashMap<>();
+
+        for (double dx = -tileWidth / 2; dx <= width; dx += tileWidth / 2) {
+            for (double dy = -tileHeight / 2; dy <= height; dy += tileHeight / 2) {
+                if (!XYisValid(tileHeight, tileWidth, dx, dy)) continue;
+                Pair pair = getXYReal(tileHeight, tileWidth, topLeftX, topLeftY, dx, dy);
+                int x = (int) pair.x;
+                int y = (int) pair.y;
+
+                Group group;
+                if (map.isValid(x, y)) {
+                    UnitGroup unitGroup = unitGroups.get(x).get(y);
+                    group = unitGroup.getWallpaperGroup();
+                    if (unitGroup.hasBuilding()) {
+                        Pair pair1 = new Pair(dx, dy);
+                        buildings.put(pair1, unitGroup.getBuilding());
+                        buildingsID.put(pair1, "{%d, %d}".formatted(x, y));
+                    }
+                    if (unitGroup.hasPeople()) {
+                        Pair pair1 = new Pair(dx, dy);
+                        people.put(pair1, unitGroup.getPeople());
+                        peopleID.put(pair1, "{%d, %d}".formatted(x, y));
+                    }
+                    if (unitGroup.hasObjects()) {
+                        Pair pair1 = new Pair(dx, dy);
+                        objects.put(pair1, unitGroup.getObjectsGroup());
+                        objectID.put(pair1, "{%d, %d}".formatted(x, y));
+                    }
+                } else {
+                    ruinGroups.putIfAbsent(x, new HashMap<>());
+                    ruinGroups.get(x).putIfAbsent(y, getRandomRuinGroup(x, y, tileHeight, tileWidth));
+                    group = ruinGroups.get(x).get(y);
+                }
+                pane.getChildren().add(group);
+                group.setLayoutX(dx);
+                group.setLayoutY(dy);
+                setUpGroup(group, "{%d, %d}".formatted(x, y));
+
+                Tooltip.install(group, new Tooltip(getToolTip(x, y)));
+
+                group.setOnMouseEntered(MapPane::mouseEnteredTile);
+
+            }
+        }
+        addHashMap(pane,
+                   people,
+                   peopleID,
+                   0);
+        addHashMap(pane, buildings, buildingsID, tileHeight / 4);
+        addHashMap(pane, objects, objectID, tileHeight / 4);
+
+
+        pane.getChildren().addAll(navigation);
+        navigation.setLayoutX(10);
+        navigation.setLayoutY(5);
+    }
+
+    private static void initSmallTiles() {
+        ruinGroups = new HashMap<>();
+        unitGroups = new HashMap<>();
+        for (int x = TopLeftX; x <= BottomRightX; x++) {
+            unitGroups.putIfAbsent(x, new HashMap<>());
+            for (int y = TopLeftY; y <= BottomRightY; y++)
+                if (map.isValid(x, y))
+                    unitGroups.get(x).putIfAbsent(y, new UnitGroup(map.getUnitByXY(x, y), tileHeight, tileWidth));
+        }
+    }
+
+    private static void initSmallPane(double width, double height) {
+        pane = new Pane();
+        pane.setMaxSize(width, height);
+        pane.setPrefSize(width, height);
     }
 
     private static void initPane() {
@@ -226,10 +332,8 @@ public class MapPane {
         fillTiles();
     }
 
-    private static void fillTiles() {
+    private static void fillSmallTiles(double size) {
         pane.getChildren().clear();
-        double width = Screen.getPrimary().getBounds().getWidth();
-        double height = Screen.getPrimary().getBounds().getHeight();
 
         HashMap<Pair, Group> buildings = new HashMap<>();
         HashMap<Pair, Group> people = new HashMap<>();
@@ -238,15 +342,15 @@ public class MapPane {
         HashMap<Pair, String> peopleID = new HashMap<>();
         HashMap<Pair, String> objectID = new HashMap<>();
 
-        for (double dx = -tileWidth / 2; dx <= width; dx += tileWidth / 2) {
-            for (double dy = -tileHeight / 2; dy <= height; dy += tileHeight / 2) {
+        for (double dx = -tileWidth / 2; dx <= size; dx += tileWidth / 2) {
+            for (double dy = -tileHeight / 2; dy <= size; dy += tileHeight / 2) {
                 if (!XYisValid(tileHeight, tileWidth, dx, dy)) continue;
                 Pair pair = getXYReal(tileHeight, tileWidth, topLeftX, topLeftY, dx, dy);
                 int x = (int) pair.x;
                 int y = (int) pair.y;
 
                 Group group;
-                if (map.isValid(x, y)) {
+                if (map.isValid(x, y) && !(x < TopLeftX || x > BottomRightX || y < TopLeftY || y > BottomRightY)) {
                     UnitGroup unitGroup = unitGroups.get(x).get(y);
                     group = unitGroup.getWallpaperGroup();
                     if (unitGroup.hasBuilding()) {
@@ -264,19 +368,14 @@ public class MapPane {
                         objects.put(pair1, unitGroup.getObjectsGroup());
                         objectID.put(pair1, "{%d, %d}".formatted(x, y));
                     }
-                } else {
-                    ruinGroups.putIfAbsent(x, new HashMap<>());
-                    ruinGroups.get(x).putIfAbsent(y, getRandomRuinGroup(x, y, tileHeight, tileWidth));
-                    group = ruinGroups.get(x).get(y);
+
+                    pane.getChildren().add(group);
+                    group.setLayoutX(dx);
+                    group.setLayoutY(dy);
+                    group.setId("{%d, %d}".formatted(x, y));
+
+                    Tooltip.install(group, new Tooltip(getToolTip(x, y)));
                 }
-                pane.getChildren().add(group);
-                group.setLayoutX(dx);
-                group.setLayoutY(dy);
-                setUpGroup(group, "{%d, %d}".formatted(x, y));
-
-                Tooltip.install(group, new Tooltip(getToolTip(x, y)));
-
-                group.setOnMouseEntered(MapPane::mouseEnteredTile);
 
             }
         }
@@ -286,10 +385,6 @@ public class MapPane {
                    0);
         addHashMap(pane, buildings, buildingsID, tileHeight / 4);
         addHashMap(pane, objects, objectID, tileHeight / 4);
-
-        pane.getChildren().addAll(navigation);
-        navigation.setLayoutX(10);
-        navigation.setLayoutY(5);
     }
 
     private static String getToolTip(int x, int y) {
