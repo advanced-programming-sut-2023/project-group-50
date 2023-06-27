@@ -2,10 +2,11 @@ package controller.UserDatabase;
 
 import model.Item.Item;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class Shop {
+public class Shop implements Serializable {
     private static HashSet<Item> items;
 
     public Shop() {

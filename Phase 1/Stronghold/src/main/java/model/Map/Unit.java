@@ -6,6 +6,7 @@ import model.ObjectsPackage.Buildings.*;
 import model.ObjectsPackage.*;
 import model.ObjectsPackage.People.Soldier.Engineer;
 import model.ObjectsPackage.People.Soldier.Soldier;
+import view.show.Animation.FireAnimation;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,10 +18,13 @@ public class Unit implements Serializable {
     private final LinkedHashSet<Objects> objects;
     private final int x;
     private final int y;
+    private final boolean hasDisease;
     private GroundType texture;
     private boolean isOnFire;
     private boolean isProtected;
     private int capacity;
+    private int stateFire;
+    private FireAnimation fireAnimation;
 
     public Unit(int x, int y, GroundType texture) {
         this.x = x;
@@ -29,6 +33,10 @@ public class Unit implements Serializable {
         objects = new LinkedHashSet<>();
         isOnFire = false;
         isProtected = false;
+        stateFire = 0;
+        fireAnimation = null;
+        hasDisease = false;
+
     }
 
     public boolean isProtected() {
@@ -276,4 +284,29 @@ public class Unit implements Serializable {
     public boolean hasTunnel() {
         return getTunnel() != null;
     }
+
+    public int getStateFire() {
+        return stateFire;
+    }
+
+    public void setStateFire(int stateFire) {
+        this.stateFire = stateFire;
+    }
+
+    public void setFire(boolean isOnFire, int stateFire) {
+        setOnFire(isOnFire);
+        setStateFire(stateFire);
+        if (isOnFire && fireAnimation == null) {
+            (this.fireAnimation = new FireAnimation(this)).play();
+        }
+    }
+
+    public FireAnimation getFireAnimation() {
+        return fireAnimation;
+    }
+
+    public void setFireAnimation(FireAnimation fireAnimation) {
+        this.fireAnimation = fireAnimation;
+    }
+
 }

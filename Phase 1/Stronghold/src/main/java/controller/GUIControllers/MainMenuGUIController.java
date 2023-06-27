@@ -21,6 +21,7 @@ import model.Map.Unit;
 import view.show.GovernmentDataMenu.GovernmentDataMenu;
 import view.show.MainMenu.MainMenu;
 import view.show.MainMenu.ShowSaveMapMenu;
+import view.show.Menus.ShopMenuShow;
 import view.show.ProfileMenu.ShowProfileMenu;
 import view.show.UnitMenu.UnitMenu;
 
@@ -185,7 +186,14 @@ public class MainMenuGUIController {
     }
 
     private static void shop(ActionEvent actionEvent) {
-        //TODO
+        ShopMenuShow shopMenuShow = new ShopMenuShow();
+        shopMenuShow.init(MainMenuGUIController.user);
+        try {
+            shopMenuShow.start(MainMenu.getStage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private static void online(ActionEvent actionEvent) {

@@ -117,6 +117,33 @@ public class LoginController {
 
     }
 
+    public static Error userNameIsExist(String input) {
+
+        String username = input.trim();
+
+        if (input.equals("")) {
+            return new Error("You should enter a username", false);
+        }
+        if (!Users.usernameExists(input)) {
+            return new Error("Your username is not found", false);
+
+        }
+        return new Error("", true);
+    }
+
+    public static Error passwordIsRight(String input, User user) {
+
+        if (input.equals("")) {
+            return new Error("You should enter a password", false);
+        }
+
+        if (user != null && !input.equals(user.getPassword())) {
+            return new Error("password is wrong", false);
+        }
+
+        return new Error("", true);
+    }
+
     public User getLoggedIn() {
         return loggedIn;
     }
@@ -263,4 +290,5 @@ public class LoginController {
         user.getGovernment().setMap(map);
 
     }
+
 }

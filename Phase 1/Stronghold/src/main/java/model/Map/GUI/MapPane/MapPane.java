@@ -48,7 +48,7 @@ public class MapPane {
         return new Pair(xy.x / 2 + xy.y / 2, xy.x / 2 - xy.y / 2).by(0.5);
     }
 
-    private static Pair getXY(double tileHeight, double tileWidth, int X0, int Y0, int x, int y) {
+    public static Pair getXY(double tileHeight, double tileWidth, int X0, int Y0, int x, int y) {
         int DX = x - X0, DY = y - Y0;
         return new Pair(DX * tileHeight / 2 + DY * tileHeight / 2,
                         DX * tileWidth / 2 - DY * tileWidth / 2);
@@ -643,10 +643,26 @@ public class MapPane {
         fillTiles();
     }
 
-    private static class Pair {
+    public static double getTileWidth() {
+        return tileWidth;
+    }
 
-        double x;
-        double y;
+    public static double getTileHeight() {
+        return tileHeight;
+    }
+
+    public static int getTopLeftX() {
+        return topLeftX;
+    }
+
+    public static int getTopLeftY() {
+        return topLeftY;
+    }
+
+    public static class Pair {
+
+        public double x;
+        public double y;
 
         public Pair(double x, double y) {
             this.x = x;

@@ -59,6 +59,8 @@ public class Test extends Application {
             user.getGovernment().setWeaponAmount(weaponName, 1000);
         }
 
+        map.getUnitByXY(16, 4).setFire(true, 3);
+
         return user;
     }
 

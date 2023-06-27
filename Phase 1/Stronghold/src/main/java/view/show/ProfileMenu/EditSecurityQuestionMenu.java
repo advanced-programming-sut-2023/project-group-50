@@ -28,6 +28,13 @@ public class EditSecurityQuestionMenu extends Application {
     private VBox checkBoxes;
     private int choice;
 
+    public static int getChoice(VBox checkBoxes) {
+        if (((RadioButton) checkBoxes.getChildren().get(0)).selectedProperty().get()) return 0;
+        else if (((RadioButton) checkBoxes.getChildren().get(1)).selectedProperty().get()) return 1;
+        else if (((RadioButton) checkBoxes.getChildren().get(2)).selectedProperty().get()) return 2;
+        else return -1;
+    }
+
     public void newMenu(String username, int choice) {
         this.username = username;
         this.choice = choice;
@@ -132,7 +139,7 @@ public class EditSecurityQuestionMenu extends Application {
 
     private void setNewSlogan() {
         try {
-            choice = getChoice();
+            choice = getChoice(this.checkBoxes);
             Users.setSecurityQuestion(username, choice, answer.getText());
             new ShowProfileMenu().start(stage);
         } catch (Exception e) {

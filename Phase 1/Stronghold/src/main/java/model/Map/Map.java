@@ -7,11 +7,14 @@ import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Soldier.Soldier;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Map implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -5142982528088815367L;
     private final HashMap<Integer, HashMap<Integer, Unit>> map;
     private final int xSize;
     private final int ySize;

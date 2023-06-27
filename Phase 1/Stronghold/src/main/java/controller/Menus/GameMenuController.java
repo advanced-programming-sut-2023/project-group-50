@@ -386,7 +386,7 @@ public class GameMenuController {
                 }
             }
         }
-        this.currentUser.getGovernment().addUndeployedSoldier(count, soldierName, this.currentUser);
+//        this.currentUser.getGovernment().addUndeployedSoldier(count, soldierName, this.currentUser);
         return "You create a unit";
     }
 

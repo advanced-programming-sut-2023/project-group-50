@@ -35,13 +35,39 @@ public class GovernmentDataMenuController {
         GovernmentDataMenuController.government = government;
     }
 
-    private static ScrollPane getScrollPane(double width, double height, VBox vBox) {
+    public static ScrollPane getScrollPane(double width, double height, VBox vBox) {
         ScrollPane scrollPane = new ScrollPane(vBox);
         scrollPane.setPrefSize(width, height);
         scrollPane.setBackground(Background.EMPTY);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         return scrollPane;
+    }
+
+    public static HBox getBoldText(String string, double width) {
+        Text text = getText(string);
+        text.setStyle("-fx-font: 25 Algerian; -fx-font-weight: bold");
+        HBox hBox = new HBox(text);
+        hBox.setPrefSize(width, 100);
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setBackground(new Background(new BackgroundImage(
+                new Image(Government.class.getResource("/images/background/scroll.png").toExternalForm()),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(
+                        width, 100,
+                        false, false, false, false
+                )
+        )));
+        return hBox;
+    }
+
+    public static Text getText(String string) {
+        Text text = new Text(string);
+        text.setFont(new Font("System", 15));
+
+        return text;
     }
 
     public Pane getPane() {
@@ -196,7 +222,7 @@ public class GovernmentDataMenuController {
         Text text = getText(iconName.getType() + ": " + government.getIconData(iconName));
 
         HBox hBox = new HBox(imageView, text);
-        hBox.setAlignment(Pos.CENTER_LEFT);
+        hBox.setAlignment(Pos.CENTER);
         hBox.setSpacing(5);
         hBox.setMaxWidth(width - 50);
         return hBox;
@@ -263,25 +289,6 @@ public class GovernmentDataMenuController {
         return getScrollPane(width, height, vBox);
     }
 
-    private HBox getBoldText(String string, double width) {
-        Text text = getText(string);
-        text.setStyle("-fx-font: 25 Algerian; -fx-font-weight: bold");
-        HBox hBox = new HBox(text);
-        hBox.setPrefSize(width, 100);
-        hBox.setAlignment(Pos.CENTER);
-        hBox.setBackground(new Background(new BackgroundImage(
-                new Image(Government.class.getResource("/images/background/scroll.png").toExternalForm()),
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(
-                        width, 100,
-                        false, false, false, false
-                )
-        )));
-        return hBox;
-    }
-
     private HBox getWeaponHBox(WeaponName weaponName, double width) {
         ImageView imageView = new ImageView(weaponName.getImage());
         imageView.setFitHeight(50);
@@ -325,12 +332,5 @@ public class GovernmentDataMenuController {
         hBox.setSpacing(5);
         hBox.setMaxWidth(width - 50);
         return hBox;
-    }
-
-    private Text getText(String string) {
-        Text text = new Text(string);
-        text.setFont(new Font("System", 15));
-
-        return text;
     }
 }

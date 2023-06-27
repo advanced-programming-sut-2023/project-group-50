@@ -295,7 +295,7 @@ public class GovernmentPane {
 
         HBox coins = getRateHbox("%.2f".formatted(government.getCoins()), IconName.COIN, size);
         HBox food = getRateHbox(String.valueOf(government.getRateFood()), IconName.FOOD, size);
-        HBox resources = getRateHbox(String.valueOf(government.getResources()), IconName.RESOURCES, size);
+        HBox resources = getRateHbox(String.valueOf(government.getResourcesValue()), IconName.RESOURCES, size);
         HBox fear = getRateHbox(String.valueOf(government.getFearRate()), IconName.FEAR, size);
         HBox religion = getRateHbox(String.valueOf(government.checkReligionPopularity()), IconName.RELIGION, size);
         HBox tax = getRateHbox(String.valueOf(government.getTaxRate()), IconName.TAX, size);

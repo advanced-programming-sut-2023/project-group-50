@@ -60,7 +60,7 @@ public class Storage extends Building {
     }
 
     private boolean reduceByOne(WeaponName weaponName) {
-        if (Objects.requireNonNull(getType()) == BuildingType.ARMOURY) {
+        if (java.util.Objects.requireNonNull(getType()) == BuildingType.ARMOURY) {
             if (currentCapacity.get(weaponName.name()) < 0) return false;
             currentCapacity.put(weaponName.name(), currentCapacity.get(weaponName.name()) - 1);
             return true;
@@ -69,7 +69,7 @@ public class Storage extends Building {
     }
 
     private boolean reduceByOne(Resource resource) {
-        if (Objects.requireNonNull(getType()) == BuildingType.GRANARY
+        if (java.util.Objects.requireNonNull(getType()) == BuildingType.GRANARY
                 || getType() == BuildingType.STOCKPILE
                 || getType() == BuildingType.OX_TETHER) {
             if (currentCapacity.get(resource.name()) < 0) return false;
@@ -86,7 +86,7 @@ public class Storage extends Building {
     }
 
     private boolean addOneWeapon(WeaponName weaponName) {
-        if (Objects.requireNonNull(getType()) == BuildingType.ARMOURY) {
+        if (java.util.Objects.requireNonNull(getType()) == BuildingType.ARMOURY) {
             if (getCurrentCapacity() >= maximumCapacity) return false;
             currentCapacity.put(weaponName.name(), currentCapacity.getOrDefault(weaponName.name(), 0) + 1);
             return true;

@@ -2,6 +2,7 @@ package controller.Menus;
 
 import controller.UserDatabase.Shop;
 import controller.UserDatabase.User;
+import controller.control.Error;
 import model.Item.Item;
 
 public class ShopMenuController {
@@ -9,6 +10,10 @@ public class ShopMenuController {
 
     public ShopMenuController(User currentUser) {
         this.currentUser = currentUser;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
     }
 
     public String showAllItems() {
@@ -19,19 +24,19 @@ public class ShopMenuController {
         return String.join(",\n", currentUser.getItemsAsString());
     }
 
-    public String buy(String name) {
+    public Error buy(String name) {
         Item item = getShopItemByName(name);
-        if (item == null || !Shop.getItems().contains(item)) return "Item does not exist!";
-        if (!Shop.userCanAfford(currentUser, item)) return "Not enough coins!";
+        if (item == null || !Shop.getItems().contains(item)) return new Error("Item does not exist!", false);
+        if (!Shop.userCanAfford(currentUser, item)) return new Error("Not enough coins!", false);
         Shop.buy(currentUser, item);
-        return "Item bought successfully!";
+        return new Error("Item bought successfully!", true);
     }
 
-    public String sell(String name) {
+    public Error sell(String name) {
         Item item = getUserItemByName(name);
-        if (item == null || !currentUser.getItems().contains(item)) return "Item does not exist!";
+        if (item == null || !currentUser.getItems().contains(item)) return new Error("Item does not exist!", false);
         Shop.sell(currentUser, item);
-        return "Item sold successfully!";
+        return new Error("Item sold successfully!", true);
     }
 
     public Item getUserItemByName(String name) {
