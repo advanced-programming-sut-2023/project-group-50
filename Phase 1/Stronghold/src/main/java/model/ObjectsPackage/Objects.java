@@ -1,6 +1,7 @@
 package model.ObjectsPackage;
 
 import controller.UserDatabase.User;
+import javafx.scene.image.Image;
 import model.Map.GroundType;
 import model.Map.Map;
 import model.ObjectsPackage.Buildings.Building;
@@ -95,7 +96,7 @@ public abstract class Objects implements Serializable {
 
     public int getHp() {
         if (this instanceof Building building) return building.getHp();
-        if (this instanceof Soldier soldier) return soldier.getLife();
+        if (this instanceof Person person) return person.getLife();
         return 0;
     }
 
@@ -106,4 +107,6 @@ public abstract class Objects implements Serializable {
         else if (this instanceof Soldier soldier) return soldier.getType().getCoinCost();
         else return 1;
     }
+
+    public abstract Image getImage();
 }

@@ -46,7 +46,7 @@ public enum Commands {
     FORGOT("^forgot my password -u ((\".*\")|(\\S*))$"),
 
     LOGOUT("^user logout$"),
-    PROFILE_CHANGE("^profile change -[une] ((\".*\")|(\\S*))$"),
+    PROFILE_CHANGE("^profile change -[unes] ((\".*\")|(\\S*))$"),
     REMOVE_SLOGAN("^Profile remove slogan$"),
     CHANGE_SLOGAN("^profile change slogan -s ((\".*\")|(\\S*))$"),
     CHANGE_PASS("^profile change password( -[on] ((\".*\")|(\\S*))){2}$"),

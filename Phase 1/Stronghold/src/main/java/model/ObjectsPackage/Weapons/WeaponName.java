@@ -1,7 +1,11 @@
 package model.ObjectsPackage.Weapons;
 
+import javafx.scene.image.Image;
 import model.ObjectsPackage.Buildings.BuildingType;
+import model.ObjectsPackage.People.Soldier.SoldierName;
 import model.ObjectsPackage.Resource;
+
+import java.net.URL;
 
 public enum WeaponName {
     BOW(BuildingType.FLETCHER, Resource.WOOD, 2, 50, true),
@@ -49,5 +53,14 @@ public enum WeaponName {
 
     public boolean isCanMove() {
         return canMove;
+    }
+
+    public String getName() {
+        return SoldierName.getName(name());
+    }
+
+    public Image getImage() {
+        URL url = Resource.class.getResource("/images/Weapons/" + getName().replaceAll(" ", "") + ".png");
+        return new Image(url.toExternalForm());
     }
 }

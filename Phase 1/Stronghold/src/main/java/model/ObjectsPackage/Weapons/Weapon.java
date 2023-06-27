@@ -1,6 +1,7 @@
 package model.ObjectsPackage.Weapons;
 
 import controller.UserDatabase.User;
+import javafx.scene.image.Image;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Soldier.Soldier;
@@ -22,5 +23,10 @@ public class Weapon extends Objects {
 
     public WeaponName getWeaponName() {
         return weaponName;
+    }
+
+    @Override
+    public Image getImage() {
+        return null;
     }
 }

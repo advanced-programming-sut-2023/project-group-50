@@ -55,12 +55,12 @@ public class ShopMenu {
 
     private String buy(Matcher matcher) {
         String name = matcher.group("name");
-        return shopMenuController.buy(name);
+        return shopMenuController.buy(name).errorMassage;
     }
 
     private String sell(Matcher matcher) {
         String name = matcher.group("name");
-        return shopMenuController.sell(name);
+        return shopMenuController.sell(name).errorMassage;
     }
 
     private String addNewItem(Matcher matcher) {

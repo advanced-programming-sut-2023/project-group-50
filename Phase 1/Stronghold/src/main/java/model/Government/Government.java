@@ -1,7 +1,11 @@
 package model.Government;
 
+import controller.UserDatabase.Shop;
 import controller.UserDatabase.User;
+import javafx.scene.paint.Color;
+import model.Government.GUI.IconName;
 import model.Map.Map;
+import model.Map.Unit;
 import model.ObjectsPackage.Buildings.*;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.NonSoldier.Job;
@@ -17,6 +21,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Random;
 
 public class Government implements Serializable {
@@ -28,7 +33,6 @@ public class Government implements Serializable {
     private final HashMap<WeaponName, Integer> weapons;
     private double coins;
     private Map map;
-    private HashMap<Resource, Double> foods;
 
     private int popularity;
 
@@ -37,9 +41,10 @@ public class Government implements Serializable {
     private int taxRate;
     private int previousRateTax;
     private int fearRate;
-    private ArrayList<Soldier> unDeployedSoldier;
     private Soldier lord;
     private Building lordsCastle;
+
+    private Shop shop;
 
     public Government(User user) {
         this.user = user;
@@ -61,8 +66,9 @@ public class Government implements Serializable {
         this.previousRateTax = 0;
         this.fearRate = 0;
         this.noneJob = new ArrayList<>();
-        this.foods = new HashMap<>();
         placeLord();
+        shop = null;
+
     }
 
     public Government(User user, int X0, int Y0) {
@@ -85,9 +91,10 @@ public class Government implements Serializable {
         this.previousRateTax = 0;
         this.fearRate = 0;
         this.noneJob = new ArrayList<>();
-        this.foods = new HashMap<>();
-        map = new Map(400, 400);
+        map = new Map(100, 100);
         placeLord(user, new Pair(X0, Y0));
+        shop = null;
+
     }
 
     public Government(User user, int X0, int Y0, Map map) {
@@ -112,7 +119,10 @@ public class Government implements Serializable {
         this.noneJob = new ArrayList<>();
         this.map = map;
         placeLord(user, new Pair(X0, Y0));
+        shop = null;
+
     }
+
 
     public static double getTaxValueByRate(int rateTax) {
 
@@ -129,8 +139,11 @@ public class Government implements Serializable {
         lord = Soldier.getSoldierByType(SoldierName.THE_LORD, user);
         Pair xy = X0;
         lordsCastle = Building.getBuildingByType(BuildingType.PALACE, user, xy.x, xy.y);
+        NonSoldier lady = new NonSoldier(Job.LADY, user, lordsCastle);
         map.getXY(xy.x, xy.y).addObject(lord);
         map.getXY(xy.x, xy.y).addObject(lordsCastle);
+        map.getXY(xy.x, xy.y).addObject(lady);
+        addPeopleByState(lady, PersonState.WORKER);
     }
 
     public Building getLordsCastle() {
@@ -154,13 +167,11 @@ public class Government implements Serializable {
     }
 
     public void setResourceAmount(Resource resource, int value) {
-        if (resource.isFood()) foods.replace(resource, (double) value);
         if (resources.get(resource) != null) resources.replace(resource, value);
         else resources.put(resource, value);
     }
 
     public int getResourceAmount(Resource resource) {
-        if (resource.isFood()) return (int) Math.ceil(foods.get(resource));
         return resources.getOrDefault(resource, 0);
     }
 
@@ -204,18 +215,21 @@ public class Government implements Serializable {
         this.popularity = popularity;
     }
 
-    public HashMap<Resource, Double> getFoods() {
-        return foods;
+    public Shop getShop() {
+        return shop;
     }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
+    }
+
 
     public ArrayList<Building> getBuildings() {
         return buildings;
     }
 
     public void addBuildings(Building building) {
-        System.out.println("added" + building.getType());
         this.buildings.add(building);
-
     }
 
     public int getFearRate() {
@@ -279,14 +293,9 @@ public class Government implements Serializable {
         this.noneJob.add(noneJob);
     }
 
-    public ArrayList<Soldier> getUnDeployedSoldier() {
-        return unDeployedSoldier;
-    }
-
     public void addUnDeployedSoldier(ArrayList<Soldier> unDeployedSoldier) {
         for (Soldier soldier : unDeployedSoldier)
             addPeopleByState(soldier, PersonState.UNDEPLOYED_SOLDIER);
-//        this.unDeployedSoldier.addAll(unDeployedSoldier);
     }
 
     public ArrayList<Person> getPeopleByState(PersonState personState) {
@@ -294,6 +303,7 @@ public class Government implements Serializable {
     }
 
     public void addPeopleByState(Person person, PersonState personState) {
+        people.putIfAbsent(personState, new ArrayList<>());
         this.people.get(personState).add(person);
         if (personState.equals(PersonState.JOBLESS)) {
             Building building = noneActiveBuilding();
@@ -328,10 +338,13 @@ public class Government implements Serializable {
             jobLess.remove(0);
             worker.add(nonSoldier);
         }
-        if (!residents.containsKey("worker"))
-            residents.put("worker", 0);
-        residents.replace("worker", residents.get("worker") + number);
-        building.setActive(residents.get("worker") >= Building.numberOfWorker(building.getType()));
+        if (!building.getResidents().containsKey("worker")) {
+            building.getResidents().put("worker", 1);
+        } else {
+            building.getResidents().replace("worker", building.getResidents().get("worker") + number);
+        }
+        building.setActive(building.getResidents().get("worker") >= Building.numberOfWorker(building.getType()));
+
     }
 
     public Storage getFirstEmptyStorage(BuildingType storageType) {
@@ -356,7 +369,7 @@ public class Government implements Serializable {
         return null;
     }
 
-    public void addUndeployedSoldier(int count, SoldierName soldierName, User owner) {
+    public void addUnDeployedSoldier(int count, SoldierName soldierName, User owner) {
         for (int i = 0; i < count; i++) {
             Soldier soldier = Soldier.getSoldierByType(soldierName, owner);
             this.addPeopleByState(soldier, PersonState.UNDEPLOYED_SOLDIER);
@@ -366,33 +379,13 @@ public class Government implements Serializable {
         this.setCoins(this.coins - (double) soldierName.getCoinCost() * count);
     }
 
-    public void addFoods(Resource food, Double count) {
-        if (this.foods.containsKey(food)) {
-            this.foods.replace(food, this.foods.get(food) + count);
-        } else {
-            this.foods.put(food, count);
-        }
-        double value = (this.previousRateFood + 2) * 0.5;
-        if (value * getPopulation() > getFoodNumber()) {
-            this.rateFood = -2;
-        } else {
-            this.rateFood = this.previousRateFood;
-        }
-    }
 
     public int checkPopularityFood() {
         int value = 0;
-        if (foods.containsKey(Resource.BREAD) && foods.get(Resource.BREAD) > 0) {
-            value++;
-        }
-        if (foods.containsKey(Resource.MEAT) && foods.get(Resource.MEAT) > 0) {
-            value++;
-        }
-        if (foods.containsKey(Resource.CHEESE) && foods.get(Resource.CHEESE) > 0) {
-            value++;
-        }
-        if (foods.containsKey(Resource.APPLE) && foods.get(Resource.APPLE) > 0) {
-            value++;
+
+        for (Entry<Resource, Integer> resource : resources.entrySet()) {
+            if (resource.getKey().isFood() && resource.getValue() > 0)
+                value++;
         }
 
         value = value + (this.rateFood * 4) - 1;
@@ -412,10 +405,10 @@ public class Government implements Serializable {
     }
 
     public double getFoodNumber() {
-        return this.foods.getOrDefault(Resource.MEAT, 0.0) +
-                this.foods.getOrDefault(Resource.APPLE, 0.0) +
-                this.foods.getOrDefault(Resource.BREAD, 0.0) +
-                this.foods.getOrDefault(Resource.CHEESE, 0.0);
+        return this.resources.getOrDefault(Resource.MEAT, 0) +
+                this.resources.getOrDefault(Resource.APPLE, 0) +
+                this.resources.getOrDefault(Resource.BREAD, 0) +
+                this.resources.getOrDefault(Resource.CHEESE, 0);
     }
 
     public void feedPeople() {
@@ -426,15 +419,19 @@ public class Government implements Serializable {
             return;
         }
 
-        double cheeseDecrease = this.getPopulation() * value * (this.foods.get(Resource.CHEESE) / this.getFoodNumber());
-        double meatDecrease = this.getPopulation() * value * (this.foods.get(Resource.MEAT) / this.getFoodNumber());
-        double appleDecrease = this.getPopulation() * value * (this.foods.get(Resource.APPLE) / this.getFoodNumber());
-        double breadDecrease = this.getPopulation() * value * (this.foods.get(Resource.BREAD) / this.getFoodNumber());
+        double cheeseDecrease =
+                this.getPopulation() * value * ((double) this.resources.get(Resource.CHEESE) / this.getFoodNumber());
+        double meatDecrease =
+                this.getPopulation() * value * ((double) this.resources.get(Resource.MEAT) / this.getFoodNumber());
+        double appleDecrease =
+                this.getPopulation() * value * ((double) this.resources.get(Resource.APPLE) / this.getFoodNumber());
+        double breadDecrease =
+                this.getPopulation() * value * ((double) this.resources.get(Resource.BREAD) / this.getFoodNumber());
 
-        this.foods.put(Resource.CHEESE, this.foods.get(Resource.CHEESE) - cheeseDecrease);
-        this.foods.put(Resource.MEAT, this.foods.get(Resource.MEAT) - meatDecrease);
-        this.foods.put(Resource.APPLE, this.foods.get(Resource.APPLE) - appleDecrease);
-        this.foods.put(Resource.BREAD, this.foods.get(Resource.BREAD) - breadDecrease);
+        this.resources.put(Resource.CHEESE, this.resources.get(Resource.CHEESE) - (int) cheeseDecrease);
+        this.resources.put(Resource.MEAT, this.resources.get(Resource.MEAT) - (int) meatDecrease);
+        this.resources.put(Resource.APPLE, this.resources.get(Resource.APPLE) - (int) appleDecrease);
+        this.resources.put(Resource.BREAD, this.resources.get(Resource.BREAD) - (int) breadDecrease);
 
         if (value * getPopulation() > getFoodNumber()) {
             this.rateFood = -2;
@@ -461,7 +458,7 @@ public class Government implements Serializable {
             }
 
         }
-        for (java.util.Map.Entry<PersonState, ArrayList<Person>> set : this.people.entrySet()) {
+        for (Entry<PersonState, ArrayList<Person>> set : this.people.entrySet()) {
             for (Person person : set.getValue()) {
                 if (value > 0 && person.getIncome() < value) {
                     person.setIncome(0);
@@ -478,7 +475,6 @@ public class Government implements Serializable {
     }
 
     public int checkReligionPopularity() {
-
         int value = 0;
         for (Building building : buildings) {
             if (building instanceof ReligiousBuilding) {
@@ -531,6 +527,23 @@ public class Government implements Serializable {
         return sum;
     }
 
+    public void decrementArmourAmount(ArmourType armourType, int count) {
+        WeaponName armour = getArmourByArmourType(armourType);
+        if (armour == null) return;
+
+        for (int x = 0; x < map.getXSize(); x++)
+            for (int y = 0; y < map.getYSize(); y++)
+                for (Objects object : map.getXY(x, y).getObjects())
+                    if (object instanceof Storage storage) {
+                        int dec = Math.min(storage.getCurrentCapacity(armour), count);
+                        count -= dec;
+                        for (int i = 0; i < dec; i++) storage.reduceByOne(armour);
+                        if (count == 0)
+                            return;
+                    }
+
+    }
+
     private WeaponName getArmourByArmourType(ArmourType armourType) {
         switch (armourType) {
             case LEATHER -> {
@@ -564,7 +577,6 @@ public class Government implements Serializable {
                 "\nresources=" + resources.toString().replaceAll(", ", "\n") +
                 "\npeople=" + getPopulation() +
                 "\ncoins=" + coins +
-                "\nfoods=" + foods.toString().replaceAll(", ", "\n") +
                 "\npopularity=" + popularity +
                 "\nrateFood=" + rateFood +
                 "\npreviousRateFood=" + previousRateFood +
@@ -766,22 +778,39 @@ public class Government implements Serializable {
     }
 
     public void spreadFire() {
-        HashSet<Pair> newFire = new HashSet<>();
-        for (int x = 0; x < map.getXSize(); x++)
-            for (int y = 0; y < map.getYSize(); y++)
-                if (map.getXY(x, y).isOnFire()) spreadFireRandomly(newFire, x, y);
-
-        for (Pair xy : newFire) map.getXY(xy.x, xy.y).setOnFire(true);
+        HashMap<Pair, Integer> newFire = new HashMap<>();
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                if (map.getXY(x, y).isOnFire()) {
+                    if (map.getXY(x, y).getStateFire() > 1) {
+                        map.getXY(x, y).setStateFire(map.getXY(x, y).getStateFire() - 1);
+                        spreadFireRandomly(newFire, x, y);
+                    } else {
+                        map.getXY(x, y).setFire(false, 0);
+                    }
+                }
+            }
+        }
+        for (java.util.Map.Entry<Pair, Integer> set : newFire.entrySet()) {
+            Pair pair = set.getKey();
+            Unit unit = map.getXY(pair.x, pair.y);
+            if (unit.getStateFire() < set.getValue() && !unit.getTexture().isWater()) {
+                unit.setFire(true, set.getValue());
+            }
+        }
     }
 
-    private void spreadFireRandomly(HashSet<Pair> newFire, int x, int y) {
+    private void spreadFireRandomly(HashMap<Pair, Integer> newFire, int x, int y) {
+        Pair pair = null;
+
         int d = new Random().nextInt(4);
         switch (d) {
-            case 0 -> newFire.add(new Pair(Math.min(map.getXSize(), x + 1), y));
-            case 1 -> newFire.add(new Pair(Math.max(0, x - 1), y));
-            case 2 -> newFire.add(new Pair(x, Math.min(map.getYSize(), y + 1)));
-            case 3 -> newFire.add(new Pair(x, Math.max(0, y - 1)));
+            case 0 -> pair = new Pair(Math.min(map.getXSize(), x + 1), y);
+            case 1 -> pair = new Pair(Math.max(0, x - 1), y);
+            case 2 -> pair = new Pair(x, Math.min(map.getYSize(), y + 1));
+            case 3 -> pair = new Pair(x, Math.max(0, y - 1));
         }
+        newFire.put(pair, map.getXY(x, y).getStateFire());
     }
 
     public void applyFireDamage() {
@@ -789,6 +818,17 @@ public class Government implements Serializable {
             for (int y = 0; y < map.getYSize(); y++)
                 if (map.getXY(x, y).isOnFire()) for (Objects objects : map.getXY(x, y).getObjects())
                     objects.applyDamage(50);
+    }
+
+    public void spreadDiseaseRandomly() {
+
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+
+            }
+        }
+
+
     }
 
     public void attackWeapons() {
@@ -863,7 +903,7 @@ public class Government implements Serializable {
     }
 
     public void addFood(Resource resource) {
-        if (resource.isFood()) foods.put(resource, 0.0);
+        if (resource.isFood()) resources.put(resource, 0);
     }
 
     public void attackEnemy(User enemy) {
@@ -887,6 +927,215 @@ public class Government implements Serializable {
             }
         }
         return false;
+    }
+
+    public int getMaxPopulation() {
+        int cap = 0;
+        for (int x = 0; x < map.getXSize(); x++)
+            for (int y = 0; y < map.getYSize(); y++)
+                for (Objects object : map.getXY(x, y).getObjects())
+                    if (object.getOwner().equals(user) && object instanceof House house)
+                        cap += house.getCapacity();
+        return cap;
+    }
+
+    public int getResourcesAmount() {
+        int value = 0;
+        for (Entry<Resource, Integer> resource : resources.entrySet())
+            value += resource.getValue();
+        return value;
+    }
+
+    public HashMap<Resource, Integer> getResources() {
+        return resources;
+    }
+
+    public boolean canAfford(BuildingType buildingType) {
+        if (coins < buildingType.getCoinCost()) return false;
+        if (resources.getOrDefault(Resource.IRON, 0) < buildingType.getIronCost()) return false;
+        if (resources.getOrDefault(Resource.WOOD, 0) < buildingType.getWoodCost()) return false;
+        if (resources.getOrDefault(Resource.STONE, 0) < buildingType.getStoneCost()) return false;
+        if (resources.getOrDefault(Resource.PITCH, 0) < buildingType.getPitchCost(1)) return false;
+        return !buildingType.equals(BuildingType.PALACE) || map.getPalace() == null;
+    }
+
+    public boolean canAfford(BuildingType buildingType, float coeff) {
+        if (coins < buildingType.getCoinCost() * coeff) return false;
+        if (resources.getOrDefault(Resource.IRON, 0) < buildingType.getIronCost() * coeff) return false;
+        if (resources.getOrDefault(Resource.WOOD, 0) < buildingType.getWoodCost() * coeff) return false;
+        if (resources.getOrDefault(Resource.STONE, 0) < buildingType.getStoneCost() * coeff) return false;
+        return !(resources.getOrDefault(Resource.PITCH, 0) < buildingType.getPitchCost(1) * coeff);
+    }
+
+    public String canRepair(Building building) {
+        float cost;
+        if (building.isDestroyed()) cost = 1;
+        else cost = 1 - ((float) building.getHp() / (float) building.getMaxHp());
+
+        if (!canAfford(building.getType(), cost))
+            return "You don't have enough resources";
+
+        if (building.getOwner().getGovernment().getMap().searchForEnemy(building.getX(), building.getY(),
+                                                                        building.getOwner()))
+            return "The enemy soldier is close";
+
+        building.getOwner().getGovernment().buyBuilding(building.getType(), cost);
+        building.repair();
+        return null;
+    }
+
+    public Person joblessTo(Job job, Building building) {
+        if (!people.containsKey(PersonState.JOBLESS)) {
+            return null;
+        }
+
+        ArrayList<Person> jobless = people.get(PersonState.JOBLESS);
+        if (jobless.size() < 1) return null;
+
+        Person removed = jobless.remove(jobless.size() - 1);
+        Unit xy = map.getXY(removed.getX(), removed.getY());
+        xy.removeObject(removed);
+
+        NonSoldier nonSoldier = new NonSoldier(job, user, building);
+
+        addPeopleByState(nonSoldier, PersonState.WORKER);
+
+        return nonSoldier;
+    }
+
+    public boolean canAffordSoldiers(SoldierName selected, int number) {
+        return coins >= selected.getCoinCost() * number;
+    }
+
+    public boolean hasEnoughWeapons(SoldierName selected, int number) {
+        return weapons.getOrDefault(Soldier.getWeaponName(selected), 0) >= number;
+    }
+
+    public boolean hasEnoughArmour(SoldierName selected, int number) {
+        if (selected.getArmourType() == ArmourType.NONE) return true;
+        return getArmourAmount(selected.getArmourType()) >= number;
+    }
+
+    public int getBuildingCount(BuildingType buildingType) {
+        int sum = 0;
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object.getOwner().equals(user) && object instanceof Building building &&
+                            building.getType().equals(buildingType))
+                        sum++;
+                }
+            }
+        }
+        return sum;
+    }
+
+    public int getSoldierCount(SoldierName soldierName) {
+        int sum = 0;
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object.getOwner().equals(user) && object instanceof Soldier soldier &&
+                            soldier.getType().equals(soldierName))
+                        sum++;
+                }
+            }
+        }
+        return sum;
+    }
+
+    public int getNonSoldierCount(Job job) {
+        int sum = 0;
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object.getOwner().equals(user) && object instanceof NonSoldier nonSoldier &&
+                            nonSoldier.getJob().equals(job))
+                        sum++;
+                }
+            }
+        }
+        return sum;
+    }
+
+    public String getIconData(IconName iconName) {
+        switch (iconName) {
+            case COIN -> {
+                return String.valueOf(coins);
+            }
+            case FOOD -> {
+                return getFoodNumber() + " (rate: " + getRateFood() + ")";
+            }
+            case RELIGION -> {
+                return String.valueOf(checkReligionPopularity());
+            }
+            case RESOURCES -> {
+                return String.valueOf(getResourcesAmount());
+            }
+            case FEAR -> {
+                return checkFearPopularity() + " (rate: " + getFearRate() + ")";
+            }
+            case TAX -> {
+                return String.valueOf(getTaxRate());
+            }
+        }
+
+        return null;
+    }
+
+    public int getResourceRate(Resource resource) {
+        int sum = 0;
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object.getOwner().equals(user) && object instanceof Workshops workshops) {
+                        if (workshops.produces(resource))
+                            sum++;
+                        if (workshops.consumes(resource))
+                            sum--;
+                    } else if (object.getOwner().equals(user) && object instanceof Mine mine && mine.produces(resource))
+                        sum += mine.getRate();
+                }
+            }
+        }
+        return sum;
+    }
+
+    public Color getColor() {
+        return user.getColor().toColor();
+    }
+
+    public String getPalaceState() {
+        return lordsCastle.isDestroyed() ? "Destroyed" : String.valueOf(lordsCastle.getHp());
+    }
+
+    public String getLadyState() {
+        Person lady = getLady();
+        return lady == null || !lady.isAlive() ? "Dead" : String.valueOf(lady.getHp());
+    }
+
+    private Person getLady() {
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object.getOwner().equals(user) && object instanceof NonSoldier nonSoldier &&
+                            nonSoldier.getJob().equals(Job.LADY))
+                        return nonSoldier;
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean hasPalace() {
+        return lordsCastle == null || lordsCastle.isDestroyed();
+    }
+
+    public double getResourcesValue() {
+        int value = 0;
+        for (Entry<Resource, Integer> resource : resources.entrySet())
+            value += resource.getValue();
+        return value;
     }
 
     public static class Pair {

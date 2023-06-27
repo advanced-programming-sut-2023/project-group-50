@@ -15,4 +15,8 @@ public class Tunneler extends Soldier {
                 getX(), getY()
         );
     }
+
+    public boolean hasTunnel() {
+        return getOwner().getGovernment().getMap().getXY(getX(), getY()).hasTunnel();
+    }
 }

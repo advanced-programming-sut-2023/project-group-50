@@ -6,6 +6,8 @@ import model.ObjectsPackage.Resource;
 import model.ObjectsPackage.Storage;
 import model.ObjectsPackage.Weapons.WeaponName;
 
+import java.util.Objects;
+
 public class Workshops extends Building {
     private final int rate;
     private Resource fromResource;
@@ -76,6 +78,21 @@ public class Workshops extends Building {
                 toResource = new Resource[]{Resource.MEAT};
                 toWeapon = null;
             }
+            case BAKERY -> {
+                fromResource = Resource.FLOUR;
+                toResource = new Resource[]{Resource.BREAD};
+                toWeapon = null;
+            }
+            case WHEAT_FARMER -> {
+                fromResource = null;
+                toResource = new Resource[]{Resource.WHEAT};
+                toWeapon = null;
+            }
+            case BREWER -> {
+                fromResource = Resource.HOPS;
+                toResource = new Resource[]{Resource.ALE};
+                toWeapon = null;
+            }
             default -> throw new IllegalStateException("Unexpected value: " + type);
         }
     }
@@ -127,5 +144,18 @@ public class Workshops extends Building {
         if (toWeapon != null)
             for (WeaponName weaponName : toWeapon)
                 produce(weaponName);
+    }
+
+    public boolean produces(Resource resource) {
+        if (toResource == null) return false;
+        for (Resource resource1 : toResource)
+            if (resource1.equals(resource))
+                return true;
+
+        return false;
+    }
+
+    public boolean consumes(Resource resource) {
+        return Objects.equals(fromResource, resource);
     }
 }

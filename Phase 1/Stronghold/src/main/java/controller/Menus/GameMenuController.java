@@ -29,8 +29,8 @@ import static controller.Menus.LoginController.removeDoubleCoutString;
 
 public class GameMenuController {
     private final GameMenu gameMenu;
-    private User currentUser;
     private final Game game;
+    private User currentUser;
     private Building selectedBuilding;
     private Unit selectedUnit;
 
@@ -386,7 +386,7 @@ public class GameMenuController {
                 }
             }
         }
-        this.currentUser.getGovernment().addUndeployedSoldier(count, soldierName, this.currentUser);
+//        this.currentUser.getGovernment().addUndeployedSoldier(count, soldierName, this.currentUser);
         return "You create a unit";
     }
 

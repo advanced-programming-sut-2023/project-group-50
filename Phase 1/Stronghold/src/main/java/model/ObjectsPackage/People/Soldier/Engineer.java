@@ -83,7 +83,7 @@ public class Engineer extends Soldier {
 
     public void placePitchDitch(int x, int y) {
         Unit xy = getOwner().getGovernment().getMap().getXY(x, y);
-        if (!xy.getObjects().isEmpty()) return;
+        if (xy.hasBuilding()) return;
         xy.addObject(Building.getBuildingByType(BuildingType.PITCH_DITCH, getOwner(), x, y));
     }
 

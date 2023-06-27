@@ -1,13 +1,12 @@
 package model.Map;
 
-import model.ObjectsPackage.Buildings.Building;
-import model.ObjectsPackage.Buildings.BuildingType;
-import model.ObjectsPackage.Buildings.Gate;
-import model.ObjectsPackage.Buildings.Tower;
-import model.ObjectsPackage.ObjectType;
-import model.ObjectsPackage.Objects;
+import controller.UserDatabase.User;
+import javafx.scene.paint.Color;
+import model.ObjectsPackage.Buildings.*;
+import model.ObjectsPackage.*;
 import model.ObjectsPackage.People.Soldier.Engineer;
 import model.ObjectsPackage.People.Soldier.Soldier;
+import view.show.Animation.FireAnimation;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,10 +18,13 @@ public class Unit implements Serializable {
     private final LinkedHashSet<Objects> objects;
     private final int x;
     private final int y;
+    private final boolean hasDisease;
     private GroundType texture;
     private boolean isOnFire;
     private boolean isProtected;
     private int capacity;
+    private int stateFire;
+    private FireAnimation fireAnimation;
 
     public Unit(int x, int y, GroundType texture) {
         this.x = x;
@@ -31,6 +33,10 @@ public class Unit implements Serializable {
         objects = new LinkedHashSet<>();
         isOnFire = false;
         isProtected = false;
+        stateFire = 0;
+        fireAnimation = null;
+        hasDisease = false;
+
     }
 
     public boolean isProtected() {
@@ -117,6 +123,13 @@ public class Unit implements Serializable {
         return false;
     }
 
+    public boolean hasObjectByType(ObjectType type) {
+        for (Objects object : objects)
+            if (object.getObjectType().equals(type))
+                return true;
+        return false;
+    }
+
     public Building getObjectType(BuildingType type) {
         for (Objects object : objects)
             if (object instanceof Building building && building.getType().equals(type))
@@ -176,4 +189,124 @@ public class Unit implements Serializable {
         }
         return false;
     }
+
+    public boolean hasBuilding() {
+        for (Objects object : objects)
+            if (object instanceof Building)
+                return true;
+        return false;
+    }
+
+    public boolean hasObjects() {
+        for (Objects object : objects)
+            if (!(object instanceof Building))
+                return true;
+        return false;
+    }
+
+    public boolean hasPalace() {
+        for (Objects object : objects)
+            if (object instanceof House house && house.getType().equals(BuildingType.PALACE))
+                return true;
+        return false;
+    }
+
+    public Color getPalaceOwnerColor() {
+        for (Objects object : objects)
+            if (object instanceof House house && house.getType().equals(BuildingType.PALACE))
+                return house.getOwner().getColor().toColor();
+        throw new RuntimeException();
+    }
+
+    public User getOwner() {
+        for (Objects object : objects)
+            if (object instanceof Building building)
+                return building.getOwner();
+        return null;
+    }
+
+    public Building getBuilding() {
+        for (Objects object : objects)
+            if (object instanceof Building building)
+                return building;
+        return null;
+    }
+
+    public Tree getTree() {
+        for (Objects object : objects)
+            if (object instanceof Tree tree)
+                return tree;
+        return null;
+    }
+
+    public Rock getRock() {
+        for (Objects object : objects)
+            if (object instanceof Rock rock)
+                return rock;
+        return null;
+    }
+
+    public void clear(User user) {
+        ArrayList<Objects> toRemove = new ArrayList<>();
+        for (Objects objects1 : objects) {
+            if (java.util.Objects.equals(objects1.getOwner(), user)) {
+                toRemove.add(objects1);
+                if (objects1 instanceof Storage storage)
+                    storage.prevStorage().removeNextStorage(storage);
+            }
+        }
+
+        toRemove.forEach(objects::remove);
+        setTexture(GroundType.PLAIN);
+    }
+
+    public boolean hasGate() {
+        for (Objects objects1 : objects)
+            if (objects1 instanceof Gate)
+                return true;
+        return false;
+    }
+
+    public Gate getGate() {
+        for (Objects objects1 : objects)
+            if (objects1 instanceof Gate gate)
+                return gate;
+        return null;
+    }
+
+    public Tunnel getTunnel() {
+        for (Objects objects1 : objects)
+            if (objects1 instanceof Tunnel tunnel)
+                return tunnel;
+        return null;
+    }
+
+    public boolean hasTunnel() {
+        return getTunnel() != null;
+    }
+
+    public int getStateFire() {
+        return stateFire;
+    }
+
+    public void setStateFire(int stateFire) {
+        this.stateFire = stateFire;
+    }
+
+    public void setFire(boolean isOnFire, int stateFire) {
+        setOnFire(isOnFire);
+        setStateFire(stateFire);
+        if (isOnFire && fireAnimation == null) {
+            (this.fireAnimation = new FireAnimation(this)).play();
+        }
+    }
+
+    public FireAnimation getFireAnimation() {
+        return fireAnimation;
+    }
+
+    public void setFireAnimation(FireAnimation fireAnimation) {
+        this.fireAnimation = fireAnimation;
+    }
+
 }

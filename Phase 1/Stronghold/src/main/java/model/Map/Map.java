@@ -1,15 +1,20 @@
 package model.Map;
 
 import controller.UserDatabase.User;
+import model.ObjectsPackage.Buildings.Building;
+import model.ObjectsPackage.Buildings.BuildingType;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Soldier.Soldier;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Map implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -5142982528088815367L;
     private final HashMap<Integer, HashMap<Integer, Unit>> map;
     private final int xSize;
     private final int ySize;
@@ -158,10 +163,26 @@ public class Map implements Serializable {
     }
 
     public Unit getXY(int x, int y) {
-        return map.get(x).get(y);
+        try {
+            return map.get(x).get(y);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public void clearXY(int x, int y) {
         map.get(x).put(y, new Unit(x, y, GroundType.GROUND));
+    }
+
+    public boolean isValid(int x, int y) {
+        return x < xSize && y < ySize && x >= 0 && y >= 0;
+    }
+
+    public Building getPalace() {
+        for (HashMap<Integer, Unit> X : map.values())
+            for (Unit Y : X.values())
+                if (Y.hasPalace())
+                    return Y.getObjectType(BuildingType.PALACE);
+        return null;
     }
 }
