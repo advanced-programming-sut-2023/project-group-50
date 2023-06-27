@@ -1,6 +1,6 @@
 ---
 name: تمپلیت فاز سه
-about: p3
+about: phase3
 title: Phase 3 Report
 labels: progress
 assignees: Arman17Babaei
