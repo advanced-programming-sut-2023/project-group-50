@@ -7,13 +7,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import view.show.controller.StartMenuController;
 
-public class StartMenu extends Application {
+public class ServerOfflineMenu extends Application {
 
-    public static StartMenuController startMenuController = new StartMenuController();
     public static Stage stage;
-    private boolean serverOffline;
 
     public static void main(String[] args) {
         launch(args);
@@ -26,11 +23,7 @@ public class StartMenu extends Application {
         primaryStage.setTitle("StrongHold-sa");
         primaryStage.getIcons().add(new Image(String.valueOf(StartMenu.class.getResource(
                 "/images/140-1402842_logo-crusaders-logo-blue-hd-png-download.png"))));
-        Scene scene;
-        if (!serverOffline)
-            scene = new Scene(StartMenu.startMenuController.createContent());
-        else
-            scene = new Scene(getServerOffline());
+        Scene scene = new Scene(getServerOffline());
         StartMenu.stage.setScene(scene);
         StartMenu.stage.show();
     }
@@ -42,9 +35,5 @@ public class StartMenu extends Application {
         text.setFont(new Font("Old English Text MT", 50));
         pane.getChildren().add(text);
         return pane;
-    }
-
-    public void setServerOffline(boolean b) {
-        serverOffline = b;
     }
 }

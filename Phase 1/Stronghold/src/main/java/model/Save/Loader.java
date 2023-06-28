@@ -9,8 +9,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 public class Loader {
+    public static void loadSave(Saver saver) {
+        new Loader().loadUtil(saver);
+    }
+
     public void load() {
-        loadUtil(getSaver());
+        if (Saver.exists())
+            loadUtil(getSaver());
     }
 
     private Saver getSaver() {

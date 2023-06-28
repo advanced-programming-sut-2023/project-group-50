@@ -1,5 +1,6 @@
 package view.show.controller;
 
+import Server.Client;
 import controller.GUIControllers.ProfileMenuGUIController;
 import controller.Menus.SignupController;
 import controller.UserDatabase.User;
@@ -633,6 +634,7 @@ public class SignupMenuShowController {
     }
 
     private void submit() {
+        Client.getData();
 
         boolean flag = true;
 
@@ -943,6 +945,7 @@ public class SignupMenuShowController {
         choice = EditSecurityQuestionMenu.getChoice(checkBoxes);
         Users.setSecurityQuestion(user.getUserName(), choice, answer.getText().trim());
 
+        Client.sendData();
 
         try {
             new StartMenu().start(SignupMenuShow.stage);

@@ -3,6 +3,7 @@ package controller.UserDatabase;
 import controller.control.SecurityQuestion;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,5 +67,9 @@ public class Users implements Serializable {
     public static void setSecurityQuestion(String username, int choice, String answer) {
         users.get(username).setSecurityQuestion(SecurityQuestion.values()[choice]);
         users.get(username).setSecurityQuestionAnswer(answer);
+    }
+
+    public static ArrayList<String> getUsersAsString() {
+        return new ArrayList<>(users.keySet());
     }
 }

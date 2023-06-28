@@ -13,7 +13,9 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 public class Saver implements Serializable {
-    static String path = "stronghold\\src\\main\\java\\model\\Save\\LastGame\\LastSave.txt";
+    @Serial
+    private static final long serialVersionUID = -5142982528088815368L;
+    static String path = "Stronghold/src/main/resources/Database/Users/save.svd";
 
 
     /**
@@ -39,15 +41,19 @@ public class Saver implements Serializable {
         nextId = TradeMarket.getNextId();
     }
 
-    private static void makeLastGameTxtIfNotExists() {
+    public static Saver get() {
+        Saver saver = new Saver();
+        saver.save();
+        return saver;
+    }
+
+    public static boolean exists() {
         File dir = new File(path);
-        if (!dir.exists()) dir.mkdirs();
+        return dir.exists();
     }
 
     public void save() {
         try {
-            makeLastGameTxtIfNotExists();
-
             FileOutputStream fileOutputStream = new FileOutputStream(path);
             ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream);
 

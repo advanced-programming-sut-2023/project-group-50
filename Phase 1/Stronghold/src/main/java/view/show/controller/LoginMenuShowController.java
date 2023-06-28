@@ -1,5 +1,6 @@
 package view.show.controller;
 
+import Server.Client;
 import controller.Menus.LoginController;
 import controller.Menus.SignupController;
 import controller.UserDatabase.User;
@@ -192,6 +193,7 @@ public class LoginMenuShowController {
         forgot.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                Client.getData();
                 Error error = LoginController.userNameIsExist(((TextField) ((HBox) username.getChildren().get(0)).getChildren().get(1)).getText());
                 addError((HBox) username.getChildren().get(1), error);
                 if (error.truth) {
@@ -217,7 +219,6 @@ public class LoginMenuShowController {
             @Override
             public void handle(MouseEvent event) {
                 login();
-
             }
         });
 
@@ -242,6 +243,8 @@ public class LoginMenuShowController {
     }
 
     public void login() {
+        Client.getData();
+
         boolean flag = true;
 
         Error error = LoginController.userNameIsExist(((TextField) ((HBox) username.getChildren().get(0)).getChildren().get(1)).getText());
