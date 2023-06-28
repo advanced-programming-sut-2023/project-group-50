@@ -15,6 +15,8 @@ public class LoginMenuShow extends Application {
 
         Scene scene = new Scene(LoginMenuShow.loginMenuShowController.createContent());
         LoginMenuShow.stage.setScene(scene);
+        LoginMenuShow.stage.setFullScreen(true);
+        LoginMenuShow.stage.setFullScreenExitHint("");
         LoginMenuShow.stage.show();
     }
 }

@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.stage.Screen;
 import view.show.Menus.LoginMenuShow;
 import view.show.Menus.MenuButton;
 import view.show.Menus.SignupMenuShow;
@@ -28,14 +29,17 @@ public class StartMenuController {
     }
 
     public Parent createContent() {
+        double width = Screen.getPrimary().getBounds().getWidth();
+        double height = Screen.getPrimary().getBounds().getHeight();
+
         Pane pane = new Pane();
-        pane.setPrefSize(800, 600);
-        Background background = new Background(setBackGround("/images/background/startmenu1.png", 800, 600));
+        pane.setPrefSize(width, height);
+        Background background = new Background(setBackGround("/images/background/startmenu1.png", width, height));
         pane.setBackground(background);
         Node menu = createMenu();
         MusicPlayer.playMusic(getClass().getResource("/images/media/startmenu/cinematic-intro-6097.mp3").toString());
         menu.setTranslateX(5);
-        menu.setTranslateY(150);
+        menu.setTranslateY(height * 0.25);
         pane.getChildren().add(menu);
 
         return pane;
@@ -44,9 +48,7 @@ public class StartMenuController {
     public Node createMenu() {
 
         MenuButton login = new MenuButton("LOGIN");
-        MenuButton signup = new MenuButton("SING UP");
-        login.setAlignment(Pos.TOP_LEFT);
-        signup.setAlignment(Pos.TOP_LEFT);
+        MenuButton signup = new MenuButton("SIGN UP");
         login.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -60,7 +62,10 @@ public class StartMenuController {
             }
         });
         VBox vBox = new VBox(login, signup);
-        vBox.setSpacing(25);
+
+        vBox.setPrefSize(180, 200);
+
+        vBox.setSpacing(15);
         vBox.setAlignment(Pos.CENTER);
         return vBox;
 

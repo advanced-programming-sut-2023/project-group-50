@@ -29,6 +29,7 @@ import view.show.UnitMenu.UnitMenu;
 import java.util.Objects;
 
 import static model.Map.GUI.Unit.UnitPane.getButtonUtil;
+import static model.Map.GUI.Unit.UnitPane.getLongButtonUtil;
 
 public class MainMenuGUIController {
     private static Pane pane;
@@ -123,14 +124,14 @@ public class MainMenuGUIController {
 
     private static VBox getMenus(double height) {
         VBox vBox = new VBox(
-                getButton("Connect to server", height / 4, MainMenuGUIController::online),
-                getButton("Trade Menu", height / 4, MainMenuGUIController::trade),
-                getButton("Shop Menu", height / 4, MainMenuGUIController::shop),
-                getButton("Profile Menu", height / 4, MainMenuGUIController::profile),
-                getButton("Saved maps", height / 4, MainMenuGUIController::saveMap)
+                getLongButtonUtil("Connect to server", height / 5, MainMenuGUIController::online),
+                getLongButtonUtil("Trade Menu", height / 5, MainMenuGUIController::trade),
+                getLongButtonUtil("Shop Menu", height / 5, MainMenuGUIController::shop),
+                getLongButtonUtil("Profile Menu", height / 5, MainMenuGUIController::profile),
+                getLongButtonUtil("Saved maps", height / 5, MainMenuGUIController::saveMap)
         );
 
-        vBox.setPrefHeight(height * 5 / 4);
+        vBox.setPrefHeight(height);
         vBox.setSpacing(5);
         vBox.setAlignment(Pos.CENTER);
 

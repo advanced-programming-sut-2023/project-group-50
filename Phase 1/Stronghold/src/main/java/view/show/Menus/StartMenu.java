@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import view.show.controller.StartMenuController;
 
@@ -23,7 +24,7 @@ public class StartMenu extends Application {
     public void start(Stage primaryStage) throws Exception {
         StartMenu.stage = primaryStage;
 
-        primaryStage.setTitle("StrongHold-sa");
+        primaryStage.setTitle("Stronghold");
         primaryStage.getIcons().add(new Image(String.valueOf(StartMenu.class.getResource(
                 "/images/140-1402842_logo-crusaders-logo-blue-hd-png-download.png"))));
         Scene scene;
@@ -32,19 +33,20 @@ public class StartMenu extends Application {
         else
             scene = new Scene(getServerOffline());
         StartMenu.stage.setScene(scene);
+        StartMenu.stage.setFullScreenExitHint("");
+        StartMenu.stage.setFullScreen(true);
         StartMenu.stage.show();
     }
 
     private StackPane getServerOffline() {
+        double width = Screen.getPrimary().getBounds().getWidth();
+        double height = Screen.getPrimary().getBounds().getHeight();
+
         StackPane pane = new StackPane();
-        pane.setPrefSize(500, 500);
+        pane.setPrefSize(width, height);
         Text text = new Text("Server is offline!");
         text.setFont(new Font("Old English Text MT", 50));
         pane.getChildren().add(text);
         return pane;
-    }
-
-    public void setServerOffline(boolean b) {
-        serverOffline = b;
     }
 }

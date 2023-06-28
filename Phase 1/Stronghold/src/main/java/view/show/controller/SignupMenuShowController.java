@@ -27,6 +27,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import model.RandomGenerator.RandomCaptcha;
 import model.RandomGenerator.RandomGenerator;
 import model.UserColor.UserColor;
@@ -297,6 +298,7 @@ public class SignupMenuShowController {
             }
         });
 
+        hBox.setAlignment(Pos.CENTER);
 
         return hBox;
     }
@@ -389,6 +391,7 @@ public class SignupMenuShowController {
         Label captchaError = new Label();
         Label again = new Label("change");
         HBox tryAgain = new HBox(again);
+        tryAgain.setAlignment(Pos.CENTER);
         again.setTextFill(Color.BLACK);
 
         again.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -447,16 +450,24 @@ public class SignupMenuShowController {
             }
         });
 
-        return new VBox(captchaBox, tryAgain, errorBox);
+        VBox vBox = new VBox(captchaBox, tryAgain, errorBox);
+        vBox.setAlignment(Pos.CENTER);
+        return vBox;
 
     }
 
     public Parent createContent() {
+        double width = Screen.getPrimary().getBounds().getWidth();
+        double height = Screen.getPrimary().getBounds().getHeight();
+
         Pane pane = new Pane();
-        pane.setPrefSize(800, 600);
-        Background background = new Background(StartMenuController.setBackGround(("/images/background/m1HMsV.jpg"), 800, 600));
+        pane.setPrefSize(width, height);
+        Background background = new Background(StartMenuController.setBackGround(("/images/background/m1HMsV.jpg"), width, height));
         pane.setBackground(background);
         VBox menu = new VBox(creatUsernameField(), (this.password = creatPasswordField()), createEmail(), createNickname(), createSlogan(), createButtons());
+        menu.setStyle("-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 25");
+        menu.setPrefSize(500, 600);
+        menu.setAlignment(Pos.CENTER);
 
         MusicPlayer.playMusic(SignupMenuShowController.class.getResource("/images/floating-in-time-145495.mp3").toExternalForm());
 
@@ -623,9 +634,6 @@ public class SignupMenuShowController {
                 }
             }
         });
-
-        submit.setAlignment(Pos.TOP_LEFT);
-        back.setAlignment(Pos.TOP_LEFT);
 
         hBox.setSpacing(10);
         hBox.getChildren().addAll(submit, back);

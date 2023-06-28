@@ -20,6 +20,10 @@ public class MainMenu extends Application {
         return stage;
     }
 
+    public static void setUser(User user) {
+        MainMenu.user = user;
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
         stage.setScene(new Scene(Loading.getLoadingPane()));

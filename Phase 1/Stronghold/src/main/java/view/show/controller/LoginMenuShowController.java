@@ -26,6 +26,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Screen;
 import model.RandomGenerator.RandomCaptcha;
 import view.show.MainMenu.MainMenu;
 import view.show.Menus.LoginMenuShow;
@@ -44,19 +45,24 @@ public class LoginMenuShowController {
     public VBox menu;
 
     public Parent createContent() {
+        double width = Screen.getPrimary().getBounds().getWidth();
+        double height = Screen.getPrimary().getBounds().getHeight();
+
         Pane pane = new Pane();
         this.pane = pane;
-        pane.setPrefSize(800, 600);
-        Background background = new Background(StartMenuController.setBackGround(("/images/background/thumb-1920-152789.jpg"), 800, 600));
+        pane.setPrefSize(width, height);
+        Background background = new Background(StartMenuController.setBackGround(("/images/background/thumb-1920-152789.jpg"), width, height));
         pane.setBackground(background);
         VBox menu = new VBox(creatUsernameField(), creatPasswordField(), (captcha = SignupMenuShowController.createCaptcha()), createButtons());
+        menu.setStyle("-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 25");
+        menu.setPrefSize(500, 400);
 
         MusicPlayer.playMusic(SignupMenuShowController.class.getResource("/images/floating-in-time-145495.mp3").toExternalForm());
 
         menu.setAlignment(Pos.CENTER);
         menu.setSpacing(15);
-        menu.setTranslateY(100);
-        menu.setTranslateX(500);
+        menu.setTranslateY((height - 400) / 2);
+        menu.setTranslateX((width - 500) / 2);
         this.menu = menu;
         pane.getChildren().add(menu);
         return pane;
@@ -102,6 +108,7 @@ public class LoginMenuShowController {
 
         });
 
+        vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().add(errorBox);
         this.username = vBox;
         return vBox;
@@ -202,7 +209,7 @@ public class LoginMenuShowController {
             }
         });
 
-
+        vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(forgot, errorBox);
         this.password = vBox;
         return vBox;
@@ -232,9 +239,6 @@ public class LoginMenuShowController {
                 }
             }
         });
-
-        login.setAlignment(Pos.TOP_LEFT);
-        back.setAlignment(Pos.TOP_LEFT);
 
         hBox.setSpacing(10);
         hBox.getChildren().addAll(login, back);

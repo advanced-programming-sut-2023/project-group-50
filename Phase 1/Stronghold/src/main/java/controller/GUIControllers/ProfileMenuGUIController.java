@@ -20,8 +20,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import model.RandomGenerator.RandomGenerator;
 import view.show.MainMenu.MainMenu;
+import view.show.Menus.StartMenu;
 import view.show.ProfileMenu.*;
 
+import java.io.IOException;
 import java.net.URL;
 
 public class ProfileMenuGUIController {
@@ -59,7 +61,10 @@ public class ProfileMenuGUIController {
                                         user.getSecurityQuestion().getQuestion() + " " +
                                                 user.getSecurityQuestionAnswer(),
                                         ProfileMenuGUIController::editSecurityQuestion);
-        VBox data = new VBox(avatar, nickname, username, password, slogan, email, securityQuestion);
+
+        Button logout = MainMenuGUIController.getButton("Logout", 40, ProfileMenuGUIController::logout);
+
+        VBox data = new VBox(avatar, nickname, username, password, slogan, email, securityQuestion, logout);
         data.setAlignment(Pos.CENTER);
         data.setSpacing(15);
 
@@ -70,6 +75,21 @@ public class ProfileMenuGUIController {
         stackPane.setMaxSize(width, height);
 
         return stackPane;
+    }
+
+    private static void logout(ActionEvent actionEvent) {
+        if (user.getSocket() != null) {
+            try {
+                user.getSocket().close();
+                user.setSocket(null);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            user.setSocket(null);
+
+            MainMenu.setUser(null);
+            StartMenu.main(null);
+        }
     }
 
     public static ImageView getDataBackgroundImage(double height, double width) {
@@ -130,8 +150,8 @@ public class ProfileMenuGUIController {
         Image image = new Image(avatarURL.toExternalForm());
         Button button = getButton(ProfileMenuGUIController::editAvatar, true);
         Rectangle rectangle = new Rectangle();
-        rectangle.setHeight(200.0);
-        rectangle.setWidth(200.0);
+        rectangle.setHeight(175.0);
+        rectangle.setWidth(175.0);
         rectangle.setStroke(Color.BLACK);
         rectangle.setStrokeWidth(1.0);
         rectangle.setFill(new ImagePattern(image));
@@ -151,6 +171,7 @@ public class ProfileMenuGUIController {
         pane.getChildren().add(getUserData(height, width));
 
         Button backButton = getBackButton(ProfileMenuGUIController::showMainMenu);
+
         pane.getChildren().add(backButton);
         backButton.setLayoutY(25);
         backButton.setLayoutX(width - 125);
