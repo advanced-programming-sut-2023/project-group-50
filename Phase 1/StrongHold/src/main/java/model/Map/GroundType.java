@@ -4,9 +4,10 @@ import javafx.scene.image.Image;
 import model.ObjectsPackage.People.Soldier.SoldierName;
 import model.RandomGenerator.RandomGroundType;
 
+import java.io.Serializable;
 import java.net.URL;
 
-public enum GroundType {
+public enum GroundType implements Serializable {
     GROUND(ConsoleColors.YELLOW_BACKGROUND_BRIGHT), // zamin
     RIGGED_GROUND(ConsoleColors.YELLOW_BACKGROUND), // zamin ba sangrize
     CLIFF(ConsoleColors.BLACK_BACKGROUND), // takhte sang
@@ -100,5 +101,9 @@ public enum GroundType {
     public boolean isWater() {
         return this == GroundType.SHALLOW_WATER || this == GroundType.SEA || this == GroundType.BIG_POND ||
                 this == GroundType.SMALL_POND || this == GroundType.RIVER;
+    }
+
+    public boolean isGreen() {
+        return this == GroundType.GRASS || this == GroundType.LAWN || this == GroundType.MEADOW;
     }
 }

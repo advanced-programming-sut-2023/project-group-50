@@ -1,5 +1,7 @@
 package controller.UserDatabase;
 
+import controller.control.SecurityQuestion;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -51,5 +53,18 @@ public class Users implements Serializable {
 
     private static void updateAllUsers() {
         for (User user : users.values()) user.updateScore();
+    }
+
+    public static boolean usernameExists(String name) {
+        return getUser(name) != null;
+    }
+
+    public static void removeUser(User user) {
+        users.remove(user.getUserName());
+    }
+
+    public static void setSecurityQuestion(String username, int choice, String answer) {
+        users.get(username).setSecurityQuestion(SecurityQuestion.values()[choice]);
+        users.get(username).setSecurityQuestionAnswer(answer);
     }
 }

@@ -1,7 +1,6 @@
 package model.ObjectsPackage;
 
 import controller.UserDatabase.User;
-import javafx.scene.image.Image;
 import model.Government.Government;
 import model.Map.Map;
 import model.ObjectsPackage.Buildings.Building;
@@ -15,6 +14,7 @@ public class Storage extends Building {
     private final HashMap<String, Integer> currentCapacity;
     private final int maximumCapacity;
     private Storage nextStorage;
+    private Storage previousStorage;
 
 
     public Storage(BuildingType type, User owner, int x, int y, int maxHp, int maximumCapacity) {
@@ -24,22 +24,24 @@ public class Storage extends Building {
         currentCapacity = new HashMap<>();
 
         Map map = owner.getGovernment().getMap();
-
         checkNeighboursForStorage(type, x, y, map);
     }
 
     private void checkNeighboursForStorage(BuildingType type, int x, int y, Map map) {
         if (x != 0 && checkForStorage(type, x - 1, y, map)) return;
-        if (x != map.getXSize() && checkForStorage(type, x + 1, y, map)) return;
+        if (x != map.getXSize() - 1 && checkForStorage(type, x + 1, y, map)) return;
         if (y != 0 && checkForStorage(type, x, y - 1, map)) return;
-        if (y != map.getYSize() && checkForStorage(type, x, y + 1, map)) {
+        if (y != map.getYSize() - 1 && checkForStorage(type, x, y + 1, map)) {
         }
     }
 
     private boolean checkForStorage(BuildingType type, int x, int y, Map map) {
         if (map.getXY(x, y).hasObjectType(type)) {
-            Storage prevStorage = (Storage) map.getXY(x - 1, y).getObjectType(type);
-            prevStorage.setNextStorage(this);
+            Storage prevStorage = (Storage) map.getXY(x, y).getObjectType(type);
+            if (prevStorage != null && prevStorage.nextStorage == null) {
+                prevStorage.setNextStorage(this);
+                this.previousStorage = prevStorage;
+            }
             return true;
         }
         return false;
@@ -50,7 +52,7 @@ public class Storage extends Building {
     }
 
     public int getCurrentCapacity(WeaponName resource) {
-        return currentCapacity.get(resource.name());
+        return currentCapacity.getOrDefault(resource.name(), 0);
     }
 
     public int getMaximumCapacity() {
@@ -58,7 +60,7 @@ public class Storage extends Building {
     }
 
     private boolean reduceByOne(WeaponName weaponName) {
-        if (Objects.requireNonNull(getType()) == BuildingType.ARMOURY) {
+        if (java.util.Objects.requireNonNull(getType()) == BuildingType.ARMOURY) {
             if (currentCapacity.get(weaponName.name()) < 0) return false;
             currentCapacity.put(weaponName.name(), currentCapacity.get(weaponName.name()) - 1);
             return true;
@@ -67,7 +69,7 @@ public class Storage extends Building {
     }
 
     private boolean reduceByOne(Resource resource) {
-        if (Objects.requireNonNull(getType()) == BuildingType.GRANARY
+        if (java.util.Objects.requireNonNull(getType()) == BuildingType.GRANARY
                 || getType() == BuildingType.STOCKPILE
                 || getType() == BuildingType.OX_TETHER) {
             if (currentCapacity.get(resource.name()) < 0) return false;
@@ -84,7 +86,7 @@ public class Storage extends Building {
     }
 
     private boolean addOneWeapon(WeaponName weaponName) {
-        if (Objects.requireNonNull(getType()) == BuildingType.ARMOURY) {
+        if (java.util.Objects.requireNonNull(getType()) == BuildingType.ARMOURY) {
             if (getCurrentCapacity() >= maximumCapacity) return false;
             currentCapacity.put(weaponName.name(), currentCapacity.getOrDefault(weaponName.name(), 0) + 1);
             return true;
@@ -164,8 +166,38 @@ public class Storage extends Building {
         return getCurrentCapacity() == 0;
     }
 
-    @Override
-    public Image getImage() {
-        return null;
+    public Storage prevStorage() {
+        return previousStorage;
+    }
+
+    public void removeNextStorage(Storage storage) {
+        findNextStorage(storage);
+    }
+
+    private void findNextStorage(Storage storage) {
+        int x = getX(), y = getY();
+        Map map = getOwner().getGovernment().getMap();
+        BuildingType type = getType();
+        if (x != 0 && checkForNextStorage(type, x - 1, y, map, storage)) return;
+        if (x != map.getXSize() - 1 && checkForNextStorage(type, x + 1, y, map, storage)) return;
+        if (y != 0 && checkForNextStorage(type, x, y - 1, map, storage)) return;
+        if (y != map.getYSize() - 1 && checkForNextStorage(type, x, y + 1, map, storage)) return;
+        nextStorage = null;
+    }
+
+    private boolean checkForNextStorage(BuildingType type, int x, int y, Map map, Storage storage) {
+        if (map.getXY(x, y).hasObjectType(type)) {
+            Storage nextStorage = (Storage) map.getXY(x, y).getObjectType(type);
+            if (nextStorage != null && nextStorage.previousStorage == null && nextStorage != storage) {
+                nextStorage.setPreviousStorage(this);
+                this.nextStorage = nextStorage;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private void setPreviousStorage(Storage storage) {
+        previousStorage = storage;
     }
 }

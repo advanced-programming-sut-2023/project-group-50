@@ -7,8 +7,6 @@ import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.NonSoldier.NonSoldier;
 import model.ObjectsPackage.People.Soldier.Soldier;
-import model.RandomGenerator.RandomNonSoldier;
-import model.RandomGenerator.RandomSoldier;
 
 public abstract class Person extends Objects {
     private final int maxLife;
@@ -89,10 +87,12 @@ public abstract class Person extends Objects {
     @Override
     public Image getImage() {
         String path;
-        if (this instanceof Soldier soldier) path = RandomSoldier.getSoldier(soldier.getType());
-        else if (this instanceof NonSoldier nonSoldier) path = RandomNonSoldier.getNonSoldier(nonSoldier.getJob());
+        if (this instanceof Soldier soldier)
+            path = "Soldier/" + soldier.getType().getType().replaceAll(" ", "") + ".png";
+        else if (this instanceof NonSoldier nonSoldier)
+            path = "NonSoldier/" + nonSoldier.getJob().getType().replaceAll(" ", "") + ".png";
         else throw new RuntimeException();
 
-        return new Image(Person.class.getResource("/phase2-assets/" + path).toExternalForm());
+        return new Image(Person.class.getResource("/images/People/" + path).toExternalForm());
     }
 }

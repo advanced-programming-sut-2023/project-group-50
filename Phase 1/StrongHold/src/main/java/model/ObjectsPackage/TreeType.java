@@ -1,5 +1,6 @@
 package model.ObjectsPackage;
 
+import javafx.scene.image.Image;
 import model.ObjectsPackage.People.Soldier.SoldierName;
 
 public enum TreeType {
@@ -27,4 +28,7 @@ public enum TreeType {
         return type;
     }
 
+    public Image getImage() {
+        return new Tree(this, null).getImage();
+    }
 }

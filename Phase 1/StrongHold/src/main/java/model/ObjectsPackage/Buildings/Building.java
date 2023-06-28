@@ -2,10 +2,15 @@ package model.ObjectsPackage.Buildings;
 
 import controller.UserDatabase.User;
 import javafx.scene.image.Image;
+import model.Government.Government;
 import model.Map.GroundType;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.NonSoldier.Job;
+import model.ObjectsPackage.People.NonSoldier.NonSoldier;
+import model.ObjectsPackage.People.PersonState;
+import model.ObjectsPackage.People.Soldier.Soldier;
+import model.ObjectsPackage.People.Soldier.SoldierName;
 import model.ObjectsPackage.Storage;
 import model.RandomGenerator.RandomBuilding;
 
@@ -31,7 +36,7 @@ public abstract class Building extends Objects {
         this.maxHp = maxHp;
         hp = maxHp;
         residents = new HashMap<>();
-
+        addPeople(type, owner.getGovernment(), owner);
     }
 
     public static Building getBuildingByType(BuildingType buildingType, User owner, int x, int y) {
@@ -158,7 +163,7 @@ public abstract class Building extends Objects {
                                             0,
                                             0);
             }
-            case INN, MILL, HOVEL, WATER_POT, SIEGE_TENT, STABLE -> {
+            case INN, HOVEL, WATER_POT, SIEGE_TENT, STABLE -> {
                 return new House(buildingType,
                                  owner,
                                  x,
@@ -243,14 +248,6 @@ public abstract class Building extends Objects {
                                      300,
                                      10);
             }
-            case OIL_SMELTER -> {
-                return new Storage(buildingType,
-                                   owner,
-                                   x,
-                                   y,
-                                   250,
-                                   10);
-            }
             case TUNNEL, PITCH_DITCH, CAGED_WAR_DOGS -> {
                 return new Tunnel(buildingType,
                                   owner,
@@ -263,7 +260,7 @@ public abstract class Building extends Objects {
                                   y);
             }
             case BLACKSMITH, FLETCHER, POLETURNER, APPLE_ORCHARD, DIARY_FARMER, HOPS_FARMER, HUNTER_POST,
-                    WHEAT_FARMER, BAKERY, BREWER, TANNERS_WORKSHOP -> {
+                    WHEAT_FARMER, BAKERY, BREWER, TANNERS_WORKSHOP, MILL, OIL_SMELTER -> {
                 return new Workshops(buildingType,
                                      owner,
                                      x,
@@ -284,8 +281,7 @@ public abstract class Building extends Objects {
     }
 
     public static boolean isCastles(Building building) {
-        BuildingType buildingType = building.type;
-        switch (buildingType) {
+        switch (building.type) {
             case SMALL_STONE_GATEHOUSE,
                     BIG_STONE_GATEHOUSE,
                     DRAW_BRIDGE,
@@ -353,7 +349,68 @@ public abstract class Building extends Objects {
     }
 
     public static Job getJobByBuildingType(BuildingType buildingType) {
-        return null;
+        switch (buildingType) {
+            case ARMOURY, ARMOURER -> {
+                return Job.ARMORER;
+            }
+            case INN -> {
+                return Job.INNKEEPER;
+            }
+            case MILL -> {
+                return Job.MILL_BOY;
+            }
+            case IRON_MINE -> {
+                return Job.IRON_MINER;
+            }
+            case MARKET -> {
+                return Job.MARKET_TRADER;
+            }
+            case PITCH_RIG -> {
+                return Job.PITCH_DIGGER;
+            }
+            case QUARRY -> {
+                return Job.STONE_MASON;
+            }
+            case STOCKPILE, HOVEL, GRANARY -> {
+                return Job.PEASANT;
+            }
+            case WOODCUTTER -> {
+                return Job.WOODCUTTER;
+            }
+            case APOTHECARY -> {
+                return Job.HEALER;
+            }
+            case CHAPEL, CATHEDRAL, CHURCH -> {
+                return Job.PRIEST;
+            }
+            case BLACKSMITH -> {
+                return Job.BLACKSMITH;
+            }
+            case FLETCHER -> {
+                return Job.FLETCHER;
+            }
+            case POLETURNER -> {
+                return Job.POLETURNER;
+            }
+            case APPLE_ORCHARD, WHEAT_FARMER, HUNTER_POST, HOPS_FARMER, DIARY_FARMER -> {
+                return Job.FARMER;
+            }
+            case BAKERY -> {
+                return Job.BAKER;
+            }
+            case BREWER -> {
+                return Job.BREWER;
+            }
+            case TANNERS_WORKSHOP -> {
+                return Job.TANNER;
+            }
+            case PALACE -> {
+                return Job.LADY;
+            }
+            default -> {
+                return null;
+            }
+        }
     }
 
     public static int isGoodOrBad(Building building) {
@@ -375,6 +432,61 @@ public abstract class Building extends Objects {
             }
         }
 
+    }
+
+    private void addPeople(BuildingType type, Government government, User owner) {
+        switch (type) {
+            case SMALL_STONE_GATEHOUSE -> {
+                Soldier soldier = Soldier.getSoldierByType(SoldierName.SWORDSMAN, owner);
+                government.addPeopleByState(soldier, PersonState.DEPLOYED_SOLDIER);
+                government.getMap().getXY(X, Y).addObject(soldier);
+            }
+            case BIG_STONE_GATEHOUSE -> {
+                for (int i = 0; i < 2; i++) {
+                    Soldier soldier = Soldier.getSoldierByType(SoldierName.SWORDSMAN, owner);
+                    government.addPeopleByState(soldier, PersonState.DEPLOYED_SOLDIER);
+                    government.getMap().getXY(X, Y).addObject(soldier);
+                }
+            }
+            case LOOKOUT_TOWER, ROUND_TOWER, SQUARE_TOWER, TURRET, PERIMETER_TOWER -> {
+                Soldier soldier = Soldier.getSoldierByType(SoldierName.ARCHER, owner);
+                government.addPeopleByState(soldier, PersonState.DEPLOYED_SOLDIER);
+                government.getMap().getXY(X, Y).addObject(soldier);
+
+            }
+            case ARMOURY -> government.addPeopleByState(new NonSoldier(getJobByBuildingType(BuildingType.ARMOURY),
+                                                                       owner,
+                                                                       this),
+                                                        PersonState.WORKER);
+            case INN, HOVEL -> {
+                House house = (House) this;
+                for (int i = 0; i < house.getCapacity(); i++) {
+                    government.addPeopleByState(new NonSoldier(Job.randomHousePerson(),
+                                                               owner,
+                                                               this),
+                                                PersonState.JOBLESS);
+                }
+            }
+            case MILL -> government.joblessTo(Job.MILL_BOY, this);
+            case IRON_MINE -> government.joblessTo(Job.IRON_MINER, this);
+            case MARKET -> government.joblessTo(Job.MARKET_TRADER, this);
+            case PITCH_RIG, OIL_SMELTER -> government.joblessTo(Job.PITCH_DIGGER, this);
+            case QUARRY -> government.joblessTo(Job.STONE_MASON, this);
+            case STOCKPILE, STABLE, GRANARY -> government.joblessTo(Job.PEASANT, this);
+            case WOODCUTTER -> government.joblessTo(Job.WOODCUTTER, this);
+            case APOTHECARY -> government.joblessTo(Job.HEALER, this);
+            case CHAPEL, CHURCH, CATHEDRAL -> government.joblessTo(Job.PRIEST, this);
+            case ARMOURER -> government.joblessTo(Job.ARMORER, this);
+            case BLACKSMITH -> government.joblessTo(Job.BLACKSMITH, this);
+            case FLETCHER -> government.joblessTo(Job.FLETCHER, this);
+            case POLETURNER -> government.joblessTo(Job.POLETURNER, this);
+            case APPLE_ORCHARD, WHEAT_FARMER, HOPS_FARMER, DIARY_FARMER -> government.joblessTo(Job.FARMER, this);
+            case HUNTER_POST -> government.joblessTo(Job.HUNTER, this);
+            case BAKERY -> government.joblessTo(Job.BAKER, this);
+            case BREWER -> government.joblessTo(Job.BREWER, this);
+            case TANNERS_WORKSHOP -> government.joblessTo(Job.TANNER, this);
+//            case PALACE -> government.joblessTo(Job.LADY, this);
+        }
     }
 
     public void repair() {
@@ -424,7 +536,6 @@ public abstract class Building extends Objects {
     @Override
     public Image getImage() {
         String building = RandomBuilding.getBuilding(type);
-        System.out.println(building);
         URL url = Building.class.getResource("/phase2-assets/" + building);
         return new Image(url.toExternalForm());
     }

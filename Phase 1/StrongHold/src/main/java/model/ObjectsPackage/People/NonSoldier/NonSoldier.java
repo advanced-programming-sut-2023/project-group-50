@@ -16,6 +16,8 @@ public class NonSoldier extends Person {
         this.placeOfWork = placeOfWork;
         this.setX(placeOfWork.getX());
         this.setY(placeOfWork.getY());
+        if (job != Job.LADY)
+            owner.getGovernment().getMap().getXY(placeOfWork.getX(), placeOfWork.getY()).addObject(this);
     }
 
     public int getProductivity() {

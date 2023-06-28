@@ -1,5 +1,10 @@
 package model.ObjectsPackage.Buildings;
 
+import javafx.scene.image.Image;
+import model.RandomGenerator.RandomBuilding;
+
+import java.net.URL;
+
 public enum BuildingType {
     SMALL_STONE_GATEHOUSE(0, 0, 0, 0, "Small stone gatehouse"),
     BIG_STONE_GATEHOUSE(20, 0, 0, 0, " Big stone gatehouse"),
@@ -74,6 +79,14 @@ public enum BuildingType {
         return null;
     }
 
+    public static BuildingType getByName(String id) {
+        for (BuildingType buildingType : BuildingType.values())
+            if (buildingType.name().equals(id))
+                return buildingType;
+
+        return null;
+    }
+
     public int getNumberOfWorkers() {
         return numberOfWorkers;
     }
@@ -100,5 +113,44 @@ public enum BuildingType {
 
     public int getIronCost() {
         return this == OIL_SMELTER ? 10 : 0;
+    }
+
+    public BuildingSet getSet() {
+        switch (this) {
+            case SMALL_STONE_GATEHOUSE, BIG_STONE_GATEHOUSE, DRAW_BRIDGE, LOOKOUT_TOWER,
+                    PERIMETER_TOWER, TURRET, SQUARE_TOWER, ROUND_TOWER -> {
+                return BuildingSet.DEFENSE;
+            }
+            case BLACKSMITH, FLETCHER, POLETURNER, APPLE_ORCHARD, DIARY_FARMER, HOPS_FARMER, HUNTER_POST,
+                    WHEAT_FARMER, BAKERY, BREWER, TANNERS_WORKSHOP, MILL, ARMOURER, OIL_SMELTER -> {
+                return BuildingSet.WORKSHOP;
+            }
+            case BARRACKS, MERCENARY_POST, ENGINEER_GUILD, KILLING_PIT,
+                    SIEGE_TENT, TUNNELER_GUILD -> {
+                return BuildingSet.OFFENSE;
+            }
+            case INN, HOVEL, WATER_POT, PALACE -> {
+                return BuildingSet.HOUSE;
+            }
+            case IRON_MINE, PITCH_RIG, QUARRY, WOODCUTTER -> {
+                return BuildingSet.RESOURCE;
+            }
+            case OX_TETHER, STOCKPILE, GRANARY, STABLE, ARMOURY -> {
+                return BuildingSet.STORAGE;
+            }
+            case CHAPEL, CHURCH, CATHEDRAL -> {
+                return BuildingSet.RELIGIOUS;
+            }
+            case TUNNEL, PITCH_DITCH, CAGED_WAR_DOGS, WELL, APOTHECARY, MARKET -> {
+                return BuildingSet.OTHER;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + this);
+        }
+    }
+
+    public Image getImage() {
+        String building = RandomBuilding.getBuilding(this);
+        URL url = Building.class.getResource("/phase2-assets/" + building);
+        return new Image(url.toExternalForm());
     }
 }

@@ -10,6 +10,7 @@ import model.Trade.Trade;
 import model.UserColor.UserColor;
 
 import java.io.Serializable;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -17,6 +18,7 @@ import java.util.LinkedHashMap;
 public class User implements Serializable, Comparable<User> {
     private final Government government;
     private final UserColor color;
+    private Socket socket;
     private String userName;
     private String password;
     private String nickName;
@@ -293,5 +295,13 @@ public class User implements Serializable, Comparable<User> {
 
     public void setAvatar(URL url) {
         avatar = url;
+    }
+
+    public synchronized Socket getSocket() {
+        return socket;
+    }
+
+    public synchronized void setSocket(Socket socket) {
+        this.socket = socket;
     }
 }

@@ -39,7 +39,7 @@ public class GovernmentMenuController {
     }
 
     public String showFoodList() {
-        HashMap<Resource, Double> hashMap = this.currentUser.getGovernment().getFoods();
+        HashMap<Resource, Integer> hashMap = this.currentUser.getGovernment().getResources();
         StringBuilder string = new StringBuilder();
 
         for (Resource resource : Resource.values()) {

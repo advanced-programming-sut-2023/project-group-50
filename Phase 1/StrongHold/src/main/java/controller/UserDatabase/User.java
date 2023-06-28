@@ -5,16 +5,20 @@ import model.Government.Government;
 import model.Item.Item;
 import model.Map.Map;
 import model.ObjectsPackage.Objects;
+import model.RandomGenerator.RandomGenerator;
 import model.Trade.Trade;
 import model.UserColor.UserColor;
 
 import java.io.Serializable;
+import java.net.Socket;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class User implements Serializable, Comparable<User> {
     private final Government government;
     private final UserColor color;
+    private Socket socket;
     private String userName;
     private String password;
     private String nickName;
@@ -29,6 +33,7 @@ public class User implements Serializable, Comparable<User> {
     private LinkedHashMap<Integer, Trade> trades;
     private ArrayList<Item> items;
     private int highScore;
+    private URL avatar;
 
     public User(String userName,
                 String password,
@@ -51,6 +56,7 @@ public class User implements Serializable, Comparable<User> {
         items = new ArrayList<>();
         government = new Government(this, X0, Y0);
         Users.addUser(this);
+        avatar = getRandomAvatar();
     }
 
     public User(String userName,
@@ -61,7 +67,7 @@ public class User implements Serializable, Comparable<User> {
                 int X0,
                 int Y0,
                 UserColor color,
-                Map map) {
+                Map ignoredMap) {
         this.userName = userName;
         this.password = password;
         this.nickName = nickName;
@@ -75,6 +81,13 @@ public class User implements Serializable, Comparable<User> {
         items = new ArrayList<>();
         government = new Government(this, X0, Y0);
         Users.addUser(this);
+        avatar = getRandomAvatar();
+    }
+
+    private URL getRandomAvatar() {
+        int randomNumber = RandomGenerator.getRandomNumber(1, 45);
+        String s = "/background/profile backgrounds/BetterAvatars/Avatar (" + randomNumber + ").png";
+        return User.class.getResource("/phase2-assets" + s);
     }
 
     public UserColor getColor() {
@@ -94,7 +107,9 @@ public class User implements Serializable, Comparable<User> {
     }
 
     public void setUserName(String userName) {
+        Users.removeUser(this);
         this.userName = userName;
+        Users.addUser(this);
     }
 
     public String getPassword() {
@@ -272,5 +287,21 @@ public class User implements Serializable, Comparable<User> {
 
     public void addTrade(Trade trade) {
         trades.put(trade.getId(), trade);
+    }
+
+    public URL getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(URL url) {
+        avatar = url;
+    }
+
+    public synchronized Socket getSocket() {
+        return socket;
+    }
+
+    public synchronized void setSocket(Socket socket) {
+        this.socket = socket;
     }
 }

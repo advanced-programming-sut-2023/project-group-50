@@ -22,6 +22,7 @@ import view.show.GovernmentDataMenu.GovernmentDataMenu;
 import view.show.MainMenu.MainMenu;
 import view.show.MainMenu.ShowSaveMapMenu;
 import view.show.Menus.ShopMenuShow;
+import view.show.OnlineMenu.StartConnectionMenu;
 import view.show.ProfileMenu.ShowProfileMenu;
 import view.show.UnitMenu.UnitMenu;
 
@@ -129,7 +130,7 @@ public class MainMenuGUIController {
                 getButton("Saved maps", height / 4, MainMenuGUIController::saveMap)
         );
 
-        vBox.setPrefHeight(height);
+        vBox.setPrefHeight(height * 5 / 4);
         vBox.setSpacing(5);
         vBox.setAlignment(Pos.CENTER);
 
@@ -197,7 +198,13 @@ public class MainMenuGUIController {
     }
 
     private static void online(ActionEvent actionEvent) {
-        //TODO
+        StartConnectionMenu startConnectionMenu = new StartConnectionMenu();
+        startConnectionMenu.init(user);
+        try {
+            startConnectionMenu.start(MainMenu.getStage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void showUnit(Unit unit) throws Exception {

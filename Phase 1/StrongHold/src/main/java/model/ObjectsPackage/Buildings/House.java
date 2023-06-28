@@ -1,9 +1,6 @@
 package model.ObjectsPackage.Buildings;
 
 import controller.UserDatabase.User;
-import model.ObjectsPackage.People.NonSoldier.Job;
-import model.ObjectsPackage.People.NonSoldier.NonSoldier;
-import model.ObjectsPackage.People.PersonState;
 import model.ObjectsPackage.People.Soldier.SoldierName;
 
 import java.util.HashMap;
@@ -17,11 +14,6 @@ public class House extends Building {
         super(type, owner, x, y, maxHp);
         this.capacity = capacity;
         soldierCount = new HashMap<>();
-
-        if (type != BuildingType.PALACE) {
-            for (int i = 0; i < capacity; i++)
-                owner.getGovernment().addPeopleByState(new NonSoldier(Job.CHILD, owner, this), PersonState.JOBLESS);
-        }
     }
 
     public boolean canIncreasePopularity() {
@@ -44,4 +36,7 @@ public class House extends Building {
         soldierCount.put(soldierName, initCount);
     }
 
+    public int getCapacity() {
+        return capacity;
+    }
 }

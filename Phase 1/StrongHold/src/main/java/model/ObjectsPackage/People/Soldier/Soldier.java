@@ -11,6 +11,7 @@ import model.ObjectsPackage.Weapons.WeaponName;
 public abstract class Soldier extends Person {
     private final Weapon weapon;
     private final SoldierName type;
+    protected NextTurnData nextTurnData;
     private SoldierState soldierState;
     private boolean isPatrolling;
     private int[][] patrolPath; //[x,y][0,1]
@@ -26,6 +27,7 @@ public abstract class Soldier extends Person {
         patrolPath = new int[2][2];
         going = false;
         attacker = null;
+        nextTurnData = new NextTurnData(0, 0, false, null, null);
     }
 
     public static WeaponName getWeaponName(SoldierName soldierName) {
@@ -80,6 +82,14 @@ public abstract class Soldier extends Person {
         }
     }
 
+    public NextTurnData getNextTurnData() {
+        return nextTurnData;
+    }
+
+    public int[][] getPatrolPath() {
+        return patrolPath;
+    }
+
     public SoldierState getSoldierState() {
         return soldierState;
     }
@@ -91,6 +101,7 @@ public abstract class Soldier extends Person {
     public void startPatrolling(int x1, int y1, int x2, int y2) {
         patrolPath = new int[][]{{x1, x2}, {y1, y2}};
         isPatrolling = true;
+        System.out.println("done");
     }
 
     public void patrol() {
