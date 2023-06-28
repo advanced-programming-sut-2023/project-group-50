@@ -9,8 +9,8 @@ import java.net.SocketException;
 public class Connection extends Thread implements Serializable {
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
-    private User user;
     private final Socket socket;
+    private User user;
 
     public Connection(Socket socket) throws IOException {
         inputStream = new ObjectInputStream(socket.getInputStream());
