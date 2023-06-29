@@ -828,7 +828,7 @@ public class SignupMenuShowController {
         VBox questions = new VBox(ProfileMenuGUIController.getCheckBoxes(-1));
         questions.setPrefSize(100, 100);
 
-        questions.setAlignment(Pos.CENTER_LEFT);
+        questions.setAlignment(Pos.CENTER);
         questions.setSpacing(15);
         this.checkBoxes = questions;
 
@@ -841,7 +841,7 @@ public class SignupMenuShowController {
         Label answerError = new Label();
         answerError.setTextFill(Color.RED);
         HBox errorBoxAnswer = new HBox();
-        errorBoxAnswer.setAlignment(Pos.CENTER_LEFT);
+        errorBoxAnswer.setAlignment(Pos.CENTER);
         errorBoxAnswer.setSpacing(5);
 
         ImageView errorAnswerImage = getErrorImage();
@@ -895,10 +895,6 @@ public class SignupMenuShowController {
             }
         });
 
-
-        submit.setAlignment(Pos.TOP_LEFT);
-        back.setAlignment(Pos.TOP_LEFT);
-
         button.setSpacing(10);
         button.getChildren().addAll(submit, back);
         button.setAlignment(Pos.CENTER);
@@ -907,6 +903,10 @@ public class SignupMenuShowController {
         vBox.getChildren().addAll(createCaptcha(), button);
         vBox.setTranslateY(100);
         vBox.setTranslateX(100);
+
+        vBox.setPrefSize(500, 500);
+        vBox.setStyle("-fx-background-radius: 25; -fx-background-color: rgba(255, 255, 255, 0.2)");
+
         this.question = vBox;
 
         this.pane.getChildren().remove(0);

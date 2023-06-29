@@ -1,15 +1,14 @@
 package controller.UserDatabase;
 
 import controller.control.SecurityQuestion;
+import model.Save.MapSave.AnonymousMap;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Users implements Serializable {
     private static HashMap<String, User> users = new HashMap<>();
+    private static HashMap<String, HashSet<AnonymousMap>> maps = new HashMap<>();
 
     public static User getUser(String username) {
         if (Users.users.isEmpty()) {
@@ -71,5 +70,50 @@ public class Users implements Serializable {
 
     public static ArrayList<String> getUsersAsString() {
         return new ArrayList<>(users.keySet());
+    }
+
+    public static HashMap<String, HashSet<AnonymousMap>> getMaps() {
+        return maps;
+    }
+
+    public static void setMaps(HashMap<String, HashSet<AnonymousMap>> maps) {
+        Users.maps = maps;
+    }
+
+    public static ArrayList<AnonymousMap> getAllMaps(User user) {
+        ArrayList<AnonymousMap> out = new ArrayList<>();
+
+        for (String creator : maps.keySet())
+            for (AnonymousMap anonymousMap : maps.get(creator))
+                if (creator.equals(user.getUserName())) out.add(anonymousMap);
+                else if (anonymousMap.isPublic()) out.add(anonymousMap);
+
+        return out;
+    }
+
+    public static boolean mapNameExists(User user, String name) {
+        maps.putIfAbsent(user.getUserName(), new HashSet<>());
+        return maps.get(user.getUserName()).stream()
+                .anyMatch(anonymousMap -> anonymousMap.getName().equals(name));
+    }
+
+    public static boolean mapNameExists(String name) {
+        return maps.keySet().stream().flatMap(string -> maps.get(string).stream())
+                .anyMatch(anonymousMap -> anonymousMap.getName().equals(name));
+    }
+
+    public static void saveMap(User user, String name, boolean isPublic) {
+        maps.putIfAbsent(user.getUserName(), new HashSet<>());
+        maps.get(user.getUserName()).add(new AnonymousMap(user.getGovernment().getMap(),
+                                                          isPublic,
+                                                          name,
+                                                          user.getUserName()));
+    }
+
+    public static String getMapOwner(String mapName) {
+        return maps.keySet().stream().filter(owner -> maps.get(owner).stream()
+                .anyMatch(map -> map.getName
+                        ().equals(mapName))).findFirst().orElse(null);
+
     }
 }

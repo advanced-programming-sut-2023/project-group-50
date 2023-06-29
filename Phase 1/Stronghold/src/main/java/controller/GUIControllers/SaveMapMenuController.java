@@ -1,6 +1,8 @@
 package controller.GUIControllers;
 
+import Server.Client;
 import controller.UserDatabase.User;
+import controller.UserDatabase.Users;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -11,7 +13,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
-import model.Save.MapSave.MapLoader;
+import model.Save.MapSave.AnonymousMap;
 import view.show.MainMenu.MainMenu;
 import view.show.ProfileMenu.GetSaveNameMenu;
 
@@ -59,9 +61,7 @@ public class SaveMapMenuController {
     }
 
     private Button getSaveButton() {
-        Button button = getButton("Save Current Map", 50, new save());
-        button.setText("Save Current");
-        return button;
+        return getButton("Save Current", 50, new save());
     }
 
     private Pane getMaps(double width, double height) throws Exception {
@@ -97,29 +97,34 @@ public class SaveMapMenuController {
         vBox.setSpacing(15);
         vBox.setAlignment(Pos.CENTER);
         vBox.setPrefWidth(width);
+        Client.getData();
 
-        for (String mapName : Objects.requireNonNull(MapLoader.getMaps(user)))
-            vBox.getChildren().addAll(getMapHBox(mapName, width * 0.65));
+        for (AnonymousMap anonymousMap : Objects.requireNonNull(Users.getAllMaps(user)))
+            vBox.getChildren().addAll(getMapHBox(anonymousMap, width * 0.65));
 
         return vBox;
     }
 
-    private HBox getMapHBox(String mapName, double width) throws Exception {
+    private HBox getMapHBox(AnonymousMap map, double width) throws Exception {
         HBox hBox = new HBox();
         hBox.setMaxWidth(width);
         hBox.setPrefHeight(100);
         hBox.setAlignment(Pos.CENTER_LEFT);
         hBox.setSpacing(5);
-        hBox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.2);" +
-                              " -fx-background-radius: 20");
 
-        addEvents(mapName, hBox);
+        String color = map.getOwner().equals(user.getUserName())
+                ? (map.isPublic() ? "rgba(0, 255, 255, 0.2)" : "rgba(255, 255, 255, 0.2)")
+                : "rgba(255, 255, 255, 0.2)";
 
-        Text name = new Text("\t" + mapName + "\t");
-        name.setFont(new Font("System", 25));
+        hBox.setStyle("-fx-background-color: " + color + "; -fx-background-radius: 20");
+
+        addEvents(map, hBox);
+
+        Text name = new Text("\t" + map.getName() + "\t");
+        name.setFont(new Font("System", 20));
         name.setStyle("-fx-font-weight: bold");
 
-        Text date = new Text(MapLoader.getDate(user, mapName));
+        Text date = new Text("by " + map.getOwner() + " on " + map.getDate());
         date.setFont(new Font("System", 15));
 
         hBox.getChildren().addAll(
@@ -129,14 +134,14 @@ public class SaveMapMenuController {
         return hBox;
     }
 
-    private void addEvents(String mapName, HBox hBox) {
+    private void addEvents(AnonymousMap mapName, HBox hBox) {
         hBox.setOnMouseEntered(mouseEvent -> hBox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.5);" +
                                                                    " -fx-background-radius: 20"));
         hBox.setOnMouseExited(mouseEvent -> hBox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.2);" +
                                                                   " -fx-background-radius: 20"));
         hBox.setOnMouseClicked(mouseEvent -> {
             try {
-                user.getGovernment().setMap(MapLoader.getMap(user, user, mapName));
+                user.getGovernment().setMap(mapName.getMap(user));
                 UnitMenuController.showMainMenu(null);
             } catch (Exception e) {
                 throw new RuntimeException(e);

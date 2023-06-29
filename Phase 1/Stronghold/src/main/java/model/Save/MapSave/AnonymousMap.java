@@ -7,6 +7,7 @@ import model.ObjectsPackage.Objects;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 
@@ -17,12 +18,18 @@ public class AnonymousMap implements Serializable {
     private final int xSize;
     private final int ySize;
     private final boolean isPublic;
+    private final String name;
+    private final Date date;
+    private final String owner;
 
-    public AnonymousMap(Map map, boolean isPublic) {
+    public AnonymousMap(Map map, boolean isPublic, String string, String owner) {
         xSize = map.getXSize();
         ySize = map.getYSize();
         this.isPublic = isPublic;
         this.anonymousUnits = getUnits(map);
+        this.name = string;
+        date = new Date();
+        this.owner = owner;
     }
 
     private static AnonymousUnit getAnonymousUnit(int x, int y, Unit real) {
@@ -62,5 +69,17 @@ public class AnonymousMap implements Serializable {
 
     public boolean isPublic() {
         return isPublic;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDate() {
+        return date.toString();
+    }
+
+    public String getOwner() {
+        return owner;
     }
 }

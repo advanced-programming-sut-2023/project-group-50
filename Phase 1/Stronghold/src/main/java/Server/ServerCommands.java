@@ -6,7 +6,8 @@ public enum ServerCommands {
     DISCONNECT("disconnect"),
     SENDING_SAVE("sending_data"),
     SENDING_PRIVATE_MAP("sending_private_map"),
-    SHARING_MAP("sharing_map");
+    SHARING_MAP("sharing_map"),
+    GET_MAPS("get_maps");
 
 
     private final String string;

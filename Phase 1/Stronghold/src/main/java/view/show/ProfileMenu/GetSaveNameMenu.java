@@ -1,8 +1,10 @@
 package view.show.ProfileMenu;
 
+import Server.Client;
 import controller.GUIControllers.MainMenuGUIController;
 import controller.GUIControllers.SaveMapMenuController;
 import controller.UserDatabase.User;
+import controller.UserDatabase.Users;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,14 +20,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import model.Save.MapSave.MapSaver;
 import view.show.MainMenu.MainMenu;
 import view.show.MainMenu.ShowSaveMapMenu;
 
-import java.io.IOException;
-
 import static controller.GUIControllers.ProfileMenuGUIController.getBackButton;
 import static model.Map.GUI.Unit.UnitPane.getBackground;
+import static model.Map.GUI.Unit.UnitPane.initButton;
 
 public class GetSaveNameMenu extends Application {
     private Pane pane;
@@ -69,25 +69,28 @@ public class GetSaveNameMenu extends Application {
         return backButton;
     }
 
-    private Button initConfirmButton() {
+    private Button initConfirmButton(String string, EventHandler<ActionEvent> eventHandler) {
         Image image = new Image(MainMenuGUIController.class.getResource("/images/Buttons/bg.jpg").toExternalForm());
         BackgroundImage backgroundImage = new BackgroundImage(image,
                                                               BackgroundRepeat.NO_REPEAT,
                                                               BackgroundRepeat.NO_REPEAT,
                                                               BackgroundPosition.CENTER,
                                                               new BackgroundSize(
-                                                                      100,
+                                                                      200,
                                                                       50,
                                                                       false, false, false, false
                                                               ));
 
-        Button button = new Button("Confirm");
+        Button button = new Button(string);
         button.setBackground(new Background(backgroundImage));
-        button.setPrefSize(100, 50);
+        button.setPrefSize(200, 50);
         button.setFont(new Font("Bell MT", 18));
         button.setStyle("-fx-text-fill: yellow");
         button.setAlignment(Pos.CENTER);
-        button.setOnAction(new confirm());
+        button.setOnAction(eventHandler);
+
+        initButton(button);
+
         return button;
     }
 
@@ -95,8 +98,9 @@ public class GetSaveNameMenu extends Application {
         Text text = new Text("Enter a name");
         text.setStyle("-fx-font: 20 System; -fx-font-weight: bold");
         Button backButton = initBackButton();
-        Button confirmButton = initConfirmButton();
-        HBox hBox = new HBox(backButton, confirmButton);
+        Button saveAsPrivate = initConfirmButton("Save As Private", new saveAsPrivate());
+        Button saveAsPublic = initConfirmButton("Save As Public", new saveAsPublic());
+        HBox hBox = new HBox(backButton, saveAsPrivate, saveAsPublic);
         hBox.setAlignment(Pos.CENTER);
         hBox.setSpacing(15);
 
@@ -127,7 +131,17 @@ public class GetSaveNameMenu extends Application {
         }
     }
 
-    private class confirm implements EventHandler<ActionEvent> {
+    private void overrideMap(String name, boolean isPublic) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Map already exists, wanna replace it?");
+        alert.initOwner(pane.getScene().getWindow());
+        alert.showAndWait().filter(ButtonType.OK::equals).ifPresent(b -> {
+            Users.saveMap(user, name, isPublic);
+            Client.sendData();
+            back(null);
+        });
+    }
+
+    private class saveAsPrivate implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent actionEvent) {
             String name = textField.getText();
@@ -136,30 +150,41 @@ public class GetSaveNameMenu extends Application {
                 return;
             }
 
-            if (MapSaver.exists(user, name)) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Map already exists, wanna replace it?");
+            Client.getData();
 
-                alert.initOwner(pane.getScene().getWindow());
+            if (Users.mapNameExists(user, name)) {
+                overrideMap(name, false);
+                return;
+            }
 
-                alert.showAndWait().filter(ButtonType.OK::equals).ifPresent(b -> {
-                    try {
-                        new MapSaver(user, name, false);
-                        back(null);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+            Users.saveMap(user, name, false);
+            Client.sendData();
+            back(null);
+        }
+    }
+
+    private class saveAsPublic implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent actionEvent) {
+            String name = textField.getText();
+            if (name.isBlank()) {
+                new Alert(Alert.AlertType.ERROR, "Name is invalid").show();
+                return;
+            }
+
+            Client.getData();
+
+            if (Users.mapNameExists(name)) {
+                if (Users.getMapOwner(name).equals(user.getUserName())) {
+                    overrideMap(name, true);
+                } else new Alert(Alert.AlertType.ERROR, "Map already exists!").show();
 
                 return;
             }
 
-            try {
-                new MapSaver(user, name, false);
-                back(null);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
+            Users.saveMap(user, name, true);
+            Client.sendData();
+            back(null);
         }
     }
 }

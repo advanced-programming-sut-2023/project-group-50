@@ -1,7 +1,6 @@
 package Server;
 
 import controller.UserDatabase.User;
-import model.Map.Map;
 import model.Save.Loader;
 import model.Save.Saver;
 
@@ -10,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Server extends Thread {
@@ -87,21 +87,9 @@ public class Server extends Thread {
     private synchronized void handleUpdate(Socket socket) throws IOException, ClassNotFoundException {
         System.out.println("gotData");
         Packet packet = (Packet) new ObjectInputStream(socket.getInputStream()).readObject();
-        switch (packet.command) {
-            case SENDING_SAVE -> Loader.loadSave((Saver) packet.args[0]);
-            case SENDING_PRIVATE_MAP -> handlePrivateSave(packet);
-            case SHARING_MAP -> handleSharedMap(packet);
+        if (Objects.requireNonNull(packet.command) == ServerCommands.SENDING_SAVE) {
+            Loader.loadSave((Saver) packet.args[0]);
         }
         System.out.println("Updated");
-    }
-
-    private void handleSharedMap(Packet packet) {
-        User user = (User) packet.args[0];
-        Map map = (Map) packet.args[1];
-
-    }
-
-    private void handlePrivateSave(Packet packet) {
-
     }
 }
