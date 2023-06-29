@@ -16,7 +16,7 @@ assignees: Arman17Babaei
 
   **نام و نام خانوادگی: علیرضا اعلایی**
 <details>
-  <summary>سرور</summary>
+  <summary>بازی هم‌زمان</summary>
 
   <div dir="ltr" align='right'>
 
@@ -62,7 +62,7 @@ assignees: Arman17Babaei
 
   **نام و نام خانوادگی: سهند اکرمی پور**
 <details>
-  <summary>بازی همزمان</summary>
+  <summary>سرور</summary>
 
   <div dir="ltr" align='right'>
 
