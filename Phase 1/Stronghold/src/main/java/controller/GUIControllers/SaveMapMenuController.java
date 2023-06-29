@@ -136,7 +136,7 @@ public class SaveMapMenuController {
                                                                   " -fx-background-radius: 20"));
         hBox.setOnMouseClicked(mouseEvent -> {
             try {
-                user.getGovernment().setMap(MapLoader.getMap(user, mapName));
+                user.getGovernment().setMap(MapLoader.getMap(user, user, mapName));
                 UnitMenuController.showMainMenu(null);
             } catch (Exception e) {
                 throw new RuntimeException(e);

@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import model.Direction.Direction;
 import model.Map.GroundType;
 import model.RandomGenerator.RandomRock;
+import model.Save.MapSave.AnonymousObject;
 
 import java.net.URL;
 
@@ -53,6 +54,11 @@ public class Rock extends Objects {
     public Image getImage() {
         URL url = GroundType.class.getResource("/phase2-assets/" + RandomRock.getRandomRock());
         return new Image(url.toExternalForm());
+    }
+
+    @Override
+    public AnonymousObject getAnonymous() {
+        return new AnonymousObject(ObjectType.ROCK, direction);
     }
 
     public boolean canPlace(GroundType texture) {

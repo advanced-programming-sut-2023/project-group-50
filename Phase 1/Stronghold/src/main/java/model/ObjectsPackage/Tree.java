@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import model.Map.GroundType;
 import model.Map.Map;
 import model.RandomGenerator.RandomTree;
+import model.Save.MapSave.AnonymousObject;
 
 import java.net.URL;
 
@@ -57,5 +58,10 @@ public class Tree extends Objects {
     public Image getImage() {
         URL url = Tree.class.getResource("/phase2-assets/" + RandomTree.getRandomTree(type));
         return new Image(url.toExternalForm());
+    }
+
+    @Override
+    public AnonymousObject getAnonymous() {
+        return new AnonymousObject(ObjectType.TREE, type);
     }
 }

@@ -71,7 +71,7 @@ public class StartMenuController {
 
     }
 
-    private void signup() {
+    public void signup() {
         try {
             MusicPlayer.stopMusic(getClass().getResource("/images/media/startmenu/cinematic-intro-6097.mp3").toString());
             new SignupMenuShow().start(StartMenu.stage);
@@ -81,7 +81,7 @@ public class StartMenuController {
         }
     }
 
-    private void login() {
+    public void login() {
         try {
             MusicPlayer.stopMusic(getClass().getResource("/images/media/startmenu/cinematic-intro-6097.mp3").toString());
             new LoginMenuShow().start(StartMenu.stage);

@@ -16,10 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -344,7 +341,6 @@ public class LoginMenuShowController {
             @Override
             public void handle(MouseEvent event) {
                 checkAnswer(user, answer, errorBoxAnswer);
-
             }
         });
 
@@ -353,14 +349,12 @@ public class LoginMenuShowController {
             public void handle(MouseEvent event) {
                 pane.getChildren().remove(0);
                 pane.getChildren().add(menu);
-                Background background = new Background(StartMenuController.setBackGround(("/images/background/thumb-1920-152789.jpg"), 800, 600));
+                double width = Screen.getPrimary().getBounds().getWidth();
+                double height = Screen.getPrimary().getBounds().getHeight();
+                Background background = new Background(StartMenuController.setBackGround(("/images/background/thumb-1920-152789.jpg"), width, height));
                 pane.setBackground(background);
-
             }
         });
-
-        next.setAlignment(Pos.TOP_LEFT);
-        back.setAlignment(Pos.TOP_LEFT);
 
         hBox.setSpacing(10);
         hBox.getChildren().addAll(next, back);
@@ -370,14 +364,26 @@ public class LoginMenuShowController {
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(15);
         vBox.getChildren().addAll(text, answerBox, errorBoxAnswer, hBox);
-        vBox.setTranslateX(200);
-        vBox.setTranslateY(200);
 
 
         this.pane.getChildren().remove(0);
-        this.pane.getChildren().add(vBox);
-        this.pane.setBackground(new Background(StartMenuController.setBackGround("/images/background/profileData.png", 800, 600)));
 
+        double width = Screen.getPrimary().getBounds().getWidth();
+        double height = Screen.getPrimary().getBounds().getHeight();
+
+        pane.setBackground(new Background(
+                StartMenuController.setBackGround("/images/background/thumb-1920-152789.jpg", width, height))
+        );
+
+        StackPane data = new StackPane(vBox);
+        data.setBackground(new Background(StartMenuController.setBackGround("/images/background/profileData.png", 800, 600)));
+        data.setPrefSize(800, 600);
+        data.setAlignment(Pos.CENTER);
+
+        this.pane.getChildren().add(data);
+
+        data.setLayoutX((width - 800) / 2);
+        data.setLayoutY((height - 600) / 2);
     }
 
     public void checkAnswer(User user, TextField answer, HBox errorBox) {
@@ -426,22 +432,26 @@ public class LoginMenuShowController {
             }
         });
 
-        change.setAlignment(Pos.TOP_LEFT);
-        back.setAlignment(Pos.TOP_LEFT);
-
         hBox.setSpacing(10);
         hBox.getChildren().addAll(change, back);
         hBox.setAlignment(Pos.CENTER);
 
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(15);
-        vBox.setTranslateX(200);
-        vBox.setTranslateY(200);
+
 
         vBox.getChildren().addAll(label, setPassword, hBox);
+        vBox.setPrefSize(500, 500);
+        vBox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 25");
 
         this.pane.getChildren().remove(0);
         this.pane.getChildren().add(vBox);
+
+        double width = Screen.getPrimary().getBounds().getWidth();
+        double height = Screen.getPrimary().getBounds().getHeight();
+
+        vBox.setLayoutX((width - 500) / 2);
+        vBox.setLayoutY((height - 500) / 2);
 
 
     }

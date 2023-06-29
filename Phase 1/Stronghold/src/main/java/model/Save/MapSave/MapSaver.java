@@ -15,28 +15,28 @@ public class MapSaver {
     private final User user;
     private final String name;
 
-    public MapSaver(User user, String name) throws IOException {
+    public MapSaver(User user, String name, boolean isPublic) throws IOException {
         this.user = user;
         this.name = name;
-        this.path = save(user.getGovernment().getMap());
+        this.path = save(user.getGovernment().getMap(), isPublic);
     }
 
-    public static boolean exists(User user, String name) {
+    public static boolean exists(User creator, String name) {
         try {
-            String path = "Stronghold/src/main/resources/Database/Map/%s/%s.map".formatted(user.getUserName(), name);
+            String path = "Stronghold/src/main/resources/Database/Map/%s/%s.map".formatted(creator.getUserName(), name);
             return Files.exists(Path.of(path));
         } catch (Exception e) {
             return false;
         }
     }
 
-    private String save(Map map) throws IOException {
+    private String save(Map map, boolean isPublic) throws IOException {
         File saved = getFile();
 
         FileOutputStream fileOutputStream = new FileOutputStream(saved);
         ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream);
 
-        outputStream.writeObject(map);
+        outputStream.writeObject(new AnonymousMap(map, isPublic));
 
         outputStream.close();
         fileOutputStream.close();

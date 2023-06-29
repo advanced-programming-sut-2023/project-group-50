@@ -3,10 +3,12 @@ package model.ObjectsPackage.People.Soldier;
 import controller.UserDatabase.User;
 import model.Map.GroundType;
 import model.Map.Map;
+import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Person;
 import model.ObjectsPackage.Weapons.Weapon;
 import model.ObjectsPackage.Weapons.WeaponName;
+import model.Save.MapSave.AnonymousObject;
 
 public abstract class Soldier extends Person {
     private final Weapon weapon;
@@ -213,5 +215,10 @@ public abstract class Soldier extends Person {
 
     public void setAttacker(Soldier attacker) {
         this.attacker = attacker;
+    }
+
+    @Override
+    public AnonymousObject getAnonymous() {
+        return new AnonymousObject(ObjectType.SOLDIER, type);
     }
 }

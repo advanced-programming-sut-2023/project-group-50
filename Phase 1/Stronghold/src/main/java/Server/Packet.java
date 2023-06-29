@@ -3,11 +3,11 @@ package Server;
 import java.io.*;
 
 public class Packet implements Serializable {
-    public String command;
+    public ServerCommands command;
     public Class<?>[] argClass;
     public Object[] args;
 
-    public Packet(String command, Object... args) {
+    public Packet(ServerCommands command, Object... args) {
         this.command = command;
         this.args = args;
 

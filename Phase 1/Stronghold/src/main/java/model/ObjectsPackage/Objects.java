@@ -8,6 +8,7 @@ import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.People.Person;
 import model.ObjectsPackage.People.Soldier.GroupSoldier;
 import model.ObjectsPackage.People.Soldier.Soldier;
+import model.Save.MapSave.AnonymousObject;
 
 import java.io.Serializable;
 
@@ -109,4 +110,6 @@ public abstract class Objects implements Serializable {
     }
 
     public abstract Image getImage();
+
+    public abstract AnonymousObject getAnonymous();
 }

@@ -7,6 +7,7 @@ import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.NonSoldier.NonSoldier;
 import model.ObjectsPackage.People.Soldier.Soldier;
+import model.Save.MapSave.AnonymousObject;
 
 public abstract class Person extends Objects {
     private final int maxLife;
@@ -95,4 +96,7 @@ public abstract class Person extends Objects {
 
         return new Image(Person.class.getResource("/images/People/" + path).toExternalForm());
     }
+
+    @Override
+    public abstract AnonymousObject getAnonymous();
 }

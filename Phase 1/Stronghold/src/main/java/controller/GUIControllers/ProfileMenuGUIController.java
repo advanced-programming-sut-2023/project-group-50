@@ -26,6 +26,8 @@ import view.show.ProfileMenu.*;
 import java.io.IOException;
 import java.net.URL;
 
+import static model.Map.GUI.Unit.UnitPane.initButton;
+
 public class ProfileMenuGUIController {
     private static User user;
 
@@ -85,10 +87,14 @@ public class ProfileMenuGUIController {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            user.setSocket(null);
+        }
+        user.setSocket(null);
 
-            MainMenu.setUser(null);
-            StartMenu.main(null);
+        MainMenu.setUser(null);
+        try {
+            new StartMenu().start(MainMenu.getStage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -199,6 +205,9 @@ public class ProfileMenuGUIController {
         button.setStyle("-fx-text-fill: yellow");
         button.setAlignment(Pos.CENTER);
         button.setOnAction(eventHandler);
+
+        initButton(button);
+
         return button;
     }
 

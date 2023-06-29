@@ -2,7 +2,9 @@ package model.ObjectsPackage.People.NonSoldier;
 
 import controller.UserDatabase.User;
 import model.ObjectsPackage.Buildings.Building;
+import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.People.Person;
+import model.Save.MapSave.AnonymousObject;
 
 public class NonSoldier extends Person {
     private final Job job;
@@ -30,5 +32,10 @@ public class NonSoldier extends Person {
 
     public Job getJob() {
         return job;
+    }
+
+    @Override
+    public AnonymousObject getAnonymous() {
+        return new AnonymousObject(ObjectType.NON_SOLDIER, job);
     }
 }

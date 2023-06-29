@@ -1,6 +1,7 @@
 package Server;
 
 import controller.UserDatabase.User;
+import model.Map.Map;
 import model.Save.Loader;
 import model.Save.Saver;
 
@@ -15,13 +16,11 @@ public class Server extends Thread {
     static final int userPort = 8080;
     static final int clientPort = 5050;
     static final int updatePort = 5051;
-    private static final ConcurrentHashMap<String, Connection> online = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, Socket> online = new ConcurrentHashMap<>();
     private final ServerSocket serverSocket;
-    private final int port;
 
 
     public Server(int port) throws IOException {
-        this.port = port;
         serverSocket = new ServerSocket(port);
     }
 
@@ -29,33 +28,34 @@ public class Server extends Thread {
         return getOnline().containsKey(user.getUserName());
     }
 
-    public synchronized static Connection getConnection(User user) {
+    public synchronized static Socket getConnection(User user) {
         return getOnline().get(user.getUserName());
     }
 
-    public synchronized static void setOnline(User user, Connection connection) {
-        getOnline().put(user.getUserName(), connection);
+    public synchronized static void setOnline(User user, Socket socket) {
+        getOnline().put(user.getUserName(), socket);
     }
 
-    public synchronized static void setOffline(User user) {
-        getOnline().get(user.getUserName()).interrupt();
+    public synchronized static void setOffline(User user) throws IOException {
+        getOnline().get(user.getUserName()).close();
         getOnline().remove(user);
     }
 
-    public synchronized static ConcurrentHashMap<String, Connection> getOnline() {
+    public synchronized static ConcurrentHashMap<String, Socket> getOnline() {
         return online;
     }
 
     private synchronized static void handleUser(Socket socket) throws IOException, ClassNotFoundException {
         System.out.print("User connected: ");
-        User user = (User) new ObjectInputStream(socket.getInputStream()).readObject();
+        Packet packet = (Packet) new ObjectInputStream(socket.getInputStream()).readObject();
+        if (!packet.command.equals(ServerCommands.INIT)) return;
+        User user = (User) packet.args[0];
         System.out.println(user.getUserName());
-        Connection connection = new Connection(socket);
-        connection.setUser(user);
-        connection.start();
+        setOnline(user, socket);
+        new ObjectOutputStream(socket.getOutputStream()).writeObject(new Packet(ServerCommands.INIT_DONE));
     }
 
-    private synchronized void handleClient(Socket socket) throws IOException, InterruptedException {
+    private synchronized void handleClient(Socket socket) throws IOException {
         System.out.println("Client connected");
         ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
         outputStream.writeObject(Saver.get());
@@ -73,7 +73,7 @@ public class Server extends Thread {
         }
     }
 
-    private synchronized void accept(Socket socket) throws IOException, ClassNotFoundException, InterruptedException {
+    private synchronized void accept(Socket socket) throws IOException, ClassNotFoundException {
         int port = socket.getLocalPort();
         System.out.println(port);
         switch (port) {
@@ -87,8 +87,21 @@ public class Server extends Thread {
     private synchronized void handleUpdate(Socket socket) throws IOException, ClassNotFoundException {
         System.out.println("gotData");
         Packet packet = (Packet) new ObjectInputStream(socket.getInputStream()).readObject();
-        if (packet.command.equals(ServerCommands.SENDING_DATA.getString()))
-            Loader.loadSave((Saver) packet.args[0]);
+        switch (packet.command) {
+            case SENDING_SAVE -> Loader.loadSave((Saver) packet.args[0]);
+            case SENDING_PRIVATE_MAP -> handlePrivateSave(packet);
+            case SHARING_MAP -> handleSharedMap(packet);
+        }
         System.out.println("Updated");
+    }
+
+    private void handleSharedMap(Packet packet) {
+        User user = (User) packet.args[0];
+        Map map = (Map) packet.args[1];
+
+    }
+
+    private void handlePrivateSave(Packet packet) {
+
     }
 }

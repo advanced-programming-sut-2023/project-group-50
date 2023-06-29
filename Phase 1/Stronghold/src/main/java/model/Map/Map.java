@@ -185,4 +185,9 @@ public class Map implements Serializable {
                     return Y.getObjectType(BuildingType.PALACE);
         return null;
     }
+
+    public void setXY(int x, int y, Unit unit) {
+        map.putIfAbsent(x, new HashMap<>());
+        map.get(x).put(y, unit);
+    }
 }

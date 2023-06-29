@@ -15,18 +15,23 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class MapLoader {
-    public static Map getMap(User user, String name) throws Exception {
-        return getMap("Stronghold/src/main/resources/Database/Map/%s/%s.map".formatted(user.getUserName(), name));
+    public static Map getMap(User creator, User user, String name) throws Exception {
+        return getMap("Stronghold/src/main/resources/Database/Map/%s/%s.map".formatted(creator.getUserName(), name),
+                      user, creator);
     }
 
-    private static Map getMap(String path) throws Exception {
+    private static Map getMap(String path, User user, User creator) throws Exception {
         assert exists(path);
 
         File file = new File(path);
         FileInputStream fileInputStream = new FileInputStream(file);
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
-        return (Map) objectInputStream.readObject();
+        AnonymousMap anonymousMap = (AnonymousMap) objectInputStream.readObject();
+        if (!anonymousMap.isPublic() && !Objects.equals(user.getUserName(), creator.getUserName()))
+            return null;
+
+        return anonymousMap.getMap(user);
     }
 
     private static boolean exists(String path) {
@@ -49,8 +54,8 @@ public class MapLoader {
         }).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public static String getDate(User user, String name) throws Exception {
-        String base = "Stronghold/src/main/resources/Database/Map/%s/%s.map".formatted(user.getUserName(), name);
+    public static String getDate(User creator, String name) throws Exception {
+        String base = "Stronghold/src/main/resources/Database/Map/%s/%s.map".formatted(creator.getUserName(), name);
         Path path = Path.of(base);
 
         FileTime lastModifiedTime = Files.getLastModifiedTime(path);

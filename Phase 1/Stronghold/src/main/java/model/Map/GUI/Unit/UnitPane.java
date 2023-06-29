@@ -108,7 +108,18 @@ public class UnitPane {
         button.setAlignment(Pos.CENTER);
         button.setOnAction(eventHandler);
 
+        initButton(button);
+
         return button;
+    }
+
+    public static void initButton(Button button) {
+        button.setOnMouseEntered(mouseEvent -> {
+            button.setStyle("-fx-text-fill: white");
+        });
+        button.setOnMouseExited(mouseEvent -> {
+            button.setStyle("-fx-text-fill: yellow");
+        });
     }
 
     public static Button getLongButtonUtil(String text, double height, EventHandler<ActionEvent> eventHandler) {
@@ -133,6 +144,8 @@ public class UnitPane {
         button.setStyle("-fx-text-fill: yellow");
         button.setAlignment(Pos.CENTER);
         button.setOnAction(eventHandler);
+
+        initButton(button);
 
         return button;
     }

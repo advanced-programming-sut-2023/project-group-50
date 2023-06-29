@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import model.ObjectsPackage.ObjectType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Soldier.Soldier;
+import model.Save.MapSave.AnonymousObject;
 
 public class Weapon extends Objects {
     private final WeaponName weaponName;
@@ -28,5 +29,10 @@ public class Weapon extends Objects {
     @Override
     public Image getImage() {
         return null;
+    }
+
+    @Override
+    public AnonymousObject getAnonymous() {
+        return new AnonymousObject(ObjectType.WEAPON, weaponName);
     }
 }

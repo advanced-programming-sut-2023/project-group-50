@@ -2,6 +2,7 @@ package view.show.OnlineMenu;
 
 import Server.Packet;
 import Server.ServerCommands;
+import controller.GUIControllers.MainMenuGUIController;
 import controller.GUIControllers.ProfileMenuGUIController;
 import controller.GUIControllers.SoldierMenuController.SoldierMenuController;
 import controller.UserDatabase.User;
@@ -82,7 +83,7 @@ public class StartConnectionMenu extends Application {
     }
 
     private HBox getButtons(double width) {
-        Button backButton = getBackButton(ProfileMenuGUIController::showMainMenu);
+        Button backButton = getBackButton(MainMenuGUIController::online);
         Button confirm = UnitPane.getButtonUtil("Connect", 50, new confirmHandler());
         Button disconnect = UnitPane.getButtonUtil("Disconnect", 50, new disconnect());
         Button current = UnitPane.getButtonUtil("Current Server", 50, new current());
@@ -147,11 +148,11 @@ public class StartConnectionMenu extends Application {
                 try {
                     Socket socket = new Socket(Host, Integer.parseInt(Port));
 
-                    Packet packet = new Packet(ServerCommands.INIT.getString(), user);
+                    Packet packet = new Packet(ServerCommands.INIT, user);
                     new ObjectOutputStream(socket.getOutputStream()).writeObject(packet);
 
                     Packet res = (Packet) new ObjectInputStream(socket.getInputStream()).readObject();
-                    if (Objects.equals(res.command, ServerCommands.INIT_DONE.getString())) {
+                    if (Objects.equals(res.command, ServerCommands.INIT_DONE)) {
                         user.setSocket(socket);
                     } else
                         throw new RuntimeException();

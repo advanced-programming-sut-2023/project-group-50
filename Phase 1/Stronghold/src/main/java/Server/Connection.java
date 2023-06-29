@@ -30,7 +30,11 @@ public class Connection extends Thread implements Serializable {
         }
 
         System.out.println("disconnected");
-        disconnect();
+        try {
+            disconnect();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public synchronized void handle() throws IOException, ClassNotFoundException {
@@ -45,11 +49,11 @@ public class Connection extends Thread implements Serializable {
         }
 
         Packet packet = (Packet) object;
-        String command = packet.command;
+        ServerCommands command = packet.command;
         Object[] args = packet.args;
         Class<?>[] clazz = packet.argClass;
 
-        if (command.equals(ServerCommands.INIT.getString())) {
+        if (command.equals(ServerCommands.INIT)) {
             initUser(args);
             return;
         }
@@ -60,8 +64,8 @@ public class Connection extends Thread implements Serializable {
     private void initUser(Object[] args) throws IOException {
         User user = (User) args[0];
         this.user = user;
-        Server.setOnline(user, this);
-        outputStream.writeObject(new Packet(ServerCommands.INIT_DONE.getString()));
+//        Server.setOnline(user, this);
+        outputStream.writeObject(new Packet(ServerCommands.INIT_DONE));
         outputStream.flush();
         System.out.println("sent");
     }
@@ -80,7 +84,7 @@ public class Connection extends Thread implements Serializable {
 //        System.out.println("wrote");
     }
 
-    public void disconnect() {
+    public void disconnect() throws IOException {
         Server.setOffline(user);
         user.setSocket(null);
         this.interrupt();

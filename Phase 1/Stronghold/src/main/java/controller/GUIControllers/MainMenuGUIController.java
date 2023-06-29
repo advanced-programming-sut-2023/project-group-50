@@ -22,7 +22,7 @@ import view.show.GovernmentDataMenu.GovernmentDataMenu;
 import view.show.MainMenu.MainMenu;
 import view.show.MainMenu.ShowSaveMapMenu;
 import view.show.Menus.ShopMenuShow;
-import view.show.OnlineMenu.StartConnectionMenu;
+import view.show.OnlineMenu.OnlineMenu;
 import view.show.ProfileMenu.ShowProfileMenu;
 import view.show.UnitMenu.UnitMenu;
 
@@ -124,7 +124,7 @@ public class MainMenuGUIController {
 
     private static VBox getMenus(double height) {
         VBox vBox = new VBox(
-                getLongButtonUtil("Connect to server", height / 5, MainMenuGUIController::online),
+                getLongButtonUtil("Online Menu", height / 5, MainMenuGUIController::online),
                 getLongButtonUtil("Trade Menu", height / 5, MainMenuGUIController::trade),
                 getLongButtonUtil("Shop Menu", height / 5, MainMenuGUIController::shop),
                 getLongButtonUtil("Profile Menu", height / 5, MainMenuGUIController::profile),
@@ -198,11 +198,11 @@ public class MainMenuGUIController {
 
     }
 
-    private static void online(ActionEvent actionEvent) {
-        StartConnectionMenu startConnectionMenu = new StartConnectionMenu();
-        startConnectionMenu.init(user);
+    public static void online(ActionEvent actionEvent) {
+        OnlineMenu onlineMenu = new OnlineMenu();
+        onlineMenu.init(user);
         try {
-            startConnectionMenu.start(MainMenu.getStage());
+            onlineMenu.start(MainMenu.getStage());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

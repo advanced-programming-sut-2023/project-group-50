@@ -1,6 +1,5 @@
 package model.Map.GUI.Unit;
 
-import controller.GUIControllers.MainMenuGUIController;
 import controller.GUIControllers.MultiUnitMenuController;
 import controller.GUIControllers.SoldierMenuController.SoldierMenuController;
 import controller.GUIControllers.UnitMenuController;
@@ -89,32 +88,7 @@ public class MultiUnitPane {
     }
 
     private static Button getButton(String text, double height, EventHandler<ActionEvent> eventHandler) {
-        return getButtonUtil(text, height, eventHandler);
-    }
-
-    public static Button getButtonUtil(String text, double height, EventHandler<ActionEvent> eventHandler) {
-        Image image;
-        image = new Image(java.util.Objects.requireNonNull(
-                MainMenuGUIController.class.getResource("/images/Buttons/bg.jpg")).toExternalForm());
-        BackgroundImage backgroundImage = new BackgroundImage(image,
-                                                              BackgroundRepeat.NO_REPEAT,
-                                                              BackgroundRepeat.NO_REPEAT,
-                                                              BackgroundPosition.CENTER,
-                                                              new BackgroundSize(
-                                                                      image.getWidth() / image.getHeight() * height / 2,
-                                                                      height,
-                                                                      false, false, false, false
-                                                              ));
-
-        Button button = new Button(text);
-        button.setBackground(new Background(backgroundImage));
-        button.setPrefSize(image.getWidth() / image.getHeight() * height / 2, height);
-        button.setFont(new Font("Bell MT", 18));
-        button.setStyle("-fx-text-fill: yellow");
-        button.setAlignment(Pos.CENTER);
-        button.setOnAction(eventHandler);
-
-        return button;
+        return UnitPane.getButtonUtil(text, height, eventHandler);
     }
 
     public static Text getText(String string) {

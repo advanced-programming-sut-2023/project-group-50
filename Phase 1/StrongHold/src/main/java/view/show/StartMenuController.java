@@ -7,6 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.stage.Screen;
+import view.show.Menus.StartMenu;
 
 import java.util.Random;
 
@@ -14,8 +16,11 @@ public class StartMenuController {
 
 
     public Parent createContent() {
+        double width = Screen.getPrimary().getBounds().getWidth();
+        double height = Screen.getPrimary().getBounds().getHeight();
+
         Pane pane = new Pane();
-        pane.setPrefSize(1920, 1080);
+        pane.setPrefSize(width, height);
         Background background = new Background(setBackGround());
         pane.setBackground(background);
 

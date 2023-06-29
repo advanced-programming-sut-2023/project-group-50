@@ -143,7 +143,7 @@ public class GetSaveNameMenu extends Application {
 
                 alert.showAndWait().filter(ButtonType.OK::equals).ifPresent(b -> {
                     try {
-                        new MapSaver(user, name);
+                        new MapSaver(user, name, false);
                         back(null);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -154,7 +154,7 @@ public class GetSaveNameMenu extends Application {
             }
 
             try {
-                new MapSaver(user, name);
+                new MapSaver(user, name, false);
                 back(null);
             } catch (IOException e) {
                 throw new RuntimeException(e);

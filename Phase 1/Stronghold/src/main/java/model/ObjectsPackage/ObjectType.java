@@ -9,5 +9,8 @@ public enum ObjectType implements Serializable {
     WEAPON,
     BARRACKS,
     BUILDING,
-    GROUP_SOLDIER
+    GROUP_SOLDIER,
+
+    SOLDIER,
+    NON_SOLDIER
 }
