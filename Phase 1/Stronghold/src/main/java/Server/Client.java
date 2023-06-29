@@ -42,7 +42,10 @@ public class Client extends Thread {
             System.out.println("Sending data");
             Socket socket = new Socket("127.0.0.1", Server.updatePort);
             Packet packet = new Packet(ServerCommands.SENDING_SAVE, Saver.get());
-            new ObjectOutputStream(socket.getOutputStream()).writeObject(packet);
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            outputStream.writeObject(packet);
+            outputStream.flush();
+            outputStream.close();
             System.out.println("data sent");
             socket.close();
         } catch (IOException e) {

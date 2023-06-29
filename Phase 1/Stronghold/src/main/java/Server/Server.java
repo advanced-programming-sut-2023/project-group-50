@@ -59,6 +59,8 @@ public class Server extends Thread {
         System.out.println("Client connected");
         ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
         outputStream.writeObject(Saver.get());
+        outputStream.flush();
+        outputStream.close();
     }
 
     @Override
