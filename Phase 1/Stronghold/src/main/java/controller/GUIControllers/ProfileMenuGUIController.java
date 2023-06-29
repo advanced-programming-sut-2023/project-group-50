@@ -1,5 +1,6 @@
 package controller.GUIControllers;
 
+import Server.Client;
 import controller.UserDatabase.User;
 import controller.control.SecurityQuestion;
 import controller.control.Slogans;
@@ -80,6 +81,7 @@ public class ProfileMenuGUIController {
     }
 
     private static void logout(ActionEvent actionEvent) {
+        Client.sendData();
         if (user.getSocket() != null) {
             try {
                 user.getSocket().close();
@@ -319,6 +321,7 @@ public class ProfileMenuGUIController {
 
     public static void showMainMenu(ActionEvent actionEvent) {
         MainMenu mainMenu = new MainMenu();
+        Client.getData();
         mainMenu.init(user);
         try {
             mainMenu.start(MainMenu.getStage());

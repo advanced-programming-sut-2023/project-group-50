@@ -1,5 +1,6 @@
 package view.show.ProfileMenu;
 
+import Server.Client;
 import controller.GUIControllers.MainMenuGUIController;
 import controller.GUIControllers.ProfileMenuGUIController;
 import controller.UserDatabase.Users;
@@ -141,7 +142,10 @@ public class EditSecurityQuestionMenu extends Application {
         try {
             choice = getChoice(this.checkBoxes);
             Users.setSecurityQuestion(username, choice, answer.getText());
-            new ShowProfileMenu().start(stage);
+            Client.sendData();
+            ShowProfileMenu showProfileMenu = new ShowProfileMenu();
+            showProfileMenu.init(Users.getUser(username));
+            showProfileMenu.start(stage);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

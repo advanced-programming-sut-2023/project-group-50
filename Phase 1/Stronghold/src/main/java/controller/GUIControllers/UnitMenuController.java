@@ -1,6 +1,8 @@
 package controller.GUIControllers;
 
+import Server.Client;
 import controller.UserDatabase.User;
+import controller.UserDatabase.Users;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
@@ -28,22 +30,29 @@ import view.show.UnitMenu.UnitMenu;
 import java.util.Objects;
 
 public class UnitMenuController {
-    private static User user;
-    private static Unit unit;
+    private static String username;
+    private static int X;
+    private static int Y;
 
-    public static void init(User user, Unit unit) {
-        UnitMenuController.user = user;
-        UnitMenuController.unit = unit;
+    public static void init(User user, int X, int Y) {
+        UnitMenuController.username = user.getUserName();
+        UnitMenuController.X = X;
+        UnitMenuController.Y = Y;
     }
 
-    public static Pane getPane(Unit unit) {
-        UnitPane unitPane = new UnitPane(unit);
+    public static Unit getUnit() {
+        return Users.getUser(username).getGovernment().getMap().getUnitByXY(X, Y);
+    }
+
+    public static Pane getPane(String username, int X, int Y) {
+        UnitPane unitPane = new UnitPane(username, X, Y);
         return unitPane.getPane();
     }
 
     public static void showMainMenu(ActionEvent ignoredActionEvent) {
+        Client.sendData();
         MainMenu mainMenu = new MainMenu();
-        mainMenu.init(user);
+        mainMenu.init(Users.getUser(username));
         try {
             mainMenu.start(MainMenu.getStage());
         } catch (Exception e) {
@@ -60,25 +69,25 @@ public class UnitMenuController {
     }
 
     public static void showUnitMenu(ActionEvent ignoredActionEvent) {
-        UnitMenu unitMenu = new UnitMenu();
-        unitMenu.initialize(unit);
-        try {
-            unitMenu.start(MainMenu.getStage());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        Client.sendData();
+        showUnitMenu();
     }
 
     public static GroundType getTexture() {
-        return unit.getTexture();
+        return getUnit().getTexture();
     }
 
     public static void setTexture(GroundType texture) {
-        unit.setTexture(texture);
+        getUnit().setTexture(texture);
+    }
+
+    public static void update() {
+        Users.getUser(username).getGovernment().getMap().setXY(getUnit().getX(), getUnit().getY(), getUnit());
+        Client.sendData();
     }
 
     public static void repairBuilding(ActionEvent ignoredActionEvent) {
-        Building building = unit.getBuilding();
+        Building building = getUnit().getBuilding();
         if (building == null) {
             new Alert(Alert.AlertType.ERROR, "No building in here").show();
             return;
@@ -95,33 +104,28 @@ public class UnitMenuController {
             return;
         }
 
-        unit.getBuilding().repair();
+        getUnit().getBuilding().repair();
 
-        UnitMenu unitMenu = new UnitMenu();
-        unitMenu.initialize(unit);
-        try {
-            unitMenu.start(MainMenu.getStage());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        showUnitMenu();
 
         new Alert(Alert.AlertType.INFORMATION, "Repaired successfully").show();
     }
 
     public static void dropTree(ActionEvent ignoredActionEvent) {
-        if (!Tree.canPlace(unit.getX(), unit.getY(), MainMenuGUIController.getUser())) {
+        if (!Tree.canPlace(getUnit().getX(), getUnit().getY(), MainMenuGUIController.getUser())) {
             new Alert(Alert.AlertType.ERROR, "Ground type is not valid for tree").show();
             return;
         }
-        if (unit.hasObjectByType(ObjectType.BUILDING)) {
+        if (getUnit().hasObjectByType(ObjectType.BUILDING)) {
             new Alert(Alert.AlertType.ERROR, "There is a building here").show();
             return;
         }
-        if (unit.hasObjectByType(ObjectType.ROCK)) {
+        if (getUnit().hasObjectByType(ObjectType.ROCK)) {
             new Alert(Alert.AlertType.ERROR, "There is a rock here").show();
             return;
         }
-        if (unit.getTree() != null && !Objects.equals(unit.getTree().getOwner(), MainMenuGUIController.getUser())) {
+        if (getUnit().getTree() != null &&
+                !Objects.equals(getUnit().getTree().getOwner(), MainMenuGUIController.getUser())) {
             new Alert(Alert.AlertType.ERROR, "This tree is not yours").show();
             return;
         }
@@ -134,41 +138,47 @@ public class UnitMenuController {
     }
 
     public static Tree getTree() {
-        return unit.getTree();
+        return getUnit().getTree();
     }
 
     public static void addTree(TreeType type) {
-        if (unit.getTree() != null)
-            unit.removeObject(unit.getTree());
-        unit.addObject(new Tree(type, MainMenuGUIController.getUser()));
+        if (getUnit().getTree() != null)
+            getUnit().removeObject(getUnit().getTree());
+        getUnit().addObject(new Tree(type, MainMenuGUIController.getUser()));
     }
 
     public static void dropRock(ActionEvent ignoredActionEvent) {
-        if (!Rock.canPlace(unit.getX(), unit.getY(), MainMenuGUIController.getUser())) {
+        if (!Rock.canPlace(getUnit().getX(), getUnit().getY(), MainMenuGUIController.getUser())) {
             new Alert(Alert.AlertType.ERROR, "Ground type is not valid for tree").show();
             return;
         }
-        if (unit.hasObjectByType(ObjectType.BUILDING)) {
+        if (getUnit().hasObjectByType(ObjectType.BUILDING)) {
             new Alert(Alert.AlertType.ERROR, "There is a building here").show();
             return;
         }
-        if (unit.hasObjectByType(ObjectType.TREE)) {
+        if (getUnit().hasObjectByType(ObjectType.TREE)) {
             new Alert(Alert.AlertType.ERROR, "There is a tree here").show();
             return;
         }
-        if (unit.getRock() != null && !Objects.equals(unit.getRock().getOwner(), MainMenuGUIController.getUser())) {
+        if (getUnit().getRock() != null &&
+                !Objects.equals(getUnit().getRock().getOwner(), MainMenuGUIController.getUser())) {
             new Alert(Alert.AlertType.ERROR, "This rock is not yours").show();
             return;
         }
 
-        if (unit.getRock() != null) {
-            unit.removeObject(unit.getRock());
+        if (getUnit().getRock() != null) {
+            getUnit().removeObject(getUnit().getRock());
         }
 
-        unit.addObject(new Rock(Direction.getRandomDirection(), MainMenuGUIController.getUser()));
+        getUnit().addObject(new Rock(Direction.getRandomDirection(), MainMenuGUIController.getUser()));
 
+        showUnitMenu();
+    }
+
+    private static void showUnitMenu() {
+        update();
         UnitMenu unitMenu = new UnitMenu();
-        unitMenu.initialize(unit);
+        unitMenu.initialize(username, X, Y);
         try {
             unitMenu.start(MainMenu.getStage());
         } catch (Exception e) {
@@ -177,26 +187,21 @@ public class UnitMenuController {
     }
 
     public static void clear(ActionEvent ignoredActionEvent) {
-        unit.clear(MainMenuGUIController.getUser());
+        getUnit().clear(MainMenuGUIController.getUser());
 
-        UnitMenu unitMenu = new UnitMenu();
-        unitMenu.initialize(unit);
-        try {
-            unitMenu.start(MainMenu.getStage());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        showUnitMenu();
     }
 
     public static void dropUnit(ActionEvent ignoredActionEvent) {
-        if (!Person.canPlace(unit.getTexture()) ||
-                unit.hasObjectByType(ObjectType.ROCK) ||
-                unit.hasObjectByType(ObjectType.TREE)) {
+        if (!Person.canPlace(getUnit().getTexture()) ||
+                getUnit().hasObjectByType(ObjectType.ROCK) ||
+                getUnit().hasObjectByType(ObjectType.TREE)) {
             new Alert(Alert.AlertType.ERROR, "Can't place a soldier here").show();
             return;
         }
 
-        if (unit.hasObjectByType(ObjectType.BUILDING) && !Objects.equals(unit.getBuilding().getOwner(), user)) {
+        if (getUnit().hasObjectByType(ObjectType.BUILDING) &&
+                !Objects.equals(getUnit().getBuilding().getOwner(), Users.getUser(username))) {
             new Alert(Alert.AlertType.ERROR, "Can't place a soldier in other player's buildings").show();
             return;
         }
@@ -210,47 +215,47 @@ public class UnitMenuController {
     }
 
     public static boolean canAfford(SoldierName selected, int number) {
-        return user.getGovernment().canAffordSoldiers(selected, number);
+        return Users.getUser(username).getGovernment().canAffordSoldiers(selected, number);
     }
 
     public static boolean hasEnoughWeapons(SoldierName selected, int number) {
-        return user.getGovernment().hasEnoughWeapons(selected, number);
+        return Users.getUser(username).getGovernment().hasEnoughWeapons(selected, number);
     }
 
     public static boolean hasEnoughArmour(SoldierName selected, int number) {
-        return user.getGovernment().hasEnoughArmour(selected, number);
+        return Users.getUser(username).getGovernment().hasEnoughArmour(selected, number);
     }
 
     public static void dropUnits(SoldierName selected, int number) {
-        Government government = user.getGovernment();
+        Government government = Users.getUser(username).getGovernment();
         WeaponName weaponName = Soldier.getWeaponName(selected);
         government.setCoins(government.getCoins() - (double) number * selected.getCoinCost());
         government.setWeaponAmount(weaponName, government.getWeaponAmount(weaponName) - number);
         government.decrementArmourAmount(selected.getArmourType(), number);
 
         for (int i = 0; i < number; i++)
-            unit.addObject(Soldier.getSoldierByType(selected, user));
+            getUnit().addObject(Soldier.getSoldierByType(selected, Users.getUser(username)));
     }
 
     public static boolean isProtected() {
-        return unit.isProtected();
+        return getUnit().isProtected();
     }
 
     public static boolean hasBuilding(User owner) {
-        return unit.getBuilding() != null && Objects.equals(unit.getBuilding().getOwner(), owner);
+        return getUnit().getBuilding() != null && Objects.equals(getUnit().getBuilding().getOwner(), owner);
     }
 
     public static boolean canBuild(User owner) {
-        return unit.getBuilding() == null || Objects.equals(unit.getBuilding().getOwner(), owner);
+        return getUnit().getBuilding() == null || Objects.equals(getUnit().getBuilding().getOwner(), owner);
     }
 
     public static boolean hasPitchDitch(User owner) {
-        return unit.getBuilding() != null && unit.getBuilding().getType().equals(BuildingType.PITCH_DITCH) &&
-                unit.getBuilding().getOwner() == owner;
+        return getUnit().getBuilding() != null && getUnit().getBuilding().getType().equals(BuildingType.PITCH_DITCH) &&
+                getUnit().getBuilding().getOwner() == owner;
     }
 
     public static boolean canPlacePitchDitch(User owner) {
-        return unit.getBuilding() == null || (unit.getBuilding().getType().equals(BuildingType.PITCH_DITCH) &&
-                unit.getBuilding().getOwner() == owner);
+        return getUnit().getBuilding() == null || (getUnit().getBuilding().getType().equals(BuildingType.PITCH_DITCH) &&
+                getUnit().getBuilding().getOwner() == owner);
     }
 }

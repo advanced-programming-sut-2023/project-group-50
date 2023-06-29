@@ -1,5 +1,6 @@
 package view.show.controller;
 
+import Server.Client;
 import controller.GUIControllers.GovernmentDataMenuController;
 import controller.GUIControllers.ProfileMenuGUIController;
 import controller.Menus.ShopMenuController;
@@ -91,6 +92,7 @@ public class ShopMenuShowController {
 
     public static void showMainMenu(ActionEvent ignoredActionEvent) {
         MainMenu mainMenu = new MainMenu();
+        Client.getData();
         mainMenu.init(ShopMenuShowController.shopMenuController.getCurrentUser());
         try {
             mainMenu.start(MainMenu.getStage());

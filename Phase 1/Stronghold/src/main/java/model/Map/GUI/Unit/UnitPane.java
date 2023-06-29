@@ -1,9 +1,11 @@
 package model.Map.GUI.Unit;
 
+import Server.Client;
 import controller.GUIControllers.MainMenuGUIController;
 import controller.GUIControllers.SoldierMenuController.SoldierMenuController;
 import controller.GUIControllers.UnitMenuController;
 import controller.UserDatabase.User;
+import controller.UserDatabase.Users;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -36,13 +38,18 @@ import static controller.GUIControllers.ProfileMenuGUIController.getBackButton;
 import static controller.GUIControllers.ProfileMenuGUIController.getDataBackgroundImage;
 
 public class UnitPane {
-    private final Unit unit;
+    private final String username;
+    private final int X;
+    private final int Y;
     private Pane pane;
     private HashMap<StackPane, Soldier> soldierHashMap;
 
-    public UnitPane(Unit unit) {
-        UnitMenuController.init(MainMenuGUIController.getUser(), unit);
-        this.unit = unit;
+    public UnitPane(String username, int X, int Y) {
+        Client.getData();
+        UnitMenuController.init(MainMenuGUIController.getUser(), X, Y);
+        this.username = username;
+        this.X = X;
+        this.Y = Y;
         initPane();
         initButton();
     }
@@ -157,6 +164,10 @@ public class UnitPane {
         return text;
     }
 
+    public Unit getUnit() {
+        return Users.getUser(username).getGovernment().getMap().getUnitByXY(X, Y);
+    }
+
     private void initButton() {
         Button backButton = getBackButton(UnitMenuController::showMainMenu);
         pane.getChildren().add(backButton);
@@ -226,14 +237,14 @@ public class UnitPane {
         vBox.setSpacing(15);
 
         VBox data;
-        if (unit.hasBuilding()) {
+        if (getUnit().hasBuilding()) {
             data = new VBox(getHealth(width * 0.5, height * 0.05),
                             getTextureHBox(width * 0.5, height * 0.1),
                             getOwnerHBox(width * 0.5, height * 0.1),
                             getBuildingHBox(width * 0.5, height * 0.1),
                             getPeopleHBox(width * 0.5, height * 0.1));
 
-            if (unit.getBuilding() instanceof Storage)
+            if (getUnit().getBuilding() instanceof Storage)
                 data.getChildren().add(getPrevStorage(width * 0.5, height * 0.05));
         } else {
             data = new VBox(getTextureHBox(width * 0.5, height * 0.1),
@@ -253,7 +264,7 @@ public class UnitPane {
 
     private HBox getPrevStorage(double width, double height) {
         HBox hBox = gethBox(width, height, 10);
-        Storage storage = (Storage) unit.getBuilding();
+        Storage storage = (Storage) getUnit().getBuilding();
         hBox.getChildren().add(getText("Next storage: " + (storage.getNextStorage() == null ? "Null" :
                 "{%d, %d}".formatted(storage.getNextStorage().getX(), storage.getNextStorage().getY()))));
         hBox.getChildren().add(getText(
@@ -265,8 +276,8 @@ public class UnitPane {
         HBox hBox = new HBox();
 
         ProgressBar healthBar = new ProgressBar(
-                (double) unit.getBuilding().getHp() / (double) unit.getBuilding().getMaxHp());
-        Text text = getText(String.valueOf(unit.getBuilding().getHp()));
+                (double) getUnit().getBuilding().getHp() / (double) getUnit().getBuilding().getMaxHp());
+        Text text = getText(String.valueOf(getUnit().getBuilding().getHp()));
 
         healthBar.setPrefSize(width * 0.8, height);
         hBox.getChildren().addAll(healthBar, text);
@@ -280,8 +291,8 @@ public class UnitPane {
     private HBox getBuildingHBox(double width, double height) {
         HBox hBox = gethBox(width, height, 15);
 
-        if (unit.hasBuilding()) {
-            Building building = unit.getBuilding();
+        if (getUnit().hasBuilding()) {
+            Building building = getUnit().getBuilding();
             ImageView imageView = new ImageView(building.getImage());
             imageView.setPreserveRatio(true);
             imageView.setFitHeight(height);
@@ -296,10 +307,10 @@ public class UnitPane {
     private HBox getOwnerHBox(double width, double height) {
         HBox hBox = gethBox(width, height, 15);
 
-        if (unit.hasBuilding())
+        if (getUnit().hasBuilding())
             hBox.getChildren().addAll(getOwnerAvatar(height),
-                                      getUserColor(height, unit.getOwner()),
-                                      getText(unit.getOwner().getNickName()));
+                                      getUserColor(height, getUnit().getOwner()),
+                                      getText(getUnit().getOwner().getNickName()));
         else
             hBox.getChildren().add(getText("This tile belongs to no one."));
 
@@ -317,7 +328,7 @@ public class UnitPane {
     }
 
     private ImageView getOwnerAvatar(double height) {
-        ImageView imageView = new ImageView(unit.getOwner().getAvatar().toExternalForm());
+        ImageView imageView = new ImageView(getUnit().getOwner().getAvatar().toExternalForm());
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(height);
 
@@ -328,7 +339,7 @@ public class UnitPane {
         HBox hBox = gethBox(width, height, 15);
 
         hBox.getChildren().addAll(getTileBackground(height, height),
-                                  getText(unit.getTexture().getType()));
+                                  getText(getUnit().getTexture().getType()));
 
         return hBox;
     }
@@ -346,7 +357,7 @@ public class UnitPane {
 
         soldierHashMap = new HashMap<>();
 
-        for (Objects object : unit.getObjects()) {
+        for (Objects object : getUnit().getObjects()) {
             if (object instanceof Person person) {
                 StackPane personStackPane = getPersonStackPane(height * 0.8, person);
                 hBox.getChildren().add(personStackPane);
@@ -379,7 +390,7 @@ public class UnitPane {
     }
 
     private VBox getUnitImage(double width) {
-        UnitGroup unitGroup = new UnitGroup(unit, width / 2, width);
+        UnitGroup unitGroup = new UnitGroup(getUnit(), width / 2, width);
         VBox vBox = new VBox();
         Group group = new Group();
 
@@ -411,7 +422,7 @@ public class UnitPane {
     }
 
     private ImageView getTileBackground(double tileHeight, double tileWidth) {
-        ImageView imageView = new ImageView(unit.getTexture().getImage());
+        ImageView imageView = new ImageView(getUnit().getTexture().getImage());
         imageView.setFitHeight(tileHeight);
         imageView.setFitWidth(tileWidth);
 

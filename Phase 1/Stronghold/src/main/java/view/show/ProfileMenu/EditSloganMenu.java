@@ -1,5 +1,6 @@
 package view.show.ProfileMenu;
 
+import Server.Client;
 import controller.GUIControllers.MainMenuGUIController;
 import controller.GUIControllers.ProfileMenuGUIController;
 import controller.Menus.ProfileController;
@@ -150,7 +151,10 @@ public class EditSloganMenu extends Application {
                 System.out.println(profileController.profileChange(matcher));
             }
 
-            new ShowProfileMenu().start(stage);
+            Client.sendData();
+            ShowProfileMenu showProfileMenu = new ShowProfileMenu();
+            showProfileMenu.init(Users.getUser(username));
+            showProfileMenu.start(stage);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -1,5 +1,6 @@
 package controller.GUIControllers;
 
+import Server.Client;
 import controller.UserDatabase.User;
 import controller.UserDatabase.Users;
 import javafx.event.ActionEvent;
@@ -17,7 +18,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import model.Government.GUI.GovernmentPane;
 import model.Map.GUI.MapPane.MapPane;
-import model.Map.Unit;
 import view.show.GovernmentDataMenu.GovernmentDataMenu;
 import view.show.MainMenu.MainMenu;
 import view.show.MainMenu.ShowSaveMapMenu;
@@ -40,11 +40,12 @@ public class MainMenuGUIController {
     public static Pane getPane(String username) {
         double width = Screen.getPrimary().getBounds().getWidth();
         double height = Screen.getPrimary().getBounds().getHeight();
+        Client.getData();
         user = Users.getUser(username);
 
         pane = new Pane();
         pane.setPrefSize(width, height);
-        pane.getChildren().add(MapPane.getMapPane(user.getGovernment().getMap(),
+        pane.getChildren().add(MapPane.getMapPane(username,
                                                   50,
                                                   50,
                                                   0,
@@ -72,7 +73,7 @@ public class MainMenuGUIController {
 
         pane = new Pane();
         pane.setPrefSize(width, height);
-        pane.getChildren().add(MapPane.getMapPane(user.getGovernment().getMap(),
+        pane.getChildren().add(MapPane.getMapPane(user.getUserName(),
                                                   50,
                                                   50,
                                                   0,
@@ -208,9 +209,9 @@ public class MainMenuGUIController {
         }
     }
 
-    public static void showUnit(Unit unit) throws Exception {
+    public static void showUnit(String username, int X, int Y) throws Exception {
         UnitMenu unitMenu = new UnitMenu();
-        unitMenu.initialize(unit);
+        unitMenu.initialize(username, X, Y);
         unitMenu.start(MainMenu.getStage());
     }
 

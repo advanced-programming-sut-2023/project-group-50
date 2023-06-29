@@ -1,5 +1,6 @@
 package view.show.ProfileMenu;
 
+import Server.Client;
 import controller.GUIControllers.MainMenuGUIController;
 import controller.Menus.ProfileController;
 import controller.UserDatabase.Users;
@@ -133,7 +134,10 @@ public class EditEmailMenu extends Application {
                                                   "profile change -e " + newEmail.getText());
             matcher.matches();
             System.out.println(profileController.profileChange(matcher));
-            new ShowProfileMenu().start(stage);
+            Client.sendData();
+            ShowProfileMenu showProfileMenu = new ShowProfileMenu();
+            showProfileMenu.init(Users.getUser(username));
+            showProfileMenu.start(stage);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

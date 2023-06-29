@@ -1,5 +1,6 @@
 package view.show.ProfileMenu;
 
+import Server.Client;
 import controller.GUIControllers.MainMenuGUIController;
 import controller.UserDatabase.Users;
 import javafx.application.Application;
@@ -165,7 +166,10 @@ public class EditAvatarMenu extends Application {
 
     private void handleConfirm(ActionEvent actionEvent) {
         try {
-            new ShowProfileMenu().start(stage);
+            Client.sendData();
+            ShowProfileMenu showProfileMenu = new ShowProfileMenu();
+            showProfileMenu.init(Users.getUser(username));
+            showProfileMenu.start(stage);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

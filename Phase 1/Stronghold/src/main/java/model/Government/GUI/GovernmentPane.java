@@ -376,7 +376,7 @@ public class GovernmentPane {
         return new StackPane(circle, text);
     }
 
-    private static Background getDataBackground(double width, double height) {
+    public static Background getDataBackground(double width, double height) {
         String path = "/images/background/scroll.png";
         BackgroundImage backgroundImage =
                 getEditBackgroundImage(ShowProfileMenu.class.getResource(path), new BackgroundSize(width,

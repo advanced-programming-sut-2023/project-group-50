@@ -1,6 +1,8 @@
 package model.Map.GUI.MapPane;
 
+import Server.Client;
 import controller.GUIControllers.MainMenuGUIController;
+import controller.UserDatabase.Users;
 import javafx.event.ActionEvent;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Pos;
@@ -43,6 +45,7 @@ public class MapPane {
     private static HBox navigation;
     private static int TopLeftX;
     private static int TopLeftY;
+    private static String username;
 
     private static Pair diffXY(Pair xy) {
         return new Pair(xy.x / 2 + xy.y / 2, xy.x / 2 - xy.y / 2).by(0.5);
@@ -72,12 +75,13 @@ public class MapPane {
         return (xScreen / tileWidth - yScreen / tileHeight) % 1.0 == 0;
     }
 
-    public static Pane getMapPane(Map map, double tileHeight, double tileWidth, int topLeftX, int topLeftY) {
+    public static Pane getMapPane(String username, double tileHeight, double tileWidth, int topLeftX, int topLeftY) {
         MapPane.tileHeight = tileHeight;
         MapPane.tileWidth = tileWidth;
         MapPane.topLeftX = topLeftX;
         MapPane.topLeftY = topLeftY;
-        MapPane.map = map;
+        MapPane.map = Users.getUser(username).getGovernment().getMap();
+        MapPane.username = username;
 
         initTiles();
         initPane();
@@ -554,8 +558,7 @@ public class MapPane {
         int y = (int) xy.y;
 
         if (xy.x >= 0 && xy.x < map.getXSize() && xy.y >= 0 && xy.y < map.getYSize()) {
-            Unit unit = map.getXY(x, y);
-            MainMenuGUIController.showUnit(unit);
+            MainMenuGUIController.showUnit(username, x, y);
         }
     }
 
@@ -588,6 +591,7 @@ public class MapPane {
             UnitGroup unitGroup = new UnitGroup(map.getXY(x, y), tileHeight, tileWidth);
             unitGroups.get(x).replace(y, unitGroup);
             MainMenuGUIController.updateGovernmentPane(GovernmentPane.government.getLord().getOwner().getUserName());
+            Client.sendData();
             fillTiles();
         }
 

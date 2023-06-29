@@ -38,6 +38,7 @@ public class Loader {
     private void loadUtil(Saver saver) {
         Users.setUsers(saver.users);
         Users.setMaps(saver.maps);
+        Users.setRequests(saver.requests);
         Shop.setItems(saver.items);
         TradeMarket.setTrades(saver.trades);
         TradeMarket.setNextId(saver.nextId);

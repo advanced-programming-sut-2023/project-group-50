@@ -1,5 +1,6 @@
 package view.show.UnitMenu;
 
+import Server.Client;
 import controller.GUIControllers.MultiUnitMenuController;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -10,6 +11,7 @@ import model.Government.GUI.GovernmentPane;
 public class SelectionMenu extends Application {
     @Override
     public void start(Stage stage) throws Exception {
+        Client.getData();
         Pane pane = MultiUnitMenuController.getPane();
 
         Scene scene = new Scene(pane);

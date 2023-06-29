@@ -1,6 +1,7 @@
 package controller.UserDatabase;
 
 import controller.control.SecurityQuestion;
+import model.Request.Request;
 import model.Save.MapSave.AnonymousMap;
 
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.util.*;
 public class Users implements Serializable {
     private static HashMap<String, User> users = new HashMap<>();
     private static HashMap<String, HashSet<AnonymousMap>> maps = new HashMap<>();
+    private static HashSet<Request> requests = new HashSet<>();
 
     public static User getUser(String username) {
         if (Users.users.isEmpty()) {
@@ -115,5 +117,17 @@ public class Users implements Serializable {
                 .anyMatch(map -> map.getName
                         ().equals(mapName))).findFirst().orElse(null);
 
+    }
+
+    public static HashSet<Request> getRequests() {
+        return requests;
+    }
+
+    public static void setRequests(HashSet<Request> requests) {
+        Users.requests = requests;
+    }
+
+    public static void addRequest(Request request) {
+        requests.add(request);
     }
 }

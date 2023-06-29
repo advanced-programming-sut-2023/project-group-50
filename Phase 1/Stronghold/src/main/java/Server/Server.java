@@ -68,6 +68,7 @@ public class Server extends Thread {
         while (true) {
             try {
                 Socket accepted = serverSocket.accept();
+                accepted.setTcpNoDelay(true);
                 accept(accepted);
             } catch (Exception e) {
                 throw new RuntimeException(e);

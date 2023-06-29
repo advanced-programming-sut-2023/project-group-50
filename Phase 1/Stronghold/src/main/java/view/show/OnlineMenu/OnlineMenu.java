@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -57,8 +58,7 @@ public class OnlineMenu extends Application {
     private Pane getEditPane(double width, double height) {
         VBox vBox = new VBox();
 
-        Text text = new Text("Online Menu");
-        text.setFont(Font.font("Old English Text MT", FontWeight.BOLD, 45));
+        Text text = LobbyMenu.getText("Online Menu");
 
         Text connection = new Text(getConnection());
         connection.setFont(Font.font("System", FontWeight.NORMAL, 15));
@@ -102,7 +102,18 @@ public class OnlineMenu extends Application {
     }
 
     private void lobby(ActionEvent actionEvent) {
+        if (user.getSocket() == null) {
+            new Alert(Alert.AlertType.ERROR, "You're not connected to a server!").show();
+            return;
+        }
 
+        LobbyMenu lobbyMenu = new LobbyMenu();
+        lobbyMenu.init(user);
+        try {
+            lobbyMenu.start(MainMenu.getStage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void connect(ActionEvent actionEvent) {

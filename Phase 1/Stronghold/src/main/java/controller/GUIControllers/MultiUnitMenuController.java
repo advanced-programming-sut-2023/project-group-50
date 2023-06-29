@@ -1,6 +1,8 @@
 package controller.GUIControllers;
 
+import Server.Client;
 import controller.UserDatabase.User;
+import controller.UserDatabase.Users;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.Pane;
 import model.Map.GUI.Unit.MultiUnitPane;
@@ -19,33 +21,41 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class MultiUnitMenuController {
-    private static Map map;
+    private static String username;
     private static int xFrom;
     private static int xTo;
     private static int yFrom;
     private static int yTo;
 
-    public static void init(int xFrom, int xTo, int yFrom, int yTo, Map map) {
+    public static void init(int xFrom, int xTo, int yFrom, int yTo, String username) {
         MultiUnitMenuController.xFrom = xFrom;
         MultiUnitMenuController.xTo = xTo;
         MultiUnitMenuController.yFrom = yFrom;
         MultiUnitMenuController.yTo = yTo;
-        MultiUnitMenuController.map = map;
+        MultiUnitMenuController.username = username;
+    }
+
+    public static Map getMap() {
+        return Users.getUser(username).getGovernment().getMap();
     }
 
     public static void clear(ActionEvent ignoredActionEvent) {
         for (int x = xFrom; x <= xTo; x++)
             for (int y = yFrom; y <= yTo; y++)
-                map.getXY(x, y).clear(MainMenuGUIController.getUser());
-
+                getMap().getXY(x, y).clear(MainMenuGUIController.getUser());
 
         showMultiUnitMenu(null);
+    }
+
+    public static void update() {
+        System.out.println("Called");
+        Client.sendData();
     }
 
     public static boolean hasBuilding() {
         for (int x = xFrom; x <= xTo; x++)
             for (int y = yFrom; y <= yTo; y++)
-                if (map.getXY(x, y).hasBuilding())
+                if (getMap().getXY(x, y).hasBuilding())
                     return true;
 
         return false;
@@ -56,8 +66,8 @@ public class MultiUnitMenuController {
 
         for (int x = xFrom; x <= xTo; x++)
             for (int y = yFrom; y <= yTo; y++)
-                if (map.getXY(x, y).hasBuilding())
-                    arrayList.add(map.getXY(x, y).getBuilding());
+                if (getMap().getXY(x, y).hasBuilding())
+                    arrayList.add(getMap().getXY(x, y).getBuilding());
 
         return arrayList;
     }
@@ -65,7 +75,7 @@ public class MultiUnitMenuController {
     public static boolean hasOwner() {
         for (int x = xFrom; x <= xTo; x++)
             for (int y = yFrom; y <= yTo; y++)
-                if (map.getXY(x, y).getOwner() != null)
+                if (getMap().getXY(x, y).getOwner() != null)
                     return true;
 
         return false;
@@ -76,8 +86,8 @@ public class MultiUnitMenuController {
 
         for (int x = xFrom; x <= xTo; x++)
             for (int y = yFrom; y <= yTo; y++)
-                if (map.getXY(x, y).getOwner() != null)
-                    arrayList.add(map.getXY(x, y).getOwner());
+                if (getMap().getXY(x, y).getOwner() != null)
+                    arrayList.add(getMap().getXY(x, y).getOwner());
 
         return arrayList;
     }
@@ -87,7 +97,7 @@ public class MultiUnitMenuController {
 
         for (int x = xFrom; x <= xTo; x++)
             for (int y = yFrom; y <= yTo; y++)
-                arrayList.add(map.getXY(x, y).getTexture());
+                arrayList.add(getMap().getXY(x, y).getTexture());
 
         return arrayList;
     }
@@ -97,7 +107,7 @@ public class MultiUnitMenuController {
 
         for (int x = xFrom; x <= xTo; x++)
             for (int y = yFrom; y <= yTo; y++)
-                for (Objects object : map.getXY(x, y).getObjects())
+                for (Objects object : getMap().getXY(x, y).getObjects())
                     if (object instanceof Person person)
                         arrayList.add(person);
 
@@ -115,7 +125,9 @@ public class MultiUnitMenuController {
     }
 
     public static void showMultiUnitMenu(ActionEvent ignoredActionEvent) {
+        System.out.println("done");
         try {
+            update();
             new SelectionMenu().start(MainMenu.getStage());
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -123,18 +135,18 @@ public class MultiUnitMenuController {
     }
 
     public static Pane getPane() {
-        return new MultiUnitPane(xFrom, xTo, yFrom, yTo, map).getPane();
+        return new MultiUnitPane(xFrom, xTo, yFrom, yTo, username).getPane();
     }
 
     public static GroundType getTexture() {
-        return map.getXY(xFrom, yFrom).getTexture();
+        return getMap().getXY(xFrom, yFrom).getTexture();
     }
 
     public static void setTexture(GroundType texture) {
         for (int x = xFrom; x <= xTo; x++)
             loop:
                     for (int y = yFrom; y <= yTo; y++) {
-                        for (Objects object : map.getXY(x, y).getObjects()) {
+                        for (Objects object : getMap().getXY(x, y).getObjects()) {
                             if (object instanceof Person)
                                 if (!Person.canPlace(texture))
                                     continue loop;
@@ -148,7 +160,11 @@ public class MultiUnitMenuController {
                                 if (!rock.canPlace(texture))
                                     continue loop;
                         }
-                        map.getXY(x, y).setTexture(texture);
+                        getMap().getXY(x, y).setTexture(texture);
                     }
+    }
+
+    public static boolean hasMap() {
+        return username != null;
     }
 }

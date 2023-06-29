@@ -4,6 +4,7 @@ import controller.GUIControllers.MultiUnitMenuController;
 import controller.GUIControllers.SoldierMenuController.SoldierMenuController;
 import controller.GUIControllers.UnitMenuController;
 import controller.UserDatabase.User;
+import controller.UserDatabase.Users;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -20,7 +21,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import model.Map.GUI.MapPane.MapPane;
 import model.Map.GroundType;
-import model.Map.Map;
 import model.ObjectsPackage.Buildings.Building;
 import model.ObjectsPackage.People.Person;
 import model.ObjectsPackage.People.Soldier.Soldier;
@@ -33,7 +33,7 @@ import static controller.GUIControllers.ProfileMenuGUIController.getBackButton;
 import static controller.GUIControllers.ProfileMenuGUIController.getDataBackgroundImage;
 
 public class MultiUnitPane {
-    private final Map map;
+    private final String username;
     private final int xFrom;
     private final int xTo;
     private final int yFrom;
@@ -41,9 +41,9 @@ public class MultiUnitPane {
     private Pane pane;
     private HashMap<StackPane, Soldier> soldierHashMap;
 
-    public MultiUnitPane(int xFrom, int xTo, int yFrom, int yTo, Map map) {
-        MultiUnitMenuController.init(xFrom, xTo, yFrom, yTo, map);
-        this.map = map;
+    public MultiUnitPane(int xFrom, int xTo, int yFrom, int yTo, String username) {
+        MultiUnitMenuController.init(xFrom, xTo, yFrom, yTo, username);
+        this.username = username;
         this.xFrom = xFrom;
         this.xTo = xTo;
         this.yFrom = yFrom;
@@ -324,7 +324,8 @@ public class MultiUnitPane {
     }
 
     private VBox getUnitImage(double width) {
-        Pane smallPane = MapPane.getSmallPane(map, xFrom, yFrom, xTo, yTo, width, width);
+        Pane smallPane = MapPane.getSmallPane(Users.getUser(username).getGovernment().getMap(),
+                                              xFrom, yFrom, xTo, yTo, width, width);
         VBox vBox = new VBox(smallPane);
         vBox.setAlignment(Pos.CENTER);
         vBox.setPrefSize(width, width);

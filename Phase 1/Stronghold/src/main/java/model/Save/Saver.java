@@ -4,6 +4,7 @@ import controller.UserDatabase.Shop;
 import controller.UserDatabase.User;
 import controller.UserDatabase.Users;
 import model.Item.Item;
+import model.Request.Request;
 import model.Save.MapSave.AnonymousMap;
 import model.Trade.Trade;
 import model.Trade.TradeMarket;
@@ -39,6 +40,11 @@ public class Saver implements Serializable {
      */
     HashMap<String, HashSet<AnonymousMap>> maps;
 
+    /**
+     * Requests
+     */
+    HashSet<Request> requests;
+
     int nextId;
 
     public Saver() {
@@ -47,6 +53,7 @@ public class Saver implements Serializable {
         trades = TradeMarket.getTrades();
         nextId = TradeMarket.getNextId();
         maps = Users.getMaps();
+        requests = Users.getRequests();
     }
 
     public static Saver get() {

@@ -22,6 +22,8 @@ public class Client extends Thread {
             StartMenu.main(null);
         else
             ServerOfflineMenu.main(null);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(Client::sendData));
     }
 
     public static void getData() {

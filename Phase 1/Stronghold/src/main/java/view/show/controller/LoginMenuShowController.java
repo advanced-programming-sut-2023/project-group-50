@@ -284,6 +284,7 @@ public class LoginMenuShowController {
             return;
         }
         MainMenu mainMenu = new MainMenu();
+        Client.getData();
         mainMenu.init(user);
         try {
             mainMenu.start(LoginMenuShow.stage);

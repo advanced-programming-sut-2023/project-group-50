@@ -1,5 +1,6 @@
 package view.show.ProfileMenu;
 
+import Server.Client;
 import controller.GUIControllers.ProfileMenuGUIController;
 import controller.UserDatabase.User;
 import javafx.application.Application;
@@ -22,18 +23,17 @@ public class ShowProfileMenu extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        Client.getData();
         ShowProfileMenu.stage = stage;
 
         ProfileMenuGUIController.init(user);
         Pane profilePane = ProfileMenuGUIController.getPane();
 
-        if (stage.getScene() == null) {
-            Scene scene = new Scene(profilePane);
-            stage.setScene(scene);
-            stage.setFullScreen(true);
-            stage.setFullScreenExitHint("");
-            stage.setTitle("Stronghold");
-        } else stage.getScene().setRoot(profilePane);
+        Scene scene = new Scene(profilePane);
+        stage.setScene(scene);
+        stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
+        stage.setTitle("Stronghold");
 
         stage.show();
     }

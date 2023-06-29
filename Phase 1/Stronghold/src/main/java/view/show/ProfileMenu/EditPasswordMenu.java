@@ -1,5 +1,6 @@
 package view.show.ProfileMenu;
 
+import Server.Client;
 import controller.GUIControllers.MainMenuGUIController;
 import controller.Menus.ProfileController;
 import controller.UserDatabase.Users;
@@ -141,7 +142,10 @@ public class EditPasswordMenu extends Application {
             matcher.matches();
             String confirm = confirmPassword.getText();
             System.out.println(profileController.changePassword(matcher, new Scanner(confirm)));
-            new ShowProfileMenu().start(stage);
+            Client.sendData();
+            ShowProfileMenu showProfileMenu = new ShowProfileMenu();
+            showProfileMenu.init(Users.getUser(username));
+            showProfileMenu.start(stage);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

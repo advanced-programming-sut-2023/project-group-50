@@ -156,7 +156,7 @@ public class SelectMenu extends Application {
             }
 
             try {
-                MultiUnitMenuController.init(xFrom, xTo, yFrom, yTo, user.getGovernment().getMap());
+                MultiUnitMenuController.init(xFrom, xTo, yFrom, yTo, user.getUserName());
                 SelectionMenu selectionMenu = new SelectionMenu();
                 selectionMenu.start(MainMenu.getStage());
             } catch (Exception e) {

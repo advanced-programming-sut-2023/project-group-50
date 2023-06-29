@@ -6,19 +6,22 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.Government.GUI.GovernmentPane;
-import model.Map.Unit;
 
 public class UnitMenu extends Application {
-    private Unit unit;
+    private String username;
+    private int X;
+    private int Y;
     private Pane pane;
 
-    public void initialize(Unit unit) {
-        this.unit = unit;
+    public void initialize(String username, int X, int Y) {
+        this.username = username;
+        this.X = X;
+        this.Y = Y;
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        pane = UnitMenuController.getPane(unit);
+        pane = UnitMenuController.getPane(username, X, Y);
 
         Scene scene = new Scene(pane);
         scene.getStylesheets().add(GovernmentPane.class.getResource("/css.css").toExternalForm());
