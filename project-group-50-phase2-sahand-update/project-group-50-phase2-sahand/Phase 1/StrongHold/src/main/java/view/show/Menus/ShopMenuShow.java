@@ -5,6 +5,7 @@ import controller.UserDatabase.User;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.Government.GUI.GovernmentPane;
 import view.ShopMenu;
 import view.show.controller.ShopMenuShowController;
 import view.show.controller.SignupMenuShowController;
@@ -19,6 +20,7 @@ public class ShopMenuShow extends Application {
     public void start (Stage primaryStage) throws Exception {
             ShopMenuShow.stage=primaryStage;
             Scene scene=new Scene ( ShopMenuShow.shopMenuShowController.createContent () );
+            scene.getStylesheets().add( GovernmentPane.class.getResource("/css.css").toExternalForm());
             ShopMenuShow.stage.setScene ( scene );
             stage.setFullScreen(true);
             stage.setFullScreenExitHint("");

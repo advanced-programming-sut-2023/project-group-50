@@ -27,7 +27,7 @@ public class Game {
         updateSoldiers();
         Users.updateUsers();
         boolean lordIsAlive = updateLord();
-        if (!lordIsAlive) players.remove(0);
+      //  if (!lordIsAlive) players.remove(0);
         return lordIsAlive;
     }
 
@@ -53,6 +53,7 @@ public class Game {
     }
 
     public User getCurrentPlayer() {
+        System.out.println (players);
         return players.get(0);
     }
 
@@ -96,6 +97,7 @@ public class Game {
     private void updateBuildings() {
         Government government = getGovernment();
         government.spreadFire();
+        government.spreadDisease ();
         government.applyFireDamage();
         government.removeDestroyedBuildings();
     }

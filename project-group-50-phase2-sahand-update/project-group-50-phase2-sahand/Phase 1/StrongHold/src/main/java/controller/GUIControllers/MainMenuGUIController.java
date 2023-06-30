@@ -1,5 +1,6 @@
 package controller.GUIControllers;
 
+import controller.Menus.GameMenuController;
 import controller.UserDatabase.User;
 import controller.UserDatabase.Users;
 import javafx.event.ActionEvent;
@@ -24,6 +25,7 @@ import view.show.MainMenu.MainMenu;
 import view.show.Menus.ShopMenuShow;
 import view.show.ProfileMenu.ShowProfileMenu;
 import view.show.UnitMenu.UnitMenu;
+import view.show.trademenu.TradeMenuShow;
 
 import java.util.Objects;
 
@@ -34,6 +36,7 @@ public class MainMenuGUIController {
     private static Pane governmentPane;
     private static HBox profileData;
     private static User user;
+    private static GameMenuController gameMenuController=new GameMenuController (  );
 
     public static Pane getPane(String username) {
         double width = Screen.getPrimary().getBounds().getWidth();
@@ -125,7 +128,8 @@ public class MainMenuGUIController {
                 getButton("Connect to server", height / 4, MainMenuGUIController::online),
                 getButton("Trade Menu", height / 4, MainMenuGUIController::trade),
                 getButton("Shop Menu", height / 4, MainMenuGUIController::shop),
-                getButton("Profile Menu", height / 4, MainMenuGUIController::profile)
+                getButton("Profile Menu", height / 4, MainMenuGUIController::profile),
+                getButton ( "Next Turn",height / 4, MainMenuGUIController::nextTurn )
         );
 
         vBox.setPrefHeight(height);
@@ -133,6 +137,12 @@ public class MainMenuGUIController {
         vBox.setAlignment(Pos.CENTER);
 
         return vBox;
+    }
+
+    private static void nextTurn (ActionEvent actionEvent) {
+            gameMenuController.nextTurn ();
+            updateGovernmentPane ( MainMenuGUIController.user.getUserName () );
+
     }
 
     private static Button getButton(String text, double height, EventHandler<ActionEvent> eventHandler) {
@@ -170,7 +180,13 @@ public class MainMenuGUIController {
     }
 
     private static void trade(ActionEvent actionEvent) {
-        //TODO
+        TradeMenuShow tradeMenuShow=new TradeMenuShow ();
+        tradeMenuShow.init (MainMenuGUIController.user);
+        try {
+            tradeMenuShow.start ( MainMenu.getStage () );
+        } catch (Exception e) {
+            throw new RuntimeException ( e );
+        }
     }
 
     private static void shop(ActionEvent actionEvent) {

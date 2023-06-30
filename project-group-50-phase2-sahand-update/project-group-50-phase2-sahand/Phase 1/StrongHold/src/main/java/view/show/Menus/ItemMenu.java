@@ -9,9 +9,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -53,11 +55,14 @@ public class ItemMenu extends Pane {
         vBox.setAlignment ( CENTER );
         vBox.setSpacing ( 7 );
         vBox.setPrefSize ( 300,200 );
+        vBox.setTranslateX ( 0 );
+        vBox.setTranslateY ( 50 );
+
 
         HBox hBox=getBar ();
         hBox.setTranslateX ( 0 );
         hBox.setTranslateY ( 0 );
-        hBox.setPrefSize ( 300,40 );
+        hBox.setPrefSize ( 300,50 );
         this.getChildren ().addAll ( hBox,vBox );
     }
 
@@ -79,16 +84,16 @@ public class ItemMenu extends Pane {
         Button button=new Button ();
         String text;
         if(name.equals ( "Buy" )) {
-           text = name + "     " + this.resource.getBuyingPrice () ;
+           text = name + "    " + this.resource.getBuyingPrice () ;
         }else {
-            text = name + "     " + this.resource.getSellingPrice () ;
+            text = name + "    " + this.resource.getSellingPrice () ;
         }
         button.setText ( text );
         button.setFont ( Font.font("Times New Roman", FontWeight.SEMI_BOLD,15) );
         button.setTextFill ( Color.WHITE );
         button.setTextAlignment ( TextAlignment.CENTER );
-        button.setPrefSize ( 100,40 );
-        button.setBackground ( new Background ( StartMenuController.setBackGround ( "/images/background/button.png",100,40 ) ) );
+        button.setPrefSize ( 130,40 );
+        button.setBackground ( new Background ( StartMenuController.setBackGround ( "/images/background/button.png",130,40 ) ) );
 
 
         button.setOnMouseEntered ( event ->  {
@@ -117,24 +122,24 @@ public class ItemMenu extends Pane {
         Shop.getItems ().add ( item );
         Error result= ShopMenuShowController.shopMenuController.buy ( this.resource.getName () );
         if(result.truth){
-
+            new Alert ( Alert.AlertType.INFORMATION , result.errorMassage).show ();
         }else {
-
+            new Alert ( Alert.AlertType.WARNING , result.errorMassage).show ();
         }
-        this.value.setText ( resource.getName ()+"  *  "+this.user.getGovernment ().getResourceAmount ( resource ) );
-
+        this.value.setText ( resource.getName ()+"    "+this.user.getGovernment ().getResourceAmount ( resource ) );
+        ShopMenuShowController.coins.setText ( "Coin : "+ ShopMenuShowController.shopMenuController.getCurrentUser ().getGovernment ().getCoins () );
     }
 
     private void sell(){
         ShopMenuShowController.shopMenuController.addItem ( this.resource.getName (),this.resource.getSellingPrice (),this.count );
         Error result= ShopMenuShowController.shopMenuController.sell ( this.resource.getName () );
         if(result.truth){
-
+            new Alert ( Alert.AlertType.INFORMATION , result.errorMassage).show ();
         }else {
-
+            new Alert ( Alert.AlertType.WARNING , result.errorMassage).show ();
         }
-        this.value.setText ( resource.getName ()+"  *  "+this.user.getGovernment ().getResourceAmount ( resource ) );
-
+        this.value.setText ( resource.getName ()+"    "+this.user.getGovernment ().getResourceAmount ( resource ) );
+        ShopMenuShowController.coins.setText ( "Coin : "+ ShopMenuShowController.shopMenuController.getCurrentUser ().getGovernment ().getCoins () );
     }
 
 
@@ -188,21 +193,21 @@ public class ItemMenu extends Pane {
 
     public void updateCount(int count){
         this.count=count;
-        this.sell.setText ( "Sell     "+this.count*this.resource.getSellingPrice () );
-        this.buy.setText ( "Buy     "+this.count*this.resource.getBuyingPrice () );
+        this.sell.setText ( "Sell    "+this.count*this.resource.getSellingPrice () );
+        this.buy.setText ( "Buy    "+this.count*this.resource.getBuyingPrice () );
     }
 
 
     private HBox getBar(){
         HBox hBox=new HBox ();
-        Button up=getUpDown ( "up" );
-        Button down=getUpDown ( "down" );
-        Button button=new Button (resource.getName ()+"  *  "+this.user.getGovernment ().getResourceAmount ( resource ));
+        ImageView up=getUpDown ( "up" );
+        ImageView down=getUpDown ( "down" );
+        Button button=new Button (resource.getName ()+"   "+this.user.getGovernment ().getResourceAmount ( resource ));
         button.setFont ( Font.font("Times New Roman", FontWeight.SEMI_BOLD,15) );
-        button.setTextFill ( Color.BLACK );
+        button.setTextFill ( Color.WHITE );
         button.setTextAlignment ( TextAlignment.CENTER );
-        button.setPrefSize ( 200,50 );
-        button.setBackground ( new Background ( StartMenuController.setBackGround ( "/images/background/button.png",200,50 ) ) );
+        button.setPrefSize ( 200,40 );
+        button.setBackground ( new Background ( StartMenuController.setBackGround ( "/images/background/button.png",200,40 ) ) );
         this.value=button;
 
 
@@ -216,22 +221,24 @@ public class ItemMenu extends Pane {
 
         button.setOnMouseExited(event -> {
             button.setOpacity ( 1 );
-            button.setTextFill (Color.BLACK);
+            button.setTextFill (Color.WHITE);
         });
 
         button.setOnMouseClicked ( event -> {
-            button.setTextFill ( Color.WHITE );
+            button.setTextFill ( Color.BLACK );
             ShopMenuShowController.closeItem ( this.menu );
         } );
 
         return hBox;
     }
 
-    private Button getUpDown(String name){
-        Button button=new Button ();
-        button.setPrefSize ( 200,300 );
+    private ImageView getUpDown(String name){
+        ImageView button=new ImageView ();
+        button.setFitWidth ( 30 );
+        button.setFitHeight ( 30 );
 
-        button.setBackground ( new Background ( StartMenuController.setBackGround ( "/images/Buttons/"+name+"_item.png",200,300 ) ));
+
+        button.setImage (  new Image ( ItemMenu.class.getResource ( "/images/Buttons/"+name+"_item.png" ).toExternalForm ()));
 
         button.setOnMouseEntered ( event ->  {
             button.setOpacity ( 0.7 );

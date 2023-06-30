@@ -12,21 +12,23 @@ import model.Map.Unit;
 
 public class FireAnimation extends Transition {
 
-    private Unit unit;
+    private final Unit unit;
     private Rectangle show;
-    private static int State1=34;
-    private static int State2=14;
+    private static final int State1=34;
+    private static final int State2=14;
 
-    private static int State3=16;
+    private static final int State3=16;
     private  int number;
     public FireAnimation(Unit unit){
         this.unit=unit;
-        this.setCycleDuration( Duration.millis(200));
+        this.setCycleDuration( Duration.millis(2000));
         this.setCycleCount(-1);
         number=0;
+
         MapPane.Pair pair= MapPane.getXY ( MapPane.getTileHeight (),MapPane.getTileWidth (),
                 MapPane.getTopLeftX (),MapPane.getTopLeftY (),unit.getX (),unit.getY () );
-        show=new Rectangle (pair.x,pair.y,10,5);
+        show=new Rectangle (pair.x,pair.y,MapPane.getTileWidth ()*1.5,MapPane.getTileHeight ()*1.5);
+
     }
 
     @Override
@@ -36,6 +38,7 @@ public class FireAnimation extends Transition {
 
         if(!unit.isOnFire ()){
             this.stop ();
+            MapPane.pane.getChildren ().remove ( this.show );
             this.unit.setFireAnimation ( null );
 
         }else {
@@ -54,4 +57,14 @@ public class FireAnimation extends Transition {
         show.setFill ( new ImagePattern ( new Image (
                 FireAnimation.class.getResource ( "/images/animation/fire/"+unit.getStateFire ()+"/"+number+".png" ).toExternalForm () ) ) );
     }
+
+    public void setShowSize(double width,double height,double x,double y ){
+        this.show.setWidth ( width*1.5 );
+        this.show.setHeight ( height*1.5 );
+        this.show.setTranslateY ( y );
+        this.show.setTranslateX ( x );
+        if(!MapPane.pane.getChildren ().contains ( this.show )) MapPane.pane.getChildren ().add ( this.show );
+    }
+
+
 }

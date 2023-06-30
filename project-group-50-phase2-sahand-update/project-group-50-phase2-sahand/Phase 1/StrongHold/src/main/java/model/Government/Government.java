@@ -815,19 +815,32 @@ public class Government implements Serializable {
                     objects.applyDamage(50);
     }
 
-    public void spreadDiseaseRandomly(){
+    public void spreadDisease(){
+        if(getBuildingCount ( BuildingType.APOTHECARY )>0 && getApothecary ()!=null) healDisease (getApothecary ());
+        spreadDiseaseRandomly ();
+    }
 
-        for ( int x=0;x<map.getXSize ();x++ ){
-            for ( int y=0;y<map.getYSize ();y++ ){
-
+    private void healDisease (Apothecary apothecary) {
+        for (int x = 0; x < map.getXSize(); x++) {
+            for ( int y = 0; y < map.getYSize (); y++ ) {
+                    Unit unit=map.getUnitByXY ( x,y );
+                    if(unit.isHasDisease ())
+                        apothecary.HealPlace ( unit );
             }
         }
+    }
 
+    private void spreadDiseaseRandomly(){
 
+        int number=new Random ().nextInt (0,5);
 
+        while (number!=0){
+            number--;
+            int x=new Random ().nextInt (0,map.getXSize ());
+            int y=new Random ().nextInt (0,map.getYSize ());
 
-
-
+            map.getUnitByXY ( x,y ).setDisease ( true );
+        }
     }
 
     public void attackWeapons() {
@@ -928,6 +941,17 @@ public class Government implements Serializable {
         return false;
     }
 
+    public Apothecary getApothecary() {
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object.getOwner().equals(user) && object instanceof Apothecary market)
+                        return market;
+                }
+            }
+        }
+        return null;
+    }
     public int getMaxPopulation() {
         int cap = 0;
         for (int x = 0; x < map.getXSize(); x++)

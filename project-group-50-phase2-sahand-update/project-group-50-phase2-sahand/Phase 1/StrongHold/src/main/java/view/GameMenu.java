@@ -12,7 +12,7 @@ public class GameMenu {
     private Matcher nextMatcher;
 
     public GameMenu() {
-        this.gameMenuController = new GameMenuController(this);
+        this.gameMenuController = new GameMenuController();
     }
 
     public GameMenuController getGameMenuController() {

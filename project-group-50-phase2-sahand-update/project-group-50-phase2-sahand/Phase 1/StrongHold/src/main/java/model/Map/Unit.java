@@ -6,7 +6,9 @@ import model.ObjectsPackage.Buildings.*;
 import model.ObjectsPackage.*;
 import model.ObjectsPackage.People.Soldier.Engineer;
 import model.ObjectsPackage.People.Soldier.Soldier;
+import view.show.Animation.DiseaseAnimation;
 import view.show.Animation.FireAnimation;
+import view.show.Animation.HealAnimation;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ public class Unit implements Serializable {
     private boolean hasDisease;
 
     private FireAnimation fireAnimation;
+    private DiseaseAnimation diseaseAnimation;
+    private HealAnimation healAnimation;
     public Unit(int x, int y, GroundType texture) {
         this.x = x;
         this.y = y;
@@ -37,6 +41,7 @@ public class Unit implements Serializable {
         stateFire=0;
         fireAnimation=null;
         hasDisease=false;
+        diseaseAnimation=null;
 
     }
 
@@ -309,4 +314,33 @@ public class Unit implements Serializable {
         this.fireAnimation = fireAnimation;
     }
 
+    public boolean isHasDisease () {
+        return hasDisease;
+    }
+
+    public void setHasDisease (boolean hasDisease) {
+        this.hasDisease = hasDisease;
+    }
+    public void setDisease(boolean hasDisease){
+        setHasDisease ( hasDisease );
+        if(hasDisease && diseaseAnimation==null){
+            (this.diseaseAnimation=new DiseaseAnimation ( this )).play ();
+        }
+    }
+
+    public DiseaseAnimation getDiseaseAnimation () {
+        return diseaseAnimation;
+    }
+
+    public void setDiseaseAnimation (DiseaseAnimation diseaseAnimation) {
+        this.diseaseAnimation = diseaseAnimation;
+    }
+
+    public void setHealAnimation (HealAnimation healAnimation) {
+        this.healAnimation = healAnimation;
+    }
+
+    public HealAnimation getHealAnimation () {
+        return healAnimation;
+    }
 }

@@ -1,6 +1,7 @@
 package controller.Menus;
 
 import controller.UserDatabase.User;
+import controller.control.Error;
 import model.Government.Government;
 import model.ObjectsPackage.Resource;
 import model.Trade.Trade;
@@ -13,29 +14,40 @@ public class TradeMenuController {
         this.currentUser = currentUser;
     }
 
+    public User getCurrentUser () {
+        return currentUser;
+    }
+
     public static boolean resourceNameIsValid(String name) {
         return Resource.nameIsValid(name);
     }
 
     public void newTrade(String resourceType, int resourceAmount, int price, String message) {
         Resource resource = Resource.getResourceByString(resourceType);
-        TradeMarket.addTrade(new Trade(currentUser, null, TradeMarket.getNextId(), price, resource, resourceAmount, message));
+        TradeMarket.addTrade(new Trade(currentUser, null, TradeMarket.getNextId(), price, resource, resourceAmount, message,"Request"));
     }
 
     public String showTrades() {
         return String.join("\n", TradeMarket.getTradesAsString());
     }
 
-    public void acceptTrade(int id, String message) {
-        assert TradeMarket.idIsValid(id);
-
+    public Error acceptTrade(int id, String message) {
         Trade trade = TradeMarket.getTrade(id);
 
-        Government seller = trade.getFrom().getGovernment();
-        Government buyer = currentUser.getGovernment();
+        Government seller;
+        Government buyer;
         Resource resource = trade.getResourceType();
 
-        assert buyer.getCoins() >= trade.getPrice();
+        if(trade.getType ().equals ( "Donate" )) {
+             seller = trade.getFrom().getGovernment();
+             buyer = currentUser.getGovernment();
+        }else {
+            buyer = trade.getFrom().getGovernment();
+            seller = currentUser.getGovernment();
+          }
+
+        if(!canAcceptTrade ( String.valueOf ( id ) ).truth) return canAcceptTrade ( String.valueOf ( id ) );
+
 
         seller.setResourceAmount(resource, seller.getResourceAmount(resource) - trade.getResourceAmount());
         buyer.setResourceAmount(resource, buyer.getResourceAmount(resource) + trade.getResourceAmount());
@@ -43,10 +55,8 @@ public class TradeMenuController {
         seller.setCoins(seller.getCoins() + trade.getPrice());
         buyer.setCoins(buyer.getCoins() - trade.getPrice());
 
-        trade.setTo(currentUser);
-        trade.setMessage(message);
-        currentUser.addTrade(trade);
-        TradeMarket.removeTrade(trade.getId());
+        trade.setSecondMessage ( message );
+        return new Error ( "Trading was successful",true );
     }
 
     public String showTradeHistory() {
@@ -57,12 +67,29 @@ public class TradeMenuController {
         return TradeMarket.idIsValid(id);
     }
 
-    public boolean canAcceptTrade(String id) {
+    public Error canAcceptTrade(String id) {
         Trade trade = TradeMarket.getTrade(Integer.parseInt(id));
-
-        Government seller = trade.getFrom().getGovernment();
+        Government seller;
+        Government buyer;
         Resource resource = trade.getResourceType();
 
-        return seller.getResourceAmount(resource) >= trade.getResourceAmount();
+        if(trade.getType ().equals ( "Donate" )) {
+            seller = trade.getFrom().getGovernment();
+            buyer = currentUser.getGovernment();
+            if (buyer.getCoins() < trade.getPrice())
+                return new Error ( "You haven't enough coins",false );
+            if(seller.getResourceAmount(resource) < trade.getResourceAmount())
+                return new Error ( "Your seller haven't enough resource",false );
+        }else {
+            buyer = trade.getFrom().getGovernment();
+            seller = currentUser.getGovernment();
+            if (buyer.getCoins() < trade.getPrice())
+                return new Error ( "Your buyer haven't enough coins",false );
+            if(seller.getResourceAmount(resource) < trade.getResourceAmount())
+                return new Error ( "You haven't enough resource",false );
+        }
+
+        return new Error ( "",true );
+
     }
 }

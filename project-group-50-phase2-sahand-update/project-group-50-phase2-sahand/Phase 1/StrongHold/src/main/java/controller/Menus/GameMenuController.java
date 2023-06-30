@@ -28,15 +28,16 @@ import static controller.Menus.LoginController.checkHasField;
 import static controller.Menus.LoginController.removeDoubleCoutString;
 
 public class GameMenuController {
-    private final GameMenu gameMenu;
+
     private final Game game;
     private User currentUser;
     private Building selectedBuilding;
     private Unit selectedUnit;
 
-    public GameMenuController(GameMenu gameMenu) {
-        this.gameMenu = gameMenu;
-        game = new Game(new ArrayList<>(), 500);
+    public GameMenuController() {
+        ArrayList <User> users=new ArrayList<>();
+        users.add ( currentUser );
+        game = new Game(users, 500);
     }
 
     public static Error checkValue(String input, Commands commands, User currentUser) {
@@ -98,10 +99,6 @@ public class GameMenuController {
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
-    }
-
-    public GameMenu getGameMenu() {
-        return gameMenu;
     }
 
     public Building getSelectedBuilding() {
@@ -530,8 +527,8 @@ public class GameMenuController {
         return "Unit disbanded.";
     }
 
-    public String nextTurn() {
-        String lastUser = game.getCurrentPlayer().getUserName();
+    public  String nextTurn() {
+      //  String lastUser = game.getCurrentPlayer().getUserName();
         boolean userLost = !game.nextTurn();
         currentUser = game.getCurrentPlayer();
         selectedBuilding = null;
@@ -541,7 +538,7 @@ public class GameMenuController {
         if (userLost)
             if (game.gameIsFinished())
                 stringBuilder.append("Game Finished! Winner: ").append(game.getWinner().getUserName()).append('\n');
-            else stringBuilder.append(lastUser).append(" lost!\n");
+        //    else stringBuilder.append(lastUser).append(" lost!\n");
 
         return stringBuilder
                 + game.getCurrentPlayer().getUserName() + " is now playing.\nTurn no. " + game.getCurrentTurnNumber();

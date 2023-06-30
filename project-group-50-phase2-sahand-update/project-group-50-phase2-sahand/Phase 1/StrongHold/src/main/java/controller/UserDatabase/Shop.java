@@ -1,6 +1,7 @@
 package controller.UserDatabase;
 
 import model.Item.Item;
+import model.ObjectsPackage.Resource;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,14 +15,18 @@ public class Shop {
 
     public static void buy(User buyer, Item item) {
         if (userCanAfford(buyer, item)) {
-            buyer.getGovernment().setCoins(buyer.getGovernment().getCoins() - item.getPrice());
+            buyer.getGovernment().setCoins(buyer.getGovernment().getCoins() - item.getPrice()*item.getCount ());
+            buyer.getGovernment ().setResourceAmount ( Resource.getResourceByString ( item.getName () ), item.getCount ()+
+                    buyer.getGovernment ().getResourceAmount ( Resource.getResourceByString ( item.getName () ) ) );
             buyer.addItem(item);
             items.remove(item);
         }
     }
 
     public static void sell(User seller, Item item) {
-        seller.getGovernment().setCoins(seller.getGovernment().getCoins() + item.getPrice());
+        seller.getGovernment().setCoins(seller.getGovernment().getCoins() + item.getPrice()*item.getCount ());
+        seller.getGovernment ().setResourceAmount ( Resource.getResourceByString ( item.getName () ),
+                seller.getGovernment ().getResourceAmount ( Resource.getResourceByString ( item.getName () ))-item.getCount () );
         items.add(item);
         seller.removeItem(item);
     }

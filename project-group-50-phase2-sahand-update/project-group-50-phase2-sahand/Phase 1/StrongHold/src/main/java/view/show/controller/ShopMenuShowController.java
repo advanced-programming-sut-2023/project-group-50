@@ -2,22 +2,25 @@ package view.show.controller;
 
 import controller.GUIControllers.GovernmentDataMenuController;
 import controller.GUIControllers.ProfileMenuGUIController;
-import controller.GUIControllers.UnitMenuController;
 import controller.Menus.ShopMenuController;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import model.ObjectsPackage.Resource;
+import view.ShopMenu;
 import view.show.MainMenu.MainMenu;
 import view.show.Menus.ItemMenu;
 import view.show.Menus.ShopMenuShow;
@@ -30,6 +33,7 @@ public class ShopMenuShowController {
 
     private VBox items;
     private static int openedItem=-1;
+    public static Text coins;
     public Parent createContent(){
         Pane pane=new Pane ();
         double width = Screen.getPrimary().getBounds().getWidth();
@@ -70,12 +74,15 @@ public class ShopMenuShowController {
         pane.setPrefSize ( width, height );
         HBox hbox;
         ScrollPane scrollPane;
+        getCoins ( pane );
+
         pane.getChildren ().addAll ( ( hbox=GovernmentDataMenuController.getBoldText ( "Shop",0.8*0.7*width )),
-                (scrollPane=  creatScroll ( width/2, height/2 )) );
+                (scrollPane=  creatScroll ( width/2+100, height/2+100 )) );
         hbox.setTranslateX ( width/2-50 );
         hbox.setTranslateY ( 100 );
-        scrollPane.setTranslateX ( width/2-75 );
+        scrollPane.setTranslateX ( width/2-85 );
         scrollPane.setTranslateY ( 250 );
+
         return pane;
 
     }
@@ -88,7 +95,7 @@ public class ShopMenuShowController {
         button.setFont ( Font.font("Times New Roman", FontWeight.SEMI_BOLD,20) );
         button.setTextFill ( Color.WHITE );
         button.setTextAlignment ( TextAlignment.CENTER );
-        button.setPrefSize ( 200,50 );
+        button.setPrefSize ( 200,40 );
         button.setBackground ( new Background ( StartMenuController.setBackGround ( "/images/background/button.png",200,40 ) ) );
 
         button.setOnMouseEntered ( event ->  {
@@ -102,7 +109,6 @@ public class ShopMenuShowController {
 
         button.setOnMouseClicked ( event -> {
             button.setTextFill (Color.BLACK);
-            openItem ( vBox.getChildren ().indexOf ( hBox ),vBox );
         } );
         hBox.setAlignment ( Pos.CENTER );
         hBox.setSpacing ( 7 );
@@ -116,14 +122,30 @@ public class ShopMenuShowController {
         rectangle.setOnMouseExited(event -> {
             rectangle.setOpacity ( 1 );
         });
-        hBox.getChildren ().addAll ( rectangle,button );
+
+        Rectangle cart =new Rectangle (40,40);
+        cart.setFill ( new ImagePattern ( new Image ( ShopMenuController.class.getResource ( "/images/Icons/cart.png" ).toExternalForm () )) );
+        cart.setOnMouseEntered ( event ->  {
+            cart.setOpacity ( 0.7 );
+        } );
+
+        cart.setOnMouseExited( event -> {
+            cart.setOpacity ( 1 );
+        });
+        cart.setOnMouseClicked ( event -> {
+            openItem ( vBox.getChildren ().indexOf ( hBox ),vBox );
+        } );
+        hBox.getChildren ().addAll ( rectangle ,button,cart );
         return hBox;
     }
     private static void openItem(int newOpenItem,VBox vBox){
         if(openedItem!=-1) closeItem ( vBox );
         openedItem=newOpenItem;
         vBox.getChildren ().remove ( openedItem );
-        vBox.getChildren ().add ( openedItem,new ItemMenu ( Resource.getResourceByNumber ( openedItem ),vBox));
+        ItemMenu itemMenu=new ItemMenu ( Resource.getResourceByNumber ( openedItem ),vBox);
+        vBox.setAlignment ( Pos.CENTER );
+        itemMenu.setTranslateX ( 80 );
+        vBox.getChildren ().add ( openedItem,itemMenu);
     }
     public static  void closeItem(VBox vBox){
         vBox.getChildren ().remove ( openedItem );
@@ -150,5 +172,24 @@ public class ShopMenuShowController {
         }
     }
 
+    private void getCoins(Pane pane){
+        HBox hBox=new HBox ();
+        Text text=new Text ("Coins : "+ ShopMenuShowController.shopMenuController.getCurrentUser ().getGovernment ().getCoins () );
+        text.setTextAlignment ( TextAlignment.CENTER );
+        text.setFont ( Font.font("Times New Roman", FontWeight.SEMI_BOLD,20) );
+        ShopMenuShowController.coins=text;
+
+        ImageView imageView=new ImageView (new Image (
+                ShopMenuController.class.getResource ( "/images/Resources/Coins.png" ).toExternalForm () ));
+        imageView.setFitWidth ( 30 );
+        imageView.setFitHeight ( 30 );
+
+        hBox.getChildren ().addAll ( imageView,text );
+        hBox.setAlignment ( Pos.CENTER );
+        hBox.setSpacing ( 5 );
+        pane.getChildren ().add ( hBox );
+        hBox.setTranslateX ( 600 );
+        hBox.setTranslateY ( 200 );
+    }
 
 }

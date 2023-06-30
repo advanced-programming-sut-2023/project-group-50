@@ -20,6 +20,7 @@ import model.ObjectsPackage.Tree;
 import model.ObjectsPackage.TreeType;
 import model.ObjectsPackage.Weapons.WeaponName;
 import view.show.MainMenu.MainMenu;
+import view.show.Menus.ShopMenuShow;
 import view.show.UnitMenu.ChangeTextureMenu;
 import view.show.UnitMenu.DropUnitMenu;
 import view.show.UnitMenu.TreeMenu;
@@ -188,6 +189,15 @@ public class UnitMenuController {
         }
     }
 
+    public static void shop(ActionEvent actionEvent) {
+        ShopMenuShow shopMenuShow = new ShopMenuShow ();
+        shopMenuShow.init ( UnitMenuController.user );
+        try {
+            shopMenuShow.start ( MainMenu.getStage () );
+        } catch (Exception e) {
+            throw new RuntimeException ( e );
+        }
+    }
     public static void dropUnit(ActionEvent ignoredActionEvent) {
         if (!Person.canPlace(unit.getTexture()) ||
                 unit.hasObjectByType(ObjectType.ROCK) ||

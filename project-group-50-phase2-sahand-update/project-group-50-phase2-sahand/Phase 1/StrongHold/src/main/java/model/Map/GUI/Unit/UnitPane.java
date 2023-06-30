@@ -23,6 +23,7 @@ import javafx.stage.Screen;
 import model.Map.GUI.MapPane.UnitGroup;
 import model.Map.Unit;
 import model.ObjectsPackage.Buildings.Building;
+import model.ObjectsPackage.Buildings.BuildingType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Person;
 import model.ObjectsPackage.People.Soldier.Soldier;
@@ -200,7 +201,10 @@ public class UnitPane {
                 getButton("Drop Rock", height * 0.1, UnitMenuController::dropRock),
                 getButton("Drop Unit", height * 0.1, UnitMenuController::dropUnit),
                 getButton("Clear", height * 0.1, UnitMenuController::clear)
+
         );
+        if(unit.hasBuilding () && unit.hasObjectType ( BuildingType.MARKET ))
+            vBox.getChildren ().add ( getButton("Shop Menu", height * 0.1, UnitMenuController::shop) );
 
         return vBox;
     }

@@ -54,12 +54,12 @@ public class Test extends Application {
         user.getGovernment().setResourceAmount(Resource.STONE, 10000);
         user.getGovernment().setResourceAmount(Resource.OIL, 10000);
         user.getGovernment().setResourceAmount(Resource.IRON, 10000);
+        map.getUnitByXY ( 10,20 ).setFire ( true,3 );
+        map.getUnitByXY ( 40,30 ).setDisease ( true );
 
         for (WeaponName weaponName : WeaponName.values()) {
             user.getGovernment().setWeaponAmount(weaponName, 1000);
         }
-
-        map.getUnitByXY ( 16,4 ).setFire ( true,3 );
 
         return user;
     }

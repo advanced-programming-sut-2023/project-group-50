@@ -13,8 +13,14 @@ public class Trade implements Serializable {
     private final int resourceAmount;
     private User to;
     private String message;
+    private final String type;
+    private boolean isAccepted;
+    private boolean answered;
+    private boolean seen;
 
-    public Trade(User from, User to, int id, int price, Resource resourceType, int resourceAmount, String message) {
+    private String secondMessage;
+
+    public Trade(User from, User to, int id, int price, Resource resourceType, int resourceAmount, String message,String type) {
         this.from = from;
         this.to = to;
         this.id = id;
@@ -22,6 +28,11 @@ public class Trade implements Serializable {
         this.resourceType = resourceType;
         this.resourceAmount = resourceAmount;
         this.message = message;
+        this.type =type;
+        this.isAccepted=false;
+        this.answered=false;
+        this.seen=false;
+        this.secondMessage="";
     }
 
     public User getFrom() {
@@ -73,4 +84,39 @@ public class Trade implements Serializable {
                 '}';
     }
 
+    public String getType () {
+        return type;
+    }
+
+    public boolean isAccepted () {
+        return isAccepted;
+    }
+
+    public boolean isAnswered () {
+        return answered;
+    }
+
+    public boolean isSeen () {
+        return seen;
+    }
+
+    public void setSeen (boolean seen) {
+        this.seen = seen;
+    }
+
+    public void setAccepted (boolean accepted) {
+        isAccepted = accepted;
+    }
+
+    public void setAnswered (boolean answered) {
+        this.answered = answered;
+    }
+
+    public String getSecondMessage () {
+        return secondMessage;
+    }
+
+    public void setSecondMessage (String secondMessage) {
+        this.secondMessage = secondMessage;
+    }
 }
