@@ -92,6 +92,7 @@ public class Client extends Thread {
             new ObjectOutputStream(socket.getOutputStream()).writeObject(
                     new Packet(ServerCommands.STOP_RECEIVING_PUBLIC, receiver.toString()));
             socket.close();
+            receiver.close();
         } catch (IOException ignored) {
         }
     }

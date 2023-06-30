@@ -11,6 +11,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -106,18 +108,22 @@ public class Server extends Thread {
             publicReceivers.put(socket.toString(), new ObjectOutputStream(socket.getOutputStream()));
             System.out.println(publicReceivers.size());
         } else if (packet.command == ServerCommands.STOP_RECEIVING_PUBLIC) {
-            System.out.println("Finished on" + (int) packet.args[0]);
+            System.out.println("Finished on" + packet.args[0]);
             publicReceivers.remove((String) packet.args[0]);
         }
         System.out.println("Updated");
     }
 
     private synchronized void sendUpdates(ChatSaver save) throws IOException {
-        System.out.println("Sending updates" + publicReceivers.size());
-        for (String outputStream : publicReceivers.keySet()) {
-            System.out.println(outputStream);
-            publicReceivers.get(outputStream).writeObject(save);
-            System.out.println("Sent to " + outputStream);
+        System.out.println("Sending updates");
+        Iterator<ObjectOutputStream> iterator = publicReceivers.values().iterator();
+        while (iterator.hasNext()) {
+            ObjectOutputStream outputStream = iterator.next();
+            try {
+                outputStream.writeObject(save);
+            } catch (SocketException e) {
+                iterator.remove();
+            }
         }
         System.out.println("done");
     }

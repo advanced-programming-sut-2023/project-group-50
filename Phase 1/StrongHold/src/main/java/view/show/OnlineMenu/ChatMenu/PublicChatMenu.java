@@ -10,6 +10,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -21,6 +22,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.Government.GUI.GovernmentPane;
@@ -45,6 +47,7 @@ public class PublicChatMenu extends Application {
     private Socket socket;
     private ScrollPane messages;
     private double scrollWidth;
+    private Thread thread;
 
     public static Background getBackground(double width, double height) {
         Image image = new Image(MainMenuGUIController.class.getResource("/images/background/Chat.jpg").toExternalForm());
@@ -82,20 +85,19 @@ public class PublicChatMenu extends Application {
         double width = Screen.getPrimary().getBounds().getWidth();
         double height = Screen.getPrimary().getBounds().getHeight();
         pane = new Pane();
-        VBox editPane = getVBox(width * 0.9, height * 0.9);
+        VBox editPane = getVBox(width * 0.9, height * 0.8);
 
-        editPane.setPrefSize(width * 0.9, height * 0.9);
+        editPane.setPrefSize(width * 0.9, height * 0.8);
 
         pane.setPrefSize(width, height);
 
-        Thread thread = new Thread(this::update);
-        thread.setDaemon(true);
+        thread = new Thread(this::update);
         thread.start();
 
         pane.setBackground(getBackground(width, height));
         pane.getChildren().add(editPane);
         editPane.setLayoutX(width * 0.05);
-        editPane.setLayoutY(height * 0.05);
+        editPane.setLayoutY(height * 0.10);
 
         Scene scene = new Scene(pane);
         scene.getStylesheets().add(GovernmentPane.class.getResource("/css.css").toExternalForm());
@@ -107,19 +109,15 @@ public class PublicChatMenu extends Application {
     }
 
     private void update() {
-        while (true) {
+        while (!thread.isInterrupted()) {
             try {
                 System.out.println("Listening");
                 ChatSaver chatSaver = (ChatSaver) objectInputStream.readObject();
                 System.out.println("got message");
                 ChatLoader.loadSave(chatSaver);
-                Platform.runLater(() -> refresh(null));
+                Platform.runLater(this::refresh);
             } catch (IOException | ClassNotFoundException ignored) {
-                try {
-                    stop();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+                thread.interrupt();
             }
         }
     }
@@ -134,30 +132,33 @@ public class PublicChatMenu extends Application {
 
     private VBox getVBox(double width, double height) {
         Text text = new Text("Chat Menu");
-        text.setFont(Font.font("Old English Text MT", FontWeight.EXTRA_BOLD, 30));
+        text.setFont(Font.font("Old English Text MT", FontWeight.EXTRA_BOLD, 50));
+        StackPane stackPane = new StackPane(text);
+        stackPane.setPadding(new Insets(30, 10, 10, 10));
 
         initBackButton();
 
         VBox vBox = new VBox(
-                text,
-                (messages = getMessagesScrollPane(width * 0.95, height * 0.8)),
-                getSendMessageHBox(width * 0.9, height * 0.15)
+                stackPane,
+                (messages = getMessagesScrollPane(width * 0.9, height * 0.8)),
+                getSendMessageHBox(width * 0.9, height * 0.10)
         );
 
         vBox.setSpacing(25);
         vBox.setAlignment(Pos.CENTER);
-        vBox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.2)");
+        vBox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.4); -fx-background-radius: 25");
 
         return vBox;
     }
 
     private ScrollPane getMessagesScrollPane(double width, double height) {
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setPrefSize(width, height);
+        scrollPane.setMaxSize(width, height);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setBackground(Background.EMPTY);
         scrollPane.setContent(getMessagesVBox(width));
+        scrollPane.setVvalue(1.0);
 
         return scrollPane;
     }
@@ -179,7 +180,7 @@ public class PublicChatMenu extends Application {
         hBox.setPrefWidth(width);
         hBox.setSpacing(5);
 
-        if (message.getOwner().equals(user.getUserName())) {
+        if (!message.getOwner().equals(user.getUserName())) {
             hBox.setAlignment(Pos.CENTER_LEFT);
             hBox.getChildren().addAll(getAvatar(message.getOwner()), getContent(message, width * 0.85));
         } else {
@@ -193,19 +194,37 @@ public class PublicChatMenu extends Application {
     private VBox getContent(Message message, double width) {
         VBox vBox = new VBox();
         vBox.setSpacing(5);
-        vBox.setAlignment(Pos.TOP_LEFT);
+        vBox.setAlignment(Pos.CENTER);
         vBox.setMaxWidth(width);
-        vBox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.7)");
+        vBox.setPadding(new Insets(10));
+
+        VBox box = new VBox();
+        box.setSpacing(5);
+        box.setMaxWidth(width - 50);
 
         Text username = new Text(message.getOwner());
-        username.setFont(Font.font("System", FontWeight.SEMI_BOLD, 14));
-        username.setStyle("-fx-text-fill: #6800ff");
+        username.setFont(Font.font("System", FontWeight.BOLD, 16));
+
 
         Text content = new Text(message.getContent());
-        content.setFont(Font.font("System", FontWeight.NORMAL, 14));
+        content.setFont(Font.font("System", FontWeight.NORMAL, 16));
         content.setWrappingWidth(width);
+        content.setTextAlignment(TextAlignment.RIGHT);
 
-        vBox.getChildren().addAll(username, content);
+        if (!message.getOwner().equals(user.getUserName())) {
+            box.setAlignment(Pos.TOP_LEFT);
+            vBox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.7); -fx-background-radius: 5;");
+            username.setStyle("-fx-fill: #b20000");
+            content.setTextAlignment(TextAlignment.LEFT);
+        } else {
+            box.setAlignment(Pos.TOP_RIGHT);
+            vBox.setStyle("-fx-background-color: rgba(255, 255, 0, 0.7); -fx-background-radius: 5");
+            username.setStyle("-fx-fill: #6800ff");
+            content.setTextAlignment(TextAlignment.RIGHT);
+        }
+        box.getChildren().addAll(username, content);
+
+        vBox.getChildren().add(box);
 
         return vBox;
     }
@@ -221,16 +240,20 @@ public class PublicChatMenu extends Application {
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER);
         hBox.setSpacing(5);
+        hBox.setMinSize(width, height);
+        hBox.setMaxSize(width, height);
 
         hBox.getChildren().addAll(
                 (text = getTextField("Enter a message...", width - height - 10, height)),
                 getSendButton(height)
         );
 
+        hBox.setPadding(new Insets(10));
+
         return hBox;
     }
 
-    private void refresh(ActionEvent actionEvent) {
+    private void refresh() {
         messages.setContent(getMessagesVBox(scrollWidth));
     }
 
@@ -242,7 +265,7 @@ public class PublicChatMenu extends Application {
                                                               BackgroundRepeat.NO_REPEAT,
                                                               BackgroundPosition.CENTER,
                                                               new BackgroundSize(
-                                                                      size, size,
+                                                                      size * 0.7, size * 0.7,
                                                                       false, false, false, false
                                                               ));
         Button button = new Button();
@@ -257,14 +280,15 @@ public class PublicChatMenu extends Application {
     private TextField getTextField(String text, double width, double height) {
         TextField field = new TextField();
         field.setPromptText(text);
-        field.setMaxSize(width * 0.75, height);
-        field.setStyle("-fx-background-color: rgba(0, 0, 0, 0.2);" +
+        field.setPrefSize(width * 0.75, height);
+        field.setStyle("-fx-background-color: rgba(100, 255, 100, 0.5);" +
                                " -fx-prompt-text-fill: black; -fx-font: 20 System");
         return field;
     }
 
     private void back(ActionEvent actionEvent) {
         Client.stopReceivingUpdates(socket);
+        thread.interrupt();
 
         ChatMenu chatMenu = new ChatMenu();
         chatMenu.init(user.getUserName());
@@ -279,6 +303,14 @@ public class PublicChatMenu extends Application {
         return user.getUserName();
     }
 
+    @Override
+    public void stop() throws Exception {
+        Client.stopReceivingUpdates(socket);
+        socket.close();
+        thread.interrupt();
+        super.stop();
+    }
+
     private class confirm implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent actionEvent) {
@@ -288,6 +320,7 @@ public class PublicChatMenu extends Application {
 
             PublicChat.messages.add(new Message(user.getUserName(), content));
             Client.sendChatData();
+            text.setText("");
         }
     }
 }
