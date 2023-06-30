@@ -1,6 +1,7 @@
 package Server;
 
-import controller.UserDatabase.Users;
+import model.Save.ChatLoader;
+import model.Save.ChatSaver;
 import model.Save.Loader;
 import model.Save.Saver;
 import view.show.Menus.ServerOfflineMenu;
@@ -23,7 +24,38 @@ public class Client extends Thread {
         else
             ServerOfflineMenu.main(null);
 
-        Runtime.getRuntime().addShutdownHook(new Thread(Client::sendData));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            sendData();
+            sendChatData();
+        }));
+    }
+
+    private static void sendChatData() {
+        try {
+            System.out.println("Sending chat data");
+            Socket socket = new Socket("127.0.0.1", Server.chatReceiveUpdatePort);
+            Packet packet = new Packet(ServerCommands.SENDING_CHAT, ChatSaver.get());
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            outputStream.writeObject(packet);
+            outputStream.flush();
+            outputStream.close();
+            System.out.println("chat data sent");
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("Server offline!");
+        }
+    }
+
+    public static void getChatData() {
+        try {
+            System.out.println("getting chat data...");
+            Socket socket = new Socket("127.0.0.1", Server.chatSendUpdatePort);
+            ChatSaver saver = (ChatSaver) new ObjectInputStream(socket.getInputStream()).readObject();
+            ChatLoader.loadSave(saver);
+            socket.close();
+        } catch (Exception e) {
+            System.out.println("Server crashed...");
+        }
     }
 
     public static void getData() {
@@ -32,7 +64,6 @@ public class Client extends Thread {
             Socket socket = new Socket("127.0.0.1", Server.clientPort);
             Saver saver = (Saver) new ObjectInputStream(socket.getInputStream()).readObject();
             Loader.loadSave(saver);
-            System.out.println(Users.getUsersAsString());
             socket.close();
         } catch (Exception e) {
             System.out.println("Server crashed...");
@@ -51,7 +82,7 @@ public class Client extends Thread {
             System.out.println("data sent");
             socket.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Server offline!");
         }
     }
 
@@ -61,9 +92,10 @@ public class Client extends Thread {
             socket = new Socket("127.0.0.1", Server.clientPort);
             Saver saver = (Saver) new ObjectInputStream(socket.getInputStream()).readObject();
             Loader.loadSave(saver);
+
+            getChatData();
         } catch (IOException | ClassNotFoundException e) {
             socket = null;
-//            throw new RuntimeException(e);
         }
     }
 }

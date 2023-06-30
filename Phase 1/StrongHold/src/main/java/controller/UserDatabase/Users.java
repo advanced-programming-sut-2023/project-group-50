@@ -3,6 +3,7 @@ package controller.UserDatabase;
 import controller.control.SecurityQuestion;
 import model.Request.Request;
 import model.Save.MapSave.AnonymousMap;
+import view.show.OnlineMenu.ChatMenu.Chat;
 
 import java.io.Serializable;
 import java.util.*;
@@ -11,6 +12,7 @@ public class Users implements Serializable {
     private static HashMap<String, User> users = new HashMap<>();
     private static HashMap<String, HashSet<AnonymousMap>> maps = new HashMap<>();
     private static HashSet<Request> requests = new HashSet<>();
+    private static HashMap<String, Chat> chats = new HashMap<String, Chat>();
 
     public static User getUser(String username) {
         if (Users.users.isEmpty()) {
@@ -151,5 +153,21 @@ public class Users implements Serializable {
 
     public static boolean requestNameExists(String name) {
         return getRequest(name) != null;
+    }
+
+    public static boolean ChatExists(String id) {
+        return chats.containsKey(id);
+    }
+
+    public static Chat getChat(String id) {
+        return chats.get(id);
+    }
+
+    public static HashMap<String, Chat> getChats() {
+        return chats;
+    }
+
+    public static void setChats(HashMap<String, Chat> chats) {
+        Users.chats = chats;
     }
 }

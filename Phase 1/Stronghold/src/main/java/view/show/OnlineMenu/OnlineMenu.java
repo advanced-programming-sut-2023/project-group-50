@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import model.Government.GUI.GovernmentPane;
 import model.Map.GUI.Unit.UnitPane;
 import view.show.MainMenu.MainMenu;
+import view.show.OnlineMenu.ChatMenu.ChatMenu;
 import view.show.ProfileMenu.EditUsernameMenu;
 
 import java.util.Objects;
@@ -100,6 +101,13 @@ public class OnlineMenu extends Application {
     }
 
     private void chat(ActionEvent actionEvent) {
+        ChatMenu chatMenu = new ChatMenu();
+        chatMenu.init(user.getUserName());
+        try {
+            chatMenu.start(MainMenu.getStage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void lobby(ActionEvent actionEvent) {

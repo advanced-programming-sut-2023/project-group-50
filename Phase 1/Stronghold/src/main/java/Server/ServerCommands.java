@@ -1,22 +1,13 @@
 package Server;
 
 public enum ServerCommands {
-    INIT("init_user"),
-    INIT_DONE("init_done"),
-    DISCONNECT("disconnect"),
-    SENDING_SAVE("sending_data"),
-    SENDING_PRIVATE_MAP("sending_private_map"),
-    SHARING_MAP("sharing_map"),
-    GET_MAPS("get_maps");
-
-
-    private final String string;
-
-    ServerCommands(String string) {
-        this.string = string;
-    }
-
-    public String getString() {
-        return string;
-    }
+    INIT,
+    INIT_DONE,
+    DISCONNECT,
+    SENDING_SAVE,
+    SENDING_PRIVATE_MAP,
+    SHARING_MAP,
+    GET_MAPS,
+    SENDING_CHAT,
+    RECEIVING_CHAT
 }

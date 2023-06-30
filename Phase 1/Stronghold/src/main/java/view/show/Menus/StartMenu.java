@@ -14,7 +14,6 @@ public class StartMenu extends Application {
 
     public static StartMenuController startMenuController = new StartMenuController();
     public static Stage stage;
-    private boolean serverOffline;
 
     public static void main(String[] args) {
         launch(args);
@@ -28,10 +27,7 @@ public class StartMenu extends Application {
         primaryStage.getIcons().add(new Image(String.valueOf(StartMenu.class.getResource(
                 "/images/140-1402842_logo-crusaders-logo-blue-hd-png-download.png"))));
         Scene scene;
-        if (!serverOffline)
-            scene = new Scene(StartMenu.startMenuController.createContent());
-        else
-            scene = new Scene(getServerOffline());
+        scene = new Scene(StartMenu.startMenuController.createContent());
         StartMenu.stage.setScene(scene);
         StartMenu.stage.setFullScreenExitHint("");
         StartMenu.stage.setFullScreen(true);
