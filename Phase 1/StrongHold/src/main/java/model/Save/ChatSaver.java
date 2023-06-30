@@ -1,9 +1,9 @@
 package model.Save;
 
 import controller.UserDatabase.Users;
+import model.Massenger.Chat;
 import model.Massenger.Message;
 import model.Massenger.PublicChat;
-import view.show.OnlineMenu.ChatMenu.Chat;
 
 import java.io.*;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.util.LinkedHashSet;
 public class ChatSaver implements Serializable {
     @Serial
     private static final long serialVersionUID = -5142982528088815378L;
-    static String path = "Stronghold/src/main/resources/Database/Users/chats.chd";
+    static String path = "Stronghold/src/main/resources/Database/Chats/save.chd";
     LinkedHashSet<Message> publicMessages;
     HashMap<String, Chat> chats;
 
@@ -22,8 +22,8 @@ public class ChatSaver implements Serializable {
         publicMessages = PublicChat.messages;
     }
 
-    public static Saver get() {
-        Saver saver = new Saver();
+    public static ChatSaver get() {
+        ChatSaver saver = new ChatSaver();
         saver.save();
         return saver;
     }

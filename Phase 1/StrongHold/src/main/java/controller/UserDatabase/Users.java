@@ -1,9 +1,9 @@
 package controller.UserDatabase;
 
 import controller.control.SecurityQuestion;
+import model.Massenger.Chat;
 import model.Request.Request;
 import model.Save.MapSave.AnonymousMap;
-import view.show.OnlineMenu.ChatMenu.Chat;
 
 import java.io.Serializable;
 import java.util.*;

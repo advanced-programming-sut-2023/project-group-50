@@ -15,12 +15,14 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Server extends Thread {
+    public static final int publicReceivingPort = 7072;
     static final int userPort = 8080;
     static final int clientPort = 5050;
     static final int updatePort = 5051;
     static final int chatSendUpdatePort = 7070;
     static final int chatReceiveUpdatePort = 7071;
     private static final ConcurrentHashMap<String, Socket> online = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, ObjectOutputStream> publicReceivers = new ConcurrentHashMap<>();
     private final ServerSocket serverSocket;
 
 
@@ -88,21 +90,39 @@ public class Server extends Thread {
             case clientPort -> handleClient(socket);
             case updatePort -> handleUpdate(socket);
             case chatSendUpdatePort -> handleSendChatUpdate(socket);
-            case chatReceiveUpdatePort -> handleReceiveChatUpdate(socket);
+            case chatReceiveUpdatePort, publicReceivingPort -> handleReceiveChatUpdate(socket);
             default -> System.out.println(port);
         }
     }
 
-    private void handleReceiveChatUpdate(Socket socket) throws IOException, ClassNotFoundException {
+    private synchronized void handleReceiveChatUpdate(Socket socket) throws IOException, ClassNotFoundException {
         System.out.println("gotChatData");
         Packet packet = (Packet) new ObjectInputStream(socket.getInputStream()).readObject();
         if (Objects.requireNonNull(packet.command) == ServerCommands.SENDING_CHAT) {
             ChatLoader.loadSave((ChatSaver) packet.args[0]);
+            sendUpdates((ChatSaver) packet.args[0]);
+        } else if (packet.command == ServerCommands.START_RECEIVING_PUBLIC) {
+            System.out.println("Started on " + socket);
+            publicReceivers.put(socket.toString(), new ObjectOutputStream(socket.getOutputStream()));
+            System.out.println(publicReceivers.size());
+        } else if (packet.command == ServerCommands.STOP_RECEIVING_PUBLIC) {
+            System.out.println("Finished on" + (int) packet.args[0]);
+            publicReceivers.remove((String) packet.args[0]);
         }
         System.out.println("Updated");
     }
 
-    private void handleSendChatUpdate(Socket socket) throws IOException {
+    private synchronized void sendUpdates(ChatSaver save) throws IOException {
+        System.out.println("Sending updates" + publicReceivers.size());
+        for (String outputStream : publicReceivers.keySet()) {
+            System.out.println(outputStream);
+            publicReceivers.get(outputStream).writeObject(save);
+            System.out.println("Sent to " + outputStream);
+        }
+        System.out.println("done");
+    }
+
+    private synchronized void handleSendChatUpdate(Socket socket) throws IOException {
         ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
         outputStream.writeObject(ChatSaver.get());
         outputStream.flush();

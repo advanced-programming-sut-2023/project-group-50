@@ -1,6 +1,7 @@
 package view.show.OnlineMenu.ChatMenu;
 
 import Server.Client;
+import Server.Server;
 import controller.GUIControllers.MainMenuGUIController;
 import controller.UserDatabase.User;
 import controller.UserDatabase.Users;
@@ -22,6 +23,8 @@ import javafx.stage.Stage;
 import view.show.MainMenu.MainMenu;
 import view.show.OnlineMenu.LobbyMenu;
 import view.show.ProfileMenu.EditUsernameMenu;
+
+import java.net.Socket;
 
 import static controller.GUIControllers.ProfileMenuGUIController.getBackButton;
 import static model.Map.GUI.Unit.UnitPane.getButtonUtil;
@@ -140,7 +143,13 @@ public class ChatMenu extends Application {
     }
 
     private void publicChat(ActionEvent actionEvent) {
-        //TODO
+        PublicChatMenu publicChatMenu = new PublicChatMenu();
+        try {
+            publicChatMenu.init(user.getUserName(), new Socket("127.0.0.1", Server.publicReceivingPort));
+            publicChatMenu.start(MainMenu.getStage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void newChat(ActionEvent actionEvent) {

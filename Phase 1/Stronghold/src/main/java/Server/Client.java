@@ -30,7 +30,7 @@ public class Client extends Thread {
         }));
     }
 
-    private static void sendChatData() {
+    public static void sendChatData() {
         try {
             System.out.println("Sending chat data");
             Socket socket = new Socket("127.0.0.1", Server.chatReceiveUpdatePort);
@@ -83,6 +83,16 @@ public class Client extends Thread {
             socket.close();
         } catch (IOException e) {
             System.out.println("Server offline!");
+        }
+    }
+
+    public static void stopReceivingUpdates(Socket receiver) {
+        try {
+            Socket socket = new Socket("127.0.0.1", Server.chatReceiveUpdatePort);
+            new ObjectOutputStream(socket.getOutputStream()).writeObject(
+                    new Packet(ServerCommands.STOP_RECEIVING_PUBLIC, receiver.toString()));
+            socket.close();
+        } catch (IOException ignored) {
         }
     }
 

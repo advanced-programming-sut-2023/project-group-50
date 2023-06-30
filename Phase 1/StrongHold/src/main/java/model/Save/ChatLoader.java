@@ -13,7 +13,7 @@ public class ChatLoader {
     }
 
     public void load() {
-        if (Saver.exists())
+        if (ChatSaver.exists())
             loadUtil(getSaver());
     }
 
