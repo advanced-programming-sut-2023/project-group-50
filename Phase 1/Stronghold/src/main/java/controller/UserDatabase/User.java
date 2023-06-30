@@ -6,9 +6,11 @@ import model.Item.Item;
 import model.Map.Map;
 import model.ObjectsPackage.Objects;
 import model.RandomGenerator.RandomGenerator;
+import model.Request.Request;
 import model.Trade.Trade;
 import model.UserColor.UserColor;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.net.Socket;
 import java.net.URL;
@@ -16,6 +18,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class User implements Serializable, Comparable<User> {
+    @Serial
+    private static final long serialVersionUID = -5142982528088815361L;
+
     private final Government government;
     private final UserColor color;
     private Socket socket;
@@ -34,6 +39,7 @@ public class User implements Serializable, Comparable<User> {
     private ArrayList<Item> items;
     private int highScore;
     private URL avatar;
+    private Request request;
 
     public User(String userName,
                 String password,
@@ -303,5 +309,13 @@ public class User implements Serializable, Comparable<User> {
 
     public synchronized void setSocket(Socket socket) {
         this.socket = socket;
+    }
+
+    public Request getRequest() {
+        return request;
+    }
+
+    public void setRequest(Request request) {
+        this.request = request;
     }
 }

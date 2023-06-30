@@ -1,5 +1,6 @@
 package view.show.OnlineMenu;
 
+import Server.Client;
 import controller.GUIControllers.ProfileMenuGUIController;
 import controller.GUIControllers.SoldierMenuController.SoldierMenuController;
 import controller.UserDatabase.User;
@@ -107,6 +108,7 @@ public class OnlineMenu extends Application {
             return;
         }
 
+        Client.getData();
         LobbyMenu lobbyMenu = new LobbyMenu();
         lobbyMenu.init(user);
         try {

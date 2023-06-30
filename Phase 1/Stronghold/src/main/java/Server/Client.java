@@ -63,7 +63,7 @@ public class Client extends Thread {
             Loader.loadSave(saver);
         } catch (IOException | ClassNotFoundException e) {
             socket = null;
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
         }
     }
 }

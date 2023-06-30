@@ -405,6 +405,7 @@ public class LoginMenuShowController {
     }
 
     public void createSetPassword(User user) {
+        Client.getData();
         VBox vBox = new VBox();
         Label label = new Label("Set new password");
         VBox setPassword = SignupMenuShowController.creatPasswordField();
@@ -472,7 +473,8 @@ public class LoginMenuShowController {
             return;
         }
 
-        user.setPassword(((PasswordField) ((HBox) setPassword.getChildren().get(0)).getChildren().get(1)).getText());
+        Users.getUser(user.getUserName()).setPassword(((PasswordField) ((HBox) setPassword.getChildren().get(0)).getChildren().get(1)).getText());
+        Client.sendData();
 
         try {
             new LoginMenuShow().start(LoginMenuShow.stage);

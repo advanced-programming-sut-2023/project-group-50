@@ -124,10 +124,32 @@ public class Users implements Serializable {
     }
 
     public static void setRequests(HashSet<Request> requests) {
-        Users.requests = requests;
+        Users.requests = new HashSet<>();
+        for (Request request : requests)
+            if (!request.isEmpty())
+                Users.requests.add(request);
     }
 
     public static void addRequest(Request request) {
         requests.add(request);
+    }
+
+    public static Request getRequest(String name) {
+        return requests.stream().filter(request -> request.name().equals(name)).findFirst().orElse(null);
+    }
+
+    public static void removeRequest(String name) {
+        Request rem = null;
+        for (Request request : requests)
+            if (request.name().equals(name))
+                rem = request;
+
+        System.out.println("removing " + (rem == null ? "null" : rem.toString()));
+        if (rem != null)
+            requests.remove(rem);
+    }
+
+    public static boolean requestNameExists(String name) {
+        return getRequest(name) != null;
     }
 }
