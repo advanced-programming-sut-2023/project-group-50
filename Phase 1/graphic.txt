@@ -1,0 +1,9 @@
+1-map action
+2-shop menu
+3-trade menu
+4-fire animation
+5-logic sickness
+6- تعیین کلاس های نمایش هر ابجکت روی مپ
+7- government menu
+8- animation for action and move building and unit
+9-animation for move and attack strategy unit
