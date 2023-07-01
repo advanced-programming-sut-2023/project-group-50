@@ -25,6 +25,7 @@ import javafx.stage.Screen;
 import model.Map.GUI.MapPane.UnitGroup;
 import model.Map.Unit;
 import model.ObjectsPackage.Buildings.Building;
+import model.ObjectsPackage.Buildings.BuildingType;
 import model.ObjectsPackage.Objects;
 import model.ObjectsPackage.People.Person;
 import model.ObjectsPackage.People.Soldier.Soldier;
@@ -225,6 +226,8 @@ public class UnitPane {
                 getButton("Drop Unit", height * 0.1, UnitMenuController::dropUnit),
                 getButton("Clear", height * 0.1, UnitMenuController::clear)
         );
+        if (getUnit().hasBuilding() && getUnit().hasObjectType(BuildingType.MARKET))
+            vBox.getChildren().add(getButton("Shop Menu", height * 0.1, UnitMenuController::shop));
 
         return vBox;
     }
@@ -265,8 +268,9 @@ public class UnitPane {
     private HBox getPrevStorage(double width, double height) {
         HBox hBox = gethBox(width, height, 10);
         Storage storage = (Storage) getUnit().getBuilding();
-        hBox.getChildren().add(getText("Next storage: " + (storage.getNextStorage() == null ? "Null" :
-                "{%d, %d}".formatted(storage.getNextStorage().getX(), storage.getNextStorage().getY()))));
+        hBox.getChildren().add(getText("Next storage: " + (
+                storage.getNextStorage() == null ? "Null" :
+                        "{%d, %d}".formatted(storage.getNextStorage().getX(), storage.getNextStorage().getY()))));
         hBox.getChildren().add(getText(
                 "Capacity: " + storage.getCurrentCapacity() + " of " + storage.getMaximumCapacity()));
         return hBox;

@@ -11,12 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    private final ArrayList<User> players;
     private final int id;
+    private final ArrayList<User> players;
     private int currentTurnNumber;
 
     public Game(ArrayList<User> players, int id) {
-        this.players = players;
+        this.players = new ArrayList<>();
+        this.players.addAll(players);
         this.id = id;
         currentTurnNumber = 1;
     }
@@ -75,7 +76,8 @@ public class Game {
         government.setPopularity(government.getPopularity() + government.checkFearPopularity() +
                                          government.checkReligionPopularity() +
                                          government.checkPopularityFood() +
-                                         government.checkPopularityTax());
+                                         government.checkPopularityTax() +
+                                         government.checkDiseasePopularity());
         government.feedPeople();
         government.getTaxPeople();
     }
@@ -96,6 +98,7 @@ public class Game {
     private void updateBuildings() {
         Government government = getGovernment();
         government.spreadFire();
+        government.spreadDisease();
         government.applyFireDamage();
         government.removeDestroyedBuildings();
     }

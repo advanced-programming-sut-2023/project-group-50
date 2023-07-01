@@ -30,6 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MapPane {
+    public static Pane pane;
     private static double startX;
     private static double startY;
     private static int topLeftY;
@@ -39,7 +40,6 @@ public class MapPane {
     private static double tileWidth;
     private static double tileHeight;
     private static Map map;
-    private static Pane pane;
     private static HashMap<Integer, HashMap<Integer, UnitGroup>> unitGroups;
     private static HashMap<Integer, HashMap<Integer, Group>> ruinGroups;
     private static HBox navigation;
@@ -108,7 +108,7 @@ public class MapPane {
         return pane;
     }
 
-    private static void fillTiles() {
+    public static void fillTiles() {
         pane.getChildren().clear();
         double width = Screen.getPrimary().getBounds().getWidth();
         double height = Screen.getPrimary().getBounds().getHeight();
@@ -170,6 +170,9 @@ public class MapPane {
         addHashMap(pane, objects, objectID, tileHeight / 4);
 
 
+        updateFire();
+        updateDisease();
+        updateHeal();
         pane.getChildren().addAll(navigation);
         navigation.setLayoutX(10);
         navigation.setLayoutY(5);
@@ -389,6 +392,53 @@ public class MapPane {
                    0);
         addHashMap(pane, buildings, buildingsID, tileHeight / 4);
         addHashMap(pane, objects, objectID, tileHeight / 4);
+
+        updateFire();
+        updateDisease();
+        updateHeal();
+        pane.getChildren().addAll(navigation);
+        navigation.setLayoutX(10);
+        navigation.setLayoutY(5);
+    }
+
+    private static void updateFire() {
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                if (map.getUnitByXY(x, y).isOnFire()) {
+                    Unit unit = map.getUnitByXY(x, y);
+                    MapPane.Pair pair = getXY(tileHeight, tileWidth,
+                                              topLeftX, topLeftY, x, y);
+                    unit.getFireAnimation().setShowSize(tileWidth, tileHeight, pair.x, pair.y);
+                }
+            }
+        }
+    }
+
+
+    private static void updateDisease() {
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                Unit unit = map.getUnitByXY(x, y);
+                if (unit.isHasDisease()) {
+                    MapPane.Pair pair = getXY(tileHeight, tileWidth,
+                                              topLeftX, topLeftY, x, y);
+                    unit.getDiseaseAnimation().setShowSize(tileWidth, tileHeight, pair.x, pair.y);
+                }
+            }
+        }
+    }
+
+    private static void updateHeal() {
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                Unit unit = map.getUnitByXY(x, y);
+                if (unit.getHealAnimation() != null) {
+                    MapPane.Pair pair = getXY(tileHeight, tileWidth,
+                                              topLeftX, topLeftY, x, y);
+                    unit.getHealAnimation().setShowSize(tileWidth, tileHeight, pair.x, pair.y);
+                }
+            }
+        }
     }
 
     private static String getToolTip(int x, int y) {

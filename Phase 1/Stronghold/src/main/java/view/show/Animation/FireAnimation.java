@@ -26,7 +26,9 @@ public class FireAnimation extends Transition implements Serializable {
         number = 0;
         MapPane.Pair pair = MapPane.getXY(MapPane.getTileHeight(), MapPane.getTileWidth(),
                                           MapPane.getTopLeftX(), MapPane.getTopLeftY(), unit.getX(), unit.getY());
-        show = new Rectangle(pair.x, pair.y, 10, 5);
+        this.show = new Rectangle();
+        if (MapPane.pane != null)
+            setShowSize(pair.x, pair.y, MapPane.getTileWidth() * 1.5, MapPane.getTileHeight() * 1.5);
     }
 
     @Override
@@ -35,8 +37,7 @@ public class FireAnimation extends Transition implements Serializable {
         int pictureNumber = 0;
 
         if (!unit.isOnFire()) {
-            this.stop();
-            this.unit.setFireAnimation(null);
+            cancel();
 
         } else {
             switch (unit.getStateFire()) {
@@ -46,13 +47,32 @@ public class FireAnimation extends Transition implements Serializable {
             }
         }
         this.number++;
-        if (this.number > pictureNumber) {
+        if (this.number / 7 + 1 > pictureNumber) {
             this.number = 1;
         }
 
-
-        show.setFill(new ImagePattern(new Image(
-                FireAnimation.class.getResource(
-                        "/images/animation/fire/" + unit.getStateFire() + "/" + number + ".png").toExternalForm())));
+        try {
+            show.setFill(new ImagePattern(new Image(
+                    FireAnimation.class.getResource(
+                            "/images/animation/fire/" + unit.getStateFire() + "/" + (number / 7 + 1) +
+                                    ".png").toExternalForm())));
+        } catch (Exception e) {
+        }
     }
+
+    public void cancel() {
+        this.stop();
+        MapPane.pane.getChildren().remove(this.show);
+        this.unit.setFireAnimation(null);
+    }
+
+    public void setShowSize(double width, double height, double x, double y) {
+        this.show.setWidth(width * 1.5);
+        this.show.setHeight(height * 1.5);
+        this.show.setTranslateY(y);
+        this.show.setTranslateX(x);
+        if (!MapPane.pane.getChildren().contains(this.show)) MapPane.pane.getChildren().add(this.show);
+    }
+
+
 }

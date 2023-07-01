@@ -48,8 +48,6 @@ public enum Resource implements Serializable {
         assert nameIsValid(name);
 
         name = name.toUpperCase();
-        System.out.println(name);
-
         for (Resource enums : Resource.values())
             if (name.equals(enums.name()))
                 return enums;

@@ -59,8 +59,8 @@ public class TradeMenu {
 
         if (!idError.truth) return idError.errorMassage;
 
-        if (!tradeMenuController.canAcceptTrade(matcher.group("id")))
-            return "Not enough resources!";
+        if (!tradeMenuController.canAcceptTrade(matcher.group("id")).truth)
+            return tradeMenuController.canAcceptTrade(matcher.group("id")).errorMassage;
 
         tradeMenuController.acceptTrade(Integer.parseInt(matcher.group("id")),
                                         matcher.group("message"));

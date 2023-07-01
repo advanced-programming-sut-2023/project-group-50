@@ -96,6 +96,7 @@ public class InitializationMenu extends Application {
             } else current.setText("Not Available");
         } catch (Exception e) {
             current.setText("Disconnected");
+            throw new RuntimeException(e);
         }
     }
 

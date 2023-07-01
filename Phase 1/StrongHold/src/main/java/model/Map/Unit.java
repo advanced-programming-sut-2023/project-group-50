@@ -6,7 +6,9 @@ import model.ObjectsPackage.Buildings.*;
 import model.ObjectsPackage.*;
 import model.ObjectsPackage.People.Soldier.Engineer;
 import model.ObjectsPackage.People.Soldier.Soldier;
+import view.show.Animation.DiseaseAnimation;
 import view.show.Animation.FireAnimation;
+import view.show.Animation.HealAnimation;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,13 +20,17 @@ public class Unit implements Serializable {
     private final LinkedHashSet<Objects> objects;
     private final int x;
     private final int y;
-    private final boolean hasDisease;
+    private boolean hasDisease;
     private GroundType texture;
     private boolean isOnFire;
     private boolean isProtected;
     private int capacity;
+
     private int stateFire;
+
     private FireAnimation fireAnimation;
+    private DiseaseAnimation diseaseAnimation;
+    private HealAnimation healAnimation;
 
     public Unit(int x, int y, GroundType texture) {
         this.x = x;
@@ -36,6 +42,7 @@ public class Unit implements Serializable {
         stateFire = 0;
         fireAnimation = null;
         hasDisease = false;
+        diseaseAnimation = null;
 
     }
 
@@ -293,7 +300,7 @@ public class Unit implements Serializable {
         this.stateFire = stateFire;
     }
 
-    public void setFire(boolean isOnFire, int stateFire) {
+    public synchronized void setFire(boolean isOnFire, int stateFire) {
         setOnFire(isOnFire);
         setStateFire(stateFire);
         if (isOnFire && fireAnimation == null) {
@@ -309,4 +316,34 @@ public class Unit implements Serializable {
         this.fireAnimation = fireAnimation;
     }
 
+    public boolean isHasDisease() {
+        return hasDisease;
+    }
+
+    public void setHasDisease(boolean hasDisease) {
+        this.hasDisease = hasDisease;
+    }
+
+    public void setDisease(boolean hasDisease) {
+        setHasDisease(hasDisease);
+        if (hasDisease && diseaseAnimation == null) {
+            (this.diseaseAnimation = new DiseaseAnimation(this)).play();
+        }
+    }
+
+    public DiseaseAnimation getDiseaseAnimation() {
+        return diseaseAnimation;
+    }
+
+    public void setDiseaseAnimation(DiseaseAnimation diseaseAnimation) {
+        this.diseaseAnimation = diseaseAnimation;
+    }
+
+    public HealAnimation getHealAnimation() {
+        return healAnimation;
+    }
+
+    public void setHealAnimation(HealAnimation healAnimation) {
+        this.healAnimation = healAnimation;
+    }
 }

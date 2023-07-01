@@ -4,6 +4,7 @@ import controller.UserDatabase.Shop;
 import controller.UserDatabase.User;
 import controller.control.Error;
 import model.Item.Item;
+import model.ObjectsPackage.Resource;
 
 public class ShopMenuController {
     private final User currentUser;
@@ -35,6 +36,8 @@ public class ShopMenuController {
     public Error sell(String name) {
         Item item = getUserItemByName(name);
         if (item == null || !currentUser.getItems().contains(item)) return new Error("Item does not exist!", false);
+        if (currentUser.getGovernment().getResourceAmount(Resource.getResourceByString(name)) < item.getCount())
+            return new Error("You don't have enough of this item", false);
         Shop.sell(currentUser, item);
         return new Error("Item sold successfully!", true);
     }

@@ -19,7 +19,6 @@ import model.ObjectsPackage.People.Soldier.*;
 import model.ObjectsPackage.Resource;
 import model.ObjectsPackage.Weapons.Weapon;
 import model.ObjectsPackage.Weapons.WeaponName;
-import view.GameMenu;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -28,15 +27,17 @@ import static controller.Menus.LoginController.checkHasField;
 import static controller.Menus.LoginController.removeDoubleCoutString;
 
 public class GameMenuController {
-    private final GameMenu gameMenu;
+
     private final Game game;
     private User currentUser;
     private Building selectedBuilding;
     private Unit selectedUnit;
 
-    public GameMenuController(GameMenu gameMenu) {
-        this.gameMenu = gameMenu;
-        game = new Game(new ArrayList<>(), 500);
+    public GameMenuController(User user) {
+        this.currentUser = user;
+        ArrayList<User> users = new ArrayList<>();
+        users.add(currentUser);
+        game = new Game(users, 500);
     }
 
     public static Error checkValue(String input, Commands commands, User currentUser) {
@@ -98,10 +99,6 @@ public class GameMenuController {
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
-    }
-
-    public GameMenu getGameMenu() {
-        return gameMenu;
     }
 
     public Building getSelectedBuilding() {

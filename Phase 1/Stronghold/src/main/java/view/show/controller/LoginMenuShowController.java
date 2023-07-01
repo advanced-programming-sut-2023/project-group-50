@@ -10,9 +10,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -283,6 +281,8 @@ public class LoginMenuShowController {
             MusicPlayer.playMusic(getClass().getResource("/images/error-89612.mp3").toString());
             return;
         }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Your login was successful", ButtonType.OK);
+        alert.showAndWait();
         MainMenu mainMenu = new MainMenu();
         Client.getData();
         mainMenu.init(user);
@@ -342,6 +342,7 @@ public class LoginMenuShowController {
             @Override
             public void handle(MouseEvent event) {
                 checkAnswer(user, answer, errorBoxAnswer);
+
             }
         });
 
@@ -354,6 +355,7 @@ public class LoginMenuShowController {
                 double height = Screen.getPrimary().getBounds().getHeight();
                 Background background = new Background(StartMenuController.setBackGround(("/images/background/thumb-1920-152789.jpg"), width, height));
                 pane.setBackground(background);
+
             }
         });
 

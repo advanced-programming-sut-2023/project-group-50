@@ -1,6 +1,7 @@
 package controller.GUIControllers;
 
 import Server.Client;
+import controller.Menus.GameMenuController;
 import controller.UserDatabase.User;
 import controller.UserDatabase.Users;
 import javafx.event.ActionEvent;
@@ -25,6 +26,7 @@ import view.show.Menus.ShopMenuShow;
 import view.show.OnlineMenu.OnlineMenu;
 import view.show.ProfileMenu.ShowProfileMenu;
 import view.show.UnitMenu.UnitMenu;
+import view.show.trademenu.TradeMenuShow;
 
 import java.util.Objects;
 
@@ -36,6 +38,7 @@ public class MainMenuGUIController {
     private static Pane governmentPane;
     private static HBox profileData;
     private static User user;
+    private static GameMenuController gameMenuController;
 
     public static Pane getPane(String username) {
         double width = Screen.getPrimary().getBounds().getWidth();
@@ -70,6 +73,7 @@ public class MainMenuGUIController {
         double width = Screen.getPrimary().getBounds().getWidth();
         double height = Screen.getPrimary().getBounds().getHeight();
         MainMenuGUIController.user = user;
+        gameMenuController = new GameMenuController(user);
 
         pane = new Pane();
         pane.setPrefSize(width, height);
@@ -129,7 +133,9 @@ public class MainMenuGUIController {
                 getLongButtonUtil("Trade Menu", height / 5, MainMenuGUIController::trade),
                 getLongButtonUtil("Shop Menu", height / 5, MainMenuGUIController::shop),
                 getLongButtonUtil("Profile Menu", height / 5, MainMenuGUIController::profile),
-                getLongButtonUtil("Saved maps", height / 5, MainMenuGUIController::saveMap)
+                getLongButtonUtil("Saved maps", height / 5, MainMenuGUIController::saveMap),
+                getButton("Next Turn", height / 5, MainMenuGUIController::nextTurn)
+
         );
 
         vBox.setPrefHeight(height);
@@ -148,6 +154,13 @@ public class MainMenuGUIController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+    private static void nextTurn(ActionEvent actionEvent) {
+        gameMenuController.nextTurn();
+        updateGovernmentPane(controller.GUIControllers.MainMenuGUIController.user.getUserName());
+        MapPane.fillTiles();
     }
 
     static Button getButton(String text, double height, EventHandler<ActionEvent> eventHandler) {
@@ -185,7 +198,13 @@ public class MainMenuGUIController {
     }
 
     private static void trade(ActionEvent actionEvent) {
-        //TODO
+        TradeMenuShow tradeMenuShow = new TradeMenuShow();
+        tradeMenuShow.init(MainMenuGUIController.user);
+        try {
+            tradeMenuShow.start(MainMenu.getStage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void shop(ActionEvent actionEvent) {

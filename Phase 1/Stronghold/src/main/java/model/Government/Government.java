@@ -794,7 +794,7 @@ public class Government implements Serializable {
         for (java.util.Map.Entry<Pair, Integer> set : newFire.entrySet()) {
             Pair pair = set.getKey();
             Unit unit = map.getXY(pair.x, pair.y);
-            if (unit.getStateFire() < set.getValue() && !unit.getTexture().isWater()) {
+            if (unit.getStateFire() <= set.getValue() && !unit.getTexture().isWater()) {
                 unit.setFire(true, set.getValue());
             }
         }
@@ -820,15 +820,33 @@ public class Government implements Serializable {
                     objects.applyDamage(50);
     }
 
-    public void spreadDiseaseRandomly() {
+    public void spreadDisease() {
+        if (getBuildingCount(BuildingType.APOTHECARY) > 0 && getApothecary() != null)
+            healDisease(getApothecary());
+        spreadDiseaseRandomly();
+    }
 
+    private void healDisease(Apothecary apothecary) {
         for (int x = 0; x < map.getXSize(); x++) {
             for (int y = 0; y < map.getYSize(); y++) {
-
+                Unit unit = map.getUnitByXY(x, y);
+                if (unit.isHasDisease())
+                    apothecary.HealPlace(unit);
             }
         }
+    }
 
+    private void spreadDiseaseRandomly() {
 
+        int number = new Random().nextInt(0, 5);
+
+        while (number != 0) {
+            number--;
+            int x = new Random().nextInt(0, map.getXSize());
+            int y = new Random().nextInt(0, map.getYSize());
+
+            map.getUnitByXY(x, y).setDisease(true);
+        }
     }
 
     public void attackWeapons() {
@@ -927,6 +945,43 @@ public class Government implements Serializable {
             }
         }
         return false;
+    }
+
+    public Apothecary getApothecary() {
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                for (Objects object : map.getXY(x, y).getObjects()) {
+                    if (object.getOwner().equals(user) && object instanceof Apothecary market)
+                        return market;
+                }
+            }
+        }
+        return null;
+    }
+
+    public int getDiseasePopularity() {
+        int sum = 0;
+        for (int x = 0; x < map.getXSize(); x++) {
+            for (int y = 0; y < map.getYSize(); y++) {
+                if (map.getXY(x, y).isHasDisease()) {
+                    sum++;
+                }
+            }
+        }
+        return sum;
+    }
+
+    public int checkDiseasePopularity() {
+        int n = getDiseasePopularity();
+
+        if (n < 5) {
+            return 3;
+        }
+        if (n < 10) {
+            return 6;
+        }
+
+        return 9;
     }
 
     public int getMaxPopulation() {

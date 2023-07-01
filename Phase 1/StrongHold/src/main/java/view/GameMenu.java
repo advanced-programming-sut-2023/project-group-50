@@ -8,11 +8,11 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class GameMenu {
-    private final GameMenuController gameMenuController;
+    private GameMenuController gameMenuController;
     private Matcher nextMatcher;
 
     public GameMenu() {
-        this.gameMenuController = new GameMenuController(this);
+
     }
 
     public GameMenuController getGameMenuController() {

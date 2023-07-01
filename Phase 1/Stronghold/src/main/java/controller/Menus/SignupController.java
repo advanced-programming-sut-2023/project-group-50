@@ -41,6 +41,7 @@ public class SignupController {
         return new Error("", true);
     }
 
+
     public static Error passwordIsValid(String input) {
 
         String pass = input;

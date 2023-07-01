@@ -5,6 +5,8 @@ import model.Save.ChatLoader;
 import model.Save.ChatSaver;
 import model.Save.Loader;
 import model.Save.Saver;
+import view.show.Menus.ServerOfflineMenu;
+import view.show.Menus.StartMenu;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -14,6 +16,20 @@ import java.net.Socket;
 public class Client extends Thread {
     public static Client client;
     Socket socket;
+
+    public static void main(String[] args) throws Exception {
+        client = new Client();
+        client.start();
+        if (client.socket != null)
+            StartMenu.main(null);
+        else
+            ServerOfflineMenu.main(null);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            sendData();
+            sendChatData();
+        }));
+    }
 
     public static void sendChatData() {
         try {
