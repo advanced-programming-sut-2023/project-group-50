@@ -148,7 +148,7 @@ public class ChatMenu extends Application {
     private void publicChat(ActionEvent actionEvent) {
         PublicChatMenu publicChatMenu = new PublicChatMenu();
         try {
-            publicChatMenu.init(user.getUserName(), new Socket("127.0.0.1", Server.publicReceivingPort));
+            publicChatMenu.init(user.getUserName(), new Socket(Server.ip, Server.publicReceivingPort));
             publicChatMenu.start(MainMenu.getStage());
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -181,7 +181,7 @@ public class ChatMenu extends Application {
         PrivateChatMenu privateChatMenu = new PrivateChatMenu();
         try {
             privateChatMenu.init(user.getUserName(),
-                                 new Socket("127.0.0.1", Server.publicReceivingPort),
+                                 new Socket(Server.ip, Server.publicReceivingPort),
                                  chat);
             privateChatMenu.start(MainMenu.getStage());
         } catch (Exception e) {

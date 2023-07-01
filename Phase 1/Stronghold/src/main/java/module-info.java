@@ -24,6 +24,10 @@ module Stronghold {
     opens view.show.Menus to javafx.fxml;
     exports view.show.Menus;
 
+    opens view.show.OnlineMenu to javafx.fxml;
+    exports view.show.OnlineMenu;
+
     opens Server to com.google.gson;
     exports Server;
+
 }

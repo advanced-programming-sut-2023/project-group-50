@@ -26,6 +26,7 @@ public class Server extends Thread {
     private static final ConcurrentHashMap<String, Socket> online;
     private static final ConcurrentHashMap<String, ObjectOutputStream> publicReceivers;
     private static final ConcurrentHashMap<String, ConcurrentHashMap<String, ObjectOutputStream>> chatReceivers;
+    public static String ip = "";
 
     static {
         online = new ConcurrentHashMap<>();
