@@ -18,6 +18,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -28,6 +29,7 @@ import javafx.stage.Stage;
 import model.Government.GUI.GovernmentPane;
 import model.Massenger.Message;
 import model.Massenger.PublicChat;
+import model.Massenger.Reaction;
 import model.Save.ChatLoader;
 import model.Save.ChatSaver;
 import view.show.MainMenu.MainMenu;
@@ -48,6 +50,7 @@ public class PublicChatMenu extends Application {
     private ScrollPane messages;
     private double scrollWidth;
     private Thread thread;
+    private Message edittingMessage;
 
     public static Background getBackground(double width, double height) {
         Image image = new Image(MainMenuGUIController.class.getResource("/images/background/Chat.jpg").toExternalForm());
@@ -169,8 +172,17 @@ public class PublicChatMenu extends Application {
         vBox.setAlignment(Pos.CENTER);
         vBox.setPrefWidth(scrollWidth = width);
 
-        for (Message message : PublicChat.messages)
+        boolean needsRefresh = false;
+        for (Message message : PublicChat.messages) {
             vBox.getChildren().add(getMessageHBox(message, width));
+            if (!message.getOwner().equals(user.getUserName()) && !message.isSeen()) {
+                needsRefresh = true;
+                message.see();
+            }
+        }
+
+        if (needsRefresh)
+            Client.sendChatData();
 
         return vBox;
     }
@@ -182,10 +194,10 @@ public class PublicChatMenu extends Application {
 
         if (!message.getOwner().equals(user.getUserName())) {
             hBox.setAlignment(Pos.CENTER_LEFT);
-            hBox.getChildren().addAll(getAvatar(message.getOwner()), getContent(message, width * 0.85));
+            hBox.getChildren().addAll(getAvatar(message.getOwner(), 50), getContent(message, width * 0.85));
         } else {
             hBox.setAlignment(Pos.CENTER_RIGHT);
-            hBox.getChildren().addAll(getContent(message, width * 0.85), getAvatar(message.getOwner()));
+            hBox.getChildren().addAll(getContent(message, width * 0.85), getAvatar(message.getOwner(), 50));
         }
 
         return hBox;
@@ -211,28 +223,167 @@ public class PublicChatMenu extends Application {
         content.setWrappingWidth(width);
         content.setTextAlignment(TextAlignment.RIGHT);
 
+        HBox state = getState(message, width);
+
         if (!message.getOwner().equals(user.getUserName())) {
             box.setAlignment(Pos.TOP_LEFT);
             vBox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.7); -fx-background-radius: 5;");
             username.setStyle("-fx-fill: #b20000");
             content.setTextAlignment(TextAlignment.LEFT);
+            state.setAlignment(Pos.BOTTOM_RIGHT);
         } else {
             box.setAlignment(Pos.TOP_RIGHT);
             vBox.setStyle("-fx-background-color: rgba(255, 255, 0, 0.7); -fx-background-radius: 5");
             username.setStyle("-fx-fill: #6800ff");
             content.setTextAlignment(TextAlignment.RIGHT);
+            state.setAlignment(Pos.BOTTOM_LEFT);
         }
+
         box.getChildren().addAll(username, content);
+        if (!state.getChildren().isEmpty())
+            box.getChildren().add(state);
 
         vBox.getChildren().add(box);
+
+        vBox.setOnMouseClicked(getEventHandler(message));
 
         return vBox;
     }
 
-    private ImageView getAvatar(String owner) {
+    private EventHandler<MouseEvent> getEventHandler(Message message) {
+        return mouseEvent -> {
+            System.out.println("Editing");
+            VBox menu = new VBox();
+            menu.setPrefSize(200, 120);
+            menu.setSpacing(10);
+            menu.setAlignment(Pos.CENTER);
+            if (message.getOwner().equals(user.getUserName())) {
+                HBox edit = new HBox(PublicChatMenu.this.getEditButton(message), PublicChatMenu.this.getDeleteButton(message));
+                edit.setSpacing(5);
+                edit.setAlignment(Pos.CENTER);
+                menu.getChildren().add(edit);
+            }
+
+            HBox reactions = new HBox();
+            for (Reaction reaction : Reaction.values()) {
+                reactions.getChildren().add(getReaction(message, reaction));
+            }
+
+            reactions.setAlignment(Pos.CENTER);
+            reactions.setSpacing(5);
+            menu.getChildren().add(reactions);
+
+            Button button = PublicChatMenu.this.getCloseButton(menu);
+
+            menu.getChildren().add(button);
+
+            menu.setStyle(
+                    "-fx-background-radius: 20; -fx-background-color: rgb(255, 250, 250); -fx-border-color: black;" +
+                            "-fx-border-radius: 20;");
+            pane.getChildren().add(menu);
+
+            double X = (Screen.getPrimary().getBounds().getWidth() - 200) / 2;
+            double Y = (Screen.getPrimary().getBounds().getHeight() - 120) / 2;
+
+            menu.setLayoutX(X);
+            menu.setLayoutY(Y);
+        };
+    }
+
+    private Button getCloseButton(VBox menu) {
+        Button button = new Button("Close");
+        button.setStyle("-fx-font-size: 15");
+        button.setBackground(Background.EMPTY);
+        button.setOnAction(actionEvent -> pane.getChildren().remove(menu));
+        return button;
+    }
+
+    private ImageView getReaction(Message message, Reaction reaction) {
+        ImageView emoji = reaction.getEmoji(25);
+        emoji.setOnMouseClicked(mouseEvent1 -> {
+            message.getReactions().put(user.getUserName(), reaction);
+            Client.sendChatData();
+        });
+        return emoji;
+    }
+
+    private Button getDeleteButton(Message message) {
+        Button edit = new Button();
+        edit.setBackground(getButtonBackground("delete"));
+        edit.setOnAction(actionEvent -> {
+            PublicChat.messages.remove(message);
+            Client.sendChatData();
+        });
+        return edit;
+    }
+
+    private Background getButtonBackground(String name) {
+        Image image = new Image(
+                PublicChatMenu.class.getResource("/images/Buttons/" + name + ".png").toExternalForm());
+        BackgroundImage backgroundImage = new BackgroundImage(image,
+                                                              BackgroundRepeat.NO_REPEAT,
+                                                              BackgroundRepeat.NO_REPEAT,
+                                                              BackgroundPosition.CENTER,
+                                                              new BackgroundSize(
+                                                                      20, 20,
+                                                                      false, false, false, false
+                                                              ));
+
+        return new Background(backgroundImage);
+    }
+
+    private Button getEditButton(Message message) {
+        Button edit = new Button();
+        edit.setBackground(getButtonBackground("edit"));
+        edit.setOnAction(actionEvent -> {
+            text.setText(message.getContent());
+            edittingMessage = message;
+        });
+        return edit;
+    }
+
+    private HBox getState(Message message, double width) {
+        HBox state = new HBox();
+        state.setPrefWidth(width - 50);
+
+        if (message.getOwner().equals(user.getUserName()))
+            state.getChildren().add(seenImage(message.isSeen()));
+
+        if (!message.getReactions().isEmpty()) {
+            HBox reactions = new HBox();
+            reactions.setSpacing(5);
+            message.getReactions().forEach((key, value) -> {
+                HBox react = new HBox(getAvatar(key, 20), value.getEmoji(20));
+                react.setSpacing(2.5);
+                reactions.getChildren().add(react);
+            });
+            state.getChildren().add(reactions);
+        }
+
+
+        state.setPadding(new Insets(5));
+        return state;
+    }
+
+
+    private ImageView seenImage(boolean seen) {
+        String path;
+        if (seen)
+            path = PublicChatMenu.class.getResource("/phase2-assets/Others/some of google material design/done_all_FILL0_wght500_GRAD0_opsz48.png").toExternalForm();
+        else
+            path = PublicChatMenu.class.getResource("/phase2-assets/Others/some of google material design/done_FILL0_wght500_GRAD0_opsz48.png").toExternalForm();
+
+        ImageView imageView = new ImageView(new Image(path));
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(20);
+
+        return imageView;
+    }
+
+    private ImageView getAvatar(String owner, double size) {
         ImageView avatar = new ImageView(new Image(Users.getUser(owner).getAvatar().toExternalForm()));
         avatar.setPreserveRatio(true);
-        avatar.setFitWidth(50);
+        avatar.setFitWidth(size);
         return avatar;
     }
 
@@ -318,8 +469,13 @@ public class PublicChatMenu extends Application {
 
             if (content.isBlank()) return;
 
-            PublicChat.messages.add(new Message(user.getUserName(), content));
+            if (edittingMessage != null) {
+                edittingMessage.setContent(content);
+                edittingMessage = null;
+            } else
+                PublicChat.messages.add(new Message(user.getUserName(), content));
             Client.sendChatData();
+
             text.setText("");
         }
     }
