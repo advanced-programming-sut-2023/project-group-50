@@ -60,4 +60,8 @@ public abstract class Chat implements Serializable {
     protected void setChatType(ChatType privateChat) {
         chatType = privateChat;
     }
+
+    public void remove(Message message) {
+        messages.remove(message);
+    }
 }

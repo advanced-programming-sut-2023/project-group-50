@@ -23,8 +23,16 @@ public class Server extends Thread {
     static final int updatePort = 5051;
     static final int chatSendUpdatePort = 7070;
     static final int chatReceiveUpdatePort = 7071;
-    private static final ConcurrentHashMap<String, Socket> online = new ConcurrentHashMap<>();
-    private static final ConcurrentHashMap<String, ObjectOutputStream> publicReceivers = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, Socket> online;
+    private static final ConcurrentHashMap<String, ObjectOutputStream> publicReceivers;
+    private static final ConcurrentHashMap<String, ConcurrentHashMap<String, ObjectOutputStream>> chatReceivers;
+
+    static {
+        online = new ConcurrentHashMap<>();
+        publicReceivers = new ConcurrentHashMap<>();
+        chatReceivers = new ConcurrentHashMap<>();
+    }
+
     private final ServerSocket serverSocket;
 
 
@@ -110,8 +118,37 @@ public class Server extends Thread {
         } else if (packet.command == ServerCommands.STOP_RECEIVING_PUBLIC) {
             System.out.println("Finished on" + packet.args[0]);
             publicReceivers.remove((String) packet.args[0]);
+        } else if (packet.command == ServerCommands.START_RECEIVING_CHAT) {
+            System.out.println("Started chat on ");
+            String chat = (String) packet.args[0];
+            chatReceivers.putIfAbsent(chat, new ConcurrentHashMap<>());
+            chatReceivers.get(chat).put(socket.toString(), new ObjectOutputStream(socket.getOutputStream()));
+            System.out.println(socket + " " + chat);
+        } else if (packet.command == ServerCommands.STOP_RECEIVING_CHAT) {
+            String receiver = (String) packet.args[0];
+            String chatId = (String) packet.args[1];
+
+            if (chatReceivers.containsKey(chatId))
+                chatReceivers.get(chatId).remove(receiver);
+        } else if (packet.command == ServerCommands.SENDING_PRIVATE_CHAT) {
+            ChatLoader.loadSave((ChatSaver) packet.args[0]);
+            sendChatUpdates((ChatSaver) packet.args[0], (String) packet.args[1]);
         }
         System.out.println("Updated");
+    }
+
+    private synchronized void sendChatUpdates(ChatSaver save, String chatId) throws IOException {
+        System.out.println("Sending Chat updates" + chatReceivers.get(chatId).size());
+        Iterator<ObjectOutputStream> iterator = chatReceivers.get(chatId).values().iterator();
+        while (iterator.hasNext()) {
+            ObjectOutputStream outputStream = iterator.next();
+            try {
+                outputStream.writeObject(save);
+            } catch (SocketException e) {
+                iterator.remove();
+            }
+        }
+        System.out.println("done");
     }
 
     private synchronized void sendUpdates(ChatSaver save) throws IOException {

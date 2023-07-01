@@ -1,5 +1,6 @@
 package Server;
 
+import model.Massenger.Chat;
 import model.Save.ChatLoader;
 import model.Save.ChatSaver;
 import model.Save.Loader;
@@ -35,6 +36,22 @@ public class Client extends Thread {
             System.out.println("Sending chat data");
             Socket socket = new Socket("127.0.0.1", Server.chatReceiveUpdatePort);
             Packet packet = new Packet(ServerCommands.SENDING_CHAT, ChatSaver.get());
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            outputStream.writeObject(packet);
+            outputStream.flush();
+            outputStream.close();
+            System.out.println("chat data sent");
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("Server offline!");
+        }
+    }
+
+    public static void sendPrivateChatData(Chat chat) {
+        try {
+            System.out.println("Sending private chat data");
+            Socket socket = new Socket("127.0.0.1", Server.chatReceiveUpdatePort);
+            Packet packet = new Packet(ServerCommands.SENDING_PRIVATE_CHAT, ChatSaver.get(), chat.getId());
             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
             outputStream.writeObject(packet);
             outputStream.flush();
@@ -91,6 +108,17 @@ public class Client extends Thread {
             Socket socket = new Socket("127.0.0.1", Server.chatReceiveUpdatePort);
             new ObjectOutputStream(socket.getOutputStream()).writeObject(
                     new Packet(ServerCommands.STOP_RECEIVING_PUBLIC, receiver.toString()));
+            socket.close();
+            receiver.close();
+        } catch (IOException ignored) {
+        }
+    }
+
+    public static void stopReceivingChatUpdates(Socket receiver, Chat chat) {
+        try {
+            Socket socket = new Socket("127.0.0.1", Server.chatReceiveUpdatePort);
+            new ObjectOutputStream(socket.getOutputStream()).writeObject(
+                    new Packet(ServerCommands.STOP_RECEIVING_CHAT, receiver.toString(), chat.getId()));
             socket.close();
             receiver.close();
         } catch (IOException ignored) {

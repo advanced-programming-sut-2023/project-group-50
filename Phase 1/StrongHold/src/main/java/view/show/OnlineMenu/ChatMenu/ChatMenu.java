@@ -20,8 +20,11 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import model.Massenger.Chat;
+import model.Massenger.Group;
+import model.Massenger.PrivateChat;
 import view.show.MainMenu.MainMenu;
-import view.show.OnlineMenu.LobbyMenu;
+import view.show.OnlineMenu.OnlineMenu;
 import view.show.ProfileMenu.EditUsernameMenu;
 
 import java.net.Socket;
@@ -117,15 +120,15 @@ public class ChatMenu extends Application {
     }
 
     private Button initConfirmButton(EventHandler<ActionEvent> eventHandler) {
-        return getButton("Confirm", eventHandler);
+        return getButton("Join Chat", eventHandler);
     }
 
     private VBox getVBox(double width, double height) {
         Text text = new Text("Chat Menu");
         text.setFont(Font.font("Bell MT", FontWeight.BOLD, 25));
         Button backButton = initBackButton();
-        Button confirm = initConfirmButton(new confirm());
-        Button newChat = getButtonUtil("New Chat", 50, this::newChat);
+        Button confirm = initConfirmButton(new joinChat());
+        Button newChat = getButtonUtil("New Group", 50, new createChat());
         Button publicChat = getButtonUtil("Public Chat", 50, this::publicChat);
         HBox hBox = new HBox(backButton, confirm, newChat, publicChat);
         hBox.setAlignment(Pos.CENTER);
@@ -152,10 +155,6 @@ public class ChatMenu extends Application {
         }
     }
 
-    private void newChat(ActionEvent actionEvent) {
-        //TODO
-    }
-
     private TextField getTextField(String text, double width, double height) {
         TextField field = new TextField();
         field.setPromptText(text);
@@ -166,16 +165,31 @@ public class ChatMenu extends Application {
     }
 
     private void back(ActionEvent actionEvent) {
-        LobbyMenu lobbyMenu = new LobbyMenu();
-        lobbyMenu.init(user);
+        OnlineMenu onlineMenu = new OnlineMenu();
+        onlineMenu.init(user);
         try {
-            lobbyMenu.start(MainMenu.getStage());
+            onlineMenu.start(MainMenu.getStage());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private class confirm implements EventHandler<ActionEvent> {
+    private void showChat(String id) {
+        Chat chat = Users.getChat(id);
+
+        Client.sendChatData();
+        PrivateChatMenu privateChatMenu = new PrivateChatMenu();
+        try {
+            privateChatMenu.init(user.getUserName(),
+                                 new Socket("127.0.0.1", Server.publicReceivingPort),
+                                 chat);
+            privateChatMenu.start(MainMenu.getStage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private class joinChat implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent actionEvent) {
             String id = chatId.getText();
@@ -184,17 +198,53 @@ public class ChatMenu extends Application {
                 new Alert(Alert.AlertType.ERROR, "Invalid ID").show();
                 return;
             }
+            Client.getData();
 
-            if (!Users.ChatExists(id)) {
-                new Alert(Alert.AlertType.ERROR, "ID not found!").show();
+            if (Users.getUser(id) != null) {
+                String chatId = user.getUserName().compareTo(id) > 0
+                        ? user.getUserName() + " → " + id
+                        : id + " → " + user.getUserName();
+
+                if (Users.getChat(chatId) == null) {
+                    PrivateChat privateChat = new PrivateChat(user.getUserName(), chatId, chatId);
+                    privateChat.addMember(id);
+                    Users.getChats().put(chatId, privateChat);
+                }
+                showChat(chatId);
                 return;
             }
 
+            if (!Users.ChatExists(id)) {
+                new Alert(Alert.AlertType.ERROR, "ID not found!").show();
+            }
+        }
+    }
+
+    private class createChat implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent actionEvent) {
+            String id = chatId.getText();
+
+            if (id.isBlank()) {
+                new Alert(Alert.AlertType.ERROR, "Invalid ID").show();
+                return;
+            }
             Client.getData();
 
-            Users.getChat(id);
+            if (Users.getUser(id) != null) {
+                new Alert(Alert.AlertType.ERROR, "Cannot name a group after a username").show();
+                return;
+            }
 
-            //TODO
+            if (Users.ChatExists(id)) {
+                new Alert(Alert.AlertType.ERROR, "ID is duplicate!").show();
+                return;
+            }
+
+            Users.getChats().put(user.getUserName(), new Group(user.getUserName(), id, id));
+            Client.sendChatData();
+
+            showChat(id);
         }
     }
 }

@@ -9,8 +9,8 @@ public class Message implements Serializable {
     private static final long serialVersionUID = -5242982528088815368L;
 
     private final String owner;
-    private String Content;
     private final HashMap<String, Reaction> reactions;
+    private String Content;
     private boolean seen;
 
     public Message(String owner, String content) {
